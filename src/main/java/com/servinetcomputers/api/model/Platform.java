@@ -13,6 +13,8 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 
+import static com.servinetcomputers.api.util.constants.PlatformConstants.NAME_LENGTH;
+
 /**
  * The platform's model entity.
  */
@@ -27,7 +29,7 @@ public class Platform {
     @Column(name = "platform_id")
     private Integer id;
 
-    @Column(nullable = false, length = 30, unique = true)
+    @Column(nullable = false, length = NAME_LENGTH, unique = true)
     private String name;
 
     @Column(nullable = false)

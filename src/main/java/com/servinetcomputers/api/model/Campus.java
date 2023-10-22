@@ -19,6 +19,10 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
+import static com.servinetcomputers.api.util.constants.CampusConstants.ADDRESS_LENGTH;
+import static com.servinetcomputers.api.util.constants.CampusConstants.CELLPHONE_LENGTH;
+import static com.servinetcomputers.api.util.constants.CampusConstants.TERMINAL_LENGTH;
+
 /**
  * The campus' model entity.
  */
@@ -36,13 +40,13 @@ public class Campus {
     @Column(name = "user_id", nullable = false)
     private Integer userId;
 
-    @Column(nullable = false, length = 80, unique = true)
+    @Column(nullable = false, length = ADDRESS_LENGTH, unique = true)
     private String address;
 
-    @Column(length = 10, unique = true)
+    @Column(length = CELLPHONE_LENGTH, unique = true)
     private String cellphone;
 
-    @Column(nullable = false, length = 6, unique = true)
+    @Column(nullable = false, length = TERMINAL_LENGTH, unique = true)
     private String terminal;
 
     @Column(nullable = false)

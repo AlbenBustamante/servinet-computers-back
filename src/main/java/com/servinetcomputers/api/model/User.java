@@ -1,7 +1,10 @@
 package com.servinetcomputers.api.model;
 
+import com.servinetcomputers.api.util.enums.Role;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -12,6 +15,11 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+
+import static com.servinetcomputers.api.util.constants.UserConstants.EMAIL_LENGTH;
+import static com.servinetcomputers.api.util.constants.UserConstants.LAST_NAME_LENGTH;
+import static com.servinetcomputers.api.util.constants.UserConstants.NAME_LENGTH;
+import static com.servinetcomputers.api.util.constants.UserConstants.ROLE_LENGTH;
 
 /**
  * The user's model entity.
@@ -27,20 +35,21 @@ public class User {
     @Column(name = "user_id")
     private Integer id;
 
-    @Column(nullable = false, length = 40)
+    @Column(nullable = false, length = NAME_LENGTH)
     private String name;
 
-    @Column(nullable = false, length = 40)
+    @Column(nullable = false, length = LAST_NAME_LENGTH)
     private String lastName;
 
-    @Column(nullable = false, length = 120, unique = true)
+    @Column(nullable = false, length = EMAIL_LENGTH, unique = true)
     private String email;
 
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false, length = 5)
-    private String role;
+    @Enumerated(value = EnumType.STRING)
+    @Column(nullable = false, length = ROLE_LENGTH)
+    private Role role;
 
     @Column(nullable = false)
     private Boolean isAvailable;
@@ -53,6 +62,10 @@ public class User {
 
     @PrePersist
     public void prePersist() {
+        if (role == null) {
+            role = Role.USER;
+        }
+
         isAvailable = true;
         createdAt = updatedAt = LocalDateTime.now();
     }
