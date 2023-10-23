@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * The campus' models mapper.
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = PlatformMapper.class)
 public interface CampusMapper {
 
     CampusResponse toResponse(Campus entity);
