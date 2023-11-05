@@ -4,7 +4,7 @@ package com.servinetcomputers.api.dto.request;
  * The campus dto model for requests.
  */
 public record CampusRequest(int userId, int numeral, String address, String cellphone, String password,
-                            String repeatPassword) {
+                            String repeatPassword, String terminal) {
     public boolean passwordsMatch() {
         return password.equals(repeatPassword);
     }

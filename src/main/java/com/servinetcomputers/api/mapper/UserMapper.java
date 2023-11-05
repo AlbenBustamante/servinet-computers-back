@@ -18,6 +18,7 @@ public interface UserMapper {
 
     List<UserResponse> toResponses(List<User> entities);
 
+    @Mapping(target = "campuses", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
     @Mapping(target = "isAvailable", ignore = true)
     @Mapping(target = "id", ignore = true)

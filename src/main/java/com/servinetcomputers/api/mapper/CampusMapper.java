@@ -6,6 +6,7 @@ import com.servinetcomputers.api.model.Campus;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -16,7 +17,7 @@ public interface CampusMapper {
 
     CampusResponse toResponse(Campus entity);
 
-    List<CampusResponse> toResponses(List<Campus> entities);
+    List<CampusResponse> toResponses(Collection<Campus> entities);
 
     @Mapping(target = "user", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
