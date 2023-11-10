@@ -2,6 +2,15 @@ package com.servinetcomputers.api.service.impl;
 
 import com.servinetcomputers.api.dto.request.CampusRequest;
 import com.servinetcomputers.api.dto.response.CampusResponse;
+import com.servinetcomputers.api.dto.response.DataResponse;
+import com.servinetcomputers.api.dto.response.ModelResponse;
+import com.servinetcomputers.api.dto.response.PageResponse;
+import com.servinetcomputers.api.exception.CampusAlreadyExistsException;
+import com.servinetcomputers.api.exception.CampusNotFoundException;
+import com.servinetcomputers.api.exception.CampusUnavailableException;
+import com.servinetcomputers.api.exception.PasswordsDoNotMatchException;
+import com.servinetcomputers.api.exception.UserNotFoundException;
+import com.servinetcomputers.api.exception.UserUnavailableException;
 import com.servinetcomputers.api.mapper.CampusMapper;
 import com.servinetcomputers.api.repository.CampusRepository;
 import com.servinetcomputers.api.repository.UserRepository;
@@ -10,7 +19,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Random;
 
 /**
@@ -23,71 +31,98 @@ public class CampusServiceImpl implements ICampusService {
     private final CampusRepository repository;
     private final CampusMapper mapper;
     private final UserRepository userRepository;
-
+    private final Random random = new Random();
 
     @Override
-    public CampusResponse create(CampusRequest request) {
+    public PageResponse<CampusResponse> create(CampusRequest request) {
         if (repository.existsByAddress(request.address())) {
-            throw new RuntimeException("The address already exists.");
+            throw new CampusAlreadyExistsException("address");
         }
 
         if (repository.existsByCellphone(request.cellphone())) {
-            throw new RuntimeException("The cellphone already exists.");
+            throw new CampusAlreadyExistsException("cellphone");
         }
 
         if (repository.existsByNumeral(request.numeral())) {
-            throw new RuntimeException("The numeral already exists.");
+            throw new CampusAlreadyExistsException("numeral");
         }
 
         if (!request.passwordsMatch()) {
-            throw new RuntimeException("The passwords don't match.");
+            throw new PasswordsDoNotMatchException();
         }
 
         final var entity = mapper.toEntity(request);
 
         while (entity.getTerminal() == null || repository.existsByTerminal(entity.getTerminal())) {
-            entity.setTerminal(String.valueOf(new Random().nextInt(100, 500)));
+            entity.setTerminal(String.valueOf(random.nextInt(100, 500)));
         }
 
-        return mapper.toResponse(repository.save(entity));
+        final var response = mapper.toResponse(repository.save(entity));
+
+        return new PageResponse<>(201, true, new DataResponse<>(1, 1, List.of(response)));
     }
 
     @Override
-    public Optional<CampusResponse> get(int campusId) {
-        final var campusFound = repository.findById(campusId);
-
-        if (campusFound.isEmpty() || !campusFound.get().getIsAvailable()) {
-            return Optional.empty();
-        }
-
-        return campusFound.map(mapper::toResponse);
-    }
-
-    @Override
-    public Optional<List<CampusResponse>> getAllByUserId(int userId) {
-        final var userFound = userRepository.findById(userId);
-
-        if (userFound.isEmpty() || !userFound.get().getIsAvailable()) {
-            return Optional.empty();
-        }
-
-        return Optional.of(mapper.toResponses(userFound.get().getCampuses()));
-    }
-
-    @Override
-    public Optional<CampusResponse> update(int campusId, CampusRequest request) {
+    public PageResponse<CampusResponse> get(int campusId) {
         final var campusFound = repository.findById(campusId);
 
         if (campusFound.isEmpty()) {
-            return Optional.empty();
+            throw new CampusNotFoundException(campusId);
         }
 
         final var campus = campusFound.get();
 
+        if (Boolean.FALSE.equals(campus.getIsAvailable())) {
+            throw new CampusUnavailableException(campusId);
+        }
+
+        final var response = mapper.toResponse(campus);
+
+        return new PageResponse<>(200, true, new DataResponse<>(1, 1, List.of(response)));
+    }
+
+    @Override
+    public PageResponse<CampusResponse> getAllByUserId(int userId) {
+        final var userFound = userRepository.findById(userId);
+
+        if (userFound.isEmpty()) {
+            throw new UserNotFoundException(userId);
+        }
+
+        final var user = userFound.get();
+
+        if (Boolean.FALSE.equals(user.getIsAvailable())) {
+            throw new UserUnavailableException(userId);
+        }
+
+        final var response = mapper.toResponses(user.getCampuses())
+                .stream()
+                .filter(ModelResponse::isAvailable)
+                .toList();
+
+        return new PageResponse<>(200, true, new DataResponse<>(response.size(), 1, response));
+    }
+
+    @Override
+    public PageResponse<CampusResponse> update(int campusId, CampusRequest request) {
+        final var campusFound = repository.findById(campusId);
+
+        if (campusFound.isEmpty()) {
+            throw new CampusNotFoundException(campusId);
+        }
+
+        final var campus = campusFound.get();
+
+        if (Boolean.FALSE.equals(campus.getIsAvailable())) {
+            throw new CampusUnavailableException(campusId);
+        }
+
         campus.setAddress(request.address() == null ? campus.getAddress() : request.address());
         campus.setCellphone(request.cellphone() == null ? campus.getCellphone() : request.cellphone());
 
-        return Optional.of(mapper.toResponse(repository.save(campus)));
+        final var response = mapper.toResponse(repository.save(campus));
+
+        return new PageResponse<>(200, true, new DataResponse<>(1, 1, List.of(response)));
     }
 
     @Override

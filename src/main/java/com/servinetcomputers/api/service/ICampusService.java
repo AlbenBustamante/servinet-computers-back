@@ -2,9 +2,7 @@ package com.servinetcomputers.api.service;
 
 import com.servinetcomputers.api.dto.request.CampusRequest;
 import com.servinetcomputers.api.dto.response.CampusResponse;
-
-import java.util.List;
-import java.util.Optional;
+import com.servinetcomputers.api.dto.response.PageResponse;
 
 /**
  * The campus' uses case.
@@ -17,32 +15,32 @@ public interface ICampusService {
      * @param request the data to save.
      * @return the campus saved.
      */
-    CampusResponse create(CampusRequest request);
+    PageResponse<CampusResponse> create(CampusRequest request);
 
     /**
      * Search a campus by the ID.
      *
      * @param campusId the ID to be searched.
-     * @return an {@link Optional} of the available campus found.
+     * @return the available campus found.
      */
-    Optional<CampusResponse> get(int campusId);
+    PageResponse<CampusResponse> get(int campusId);
 
     /**
      * Get all the existing and available campuses by the user ID.
      *
      * @param userId the owner ID for the searching.
-     * @return an {@link Optional} of the campuses found.
+     * @return the campuses found.
      */
-    Optional<List<CampusResponse>> getAllByUserId(int userId);
+    PageResponse<CampusResponse> getAllByUserId(int userId);
 
     /**
      * Update an existing and available campus.
      *
      * @param campusId the ID to be searched.
      * @param request  the data to be updated.
-     * @return and {@link Optional} of the campus updated.
+     * @return the campus updated.
      */
-    Optional<CampusResponse> update(int campusId, CampusRequest request);
+    PageResponse<CampusResponse> update(int campusId, CampusRequest request);
 
     /**
      * Disable an existing and available campus.

@@ -1,10 +1,11 @@
 package com.servinetcomputers.api.service;
 
+import com.servinetcomputers.api.dto.request.PageRequest;
 import com.servinetcomputers.api.dto.request.TransferRequest;
+import com.servinetcomputers.api.dto.response.PageResponse;
 import com.servinetcomputers.api.dto.response.TransferResponse;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -18,7 +19,7 @@ public interface ITransferService {
      * @param request the data to be saved.
      * @return the transfer saved.
      */
-    TransferResponse create(TransferRequest request);
+    PageResponse<TransferResponse> create(TransferRequest request);
 
     /**
      * Search an existing and available transfer.
@@ -26,7 +27,7 @@ public interface ITransferService {
      * @param transferId the ID to be searched.
      * @return an {@link Optional} of the transfer found.
      */
-    Optional<TransferResponse> get(int transferId);
+    PageResponse<TransferResponse> get(int transferId);
 
     /**
      * Search all the existing and available transfers between two dates.
@@ -37,7 +38,7 @@ public interface ITransferService {
      * @param endDate   the last date.
      * @return a list of the all transfers found.
      */
-    List<TransferResponse> getAllByCreationDateBetween(LocalDateTime startDate, LocalDateTime endDate);
+    PageResponse<TransferResponse> getAllByCreationDateBetween(LocalDateTime startDate, LocalDateTime endDate, PageRequest page);
 
     /**
      * Update an existing and available transfer.
@@ -46,7 +47,7 @@ public interface ITransferService {
      * @param request    the data to be updated.
      * @return an {@link Optional} of the transfer updated.
      */
-    Optional<TransferResponse> update(int transferId, TransferRequest request);
+    PageResponse<TransferResponse> update(int transferId, TransferRequest request);
 
     /**
      * Disable an existing and available transfer.

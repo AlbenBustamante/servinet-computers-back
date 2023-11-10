@@ -1,7 +1,13 @@
 package com.servinetcomputers.api.service.impl;
 
+import com.servinetcomputers.api.dto.request.PageRequest;
 import com.servinetcomputers.api.dto.request.TransferRequest;
+import com.servinetcomputers.api.dto.response.DataResponse;
+import com.servinetcomputers.api.dto.response.PageResponse;
 import com.servinetcomputers.api.dto.response.TransferResponse;
+import com.servinetcomputers.api.exception.PlatformNameNotFoundException;
+import com.servinetcomputers.api.exception.TransferNotFoundException;
+import com.servinetcomputers.api.exception.TransferUnavailableException;
 import com.servinetcomputers.api.mapper.TransferMapper;
 import com.servinetcomputers.api.model.Platform;
 import com.servinetcomputers.api.model.Transfer;
@@ -14,7 +20,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * The transfer's service implementation.
@@ -28,14 +33,14 @@ public class TransferServiceImpl implements ITransferService {
     private final PlatformRepository platformRepository;
 
     @Override
-    public TransferResponse create(TransferRequest request) {
+    public PageResponse<TransferResponse> create(TransferRequest request) {
         final var platformFound = platformRepository.findByName(request.platformName());
 
         if (platformFound.isEmpty()) {
-            throw new RuntimeException("The platform doesn't exists");
+            throw new PlatformNameNotFoundException(request.platformName());
         }
 
-        final List<Transfer> transfers = new ArrayList<>();
+        final List<Transfer> transfers = new ArrayList<>(request.amount());
 
         for (int i = 0; i < request.amount(); i++) {
             final var transfer = mapper.toEntity(request);
@@ -44,54 +49,67 @@ public class TransferServiceImpl implements ITransferService {
             transfers.add(transfer);
         }
 
-        return mapper.toResponse(repository.saveAll(transfers).get(0));
+        final var response = mapper.toResponses(repository.saveAll(transfers));
+
+        return new PageResponse<>(201, true, new DataResponse<>(response.size(), 1, response));
     }
 
     @Override
-    public Optional<TransferResponse> get(int transferId) {
+    public PageResponse<TransferResponse> get(int transferId) {
         final var transferFound = repository.findById(transferId);
 
         if (transferFound.isEmpty()) {
-            return Optional.empty();
+            throw new TransferNotFoundException(transferId);
         }
 
-        if (!transferFound.get().getIsAvailable()) {
-            throw new RuntimeException("The transfer is disabled");
+        if (Boolean.FALSE.equals(transferFound.get().getIsAvailable())) {
+            throw new TransferUnavailableException(transferId);
         }
 
-        return transferFound.map(mapper::toResponse);
+        final var response = mapper.toResponse(transferFound.get());
+
+        return new PageResponse<>(200, true, new DataResponse<>(1, 1, List.of(response)));
     }
 
     @Override
-    public List<TransferResponse> getAllByCreationDateBetween(LocalDateTime startDate, LocalDateTime endDate) {
-        return mapper.toResponses(repository.findAllByCreatedAtBetweenAndIsAvailable(startDate, endDate, true));
+    public PageResponse<TransferResponse> getAllByCreationDateBetween(LocalDateTime startDate, LocalDateTime endDate, PageRequest pageRequest) {
+        final var page = repository.findAllByCreatedAtBetweenAndIsAvailable(startDate, endDate, true, pageRequest.toPageable());
+        final var response = mapper.toResponses(page.getContent());
+
+        return new PageResponse<>(200, true, new DataResponse<>(page.getTotalElements(), page.getNumber(), response));
     }
 
     @Override
-    public Optional<TransferResponse> update(int transferId, TransferRequest request) {
+    public PageResponse<TransferResponse> update(int transferId, TransferRequest request) {
         final var transferFound = repository.findById(transferId);
 
         if (transferFound.isEmpty()) {
-            return Optional.empty();
+            throw new TransferNotFoundException(transferId);
         }
 
         final var transfer = transferFound.get();
 
-        if (!transfer.getIsAvailable()) {
-            throw new RuntimeException("The transfer is disabled");
+        if (Boolean.FALSE.equals(transfer.getIsAvailable())) {
+            throw new TransferUnavailableException(transferId);
         }
 
         final Platform[] platform = {transfer.getPlatform()};
 
         if (request.platformName() != null) {
             platformRepository.findByName(request.platformName())
-                    .ifPresent(res -> platform[0] = res);
+                    .ifPresentOrElse(
+                            (res -> platform[0] = res),
+                            () -> {
+                                throw new PlatformNameNotFoundException(request.platformName());
+                            });
         }
 
         transfer.setPlatform(platform[0]);
         transfer.setValue(request.value());
 
-        return Optional.of(mapper.toResponse(repository.save(transfer)));
+        final var response = mapper.toResponse(repository.save(transfer));
+
+        return new PageResponse<>(200, true, new DataResponse<>(1, 1, List.of(response)));
     }
 
     @Override

@@ -8,14 +8,12 @@ import org.springframework.http.HttpStatus;
  */
 @Getter
 public abstract class AppException extends RuntimeException {
-
     private final HttpStatus status;
     private final String title;
 
-    public AppException(final String detail, final HttpStatus status, final String title) {
-        super(detail);
+    protected AppException(String detail, HttpStatus status, String title) {
+        super(detail + ".");
         this.status = status;
-        this.title = title;
+        this.title = title.toUpperCase() + ".";
     }
-
 }

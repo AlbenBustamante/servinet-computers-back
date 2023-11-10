@@ -1,9 +1,8 @@
 package com.servinetcomputers.api.service;
 
 import com.servinetcomputers.api.dto.request.PlatformRequest;
+import com.servinetcomputers.api.dto.response.PageResponse;
 import com.servinetcomputers.api.dto.response.PlatformResponse;
-
-import java.util.Optional;
 
 /**
  * The platform's uses case.
@@ -16,16 +15,16 @@ public interface IPlatformService {
      * @param request the data to be saved.
      * @return the platform saved.
      */
-    PlatformResponse create(PlatformRequest request);
+    PageResponse<PlatformResponse> create(PlatformRequest request);
 
     /**
      * Update an existing and available platform.
      *
      * @param platformId the ID to be searched.
      * @param request    the data to be updated.
-     * @return an {@link Optional} of the platform updated.
+     * @return the platform updated.
      */
-    Optional<PlatformResponse> update(int platformId, PlatformRequest request);
+    PageResponse<PlatformResponse> update(int platformId, PlatformRequest request);
 
     /**
      * Disable an existing and available platform.

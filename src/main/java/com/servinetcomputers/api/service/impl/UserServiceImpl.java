@@ -1,14 +1,20 @@
 package com.servinetcomputers.api.service.impl;
 
 import com.servinetcomputers.api.dto.request.UserRequest;
+import com.servinetcomputers.api.dto.response.DataResponse;
+import com.servinetcomputers.api.dto.response.PageResponse;
 import com.servinetcomputers.api.dto.response.UserResponse;
+import com.servinetcomputers.api.exception.PasswordsDoNotMatchException;
+import com.servinetcomputers.api.exception.UserAlreadyExistsException;
+import com.servinetcomputers.api.exception.UserNotFoundException;
+import com.servinetcomputers.api.exception.UserUnavailableException;
 import com.servinetcomputers.api.mapper.UserMapper;
 import com.servinetcomputers.api.repository.UserRepository;
 import com.servinetcomputers.api.service.IUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.List;
 
 /**
  * The user's service implementation.
@@ -21,41 +27,45 @@ public class UserServiceImpl implements IUserService {
     private final UserMapper mapper;
 
     @Override
-    public UserResponse create(UserRequest request) {
+    public PageResponse<UserResponse> create(UserRequest request) {
         if (repository.existsByEmail(request.email())) {
-            throw new RuntimeException("This email already exists.");
+            throw new UserAlreadyExistsException("email");
         }
 
         if (!request.passwordsMatch()) {
-            throw new RuntimeException("The passwords don't match!");
+            throw new PasswordsDoNotMatchException();
         }
 
         final var entity = mapper.toEntity(request);
 
         entity.setPassword("encode:" + request.password());
 
-        return mapper.toResponse(repository.save(entity));
+        final var response = mapper.toResponse(repository.save(entity));
+
+        return new PageResponse<>(201, true, new DataResponse<>(1, 1, List.of(response)));
     }
 
     @Override
-    public Optional<UserResponse> update(int userId, UserRequest request) {
+    public PageResponse<UserResponse> update(int userId, UserRequest request) {
         final var userFound = repository.findById(userId);
 
         if (userFound.isEmpty()) {
-            return Optional.empty();
+            throw new UserNotFoundException(userId);
         }
 
         final var user = userFound.get();
 
-        if (!user.getIsAvailable()) {
-            throw new RuntimeException("The user is unavailable");
+        if (Boolean.FALSE.equals(user.getIsAvailable())) {
+            throw new UserUnavailableException(userId);
         }
 
         user.setName(request.name() == null ? user.getName() : request.name());
         user.setLastName(request.lastName() == null ? user.getLastName() : request.lastName());
         user.setEmail(request.email() == null ? user.getEmail() : request.email());
 
-        return Optional.of(mapper.toResponse(repository.save(user)));
+        final var response = mapper.toResponse(repository.save(user));
+
+        return new PageResponse<>(200, true, new DataResponse<>(1, 1, List.of(response)));
     }
 
     @Override
