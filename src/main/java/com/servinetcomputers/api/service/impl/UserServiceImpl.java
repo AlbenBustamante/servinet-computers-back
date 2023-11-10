@@ -42,7 +42,7 @@ public class UserServiceImpl implements IUserService {
 
         final var response = mapper.toResponse(repository.save(entity));
 
-        return new PageResponse<>(201, true, new DataResponse<>(1, 1, List.of(response)));
+        return new PageResponse<>(201, true, new DataResponse<>(1, 1, 1, List.of(response)));
     }
 
     @Override
@@ -65,7 +65,7 @@ public class UserServiceImpl implements IUserService {
 
         final var response = mapper.toResponse(repository.save(user));
 
-        return new PageResponse<>(200, true, new DataResponse<>(1, 1, List.of(response)));
+        return new PageResponse<>(200, true, new DataResponse<>(1, 1, 1, List.of(response)));
     }
 
     @Override

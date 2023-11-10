@@ -59,7 +59,7 @@ public class CampusServiceImpl implements ICampusService {
 
         final var response = mapper.toResponse(repository.save(entity));
 
-        return new PageResponse<>(201, true, new DataResponse<>(1, 1, List.of(response)));
+        return new PageResponse<>(201, true, new DataResponse<>(1, 1, 1, List.of(response)));
     }
 
     @Override
@@ -78,7 +78,7 @@ public class CampusServiceImpl implements ICampusService {
 
         final var response = mapper.toResponse(campus);
 
-        return new PageResponse<>(200, true, new DataResponse<>(1, 1, List.of(response)));
+        return new PageResponse<>(200, true, new DataResponse<>(1, 1, 1, List.of(response)));
     }
 
     @Override
@@ -100,7 +100,7 @@ public class CampusServiceImpl implements ICampusService {
                 .filter(ModelResponse::isAvailable)
                 .toList();
 
-        return new PageResponse<>(200, true, new DataResponse<>(response.size(), 1, response));
+        return new PageResponse<>(200, true, new DataResponse<>(response.size(), 1, 1, response));
     }
 
     @Override
@@ -122,7 +122,7 @@ public class CampusServiceImpl implements ICampusService {
 
         final var response = mapper.toResponse(repository.save(campus));
 
-        return new PageResponse<>(200, true, new DataResponse<>(1, 1, List.of(response)));
+        return new PageResponse<>(200, true, new DataResponse<>(1, 1, 1, List.of(response)));
     }
 
     @Override

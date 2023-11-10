@@ -51,7 +51,7 @@ public class TransferServiceImpl implements ITransferService {
 
         final var response = mapper.toResponses(repository.saveAll(transfers));
 
-        return new PageResponse<>(201, true, new DataResponse<>(response.size(), 1, response));
+        return new PageResponse<>(201, true, new DataResponse<>(response.size(), 1, 1, response));
     }
 
     @Override
@@ -68,7 +68,7 @@ public class TransferServiceImpl implements ITransferService {
 
         final var response = mapper.toResponse(transferFound.get());
 
-        return new PageResponse<>(200, true, new DataResponse<>(1, 1, List.of(response)));
+        return new PageResponse<>(200, true, new DataResponse<>(1, 1, 1, List.of(response)));
     }
 
     @Override
@@ -76,7 +76,7 @@ public class TransferServiceImpl implements ITransferService {
         final var page = repository.findAllByCreatedAtBetweenAndIsAvailable(startDate, endDate, true, pageRequest.toPageable());
         final var response = mapper.toResponses(page.getContent());
 
-        return new PageResponse<>(200, true, new DataResponse<>(page.getTotalElements(), page.getNumber(), response));
+        return new PageResponse<>(200, true, new DataResponse<>(page.getTotalElements(), page.getNumber(), page.getTotalPages(), response));
     }
 
     @Override
@@ -109,7 +109,7 @@ public class TransferServiceImpl implements ITransferService {
 
         final var response = mapper.toResponse(repository.save(transfer));
 
-        return new PageResponse<>(200, true, new DataResponse<>(1, 1, List.of(response)));
+        return new PageResponse<>(200, true, new DataResponse<>(1, 1, 1, List.of(response)));
     }
 
     @Override

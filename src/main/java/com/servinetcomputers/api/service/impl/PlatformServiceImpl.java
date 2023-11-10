@@ -33,7 +33,7 @@ public class PlatformServiceImpl implements IPlatformService {
 
         final var response = mapper.toResponse(repository.save(mapper.toEntity(request)));
 
-        return new PageResponse<>(201, true, new DataResponse<>(1, 1, List.of(response)));
+        return new PageResponse<>(201, true, new DataResponse<>(1, 1, 1, List.of(response)));
     }
 
     @Override
@@ -54,7 +54,7 @@ public class PlatformServiceImpl implements IPlatformService {
 
         final var response = mapper.toResponse(repository.save(platform));
 
-        return new PageResponse<>(200, true, new DataResponse<>(1, 1, List.of(response)));
+        return new PageResponse<>(200, true, new DataResponse<>(1, 1, 1, List.of(response)));
     }
 
     @Override
