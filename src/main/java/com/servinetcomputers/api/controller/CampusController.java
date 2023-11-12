@@ -1,10 +1,14 @@
 package com.servinetcomputers.api.controller;
 
 import com.servinetcomputers.api.dto.request.CampusRequest;
+import com.servinetcomputers.api.dto.request.PageRequest;
 import com.servinetcomputers.api.dto.response.CampusResponse;
 import com.servinetcomputers.api.dto.response.PageResponse;
+import com.servinetcomputers.api.dto.response.TransferResponse;
 import com.servinetcomputers.api.service.ICampusService;
+import com.servinetcomputers.api.service.ITransferService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,7 +18,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 /**
  * The campus' routes/endpoints.
@@ -25,6 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class CampusController {
 
     private final ICampusService campusService;
+    private final ITransferService transferService;
 
     @PostMapping
     public ResponseEntity<PageResponse<CampusResponse>> register(@RequestBody CampusRequest request) {
@@ -44,6 +54,29 @@ public class CampusController {
     @DeleteMapping("/{campusId}")
     public ResponseEntity<Boolean> delete(@PathVariable("campusId") int campusId) {
         return ResponseEntity.ok(campusService.delete(campusId));
+    }
+
+    @GetMapping(value = "/{campusId}/transfers")
+    public ResponseEntity<PageResponse<TransferResponse>> getTransfersByCreationDate(
+            @PathVariable("campusId") int campusId,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "ASC") Sort.Direction direction,
+            @RequestParam(defaultValue = "createdAt") String property,
+            @RequestParam(required = false) LocalDateTime startDate,
+            @RequestParam(required = false) LocalDateTime endDate
+    ) {
+        final var pageRequest = new PageRequest(size, page, direction, property);
+
+        if (startDate == null) {
+            startDate = LocalDateTime.of(LocalDate.now(), LocalTime.MIN);
+        }
+
+        if (endDate == null) {
+            endDate = LocalDateTime.of(LocalDate.now(), LocalTime.now());
+        }
+
+        return ResponseEntity.ok(transferService.getAllByCampusIdCreationDateBetween(campusId, startDate, endDate, pageRequest));
     }
 
 }

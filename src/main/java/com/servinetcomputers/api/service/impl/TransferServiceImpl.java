@@ -5,12 +5,14 @@ import com.servinetcomputers.api.dto.request.TransferRequest;
 import com.servinetcomputers.api.dto.response.DataResponse;
 import com.servinetcomputers.api.dto.response.PageResponse;
 import com.servinetcomputers.api.dto.response.TransferResponse;
+import com.servinetcomputers.api.exception.CampusNotFoundException;
 import com.servinetcomputers.api.exception.PlatformNameNotFoundException;
 import com.servinetcomputers.api.exception.TransferNotFoundException;
 import com.servinetcomputers.api.exception.TransferUnavailableException;
 import com.servinetcomputers.api.mapper.TransferMapper;
 import com.servinetcomputers.api.model.Platform;
 import com.servinetcomputers.api.model.Transfer;
+import com.servinetcomputers.api.repository.CampusRepository;
 import com.servinetcomputers.api.repository.PlatformRepository;
 import com.servinetcomputers.api.repository.TransferRepository;
 import com.servinetcomputers.api.service.ITransferService;
@@ -31,6 +33,7 @@ public class TransferServiceImpl implements ITransferService {
     private final TransferRepository repository;
     private final TransferMapper mapper;
     private final PlatformRepository platformRepository;
+    private final CampusRepository campusRepository;
 
     @Override
     public PageResponse<TransferResponse> create(TransferRequest request) {
@@ -72,8 +75,12 @@ public class TransferServiceImpl implements ITransferService {
     }
 
     @Override
-    public PageResponse<TransferResponse> getAllByCreationDateBetween(LocalDateTime startDate, LocalDateTime endDate, PageRequest pageRequest) {
-        final var page = repository.findAllByCreatedAtBetweenAndIsAvailable(startDate, endDate, true, pageRequest.toPageable());
+    public PageResponse<TransferResponse> getAllByCampusIdCreationDateBetween(int campusId, LocalDateTime startDate, LocalDateTime endDate, PageRequest pageRequest) {
+        if (!campusRepository.existsById(campusId)) {
+            throw new CampusNotFoundException(campusId);
+        }
+
+        final var page = repository.findAllByCampusIdAndIsAvailableAndCreatedAtBetween(campusId, true, startDate, endDate, pageRequest.toPageable());
         final var response = mapper.toResponses(page.getContent());
 
         return new PageResponse<>(200, true, new DataResponse<>(page.getTotalElements(), page.getNumber(), page.getTotalPages(), response));

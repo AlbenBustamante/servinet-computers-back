@@ -34,11 +34,12 @@ public interface ITransferService {
      *
      * <p>If {@code startDate} or {@code endDate} or both are null, they'll be the same day which is consulted by default.</p>
      *
+     * @param campusId  the ID of the campus to be found.
      * @param startDate the first date.
      * @param endDate   the last date.
      * @return a list of the all transfers found.
      */
-    PageResponse<TransferResponse> getAllByCreationDateBetween(LocalDateTime startDate, LocalDateTime endDate, PageRequest page);
+    PageResponse<TransferResponse> getAllByCampusIdCreationDateBetween(int campusId, LocalDateTime startDate, LocalDateTime endDate, PageRequest page);
 
     /**
      * Update an existing and available transfer.
