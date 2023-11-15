@@ -16,6 +16,7 @@ import com.servinetcomputers.api.repository.CampusRepository;
 import com.servinetcomputers.api.repository.PlatformRepository;
 import com.servinetcomputers.api.repository.TransferRepository;
 import com.servinetcomputers.api.service.ITransferService;
+import com.servinetcomputers.api.util.ICurrencyFormatter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -34,6 +35,7 @@ public class TransferServiceImpl implements ITransferService {
     private final TransferMapper mapper;
     private final PlatformRepository platformRepository;
     private final CampusRepository campusRepository;
+    private final ICurrencyFormatter currencyFormatter;
 
     @Override
     public PageResponse<TransferResponse> create(TransferRequest request) {
@@ -52,7 +54,7 @@ public class TransferServiceImpl implements ITransferService {
             transfers.add(transfer);
         }
 
-        final var response = mapper.toResponses(repository.saveAll(transfers));
+        final var response = mapper.toResponses(repository.saveAll(transfers), currencyFormatter);
 
         return new PageResponse<>(201, true, new DataResponse<>(response.size(), 1, 1, response));
     }
@@ -69,7 +71,7 @@ public class TransferServiceImpl implements ITransferService {
             throw new TransferUnavailableException(transferId);
         }
 
-        final var response = mapper.toResponse(transferFound.get());
+        final var response = mapper.toResponse(transferFound.get(), currencyFormatter);
 
         return new PageResponse<>(200, true, new DataResponse<>(1, 1, 1, List.of(response)));
     }
@@ -81,7 +83,7 @@ public class TransferServiceImpl implements ITransferService {
         }
 
         final var page = repository.findAllByCampusIdAndIsAvailableAndCreatedAtBetween(campusId, true, startDate, endDate, pageRequest.toPageable());
-        final var response = mapper.toResponses(page.getContent());
+        final var response = mapper.toResponses(page.getContent(), currencyFormatter);
 
         return new PageResponse<>(200, true, new DataResponse<>(page.getTotalElements(), page.getNumber(), page.getTotalPages(), response));
     }
@@ -114,7 +116,7 @@ public class TransferServiceImpl implements ITransferService {
         transfer.setPlatform(platform[0]);
         transfer.setValue(request.value());
 
-        final var response = mapper.toResponse(repository.save(transfer));
+        final var response = mapper.toResponse(repository.save(transfer), currencyFormatter);
 
         return new PageResponse<>(200, true, new DataResponse<>(1, 1, 1, List.of(response)));
     }
