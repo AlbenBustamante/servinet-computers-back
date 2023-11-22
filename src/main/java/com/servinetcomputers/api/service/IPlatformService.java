@@ -18,6 +18,12 @@ public interface IPlatformService {
     PageResponse<PlatformResponse> create(PlatformRequest request);
 
     /**
+     * Get all the available platforms.
+     * @return the platforms.
+     */
+    PageResponse<PlatformResponse> getAll();
+
+    /**
      * Update an existing and available platform.
      *
      * @param platformId the ID to be searched.

@@ -37,6 +37,12 @@ public class PlatformServiceImpl implements IPlatformService {
     }
 
     @Override
+    public PageResponse<PlatformResponse> getAll() {
+        final var response = mapper.toResponses(repository.findAllByIsAvailable(true));
+        return new PageResponse<>(200, true, new DataResponse<>(response.size(), 1, 1, response));
+    }
+
+    @Override
     public PageResponse<PlatformResponse> update(int platformId, PlatformRequest request) {
         final var platformFound = repository.findById(platformId);
 

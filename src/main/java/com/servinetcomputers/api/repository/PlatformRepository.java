@@ -3,6 +3,7 @@ package com.servinetcomputers.api.repository;
 import com.servinetcomputers.api.model.Platform;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -17,5 +18,7 @@ public interface PlatformRepository extends JpaRepository<Platform, Integer> {
      * @return an {@link Optional} of the platform found.
      */
     Optional<Platform> findByName(String name);
+
+    List<Platform> findAllByIsAvailable(boolean isAvailable);
 
 }
