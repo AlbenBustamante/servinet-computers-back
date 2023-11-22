@@ -9,10 +9,12 @@ import com.servinetcomputers.api.exception.CampusAlreadyExistsException;
 import com.servinetcomputers.api.exception.CampusNotFoundException;
 import com.servinetcomputers.api.exception.CampusUnavailableException;
 import com.servinetcomputers.api.exception.PasswordsDoNotMatchException;
+import com.servinetcomputers.api.exception.PlatformNameNotFoundException;
 import com.servinetcomputers.api.exception.UserNotFoundException;
 import com.servinetcomputers.api.exception.UserUnavailableException;
 import com.servinetcomputers.api.mapper.CampusMapper;
 import com.servinetcomputers.api.repository.CampusRepository;
+import com.servinetcomputers.api.repository.PlatformRepository;
 import com.servinetcomputers.api.repository.UserRepository;
 import com.servinetcomputers.api.service.ICampusService;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +33,7 @@ public class CampusServiceImpl implements ICampusService {
     private final CampusRepository repository;
     private final CampusMapper mapper;
     private final UserRepository userRepository;
+    private final PlatformRepository platformRepository;
     private final Random random = new Random();
 
     @Override
@@ -138,6 +141,43 @@ public class CampusServiceImpl implements ICampusService {
         repository.save(campusFound.get());
 
         return true;
+    }
+
+    @Override
+    public PageResponse<CampusResponse> addPlatform(int campusId, String platformName) {
+        final var response = addOrRemove(campusId, platformName, true);
+        return new PageResponse<>(200, true, new DataResponse<>(1, 1, 1, List.of(response)));
+    }
+
+    @Override
+    public PageResponse<CampusResponse> removePlatform(int campusId, String platformName) {
+        final var response = addOrRemove(campusId, platformName, false);
+        return new PageResponse<>(200, true, new DataResponse<>(1, 1, 1, List.of(response)));
+    }
+
+    private CampusResponse addOrRemove(int campusId, String platformName, boolean add) {
+        final var campusFound = repository.findById(campusId);
+
+        if (campusFound.isEmpty()) {
+            throw new CampusNotFoundException(campusId);
+        }
+
+        final var platformFound = platformRepository.findByName(platformName);
+
+        if (platformFound.isEmpty()) {
+            throw new PlatformNameNotFoundException(platformName);
+        }
+
+        final var campus = campusFound.get();
+        final var platform = platformFound.get();
+
+        if (add) {
+            campus.addPlatform(platform);
+        } else {
+            campus.removePlatform(platform);
+        }
+
+        return mapper.toResponse(repository.save(campus));
     }
 
 }

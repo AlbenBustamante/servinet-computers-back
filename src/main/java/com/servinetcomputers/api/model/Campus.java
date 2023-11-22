@@ -1,17 +1,6 @@
 package com.servinetcomputers.api.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -68,13 +57,31 @@ public class Campus {
     @JoinColumn(name = "user_id", insertable = false, updatable = false)
     private User user;
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "campuses_platforms",
             joinColumns = {@JoinColumn(name = "campus_id")},
             inverseJoinColumns = {@JoinColumn(name = "platform_id")}
     )
     private Set<Platform> platforms;
+
+    /**
+     * Add a platform to the campus' collection.
+     *
+     * @param platform the platform to be added.
+     */
+    public void addPlatform(Platform platform) {
+        platforms.add(platform);
+    }
+
+    /**
+     * Remove a platform from the campus' collection.
+     *
+     * @param platform the platform to be removed.
+     */
+    public void removePlatform(Platform platform) {
+        platforms.remove(platform);
+    }
 
     @PrePersist
     public void prePersist() {

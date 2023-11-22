@@ -56,6 +56,14 @@ public class CampusController {
         return ResponseEntity.ok(campusService.delete(campusId));
     }
 
+    @PostMapping("/{campusId}/platform/{platformName}")
+    public ResponseEntity<PageResponse<CampusResponse>> addPlatform(
+            @PathVariable("campusId") int campusId,
+            @PathVariable("platformName") String platformName
+    ) {
+        return ResponseEntity.ok(campusService.addPlatform(campusId, platformName));
+    }
+
     @GetMapping(value = "/{campusId}/transfers")
     public ResponseEntity<PageResponse<TransferResponse>> getTransfersByCreationDate(
             @PathVariable("campusId") int campusId,
@@ -77,6 +85,14 @@ public class CampusController {
         }
 
         return ResponseEntity.ok(transferService.getAllByCampusIdCreationDateBetween(campusId, startDate, endDate, pageRequest));
+    }
+
+    @DeleteMapping("/{campusId}/platform/{platformName}")
+    public ResponseEntity<PageResponse<CampusResponse>> removePlatform(
+            @PathVariable("campusId") int campusId,
+            @PathVariable("platformName") String platformName
+    ) {
+        return ResponseEntity.ok(campusService.removePlatform(campusId, platformName));
     }
 
 }

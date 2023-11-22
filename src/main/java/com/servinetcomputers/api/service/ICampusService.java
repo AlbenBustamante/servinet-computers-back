@@ -50,4 +50,22 @@ public interface ICampusService {
      */
     boolean delete(int campusId);
 
+    /**
+     * Add a platform to the campus' collection.
+     *
+     * @param campusId     the campus ID.
+     * @param platformName the platform name to be added.
+     * @return the updated campus.
+     */
+    PageResponse<CampusResponse> addPlatform(int campusId, String platformName);
+
+    /**
+     * Remove a platform from the campus' collection.
+     *
+     * @param campusId     the campus ID.
+     * @param platformName the platform name to be removed.
+     * @return the updated campus.
+     */
+    PageResponse<CampusResponse> removePlatform(int campusId, String platformName);
+
 }
