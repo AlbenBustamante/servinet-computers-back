@@ -18,6 +18,7 @@ import com.servinetcomputers.api.repository.PlatformRepository;
 import com.servinetcomputers.api.repository.UserRepository;
 import com.servinetcomputers.api.service.ICampusService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,6 +35,7 @@ public class CampusServiceImpl implements ICampusService {
     private final CampusMapper mapper;
     private final UserRepository userRepository;
     private final PlatformRepository platformRepository;
+    private final PasswordEncoder passwordEncoder;
     private final Random random = new Random();
 
     @Override
@@ -59,6 +61,8 @@ public class CampusServiceImpl implements ICampusService {
         while (entity.getTerminal() == null || repository.existsByTerminal(entity.getTerminal())) {
             entity.setTerminal(String.valueOf(random.nextInt(100, 500)));
         }
+
+        entity.setPassword(passwordEncoder.encode(request.password()));
 
         final var response = mapper.toResponse(repository.save(entity));
 

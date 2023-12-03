@@ -12,6 +12,7 @@ import com.servinetcomputers.api.mapper.UserMapper;
 import com.servinetcomputers.api.repository.UserRepository;
 import com.servinetcomputers.api.service.IUserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,6 +26,7 @@ public class UserServiceImpl implements IUserService {
 
     private final UserRepository repository;
     private final UserMapper mapper;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public PageResponse<UserResponse> create(UserRequest request) {
@@ -38,7 +40,7 @@ public class UserServiceImpl implements IUserService {
 
         final var entity = mapper.toEntity(request);
 
-        entity.setPassword("encode:" + request.password());
+        entity.setPassword(passwordEncoder.encode(request.password()));
 
         final var response = mapper.toResponse(repository.save(entity));
 
