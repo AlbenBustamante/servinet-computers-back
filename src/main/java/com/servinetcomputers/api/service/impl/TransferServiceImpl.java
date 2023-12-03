@@ -50,6 +50,7 @@ public class TransferServiceImpl implements ITransferService {
         for (int i = 0; i < request.amount(); i++) {
             final var transfer = mapper.toEntity(request);
             transfer.setPlatform(platformFound.get());
+            transfer.setPlatformId(platformFound.get().getId());
 
             transfers.add(transfer);
         }

@@ -2,13 +2,13 @@ package com.servinetcomputers.api.mapper;
 
 import com.servinetcomputers.api.dto.request.TransferRequest;
 import com.servinetcomputers.api.dto.response.TransferResponse;
+import com.servinetcomputers.api.exception.TransferUnavailableException;
 import com.servinetcomputers.api.model.Transfer;
 import com.servinetcomputers.api.util.ICurrencyFormatter;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -23,7 +23,7 @@ public interface TransferMapper {
 
     default List<TransferResponse> toResponses(List<Transfer> entities, ICurrencyFormatter currencyFormatter) {
         if (entities == null || currencyFormatter == null) {
-            return Collections.emptyList();
+            throw new TransferUnavailableException(2);
         }
 
         final List<TransferResponse> responses = new ArrayList<>(entities.size());

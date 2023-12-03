@@ -68,7 +68,7 @@ public class CampusController {
     public ResponseEntity<PageResponse<TransferResponse>> getTransfersByCreationDate(
             @PathVariable("campusId") int campusId,
             @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "ASC") Sort.Direction direction,
             @RequestParam(defaultValue = "createdAt") String property,
             @RequestParam(required = false) LocalDateTime startDate,

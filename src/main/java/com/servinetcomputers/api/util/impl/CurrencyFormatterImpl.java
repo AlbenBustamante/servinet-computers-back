@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.text.NumberFormat;
+import java.util.Locale;
 
 /**
  * The {@link ICurrencyFormatter} implementation.
@@ -14,8 +15,9 @@ public class CurrencyFormatterImpl implements ICurrencyFormatter {
 
     @Override
     public String format(BigDecimal value) {
-        final var formatter = NumberFormat.getCurrencyInstance();
-        return formatter.format(value.toString());
+        final var numberFormat = NumberFormat.getCurrencyInstance(new Locale("es", "CO"));
+
+        return numberFormat.format(value);
     }
 
 }
