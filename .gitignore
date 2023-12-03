@@ -38,4 +38,3 @@ out/
 
 ### Docker ###
 docker-compose.yaml
-Dockerfile
