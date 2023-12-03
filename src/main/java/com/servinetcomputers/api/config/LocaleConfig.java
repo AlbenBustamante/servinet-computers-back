@@ -7,10 +7,10 @@ import java.text.NumberFormat;
 import java.util.Locale;
 
 /**
- * Here will be the main beans for the application.
+ * This is the locale and currency configuration"
  */
 @Configuration
-public class AppConfig {
+public class LocaleConfig {
 
     @Bean
     public Locale locale() {
