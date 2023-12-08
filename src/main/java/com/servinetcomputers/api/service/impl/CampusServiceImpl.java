@@ -22,7 +22,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Random;
 
 /**
  * The campus' service implementation.
@@ -36,7 +35,6 @@ public class CampusServiceImpl implements ICampusService {
     private final UserRepository userRepository;
     private final PlatformRepository platformRepository;
     private final PasswordEncoder passwordEncoder;
-    private final Random random = new Random();
 
     @Override
     public PageResponse<CampusResponse> create(CampusRequest request) {
@@ -59,7 +57,12 @@ public class CampusServiceImpl implements ICampusService {
         final var entity = mapper.toEntity(request);
 
         while (entity.getTerminal() == null || repository.existsByTerminal(entity.getTerminal())) {
-            entity.setTerminal(String.valueOf(random.nextInt(100, 500)));
+            final var min = 1000;
+            final var max = 1999;
+            final var range = max - min + 1;
+            final var rnd = (int) (Math.random() * range) + min;
+
+            entity.setTerminal(String.valueOf(rnd));
         }
 
         entity.setPassword(passwordEncoder.encode(request.password()));
