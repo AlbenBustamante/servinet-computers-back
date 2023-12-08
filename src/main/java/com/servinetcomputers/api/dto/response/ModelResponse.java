@@ -2,8 +2,6 @@ package com.servinetcomputers.api.dto.response;
 
 import lombok.Getter;
 
-import java.time.LocalDateTime;
-
 /**
  * Abstract class for the dto responses.
  */
@@ -11,9 +9,9 @@ import java.time.LocalDateTime;
 public abstract class ModelResponse {
     private final int id;
     private final boolean isAvailable;
-    private final LocalDateTime createdAt, updatedAt;
+    private final String createdAt, updatedAt;
 
-    public ModelResponse(int id, boolean isAvailable, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public ModelResponse(int id, boolean isAvailable, String createdAt, String updatedAt) {
         this.id = id;
         this.isAvailable = isAvailable;
         this.createdAt = createdAt;

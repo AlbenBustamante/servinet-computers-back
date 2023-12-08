@@ -2,8 +2,6 @@ package com.servinetcomputers.api.dto.response;
 
 import lombok.Getter;
 
-import java.time.LocalDateTime;
-
 /**
  * The transfer dto model for responses.
  */
@@ -11,8 +9,7 @@ import java.time.LocalDateTime;
 public class TransferResponse extends ModelResponse {
     private final String platformName, value;
 
-    public TransferResponse(int id, String platformName, String value, boolean isAvailable, LocalDateTime createdAt,
-                            LocalDateTime updatedAt) {
+    public TransferResponse(int id, String platformName, String value, boolean isAvailable, String createdAt, String updatedAt) {
         super(id, isAvailable, createdAt, updatedAt);
         this.platformName = platformName;
         this.value = value;

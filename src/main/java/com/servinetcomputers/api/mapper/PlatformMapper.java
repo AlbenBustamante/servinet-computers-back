@@ -8,12 +8,17 @@ import org.mapstruct.Mapping;
 
 import java.util.List;
 
+import static com.servinetcomputers.api.util.constants.DateTimeFormats.DATE_TIME_FORMAT;
+
 /**
  * The platform's models mapper.
  */
 @Mapper(componentModel = "spring")
 public interface PlatformMapper {
 
+
+    @Mapping(target = "createdAt", dateFormat = DATE_TIME_FORMAT)
+    @Mapping(target = "updatedAt", dateFormat = DATE_TIME_FORMAT)
     PlatformResponse toResponse(Platform entity);
 
     List<PlatformResponse> toResponses(List<Platform> entities);

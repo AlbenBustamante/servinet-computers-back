@@ -11,6 +11,8 @@ import org.mapstruct.Mapping;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.servinetcomputers.api.util.constants.DateTimeFormats.DATE_TIME_FORMAT;
+
 /**
  * The transfer's models mapper.
  */
@@ -19,6 +21,8 @@ public interface TransferMapper {
 
     @Mapping(target = "platformName", source = "entity.platform.name")
     @Mapping(target = "value", expression = "java(currencyFormatter.format(entity.getValue()))")
+    @Mapping(target = "createdAt", dateFormat = DATE_TIME_FORMAT)
+    @Mapping(target = "updatedAt", dateFormat = DATE_TIME_FORMAT)
     TransferResponse toResponse(Transfer entity, ICurrencyFormatter currencyFormatter);
 
     default List<TransferResponse> toResponses(List<Transfer> entities, ICurrencyFormatter currencyFormatter) {

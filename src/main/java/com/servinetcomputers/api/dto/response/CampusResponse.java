@@ -2,7 +2,6 @@ package com.servinetcomputers.api.dto.response;
 
 import lombok.Getter;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -15,7 +14,7 @@ public class CampusResponse extends ModelResponse {
     private final List<PlatformResponse> platforms;
 
     public CampusResponse(int id, int numeral, String address, String cellphone, List<PlatformResponse> platforms,
-                          String terminal, boolean isAvailable, LocalDateTime createdAt, LocalDateTime updatedAt) {
+                          String terminal, boolean isAvailable, String createdAt, String updatedAt) {
         super(id, isAvailable, createdAt, updatedAt);
         this.numeral = numeral;
         this.address = address;

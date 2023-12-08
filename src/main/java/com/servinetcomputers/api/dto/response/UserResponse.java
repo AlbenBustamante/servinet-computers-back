@@ -3,7 +3,6 @@ package com.servinetcomputers.api.dto.response;
 import com.servinetcomputers.api.util.enums.Role;
 import lombok.Getter;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -16,7 +15,7 @@ public class UserResponse extends ModelResponse {
     private final List<CampusResponse> campuses;
 
     public UserResponse(int id, String name, String lastName, String email, Role role, List<CampusResponse> campuses,
-                        boolean isAvailable, LocalDateTime createdAt, LocalDateTime updatedAt) {
+                        boolean isAvailable, String createdAt, String updatedAt) {
         super(id, isAvailable, createdAt, updatedAt);
         this.name = name;
         this.lastName = lastName;

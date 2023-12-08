@@ -9,12 +9,16 @@ import org.mapstruct.Mapping;
 import java.util.Collection;
 import java.util.List;
 
+import static com.servinetcomputers.api.util.constants.DateTimeFormats.DATE_TIME_FORMAT;
+
 /**
  * The campus' models mapper.
  */
 @Mapper(componentModel = "spring", uses = PlatformMapper.class)
 public interface CampusMapper {
 
+    @Mapping(target = "createdAt", dateFormat = DATE_TIME_FORMAT)
+    @Mapping(target = "updatedAt", dateFormat = DATE_TIME_FORMAT)
     CampusResponse toResponse(Campus entity);
 
     List<CampusResponse> toResponses(Collection<Campus> entities);

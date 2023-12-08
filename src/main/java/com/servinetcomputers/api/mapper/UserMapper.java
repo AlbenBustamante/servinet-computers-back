@@ -8,12 +8,16 @@ import org.mapstruct.Mapping;
 
 import java.util.List;
 
+import static com.servinetcomputers.api.util.constants.DateTimeFormats.DATE_TIME_FORMAT;
+
 /**
  * The user's models mapper.
  */
 @Mapper(componentModel = "spring")
 public interface UserMapper {
-
+    
+    @Mapping(target = "createdAt", dateFormat = DATE_TIME_FORMAT)
+    @Mapping(target = "updatedAt", dateFormat = DATE_TIME_FORMAT)
     UserResponse toResponse(User entity);
 
     List<UserResponse> toResponses(List<User> entities);

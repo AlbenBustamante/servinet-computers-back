@@ -16,6 +16,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import static com.servinetcomputers.api.util.constants.DateTimeFormats.DATE_TIME_FORMAT;
+
 /**
  * The app exceptions handler.
  */
@@ -111,7 +113,7 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
      * @return the formatted timestamp.
      */
     private String timestamp() {
-        return LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy-HH:mm:ss"));
+        return LocalDateTime.now().format(DateTimeFormatter.ofPattern(DATE_TIME_FORMAT));
     }
 
 }

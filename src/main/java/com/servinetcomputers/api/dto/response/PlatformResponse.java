@@ -2,8 +2,6 @@ package com.servinetcomputers.api.dto.response;
 
 import lombok.Getter;
 
-import java.time.LocalDateTime;
-
 /**
  * The platform dto model for responses.
  */
@@ -11,7 +9,7 @@ import java.time.LocalDateTime;
 public class PlatformResponse extends ModelResponse {
     private final String name;
 
-    public PlatformResponse(int id, String name, boolean isAvailable, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public PlatformResponse(int id, String name, boolean isAvailable, String createdAt, String updatedAt) {
         super(id, isAvailable, createdAt, updatedAt);
         this.name = name;
     }
