@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
 
 /**
  * The campus' routes/endpoints.
@@ -56,14 +58,6 @@ public class CampusController {
         return ResponseEntity.ok(campusService.delete(campusId));
     }
 
-    @PostMapping("/{campusId}/platform/{platformName}")
-    public ResponseEntity<PageResponse<CampusResponse>> addPlatform(
-            @PathVariable("campusId") int campusId,
-            @PathVariable("platformName") String platformName
-    ) {
-        return ResponseEntity.ok(campusService.addPlatform(campusId, platformName));
-    }
-
     @GetMapping(value = "/{campusId}/transfers")
     public ResponseEntity<PageResponse<TransferResponse>> getTransfersByCreationDate(
             @PathVariable("campusId") int campusId,
@@ -87,12 +81,12 @@ public class CampusController {
         return ResponseEntity.ok(transferService.getAllByCampusIdCreationDateBetween(campusId, startDate, endDate, pageRequest));
     }
 
-    @DeleteMapping("/{campusId}/platform/{platformName}")
-    public ResponseEntity<PageResponse<CampusResponse>> removePlatform(
+    @PutMapping("/{campusId}/platforms")
+    public ResponseEntity<PageResponse<CampusResponse>> updatePlatforms(
             @PathVariable("campusId") int campusId,
-            @PathVariable("platformName") String platformName
+            @RequestParam List<String> platformNames
     ) {
-        return ResponseEntity.ok(campusService.removePlatform(campusId, platformName));
+        return ResponseEntity.ok(campusService.updatePlatforms(campusId, platformNames));
     }
 
 }

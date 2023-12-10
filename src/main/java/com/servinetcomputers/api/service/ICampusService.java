@@ -4,6 +4,8 @@ import com.servinetcomputers.api.dto.request.CampusRequest;
 import com.servinetcomputers.api.dto.response.CampusResponse;
 import com.servinetcomputers.api.dto.response.PageResponse;
 
+import java.util.List;
+
 /**
  * The campus' uses case.
  */
@@ -51,21 +53,12 @@ public interface ICampusService {
     boolean delete(int campusId);
 
     /**
-     * Add a platform to the campus' collection.
+     * Receives a names list to add, and the platforms that are not included will be removed.
      *
-     * @param campusId     the campus ID.
-     * @param platformName the platform name to be added.
+     * @param campusId      the campus ID.
+     * @param platformNames the platforms list (only the names)
      * @return the updated campus.
      */
-    PageResponse<CampusResponse> addPlatform(int campusId, String platformName);
-
-    /**
-     * Remove a platform from the campus' collection.
-     *
-     * @param campusId     the campus ID.
-     * @param platformName the platform name to be removed.
-     * @return the updated campus.
-     */
-    PageResponse<CampusResponse> removePlatform(int campusId, String platformName);
+    PageResponse<CampusResponse> updatePlatforms(int campusId, List<String> platformNames);
 
 }
