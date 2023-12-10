@@ -5,6 +5,7 @@ import com.servinetcomputers.api.dto.response.CampusResponse;
 import com.servinetcomputers.api.dto.response.DataResponse;
 import com.servinetcomputers.api.dto.response.ModelResponse;
 import com.servinetcomputers.api.dto.response.PageResponse;
+import com.servinetcomputers.api.exception.AppException;
 import com.servinetcomputers.api.exception.CampusAlreadyExistsException;
 import com.servinetcomputers.api.exception.CampusNotFoundException;
 import com.servinetcomputers.api.exception.CampusUnavailableException;
@@ -22,6 +23,7 @@ import com.servinetcomputers.api.service.ICampusService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -38,6 +40,7 @@ public class CampusServiceImpl implements ICampusService {
     private final PlatformRepository platformRepository;
     private final PasswordEncoder passwordEncoder;
 
+    @Transactional(rollbackFor = AppException.class)
     @Override
     public PageResponse<CampusResponse> create(CampusRequest request) {
         if (repository.existsByAddress(request.address())) {
@@ -74,6 +77,7 @@ public class CampusServiceImpl implements ICampusService {
         return new PageResponse<>(201, true, new DataResponse<>(1, 1, 1, List.of(response)));
     }
 
+    @Transactional(readOnly = true)
     @Override
     public PageResponse<CampusResponse> get(int campusId) {
         final var campusFound = repository.findById(campusId);
@@ -93,6 +97,7 @@ public class CampusServiceImpl implements ICampusService {
         return new PageResponse<>(200, true, new DataResponse<>(1, 1, 1, List.of(response)));
     }
 
+    @Transactional(readOnly = true)
     @Override
     public PageResponse<CampusResponse> getAllByUserId(int userId) {
         final var userFound = userRepository.findById(userId);
@@ -115,6 +120,8 @@ public class CampusServiceImpl implements ICampusService {
         return new PageResponse<>(200, true, new DataResponse<>(response.size(), 1, 1, response));
     }
 
+
+    @Transactional(rollbackFor = AppException.class)
     @Override
     public PageResponse<CampusResponse> update(int campusId, CampusRequest request) {
         final var campusFound = repository.findById(campusId);
@@ -163,6 +170,8 @@ public class CampusServiceImpl implements ICampusService {
         }
     }
 
+
+    @Transactional(rollbackFor = AppException.class)
     @Override
     public PageResponse<CampusResponse> updatePlatforms(int campusId, List<String> platformNames) {
         final var campus = repository.findById(campusId)

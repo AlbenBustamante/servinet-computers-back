@@ -4,6 +4,7 @@ import com.servinetcomputers.api.dto.request.UserRequest;
 import com.servinetcomputers.api.dto.response.DataResponse;
 import com.servinetcomputers.api.dto.response.PageResponse;
 import com.servinetcomputers.api.dto.response.UserResponse;
+import com.servinetcomputers.api.exception.AppException;
 import com.servinetcomputers.api.exception.PasswordsDoNotMatchException;
 import com.servinetcomputers.api.exception.UserAlreadyExistsException;
 import com.servinetcomputers.api.exception.UserNotFoundException;
@@ -14,6 +15,7 @@ import com.servinetcomputers.api.service.IUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -28,6 +30,7 @@ public class UserServiceImpl implements IUserService {
     private final UserMapper mapper;
     private final PasswordEncoder passwordEncoder;
 
+    @Transactional(rollbackFor = AppException.class)
     @Override
     public PageResponse<UserResponse> create(UserRequest request) {
         if (repository.existsByEmail(request.email())) {
@@ -47,6 +50,7 @@ public class UserServiceImpl implements IUserService {
         return new PageResponse<>(201, true, new DataResponse<>(1, 1, 1, List.of(response)));
     }
 
+    @Transactional(rollbackFor = AppException.class)
     @Override
     public PageResponse<UserResponse> update(int userId, UserRequest request) {
         final var userFound = repository.findById(userId);

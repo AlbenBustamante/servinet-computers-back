@@ -4,6 +4,7 @@ import com.servinetcomputers.api.dto.request.PlatformRequest;
 import com.servinetcomputers.api.dto.response.DataResponse;
 import com.servinetcomputers.api.dto.response.PageResponse;
 import com.servinetcomputers.api.dto.response.PlatformResponse;
+import com.servinetcomputers.api.exception.AppException;
 import com.servinetcomputers.api.exception.PlatformAlreadyExistsException;
 import com.servinetcomputers.api.exception.PlatformNotFoundException;
 import com.servinetcomputers.api.exception.PlatformUnavailableException;
@@ -12,6 +13,7 @@ import com.servinetcomputers.api.repository.PlatformRepository;
 import com.servinetcomputers.api.service.IPlatformService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -25,6 +27,7 @@ public class PlatformServiceImpl implements IPlatformService {
     private final PlatformRepository repository;
     private final PlatformMapper mapper;
 
+    @Transactional(rollbackFor = AppException.class)
     @Override
     public PageResponse<PlatformResponse> create(PlatformRequest request) {
         if (repository.findByName(request.name()).isPresent()) {
@@ -36,12 +39,14 @@ public class PlatformServiceImpl implements IPlatformService {
         return new PageResponse<>(201, true, new DataResponse<>(1, 1, 1, List.of(response)));
     }
 
+    @Transactional(readOnly = true)
     @Override
     public PageResponse<PlatformResponse> getAll() {
         final var response = mapper.toResponses(repository.findAllByIsAvailable(true));
         return new PageResponse<>(200, true, new DataResponse<>(response.size(), 1, 1, response));
     }
 
+    @Transactional(rollbackFor = AppException.class)
     @Override
     public PageResponse<PlatformResponse> update(int platformId, PlatformRequest request) {
         final var platformFound = repository.findById(platformId);

@@ -5,6 +5,7 @@ import com.servinetcomputers.api.dto.request.TransferRequest;
 import com.servinetcomputers.api.dto.response.DataResponse;
 import com.servinetcomputers.api.dto.response.PageResponse;
 import com.servinetcomputers.api.dto.response.TransferResponse;
+import com.servinetcomputers.api.exception.AppException;
 import com.servinetcomputers.api.exception.CampusNotFoundException;
 import com.servinetcomputers.api.exception.PlatformNameNotFoundException;
 import com.servinetcomputers.api.exception.TransferNotFoundException;
@@ -19,6 +20,7 @@ import com.servinetcomputers.api.service.ITransferService;
 import com.servinetcomputers.api.util.ICurrencyFormatter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -36,7 +38,8 @@ public class TransferServiceImpl implements ITransferService {
     private final PlatformRepository platformRepository;
     private final CampusRepository campusRepository;
     private final ICurrencyFormatter currencyFormatter;
-
+    
+    @Transactional(rollbackFor = AppException.class)
     @Override
     public PageResponse<TransferResponse> create(TransferRequest request) {
         final var platformFound = platformRepository.findByName(request.platformName());
@@ -60,6 +63,7 @@ public class TransferServiceImpl implements ITransferService {
         return new PageResponse<>(201, true, new DataResponse<>(response.size(), 1, 1, response));
     }
 
+    @Transactional(readOnly = true)
     @Override
     public PageResponse<TransferResponse> get(int transferId) {
         final var transferFound = repository.findById(transferId);
@@ -77,6 +81,7 @@ public class TransferServiceImpl implements ITransferService {
         return new PageResponse<>(200, true, new DataResponse<>(1, 1, 1, List.of(response)));
     }
 
+    @Transactional(readOnly = true)
     @Override
     public PageResponse<TransferResponse> getAllByCampusIdCreationDateBetween(int campusId, LocalDateTime startDate, LocalDateTime endDate, PageRequest pageRequest) {
         if (!campusRepository.existsById(campusId)) {
@@ -89,6 +94,7 @@ public class TransferServiceImpl implements ITransferService {
         return new PageResponse<>(200, true, new DataResponse<>(page.getTotalElements(), page.getNumber(), page.getTotalPages(), response));
     }
 
+    @Transactional(rollbackFor = AppException.class)
     @Override
     public PageResponse<TransferResponse> update(int transferId, TransferRequest request) {
         final var transferFound = repository.findById(transferId);
