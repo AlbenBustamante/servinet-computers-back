@@ -12,7 +12,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
+import static com.servinetcomputers.api.util.constants.LocaleConstants.LOCALE_ZONE;
 import static com.servinetcomputers.api.util.constants.PlatformConstants.NAME_LENGTH;
 
 /**
@@ -44,12 +46,12 @@ public class Platform {
     @PrePersist
     public void prePersist() {
         isAvailable = true;
-        createdAt = updatedAt = LocalDateTime.now();
+        createdAt = updatedAt = LocalDateTime.now(ZoneId.of(LOCALE_ZONE));
     }
 
     @PreUpdate
     public void preUpdate() {
-        updatedAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now(ZoneId.of(LOCALE_ZONE));
     }
 
 }

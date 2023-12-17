@@ -16,9 +16,11 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.HashSet;
 import java.util.Set;
 
+import static com.servinetcomputers.api.util.constants.LocaleConstants.LOCALE_ZONE;
 import static com.servinetcomputers.api.util.constants.UserConstants.EMAIL_LENGTH;
 import static com.servinetcomputers.api.util.constants.UserConstants.LAST_NAME_LENGTH;
 import static com.servinetcomputers.api.util.constants.UserConstants.NAME_LENGTH;
@@ -74,12 +76,12 @@ public class User {
 
         campuses = new HashSet<>();
         isAvailable = true;
-        createdAt = updatedAt = LocalDateTime.now();
+        createdAt = updatedAt = LocalDateTime.now(ZoneId.of(LOCALE_ZONE));
     }
 
     @PreUpdate
     public void preUpdate() {
-        updatedAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now(ZoneId.of(LOCALE_ZONE));
     }
 
 }

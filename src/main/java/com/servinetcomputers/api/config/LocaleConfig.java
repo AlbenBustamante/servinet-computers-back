@@ -6,15 +6,18 @@ import org.springframework.context.annotation.Configuration;
 import java.text.NumberFormat;
 import java.util.Locale;
 
+import static com.servinetcomputers.api.util.constants.LocaleConstants.LOCALE_COUNTRY;
+import static com.servinetcomputers.api.util.constants.LocaleConstants.LOCALE_LANGUAGE;
+
 /**
- * This is the locale and currency configuration"
+ * Locale and currency configuration.
  */
 @Configuration
 public class LocaleConfig {
 
     @Bean
     public Locale locale() {
-        return new Locale("es", "CO");
+        return new Locale(LOCALE_LANGUAGE, LOCALE_COUNTRY);
     }
 
     @Bean
