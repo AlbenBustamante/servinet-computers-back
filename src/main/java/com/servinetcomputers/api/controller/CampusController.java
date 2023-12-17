@@ -22,9 +22,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
 
 /**
@@ -61,22 +58,14 @@ public class CampusController {
     @GetMapping(value = "/{campusId}/transfers")
     public ResponseEntity<PageResponse<TransferResponse>> getTransfersByCreationDate(
             @PathVariable("campusId") int campusId,
-            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "50") int size,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "ASC") Sort.Direction direction,
             @RequestParam(defaultValue = "createdAt") String property,
-            @RequestParam(required = false) LocalDateTime startDate,
-            @RequestParam(required = false) LocalDateTime endDate
+            @RequestParam(required = false) String startDate,
+            @RequestParam(required = false) String endDate
     ) {
         final var pageRequest = new PageRequest(size, page, direction, property);
-
-        if (startDate == null) {
-            startDate = LocalDateTime.of(LocalDate.now(), LocalTime.MIN);
-        }
-
-        if (endDate == null) {
-            endDate = LocalDateTime.of(LocalDate.now(), LocalTime.now());
-        }
 
         return ResponseEntity.ok(transferService.getAllByCampusIdCreationDateBetween(campusId, startDate, endDate, pageRequest));
     }

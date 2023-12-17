@@ -5,7 +5,6 @@ import com.servinetcomputers.api.dto.request.TransferRequest;
 import com.servinetcomputers.api.dto.response.PageResponse;
 import com.servinetcomputers.api.dto.response.TransferResponse;
 
-import java.time.LocalDateTime;
 import java.util.Optional;
 
 /**
@@ -39,7 +38,7 @@ public interface ITransferService {
      * @param endDate   the last date.
      * @return a list of the all transfers found.
      */
-    PageResponse<TransferResponse> getAllByCampusIdCreationDateBetween(int campusId, LocalDateTime startDate, LocalDateTime endDate, PageRequest page);
+    PageResponse<TransferResponse> getAllByCampusIdCreationDateBetween(int campusId, String startDate, String endDate, PageRequest page);
 
     /**
      * Update an existing and available transfer.

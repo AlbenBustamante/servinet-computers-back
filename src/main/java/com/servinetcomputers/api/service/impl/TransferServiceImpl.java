@@ -22,9 +22,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.servinetcomputers.api.util.constants.LocalUtil.DEFAULT_ZONE;
 
 /**
  * The transfer's service implementation.
@@ -38,7 +42,7 @@ public class TransferServiceImpl implements ITransferService {
     private final PlatformRepository platformRepository;
     private final CampusRepository campusRepository;
     private final ICurrencyFormatter currencyFormatter;
-    
+
     @Transactional(rollbackFor = AppException.class)
     @Override
     public PageResponse<TransferResponse> create(TransferRequest request) {
@@ -83,12 +87,15 @@ public class TransferServiceImpl implements ITransferService {
 
     @Transactional(readOnly = true)
     @Override
-    public PageResponse<TransferResponse> getAllByCampusIdCreationDateBetween(int campusId, LocalDateTime startDate, LocalDateTime endDate, PageRequest pageRequest) {
+    public PageResponse<TransferResponse> getAllByCampusIdCreationDateBetween(int campusId, String startDate, String endDate, PageRequest pageRequest) {
         if (!campusRepository.existsById(campusId)) {
             throw new CampusNotFoundException(campusId);
         }
 
-        final var page = repository.findAllByCampusIdAndIsAvailableAndCreatedAtBetween(campusId, true, startDate, endDate, pageRequest.toPageable());
+        final var firstDate = toDateTime(startDate, LocalTime.MIN);
+        final var lastDate = toDateTime(endDate, LocalTime.now(DEFAULT_ZONE));
+
+        final var page = repository.findAllByCampusIdAndIsAvailableAndCreatedAtBetween(campusId, true, firstDate, lastDate, pageRequest.toPageable());
         final var response = mapper.toResponses(page.getContent(), currencyFormatter);
 
         return new PageResponse<>(200, true, new DataResponse<>(page.getTotalElements(), page.getNumber(), page.getTotalPages(), response));
@@ -141,6 +148,15 @@ public class TransferServiceImpl implements ITransferService {
         repository.save(transferFound.get());
 
         return true;
+    }
+
+    private LocalDateTime toDateTime(String date, LocalTime time) {
+        return LocalDateTime.of(
+                date != null
+                        ? LocalDate.parse(date)
+                        : LocalDate.now(DEFAULT_ZONE),
+                time
+        );
     }
 
 }
