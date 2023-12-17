@@ -15,9 +15,8 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 
-import static com.servinetcomputers.api.util.constants.LocaleConstants.LOCALE_ZONE;
+import static com.servinetcomputers.api.util.constants.LocalUtil.DEFAULT_ZONE;
 
 /**
  * The transfer's model entity.
@@ -62,12 +61,12 @@ public class Transfer {
     @PrePersist
     public void prePersist() {
         isAvailable = true;
-        createdAt = updatedAt = LocalDateTime.now(ZoneId.of(LOCALE_ZONE));
+        createdAt = updatedAt = LocalDateTime.now(DEFAULT_ZONE);
     }
 
     @PreUpdate
     public void preUpdate() {
-        updatedAt = LocalDateTime.now(ZoneId.of(LOCALE_ZONE));
+        updatedAt = LocalDateTime.now(DEFAULT_ZONE);
     }
 
 }

@@ -5,14 +5,13 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.HashSet;
 import java.util.Set;
 
 import static com.servinetcomputers.api.util.constants.CampusConstants.ADDRESS_LENGTH;
 import static com.servinetcomputers.api.util.constants.CampusConstants.CELLPHONE_LENGTH;
 import static com.servinetcomputers.api.util.constants.CampusConstants.TERMINAL_LENGTH;
-import static com.servinetcomputers.api.util.constants.LocaleConstants.LOCALE_ZONE;
+import static com.servinetcomputers.api.util.constants.LocalUtil.DEFAULT_ZONE;
 
 /**
  * The campus' model entity.
@@ -89,12 +88,12 @@ public class Campus {
     public void prePersist() {
         platforms = new HashSet<>();
         isAvailable = true;
-        createdAt = updatedAt = LocalDateTime.now(ZoneId.of(LOCALE_ZONE));
+        createdAt = updatedAt = LocalDateTime.now(DEFAULT_ZONE);
     }
 
     @PreUpdate
     public void preUpdate() {
-        updatedAt = LocalDateTime.now(ZoneId.of(LOCALE_ZONE));
+        updatedAt = LocalDateTime.now(DEFAULT_ZONE);
     }
 
 }

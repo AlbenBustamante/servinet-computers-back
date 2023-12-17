@@ -11,14 +11,13 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
 
 import static com.servinetcomputers.api.util.constants.DateTimeFormats.DATE_TIME_FORMAT;
-import static com.servinetcomputers.api.util.constants.LocaleConstants.LOCALE_ZONE;
+import static com.servinetcomputers.api.util.constants.LocalUtil.DEFAULT_ZONE;
 
 /**
  * The app exceptions handler.
@@ -115,7 +114,7 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
      * @return the formatted timestamp.
      */
     private String timestamp() {
-        return LocalDateTime.now(ZoneId.of(LOCALE_ZONE)).format(DateTimeFormatter.ofPattern(DATE_TIME_FORMAT));
+        return LocalDateTime.now(DEFAULT_ZONE).format(DateTimeFormatter.ofPattern(DATE_TIME_FORMAT));
     }
 
 }
