@@ -100,15 +100,10 @@ public class CampusServiceImpl implements ICampusService {
     @Transactional(readOnly = true)
     @Override
     public PageResponse<CampusResponse> getAllByUserId(int userId) {
-        final var userFound = userRepository.findById(userId);
+        final var user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException(userId));
 
-        if (userFound.isEmpty()) {
-            throw new UserNotFoundException(userId);
-        }
-
-        final var user = userFound.get();
-
-        if (Boolean.FALSE.equals(user.getIsAvailable())) {
+        if (!user.getIsAvailable()) {
             throw new UserUnavailableException(userId);
         }
 

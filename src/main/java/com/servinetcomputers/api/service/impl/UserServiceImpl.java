@@ -53,15 +53,10 @@ public class UserServiceImpl implements IUserService {
     @Transactional(rollbackFor = AppException.class)
     @Override
     public PageResponse<UserResponse> update(int userId, UserRequest request) {
-        final var userFound = repository.findById(userId);
+        final var user = repository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException(userId));
 
-        if (userFound.isEmpty()) {
-            throw new UserNotFoundException(userId);
-        }
-
-        final var user = userFound.get();
-
-        if (Boolean.FALSE.equals(user.getIsAvailable())) {
+        if (!user.getIsAvailable()) {
             throw new UserUnavailableException(userId);
         }
 

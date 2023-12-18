@@ -104,13 +104,8 @@ public class TransferServiceImpl implements ITransferService {
     @Transactional(rollbackFor = AppException.class)
     @Override
     public PageResponse<TransferResponse> update(int transferId, TransferRequest request) {
-        final var transferFound = repository.findById(transferId);
-
-        if (transferFound.isEmpty()) {
-            throw new TransferNotFoundException(transferId);
-        }
-
-        final var transfer = transferFound.get();
+        final var transfer = repository.findById(transferId)
+                .orElseThrow(() -> new TransferNotFoundException(transferId));
 
         if (Boolean.FALSE.equals(transfer.getIsAvailable())) {
             throw new TransferUnavailableException(transferId);

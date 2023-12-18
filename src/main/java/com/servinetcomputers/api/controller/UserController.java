@@ -2,9 +2,11 @@ package com.servinetcomputers.api.controller;
 
 import com.servinetcomputers.api.dto.request.UserRequest;
 import com.servinetcomputers.api.dto.response.CampusResponse;
+import com.servinetcomputers.api.dto.response.DashboardResponse;
 import com.servinetcomputers.api.dto.response.PageResponse;
 import com.servinetcomputers.api.dto.response.UserResponse;
 import com.servinetcomputers.api.service.ICampusService;
+import com.servinetcomputers.api.service.IDashboardService;
 import com.servinetcomputers.api.service.IUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -28,6 +30,7 @@ public class UserController {
 
     private final IUserService userService;
     private final ICampusService campusService;
+    private final IDashboardService dashboardService;
 
     @PostMapping
     public ResponseEntity<PageResponse<UserResponse>> register(@RequestBody UserRequest request) {
@@ -47,6 +50,11 @@ public class UserController {
     @GetMapping("/{userId}/campuses")
     public ResponseEntity<PageResponse<CampusResponse>> getCampuses(@PathVariable("userId") int userId) {
         return ResponseEntity.ok(campusService.getAllByUserId(userId));
+    }
+
+    @GetMapping("/{userId}/reports")
+    public ResponseEntity<DashboardResponse> getReports(@PathVariable("userId") int userId) {
+        return ResponseEntity.ok(dashboardService.getReports(userId));
     }
 
 }
