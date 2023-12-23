@@ -1,6 +1,6 @@
-package com.servinetcomputers.api.util.impl;
+package com.servinetcomputers.api.util.formatter.impl;
 
-import com.servinetcomputers.api.util.ICurrencyFormatter;
+import com.servinetcomputers.api.util.formatter.ICurrencyFormatter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

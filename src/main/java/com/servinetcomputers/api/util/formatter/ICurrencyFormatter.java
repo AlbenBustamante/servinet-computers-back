@@ -1,4 +1,4 @@
-package com.servinetcomputers.api.util;
+package com.servinetcomputers.api.util.formatter;
 
 import java.math.BigDecimal;
 

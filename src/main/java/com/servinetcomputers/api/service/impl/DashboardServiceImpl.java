@@ -9,7 +9,7 @@ import com.servinetcomputers.api.model.User;
 import com.servinetcomputers.api.repository.TransferRepository;
 import com.servinetcomputers.api.repository.UserRepository;
 import com.servinetcomputers.api.service.IDashboardService;
-import com.servinetcomputers.api.util.ICurrencyFormatter;
+import com.servinetcomputers.api.util.formatter.ICurrencyFormatter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

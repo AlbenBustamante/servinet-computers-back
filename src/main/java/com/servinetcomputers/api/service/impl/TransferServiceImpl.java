@@ -17,7 +17,7 @@ import com.servinetcomputers.api.repository.CampusRepository;
 import com.servinetcomputers.api.repository.PlatformRepository;
 import com.servinetcomputers.api.repository.TransferRepository;
 import com.servinetcomputers.api.service.ITransferService;
-import com.servinetcomputers.api.util.ICurrencyFormatter;
+import com.servinetcomputers.api.util.formatter.ICurrencyFormatter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

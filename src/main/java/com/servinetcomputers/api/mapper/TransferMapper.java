@@ -4,7 +4,7 @@ import com.servinetcomputers.api.dto.request.TransferRequest;
 import com.servinetcomputers.api.dto.response.TransferResponse;
 import com.servinetcomputers.api.exception.TransferUnavailableException;
 import com.servinetcomputers.api.model.Transfer;
-import com.servinetcomputers.api.util.ICurrencyFormatter;
+import com.servinetcomputers.api.util.formatter.ICurrencyFormatter;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
