@@ -3,6 +3,8 @@ package com.servinetcomputers.api.repository;
 import com.servinetcomputers.api.model.Campus;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Optional;
+
 /**
  * The {@link Campus} repository.
  */
@@ -31,5 +33,13 @@ public interface CampusRepository extends JpaRepository<Campus, Integer> {
      * @return {@code true} if the numeral already exists.
      */
     boolean existsByNumeral(int numeral);
+
+    /**
+     * Find an existing campus by the terminal.
+     *
+     * @param terminal the terminal to be searched.
+     * @return an {@link Optional} of the campus found.
+     */
+    Optional<Campus> findByTerminal(String terminal);
 
 }
