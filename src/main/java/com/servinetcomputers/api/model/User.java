@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-import static com.servinetcomputers.api.util.constants.LocalUtil.DEFAULT_ZONE;
+import static com.servinetcomputers.api.util.constants.LocalConstants.DEFAULT_ZONE;
 import static com.servinetcomputers.api.util.constants.UserConstants.EMAIL_LENGTH;
 import static com.servinetcomputers.api.util.constants.UserConstants.LAST_NAME_LENGTH;
 import static com.servinetcomputers.api.util.constants.UserConstants.NAME_LENGTH;

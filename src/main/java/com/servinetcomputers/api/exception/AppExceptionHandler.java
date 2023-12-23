@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import static com.servinetcomputers.api.util.constants.DateTimeFormats.DATE_TIME_FORMAT;
-import static com.servinetcomputers.api.util.constants.LocalUtil.DEFAULT_ZONE;
+import static com.servinetcomputers.api.util.constants.LocalConstants.DEFAULT_ZONE;
 
 /**
  * The app exceptions handler.

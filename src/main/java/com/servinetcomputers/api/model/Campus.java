@@ -11,7 +11,7 @@ import java.util.Set;
 import static com.servinetcomputers.api.util.constants.CampusConstants.ADDRESS_LENGTH;
 import static com.servinetcomputers.api.util.constants.CampusConstants.CELLPHONE_LENGTH;
 import static com.servinetcomputers.api.util.constants.CampusConstants.TERMINAL_LENGTH;
-import static com.servinetcomputers.api.util.constants.LocalUtil.DEFAULT_ZONE;
+import static com.servinetcomputers.api.util.constants.LocalConstants.DEFAULT_ZONE;
 
 /**
  * The campus' model entity.

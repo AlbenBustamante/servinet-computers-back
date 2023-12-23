@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-import static com.servinetcomputers.api.util.constants.LocalUtil.DEFAULT_ZONE;
+import static com.servinetcomputers.api.util.constants.LocalConstants.DEFAULT_ZONE;
 import static com.servinetcomputers.api.util.constants.PlatformConstants.NAME_LENGTH;
 
 /**

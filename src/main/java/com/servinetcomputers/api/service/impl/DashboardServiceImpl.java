@@ -20,7 +20,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.servinetcomputers.api.util.constants.LocalUtil.DEFAULT_ZONE;
+import static com.servinetcomputers.api.util.constants.LocalConstants.DEFAULT_ZONE;
 
 /**
  * The Admin Dashboard Reports service implementation.
