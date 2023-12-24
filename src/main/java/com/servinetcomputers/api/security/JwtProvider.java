@@ -5,6 +5,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.servinetcomputers.api.dto.response.CampusResponse;
 import com.servinetcomputers.api.dto.response.UserResponse;
 import com.servinetcomputers.api.exception.AuthenticationException;
+import com.servinetcomputers.api.util.enums.AuthTokenType;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -25,7 +26,7 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class JwtProvider {
 
-    private static final long expirationTime = TimeUnit.DAYS.toMillis(1);
+    private static final long EXPIRATION_TIME = TimeUnit.DAYS.toMillis(1);
     private static Algorithm algorithm;
     private static Map<String, CampusResponse> campusTokens;
     private static Map<String, UserResponse> userTokens;
@@ -34,30 +35,48 @@ public class JwtProvider {
     private String secretKey;
 
     /**
-     * Create and register a new jwt.
-     * <p>Must to provide only ONE attribute.</p>
+     * Create and get a new user JWT.
      *
-     * @param user   the user if it's logging a user.
-     * @param campus the campus if it's logging a campus.
-     * @return the jwt.
+     * @param user the user.
+     * @return the JWT.
      */
-    public String create(final UserResponse user, final CampusResponse campus) {
-        final var token = JWT.create()
-                .withSubject(user == null ? campus.getTerminal() : user.getEmail())
-                .withIssuer("servinet-computers")
-                .withClaim("id", user == null ? campus.getId() : user.getId())
-                .withClaim("type", user == null ? "c" : "u")
-                .withIssuedAt(new Date())
-                .withExpiresAt(new Date(System.currentTimeMillis() + expirationTime))
-                .sign(algorithm());
-
-        if (user != null) {
-            userTokens().put(token, user);
-        } else {
-            campusTokens().put(token, campus);
-        }
+    public String create(final UserResponse user) {
+        final var token = create(user.getId(), user.getEmail(), AuthTokenType.USER);
+        userTokens().put(token, user);
 
         return token;
+    }
+
+    /**
+     * Create and get a new campus JWT.
+     *
+     * @param campus the campus.
+     * @return the JWT.
+     */
+    public String create(final CampusResponse campus) {
+        final var token = create(campus.getId(), campus.getTerminal(), AuthTokenType.CAMPUS);
+        campusTokens().put(token, campus);
+
+        return token;
+    }
+
+    /**
+     * Create and get a new JWT.
+     *
+     * @param id       the auth id.
+     * @param username the auth username.
+     * @param type     the auth type.
+     * @return the JWT.
+     */
+    private String create(final int id, final String username, final AuthTokenType type) {
+        return JWT.create()
+                .withSubject(username)
+                .withIssuer("servinet-computers")
+                .withClaim("id", id)
+                .withClaim("type", type.toString())
+                .withIssuedAt(new Date())
+                .withExpiresAt(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+                .sign(algorithm());
     }
 
     /**
