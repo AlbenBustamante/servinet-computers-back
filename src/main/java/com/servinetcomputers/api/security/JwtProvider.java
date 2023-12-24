@@ -46,7 +46,7 @@ public class JwtProvider {
                 .withSubject(user == null ? campus.getTerminal() : user.getEmail())
                 .withIssuer("servinet-computers")
                 .withClaim("id", user == null ? campus.getId() : user.getId())
-                .withClaim("type", user == null ? "u" : "c")
+                .withClaim("type", user == null ? "c" : "u")
                 .withIssuedAt(new Date())
                 .withExpiresAt(new Date(System.currentTimeMillis() + expirationTime))
                 .sign(algorithm());
