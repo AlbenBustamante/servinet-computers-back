@@ -19,6 +19,7 @@ import com.servinetcomputers.api.repository.TransferRepository;
 import com.servinetcomputers.api.service.ITransferService;
 import com.servinetcomputers.api.util.formatter.ICurrencyFormatter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.servinetcomputers.api.util.constants.LocalConstants.DEFAULT_ZONE;
+import static com.servinetcomputers.api.util.constants.SecurityConstants.CAMPUS_AUTHORITY;
 
 /**
  * The transfer's service implementation.
@@ -44,20 +46,18 @@ public class TransferServiceImpl implements ITransferService {
     private final ICurrencyFormatter currencyFormatter;
 
     @Transactional(rollbackFor = AppException.class)
+    @Secured(value = CAMPUS_AUTHORITY)
     @Override
     public PageResponse<TransferResponse> create(TransferRequest request) {
-        final var platformFound = platformRepository.findByName(request.platformName());
-
-        if (platformFound.isEmpty()) {
-            throw new PlatformNameNotFoundException(request.platformName());
-        }
+        final var platform = platformRepository.findByName(request.platformName())
+                .orElseThrow(() -> new PlatformNameNotFoundException(request.platformName()));
 
         final List<Transfer> transfers = new ArrayList<>(request.amount());
 
         for (int i = 0; i < request.amount(); i++) {
             final var transfer = mapper.toEntity(request);
-            transfer.setPlatform(platformFound.get());
-            transfer.setPlatformId(platformFound.get().getId());
+            transfer.setPlatform(platform);
+            transfer.setPlatformId(platform.getId());
 
             transfers.add(transfer);
         }
@@ -68,24 +68,23 @@ public class TransferServiceImpl implements ITransferService {
     }
 
     @Transactional(readOnly = true)
+    @Secured(value = CAMPUS_AUTHORITY)
     @Override
     public PageResponse<TransferResponse> get(int transferId) {
-        final var transferFound = repository.findById(transferId);
+        final var transfer = repository.findById(transferId)
+                .orElseThrow(() -> new TransferNotFoundException(transferId));
 
-        if (transferFound.isEmpty()) {
-            throw new TransferNotFoundException(transferId);
-        }
-
-        if (Boolean.FALSE.equals(transferFound.get().getIsAvailable())) {
+        if (transfer.getIsAvailable().equals(Boolean.FALSE)) {
             throw new TransferUnavailableException(transferId);
         }
 
-        final var response = mapper.toResponse(transferFound.get(), currencyFormatter);
+        final var response = mapper.toResponse(transfer, currencyFormatter);
 
         return new PageResponse<>(200, true, new DataResponse<>(1, 1, 1, List.of(response)));
     }
 
     @Transactional(readOnly = true)
+    @Secured(value = CAMPUS_AUTHORITY)
     @Override
     public PageResponse<TransferResponse> getAllByCampusIdCreationDateBetween(int campusId, String startDate, String endDate, PageRequest pageRequest) {
         if (!campusRepository.existsById(campusId)) {
@@ -102,12 +101,13 @@ public class TransferServiceImpl implements ITransferService {
     }
 
     @Transactional(rollbackFor = AppException.class)
+    @Secured(value = CAMPUS_AUTHORITY)
     @Override
     public PageResponse<TransferResponse> update(int transferId, TransferRequest request) {
         final var transfer = repository.findById(transferId)
                 .orElseThrow(() -> new TransferNotFoundException(transferId));
 
-        if (Boolean.FALSE.equals(transfer.getIsAvailable())) {
+        if (transfer.getIsAvailable().equals(Boolean.FALSE)) {
             throw new TransferUnavailableException(transferId);
         }
 
@@ -130,6 +130,7 @@ public class TransferServiceImpl implements ITransferService {
         return new PageResponse<>(200, true, new DataResponse<>(1, 1, 1, List.of(response)));
     }
 
+    @Secured(value = CAMPUS_AUTHORITY)
     @Override
     public boolean delete(int transferId) {
         final var transferFound = repository.findById(transferId);

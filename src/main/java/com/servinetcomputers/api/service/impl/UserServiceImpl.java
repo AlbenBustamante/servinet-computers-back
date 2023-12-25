@@ -13,11 +13,14 @@ import com.servinetcomputers.api.mapper.UserMapper;
 import com.servinetcomputers.api.repository.UserRepository;
 import com.servinetcomputers.api.service.IUserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
+import static com.servinetcomputers.api.util.constants.SecurityConstants.USER_AUTHORITY;
 
 /**
  * The user's service implementation.
@@ -51,12 +54,13 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Transactional(rollbackFor = AppException.class)
+    @Secured(value = USER_AUTHORITY)
     @Override
     public PageResponse<UserResponse> update(int userId, UserRequest request) {
         final var user = repository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(userId));
 
-        if (!user.getIsAvailable()) {
+        if (user.getIsAvailable().equals(Boolean.FALSE)) {
             throw new UserUnavailableException(userId);
         }
 
@@ -69,6 +73,7 @@ public class UserServiceImpl implements IUserService {
         return new PageResponse<>(200, true, new DataResponse<>(1, 1, 1, List.of(response)));
     }
 
+    @Secured(value = USER_AUTHORITY)
     @Override
     public boolean delete(int userId) {
         final var userFound = repository.findById(userId);

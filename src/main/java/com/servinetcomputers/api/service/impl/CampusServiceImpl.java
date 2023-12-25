@@ -21,11 +21,14 @@ import com.servinetcomputers.api.repository.PlatformRepository;
 import com.servinetcomputers.api.repository.UserRepository;
 import com.servinetcomputers.api.service.ICampusService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
+import static com.servinetcomputers.api.util.constants.SecurityConstants.USER_AUTHORITY;
 
 /**
  * The campus' service implementation.
@@ -41,6 +44,7 @@ public class CampusServiceImpl implements ICampusService {
     private final PasswordEncoder passwordEncoder;
 
     @Transactional(rollbackFor = AppException.class)
+    @Secured(value = USER_AUTHORITY)
     @Override
     public PageResponse<CampusResponse> create(CampusRequest request) {
         if (repository.existsByAddress(request.address())) {
@@ -78,17 +82,13 @@ public class CampusServiceImpl implements ICampusService {
     }
 
     @Transactional(readOnly = true)
+    @Secured(value = USER_AUTHORITY)
     @Override
     public PageResponse<CampusResponse> get(int campusId) {
-        final var campusFound = repository.findById(campusId);
+        final var campus = repository.findById(campusId)
+                .orElseThrow(() -> new CampusNotFoundException(campusId));
 
-        if (campusFound.isEmpty()) {
-            throw new CampusNotFoundException(campusId);
-        }
-
-        final var campus = campusFound.get();
-
-        if (Boolean.FALSE.equals(campus.getIsAvailable())) {
+        if (campus.getIsAvailable().equals(Boolean.FALSE)) {
             throw new CampusUnavailableException(campusId);
         }
 
@@ -98,12 +98,13 @@ public class CampusServiceImpl implements ICampusService {
     }
 
     @Transactional(readOnly = true)
+    @Secured(value = USER_AUTHORITY)
     @Override
     public PageResponse<CampusResponse> getAllByUserId(int userId) {
         final var user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(userId));
 
-        if (!user.getIsAvailable()) {
+        if (user.getIsAvailable().equals(Boolean.FALSE)) {
             throw new UserUnavailableException(userId);
         }
 
@@ -115,19 +116,14 @@ public class CampusServiceImpl implements ICampusService {
         return new PageResponse<>(200, true, new DataResponse<>(response.size(), 1, 1, response));
     }
 
-
     @Transactional(rollbackFor = AppException.class)
+    @Secured(value = USER_AUTHORITY)
     @Override
     public PageResponse<CampusResponse> update(int campusId, CampusRequest request) {
-        final var campusFound = repository.findById(campusId);
+        final var campus = repository.findById(campusId)
+                .orElseThrow(() -> new CampusNotFoundException(campusId));
 
-        if (campusFound.isEmpty()) {
-            throw new CampusNotFoundException(campusId);
-        }
-
-        final var campus = campusFound.get();
-
-        if (Boolean.FALSE.equals(campus.getIsAvailable())) {
+        if (campus.getIsAvailable().equals(Boolean.FALSE)) {
             throw new CampusUnavailableException(campusId);
         }
 
@@ -139,6 +135,7 @@ public class CampusServiceImpl implements ICampusService {
         return new PageResponse<>(200, true, new DataResponse<>(1, 1, 1, List.of(response)));
     }
 
+    @Secured(value = USER_AUTHORITY)
     @Override
     public boolean delete(int campusId) {
         final var campusFound = repository.findById(campusId);
@@ -165,8 +162,8 @@ public class CampusServiceImpl implements ICampusService {
         }
     }
 
-
     @Transactional(rollbackFor = AppException.class)
+    @Secured(value = USER_AUTHORITY)
     @Override
     public PageResponse<CampusResponse> updatePlatforms(int campusId, List<String> platformNames) {
         final var campus = repository.findById(campusId)

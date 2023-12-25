@@ -20,6 +20,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import static com.servinetcomputers.api.util.constants.SecurityConstants.CAMPUS_AUTHORITY;
+import static com.servinetcomputers.api.util.constants.SecurityConstants.getAuthority;
+
 /**
  * Json Web Token utils.
  */
@@ -96,7 +99,7 @@ public class JwtProvider {
         }
 
         final Set<GrantedAuthority> authorities = new HashSet<>();
-        final var authority = user == null ? "ROLE_CAMPUS" : "ROLE_" + user.getRole();
+        final var authority = user == null ? CAMPUS_AUTHORITY : getAuthority(user);
 
         authorities.add(new SimpleGrantedAuthority(authority));
 

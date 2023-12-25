@@ -11,6 +11,7 @@ import com.servinetcomputers.api.repository.UserRepository;
 import com.servinetcomputers.api.service.IDashboardService;
 import com.servinetcomputers.api.util.formatter.ICurrencyFormatter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.servinetcomputers.api.util.constants.LocalConstants.DEFAULT_ZONE;
+import static com.servinetcomputers.api.util.constants.SecurityConstants.USER_AUTHORITY;
 
 /**
  * The Admin Dashboard Reports service implementation.
@@ -33,6 +35,7 @@ public class DashboardServiceImpl implements IDashboardService {
     private final TransferRepository transferRepository;
     private final ICurrencyFormatter currencyFormatter;
 
+    @Secured(value = USER_AUTHORITY)
     @Override
     public DashboardResponse getReports(int userId) {
         final var user = getUser(userId);
@@ -107,7 +110,7 @@ public class DashboardServiceImpl implements IDashboardService {
         final var user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(userId));
 
-        if (!user.getIsAvailable()) {
+        if (user.getIsAvailable().equals(Boolean.FALSE)) {
             throw new UserUnavailableException(userId);
         }
 

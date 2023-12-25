@@ -12,10 +12,13 @@ import com.servinetcomputers.api.mapper.PlatformMapper;
 import com.servinetcomputers.api.repository.PlatformRepository;
 import com.servinetcomputers.api.service.IPlatformService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
+import static com.servinetcomputers.api.util.constants.SecurityConstants.USER_AUTHORITY;
 
 /**
  * The platform's service implementation.
@@ -28,6 +31,7 @@ public class PlatformServiceImpl implements IPlatformService {
     private final PlatformMapper mapper;
 
     @Transactional(rollbackFor = AppException.class)
+    @Secured(value = USER_AUTHORITY)
     @Override
     public PageResponse<PlatformResponse> create(PlatformRequest request) {
         if (repository.findByName(request.name()).isPresent()) {
@@ -40,6 +44,7 @@ public class PlatformServiceImpl implements IPlatformService {
     }
 
     @Transactional(readOnly = true)
+    @Secured(value = USER_AUTHORITY)
     @Override
     public PageResponse<PlatformResponse> getAll() {
         final var response = mapper.toResponses(repository.findAllByIsAvailable(true));
@@ -47,17 +52,13 @@ public class PlatformServiceImpl implements IPlatformService {
     }
 
     @Transactional(rollbackFor = AppException.class)
+    @Secured(value = USER_AUTHORITY)
     @Override
     public PageResponse<PlatformResponse> update(int platformId, PlatformRequest request) {
-        final var platformFound = repository.findById(platformId);
+        final var platform = repository.findById(platformId)
+                .orElseThrow(() -> new PlatformNotFoundException(platformId));
 
-        if (platformFound.isEmpty()) {
-            throw new PlatformNotFoundException(platformId);
-        }
-
-        final var platform = platformFound.get();
-
-        if (Boolean.FALSE.equals(platform.getIsAvailable())) {
+        if (platform.getIsAvailable().equals(Boolean.FALSE)) {
             throw new PlatformUnavailableException(platformId);
         }
 
@@ -68,6 +69,7 @@ public class PlatformServiceImpl implements IPlatformService {
         return new PageResponse<>(200, true, new DataResponse<>(1, 1, 1, List.of(response)));
     }
 
+    @Secured(value = USER_AUTHORITY)
     @Override
     public boolean delete(int platformId) {
         final var platformFound = repository.findById(platformId);
