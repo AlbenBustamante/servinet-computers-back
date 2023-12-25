@@ -87,7 +87,7 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
         return problemDetail;
     }
 
-    @ExceptionHandler(value = {PasswordsDoNotMatchException.class})
+    @ExceptionHandler(value = {PasswordsDoNotMatchException.class, AuthenticationException.class})
     public ProblemDetail handleAppException(AppException ex) {
         return createProblemDetail(ex);
     }
