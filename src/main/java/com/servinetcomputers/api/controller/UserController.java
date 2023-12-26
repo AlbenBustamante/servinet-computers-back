@@ -30,6 +30,11 @@ public class UserController {
     private final ICampusService campusService;
     private final IDashboardService dashboardService;
 
+    @GetMapping("/{userId}")
+    public ResponseEntity<PageResponse<UserResponse>> get(@PathVariable("userId") int userId) {
+        return ResponseEntity.ok(userService.get(userId));
+    }
+
     @PatchMapping("/{userId}")
     public ResponseEntity<PageResponse<UserResponse>> update(@PathVariable("userId") int userId, @RequestBody UserRequest request) {
         return ResponseEntity.ok(userService.update(userId, request));

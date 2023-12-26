@@ -53,6 +53,20 @@ public class UserServiceImpl implements IUserService {
         return new PageResponse<>(201, true, new DataResponse<>(1, 1, 1, List.of(response)));
     }
 
+    @Override
+    public PageResponse<UserResponse> get(int userId) {
+        final var user = repository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException(userId));
+
+        if (user.getIsAvailable().equals(Boolean.FALSE)) {
+            throw new UserUnavailableException(userId);
+        }
+
+        final var response = mapper.toResponse(user);
+
+        return new PageResponse<>(200, true, new DataResponse<>(1, 1, 1, List.of(response)));
+    }
+
     @Transactional(rollbackFor = AppException.class)
     @Secured(value = USER_AUTHORITY)
     @Override

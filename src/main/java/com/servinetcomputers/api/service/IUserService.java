@@ -18,6 +18,14 @@ public interface IUserService {
     PageResponse<UserResponse> create(UserRequest request);
 
     /**
+     * Get an existing and available user by the user ID.
+     *
+     * @param userId the ID to search.
+     * @return the user found.
+     */
+    PageResponse<UserResponse> get(int userId);
+
+    /**
      * Update an existing and available user.
      *
      * @param userId  the ID of the user to be updated.
