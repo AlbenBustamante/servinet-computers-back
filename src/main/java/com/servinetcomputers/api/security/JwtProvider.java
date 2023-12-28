@@ -30,12 +30,16 @@ import static com.servinetcomputers.api.util.constants.SecurityConstants.getAuth
 public class JwtProvider {
 
     private static final long EXPIRATION_TIME = TimeUnit.DAYS.toMillis(1);
-    private static Algorithm algorithm;
-    private static Map<String, CampusResponse> campusTokens;
-    private static Map<String, UserResponse> userTokens;
+    private final Map<String, CampusResponse> campusTokens;
+    private final Map<String, UserResponse> userTokens;
 
     @Value("${jwt.secret-key}")
     private String secretKey;
+
+    public JwtProvider() {
+        this.campusTokens = new HashMap<>();
+        this.userTokens = new HashMap<>();
+    }
 
     /**
      * Create and get a new user JWT.
@@ -45,7 +49,7 @@ public class JwtProvider {
      */
     public String create(final UserResponse user) {
         final var token = create(user.getId(), user.getEmail(), AuthTokenType.USER);
-        userTokens().put(token, user);
+        userTokens.put(token, user);
 
         return token;
     }
@@ -58,7 +62,7 @@ public class JwtProvider {
      */
     public String create(final CampusResponse campus) {
         final var token = create(campus.getId(), campus.getTerminal(), AuthTokenType.CAMPUS);
-        campusTokens().put(token, campus);
+        campusTokens.put(token, campus);
 
         return token;
     }
@@ -79,7 +83,7 @@ public class JwtProvider {
                 .withClaim("type", type.toString())
                 .withIssuedAt(new Date())
                 .withExpiresAt(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-                .sign(algorithm());
+                .sign(Algorithm.HMAC256(secretKey));
     }
 
     /**
@@ -89,10 +93,14 @@ public class JwtProvider {
      * @return a {@link UsernamePasswordAuthenticationToken} as the user/campus {@link Authentication}
      */
     public Authentication validateToken(final String token) {
-        JWT.require(algorithm()).build().verify(token);
+        try {
+            JWT.require(Algorithm.HMAC256(secretKey)).build().verify(token);
+        } catch (Exception ex) {
+            throw new AuthenticationException(ex.getMessage(), "EXCEPTION VALIDATIN THE TOKEN");
+        }
 
-        final var user = userTokens().get(token);
-        final var campus = campusTokens().get(token);
+        final var user = userTokens.get(token);
+        final var campus = campusTokens.get(token);
 
         if (user == null && campus == null) {
             throw new AuthenticationException("The user or campus doesn't exists.", "TOKEN PROVIDED NOT FOUND.");
@@ -113,47 +121,14 @@ public class JwtProvider {
      * @return {@code true} if the token was removed.
      */
     public boolean delete(final String token) {
-        if (!userTokens().containsKey(token) && !campusTokens().containsKey(token)) {
+        if (!userTokens.containsKey(token) && !campusTokens.containsKey(token)) {
             return false;
         }
 
-        userTokens().remove(token);
-        campusTokens().remove(token);
+        userTokens.remove(token);
+        campusTokens.remove(token);
 
         return true;
-    }
-
-    /**
-     * @return the default algorithm to use.
-     */
-    private Algorithm algorithm() {
-        if (algorithm == null) {
-            algorithm = Algorithm.HMAC256(secretKey);
-        }
-
-        return algorithm;
-    }
-
-    /**
-     * @return the campuses with its tokens.
-     */
-    private Map<String, CampusResponse> campusTokens() {
-        if (campusTokens == null) {
-            campusTokens = new HashMap<>();
-        }
-
-        return campusTokens;
-    }
-
-    /**
-     * @return the users with its tokens.
-     */
-    private Map<String, UserResponse> userTokens() {
-        if (userTokens == null) {
-            userTokens = new HashMap<>();
-        }
-
-        return userTokens;
     }
 
 }
