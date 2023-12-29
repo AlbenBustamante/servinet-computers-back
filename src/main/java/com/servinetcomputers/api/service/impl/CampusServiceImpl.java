@@ -28,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import static com.servinetcomputers.api.util.constants.SecurityConstants.CAMPUS_AUTHORITY;
 import static com.servinetcomputers.api.util.constants.SecurityConstants.USER_AUTHORITY;
 
 /**
@@ -82,7 +83,7 @@ public class CampusServiceImpl implements ICampusService {
     }
 
     @Transactional(readOnly = true)
-    @Secured(value = USER_AUTHORITY)
+    @Secured(value = {USER_AUTHORITY, CAMPUS_AUTHORITY})
     @Override
     public PageResponse<CampusResponse> get(int campusId) {
         final var campus = repository.findById(campusId)
