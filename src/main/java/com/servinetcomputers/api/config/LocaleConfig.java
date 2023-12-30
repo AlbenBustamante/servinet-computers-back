@@ -22,7 +22,7 @@ public class LocaleConfig {
 
     @Bean
     public NumberFormat numberFormat() {
-        return NumberFormat.getCurrencyInstance(locale());
+        return NumberFormat.getInstance(locale());
     }
 
 }
