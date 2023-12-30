@@ -56,8 +56,8 @@ public class CampusServiceImpl implements ICampusService {
             throw new CampusAlreadyExistsException("cellphone");
         }
 
-        if (repository.existsByNumeral(request.numeral())) {
-            throw new CampusAlreadyExistsException("numeral");
+        if (repository.existsByNumeralAndUserId(request.numeral(), request.userId())) {
+            throw new CampusAlreadyExistsException(request.numeral(), request.userId());
         }
 
         if (!request.passwordsMatch()) {

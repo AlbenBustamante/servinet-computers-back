@@ -9,4 +9,11 @@ public class CampusAlreadyExistsException extends AlreadyExistsException {
                 "CAMPUS ALREADY EXISTS",
                 property);
     }
+
+    public CampusAlreadyExistsException(int numeral, int userId) {
+        super("The user ID #" + userId + " already has a #" + numeral + " campus",
+                HttpStatus.BAD_REQUEST,
+                "CAMPUS ALREADY EXISTS",
+                "numeralAndUserId");
+    }
 }

@@ -30,9 +30,10 @@ public interface CampusRepository extends JpaRepository<Campus, Integer> {
 
     /**
      * @param numeral the numeral to be checked.
-     * @return {@code true} if the numeral already exists.
+     * @param userId  the userId
+     * @return {@code true} if already exists by the numeral and user ID.
      */
-    boolean existsByNumeral(int numeral);
+    boolean existsByNumeralAndUserId(int numeral, int userId);
 
     /**
      * Find an existing campus by the terminal.

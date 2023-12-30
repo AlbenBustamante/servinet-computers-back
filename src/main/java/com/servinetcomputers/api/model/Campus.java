@@ -30,7 +30,7 @@ public class Campus {
     @Column(name = "user_id", nullable = false)
     private Integer userId;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private Integer numeral;
 
     @Column(nullable = false, length = ADDRESS_LENGTH, unique = true)
