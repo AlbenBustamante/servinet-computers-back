@@ -36,6 +36,10 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
+bootJar {
+    archiveFileName = "servinet-app.jar"
+}
+
 tasks.named('test') {
     useJUnitPlatform()
 }

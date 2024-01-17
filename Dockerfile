@@ -1,10 +1,16 @@
-FROM gradle:8.5.0-jdk17-alpine AS build
-COPY --chown=gradle:gradle . /home/gradle/src
-WORKDIR /home/gradle/src
-RUN gradle assemble
+FROM gradle:7.6.1-jdk17 AS builder
 
-FROM openjdk:17-alpine
+COPY build.gradle .
+COPY src ./src
+
+RUN gradle build -x test
+
+FROM eclipse-temurin:17-jdk-alpine
+
+WORKDIR /app
+
+COPY --from=builder /home/gradle/build/libs/servinet-app.jar .
+
 EXPOSE 8080
-RUN mkdir /app
-COPY --from=build /home/gradle/src/build/libs/api-1.0.0.jar /app/servinet-app.jar
-ENTRYPOINT ["java", "-jar","/app/servinet-app.jar"]
+
+CMD ["java", "-jar", "servinet-app.jar"]
