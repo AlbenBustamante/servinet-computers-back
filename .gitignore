@@ -38,6 +38,3 @@ out/
 
 ### Docker ###
 docker-compose.yaml
-
-### FLY ###
-fly.toml
