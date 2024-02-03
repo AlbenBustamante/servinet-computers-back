@@ -2,9 +2,11 @@ package com.servinetcomputers.api.controller;
 
 import com.servinetcomputers.api.dto.request.CampusRequest;
 import com.servinetcomputers.api.dto.request.PageRequest;
+import com.servinetcomputers.api.dto.response.BalanceResponse;
 import com.servinetcomputers.api.dto.response.CampusResponse;
 import com.servinetcomputers.api.dto.response.PageResponse;
 import com.servinetcomputers.api.dto.response.TransferResponse;
+import com.servinetcomputers.api.service.IBalanceService;
 import com.servinetcomputers.api.service.ICampusService;
 import com.servinetcomputers.api.service.ITransferService;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +36,7 @@ public class CampusController {
 
     private final ICampusService campusService;
     private final ITransferService transferService;
+    private final IBalanceService balanceService;
 
     @PostMapping
     public ResponseEntity<PageResponse<CampusResponse>> register(@RequestBody CampusRequest request) {
@@ -68,6 +71,11 @@ public class CampusController {
         final var pageRequest = new PageRequest(size, page, direction, property);
 
         return ResponseEntity.ok(transferService.getAllByCampusIdCreationDateBetween(campusId, startDate, endDate, pageRequest));
+    }
+
+    @GetMapping("/{campusId}/balances")
+    public ResponseEntity<PageResponse<BalanceResponse>> getBalances(@PathVariable("campusId") int campusId) {
+        return ResponseEntity.ok(balanceService.getAllByCampusId(campusId));
     }
 
     @PutMapping("/{campusId}/platforms")
