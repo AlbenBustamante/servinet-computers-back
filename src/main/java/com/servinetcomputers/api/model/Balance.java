@@ -32,10 +32,10 @@ public class Balance {
     @Column(name = "balance_id")
     private Integer id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "platform_id")
     private Integer platformId;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "campus_id")
     private Integer campusId;
 
     @Column(nullable = false)
