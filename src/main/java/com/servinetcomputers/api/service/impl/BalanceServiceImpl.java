@@ -11,6 +11,7 @@ import com.servinetcomputers.api.exception.CampusUnavailableException;
 import com.servinetcomputers.api.exception.PlatformNameNotFoundException;
 import com.servinetcomputers.api.exception.PlatformUnavailableException;
 import com.servinetcomputers.api.mapper.BalanceMapper;
+import com.servinetcomputers.api.model.Balance;
 import com.servinetcomputers.api.repository.BalanceRepository;
 import com.servinetcomputers.api.repository.CampusRepository;
 import com.servinetcomputers.api.repository.PlatformRepository;
@@ -18,6 +19,8 @@ import com.servinetcomputers.api.service.IBalanceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -51,6 +54,30 @@ public class BalanceServiceImpl implements IBalanceService {
         final var response = balanceMapper.toResponse(balanceRepository.save(balanceMapper.toEntity(request)));
 
         return new PageResponse<>(200, true, new DataResponse<>(1, 1, 1, List.of(response)));
+    }
+
+    @Override
+    public PageResponse<BalanceResponse> createAllInitialBalancesByCampusId(int campusId) {
+        final var campus = campusRepository.findById(campusId)
+                .orElseThrow(() -> new CampusNotFoundException(campusId));
+
+        if (campus.getIsAvailable().equals(Boolean.FALSE)) {
+            throw new CampusUnavailableException(campusId);
+        }
+
+        final var platforms = campus.getPlatforms();
+
+        final List<Balance> entities = new ArrayList<>(platforms.size());
+
+        platforms.forEach((platform) -> {
+            final var request = new BalanceRequest(platform.getName(), campusId, BigDecimal.ZERO, BigDecimal.ZERO);
+
+            entities.add(balanceMapper.toEntity(request));
+        });
+
+        final var response = balanceMapper.toResponses(balanceRepository.saveAll(entities));
+
+        return new PageResponse<>(201, true, new DataResponse<>(response.size(), 1, 1, response));
     }
 
     @Override

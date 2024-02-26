@@ -73,6 +73,11 @@ public class CampusController {
         return ResponseEntity.ok(transferService.getAllByCampusIdCreationDateBetween(campusId, startDate, endDate, pageRequest));
     }
 
+    @PostMapping("/{campusId}/balances")
+    public ResponseEntity<PageResponse<BalanceResponse>> createInitialBalances(@PathVariable("campusId") int campusId) {
+        return ResponseEntity.ok(balanceService.createAllInitialBalancesByCampusId(campusId));
+    }
+
     @GetMapping("/{campusId}/balances")
     public ResponseEntity<PageResponse<BalanceResponse>> getBalances(@PathVariable("campusId") int campusId) {
         return ResponseEntity.ok(balanceService.getAllByCampusId(campusId));
