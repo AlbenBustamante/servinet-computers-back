@@ -4,6 +4,7 @@ import com.servinetcomputers.api.dto.request.BalanceRequest;
 import com.servinetcomputers.api.dto.response.BalanceResponse;
 import com.servinetcomputers.api.dto.response.DataResponse;
 import com.servinetcomputers.api.dto.response.PageResponse;
+import com.servinetcomputers.api.exception.AppException;
 import com.servinetcomputers.api.exception.BalanceNotFoundException;
 import com.servinetcomputers.api.exception.BalanceUnavailableException;
 import com.servinetcomputers.api.exception.CampusNotFoundException;
@@ -17,11 +18,16 @@ import com.servinetcomputers.api.repository.CampusRepository;
 import com.servinetcomputers.api.repository.PlatformRepository;
 import com.servinetcomputers.api.service.IBalanceService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.servinetcomputers.api.util.constants.SecurityConstants.CAMPUS_AUTHORITY;
+import static com.servinetcomputers.api.util.constants.SecurityConstants.USER_AUTHORITY;
 
 /**
  * The {@link IBalanceService} implementation.
@@ -35,6 +41,8 @@ public class BalanceServiceImpl implements IBalanceService {
     private final PlatformRepository platformRepository;
     private final CampusRepository campusRepository;
 
+    @Transactional(rollbackFor = AppException.class)
+    @Secured(value = CAMPUS_AUTHORITY)
     @Override
     public PageResponse<BalanceResponse> register(BalanceRequest request) {
         final var platform = platformRepository.findByName(request.name())
@@ -56,6 +64,8 @@ public class BalanceServiceImpl implements IBalanceService {
         return new PageResponse<>(200, true, new DataResponse<>(1, 1, 1, List.of(response)));
     }
 
+    @Transactional(rollbackFor = AppException.class)
+    @Secured(value = CAMPUS_AUTHORITY)
     @Override
     public PageResponse<BalanceResponse> createAllInitialBalancesByCampusId(int campusId) {
         final var campus = campusRepository.findById(campusId)
@@ -80,6 +90,8 @@ public class BalanceServiceImpl implements IBalanceService {
         return new PageResponse<>(201, true, new DataResponse<>(response.size(), 1, 1, response));
     }
 
+    @Transactional(readOnly = true)
+    @Secured(value = {CAMPUS_AUTHORITY, USER_AUTHORITY})
     @Override
     public PageResponse<BalanceResponse> getAllByCampusId(int campusId) {
         final var campus = campusRepository.findById(campusId)
@@ -94,6 +106,8 @@ public class BalanceServiceImpl implements IBalanceService {
         return new PageResponse<>(200, true, new DataResponse<>(responses.size(), 1, 1, responses));
     }
 
+    @Transactional(rollbackFor = AppException.class)
+    @Secured(value = CAMPUS_AUTHORITY)
     @Override
     public PageResponse<BalanceResponse> update(int balanceId, BalanceRequest request) {
         final var balance = balanceRepository.findById(balanceId)
@@ -111,6 +125,7 @@ public class BalanceServiceImpl implements IBalanceService {
         return new PageResponse<>(200, true, new DataResponse<>(1, 1, 1, List.of(response)));
     }
 
+    @Secured(value = CAMPUS_AUTHORITY)
     @Override
     public boolean delete(int balanceId) {
         final var balance = balanceRepository.findById(balanceId);
