@@ -81,8 +81,12 @@ public class BalanceServiceImpl implements IBalanceService {
 
         platforms.forEach((platform) -> {
             final var request = new BalanceRequest(platform.getName(), campusId, BigDecimal.ZERO, BigDecimal.ZERO);
+            final var entity = balanceMapper.toEntity(request);
 
-            entities.add(balanceMapper.toEntity(request));
+            entity.setPlatform(platform);
+            entity.setPlatformId(platform.getId());
+
+            entities.add(entity);
         });
 
         final var response = balanceMapper.toResponses(balanceRepository.saveAll(entities));
