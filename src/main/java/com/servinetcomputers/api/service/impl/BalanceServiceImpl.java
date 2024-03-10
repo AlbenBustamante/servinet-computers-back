@@ -4,13 +4,7 @@ import com.servinetcomputers.api.dto.request.BalanceRequest;
 import com.servinetcomputers.api.dto.response.BalanceResponse;
 import com.servinetcomputers.api.dto.response.DataResponse;
 import com.servinetcomputers.api.dto.response.PageResponse;
-import com.servinetcomputers.api.exception.AppException;
-import com.servinetcomputers.api.exception.BalanceNotFoundException;
-import com.servinetcomputers.api.exception.BalanceUnavailableException;
-import com.servinetcomputers.api.exception.CampusNotFoundException;
-import com.servinetcomputers.api.exception.CampusUnavailableException;
-import com.servinetcomputers.api.exception.PlatformNameNotFoundException;
-import com.servinetcomputers.api.exception.PlatformUnavailableException;
+import com.servinetcomputers.api.exception.*;
 import com.servinetcomputers.api.mapper.BalanceMapper;
 import com.servinetcomputers.api.model.Balance;
 import com.servinetcomputers.api.repository.BalanceRepository;
@@ -23,9 +17,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.servinetcomputers.api.util.constants.LocalConstants.DEFAULT_ZONE;
 import static com.servinetcomputers.api.util.constants.SecurityConstants.CAMPUS_AUTHORITY;
 import static com.servinetcomputers.api.util.constants.SecurityConstants.USER_AUTHORITY;
 
@@ -105,7 +103,10 @@ public class BalanceServiceImpl implements IBalanceService {
             throw new CampusUnavailableException(campusId);
         }
 
-        final var responses = balanceMapper.toResponses(balanceRepository.findAllByCampusIdAndIsAvailable(campusId, true));
+        final var startDate = LocalDateTime.of(LocalDate.now(DEFAULT_ZONE), LocalTime.MIN);
+        final var endDate = LocalDateTime.of(LocalDate.now(DEFAULT_ZONE), LocalTime.now());
+
+        final var responses = balanceMapper.toResponses(balanceRepository.findAllByCampusIdAndIsAvailableAndCreatedAtBetween(campusId, true, startDate, endDate));
 
         return new PageResponse<>(200, true, new DataResponse<>(responses.size(), 1, 1, responses));
     }

@@ -3,6 +3,7 @@ package com.servinetcomputers.api.repository;
 import com.servinetcomputers.api.model.Balance;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -17,6 +18,6 @@ public interface BalanceRepository extends JpaRepository<Balance, Integer> {
      * @param isAvailable if is available.
      * @return all balances found.
      */
-    List<Balance> findAllByCampusIdAndIsAvailable(int campusId, boolean isAvailable);
+    List<Balance> findAllByCampusIdAndIsAvailableAndCreatedAtBetween(int campusId, boolean isAvailable, LocalDateTime startDate, LocalDateTime endDate);
 
 }
