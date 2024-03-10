@@ -11,6 +11,7 @@ import com.servinetcomputers.api.repository.BalanceRepository;
 import com.servinetcomputers.api.repository.CampusRepository;
 import com.servinetcomputers.api.repository.PlatformRepository;
 import com.servinetcomputers.api.service.IBalanceService;
+import com.servinetcomputers.api.util.formatter.ICurrencyFormatter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
@@ -38,6 +39,7 @@ public class BalanceServiceImpl implements IBalanceService {
     private final BalanceMapper balanceMapper;
     private final PlatformRepository platformRepository;
     private final CampusRepository campusRepository;
+    private final ICurrencyFormatter currencyFormatter;
 
     @Transactional(rollbackFor = AppException.class)
     @Secured(value = CAMPUS_AUTHORITY)
@@ -57,7 +59,7 @@ public class BalanceServiceImpl implements IBalanceService {
             throw new CampusUnavailableException(campus.getId());
         }
 
-        final var response = balanceMapper.toResponse(balanceRepository.save(balanceMapper.toEntity(request)));
+        final var response = balanceMapper.toResponse(balanceRepository.save(balanceMapper.toEntity(request)), currencyFormatter);
 
         return new PageResponse<>(200, true, new DataResponse<>(1, 1, 1, List.of(response)));
     }
@@ -87,7 +89,7 @@ public class BalanceServiceImpl implements IBalanceService {
             entities.add(entity);
         });
 
-        final var response = balanceMapper.toResponses(balanceRepository.saveAll(entities));
+        final var response = balanceMapper.toResponses(balanceRepository.saveAll(entities), currencyFormatter);
 
         return new PageResponse<>(201, true, new DataResponse<>(response.size(), 1, 1, response));
     }
@@ -106,7 +108,7 @@ public class BalanceServiceImpl implements IBalanceService {
         final var startDate = LocalDateTime.of(LocalDate.now(DEFAULT_ZONE), LocalTime.MIN);
         final var endDate = LocalDateTime.of(LocalDate.now(DEFAULT_ZONE), LocalTime.now());
 
-        final var responses = balanceMapper.toResponses(balanceRepository.findAllByCampusIdAndIsAvailableAndCreatedAtBetween(campusId, true, startDate, endDate));
+        final var responses = balanceMapper.toResponses(balanceRepository.findAllByCampusIdAndIsAvailableAndCreatedAtBetween(campusId, true, startDate, endDate), currencyFormatter);
 
         return new PageResponse<>(200, true, new DataResponse<>(responses.size(), 1, 1, responses));
     }
@@ -125,7 +127,7 @@ public class BalanceServiceImpl implements IBalanceService {
         balance.setInitialBalance(request.initialBalance() != null ? request.initialBalance() : balance.getInitialBalance());
         balance.setFinalBalance(request.finalBalance() != null ? request.finalBalance() : balance.getFinalBalance());
 
-        final var response = balanceMapper.toResponse(balanceRepository.save(balance));
+        final var response = balanceMapper.toResponse(balanceRepository.save(balance), currencyFormatter);
 
         return new PageResponse<>(200, true, new DataResponse<>(1, 1, 1, List.of(response)));
     }
