@@ -8,7 +8,6 @@ import com.servinetcomputers.api.exception.*;
 import com.servinetcomputers.api.mapper.BalanceMapper;
 import com.servinetcomputers.api.model.Balance;
 import com.servinetcomputers.api.repository.BalanceRepository;
-import com.servinetcomputers.api.repository.CampusRepository;
 import com.servinetcomputers.api.repository.PlatformRepository;
 import com.servinetcomputers.api.service.IBalanceService;
 import com.servinetcomputers.api.util.formatter.ICurrencyFormatter;
