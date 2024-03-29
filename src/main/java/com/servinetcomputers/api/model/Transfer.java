@@ -54,10 +54,6 @@ public class Transfer {
     @JoinColumn(name = "platform_id", insertable = false, updatable = false)
     private Platform platform;
 
-    @ManyToOne
-    @JoinColumn(name = "campus_id", insertable = false, updatable = false)
-    private Campus campus;
-
     @PrePersist
     public void prePersist() {
         isAvailable = true;

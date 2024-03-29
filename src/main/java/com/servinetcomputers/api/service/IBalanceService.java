@@ -11,10 +11,6 @@ public interface IBalanceService {
 
     PageResponse<BalanceResponse> register(BalanceRequest request);
 
-    PageResponse<BalanceResponse> createAllInitialBalancesByCampusId(int campusId);
-
-    PageResponse<BalanceResponse> getAllByCampusId(int campusId);
-
     PageResponse<BalanceResponse> update(int balanceId, BalanceRequest request);
 
     boolean delete(int balanceId);

@@ -57,10 +57,6 @@ public class Balance {
     @JoinColumn(name = "platform_id", updatable = false, insertable = false)
     private Platform platform;
 
-    @ManyToOne
-    @JoinColumn(name = "campus_id", updatable = false, insertable = false)
-    private Campus campus;
-
     @PrePersist
     public void prePersist() {
         if (finalBalance == null) {

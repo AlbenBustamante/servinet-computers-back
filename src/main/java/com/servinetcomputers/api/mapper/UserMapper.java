@@ -15,14 +15,13 @@ import static com.servinetcomputers.api.util.constants.DateTimeFormats.DATE_TIME
  */
 @Mapper(componentModel = "spring")
 public interface UserMapper {
-    
+
     @Mapping(target = "createdAt", dateFormat = DATE_TIME_FORMAT)
     @Mapping(target = "updatedAt", dateFormat = DATE_TIME_FORMAT)
     UserResponse toResponse(User entity);
 
     List<UserResponse> toResponses(List<User> entities);
 
-    @Mapping(target = "campuses", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
     @Mapping(target = "isAvailable", ignore = true)
     @Mapping(target = "id", ignore = true)

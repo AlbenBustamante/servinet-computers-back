@@ -21,9 +21,7 @@ public class AuthServiceImpl implements IAuthService {
     private final PasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
     private final UserRepository userRepository;
-    private final CampusRepository campusRepository;
     private final UserMapper userMapper;
-    private final CampusMapper campusMapper;
 
     @Override
     public AuthResponse login(AuthRequest request) {
@@ -31,12 +29,6 @@ public class AuthServiceImpl implements IAuthService {
 
         if (user.isPresent() && passwordEncoder.matches(request.password(), user.get().getPassword())) {
             return new AuthResponse(jwtProvider.create(userMapper.toResponse(user.get())));
-        }
-
-        final var campus = campusRepository.findByTerminal(request.username());
-
-        if (campus.isPresent() && passwordEncoder.matches(request.password(), campus.get().getPassword())) {
-            return new AuthResponse(jwtProvider.create(campusMapper.toResponse(campus.get())));
         }
 
         throw new AuthenticationException("Something went wrong...", "BAD CREDENTIALS");

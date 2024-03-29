@@ -39,14 +39,6 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.badRequest().body(body);
     }
 
-    @ExceptionHandler(value = {CampusUnavailableException.class, CampusNotFoundException.class})
-    public ProblemDetail handleCampusIdException(CampusIdException ex) {
-        final var problemDetail = createProblemDetail(ex);
-        problemDetail.setProperty("campusId", ex.getCampusId());
-
-        return problemDetail;
-    }
-
     @ExceptionHandler(value = {UserUnavailableException.class, UserNotFoundException.class})
     public ProblemDetail handleUserIdException(UserIdException ex) {
         final var problemDetail = createProblemDetail(ex);
@@ -79,7 +71,7 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
         return problemDetail;
     }
 
-    @ExceptionHandler(value = {CampusAlreadyExistsException.class, UserAlreadyExistsException.class, PlatformAlreadyExistsException.class})
+    @ExceptionHandler(value = {UserAlreadyExistsException.class, PlatformAlreadyExistsException.class})
     public ProblemDetail handleAlreadyExists(AlreadyExistsException ex) {
         final var problemDetail = createProblemDetail(ex);
         problemDetail.setProperty("property", ex.getProperty());
