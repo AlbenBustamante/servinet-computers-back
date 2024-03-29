@@ -1,4 +1,4 @@
-ER Model
+ER Diagram
 
 
-![dbdiagram v2](https://github.com/AlbenBustamante/servinet-computers-back/assets/81927187/9a8388bc-5174-4658-b2c4-d5ddd0e04c7c)
+![dbdiagram v3](https://github.com/AlbenBustamante/servinet-computers-back/assets/81927187/a3701c47-0fed-4b98-aab7-7983880fc1e2)
