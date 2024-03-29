@@ -2,9 +2,9 @@ package com.servinetcomputers.api.security;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.servinetcomputers.api.dto.response.UserResponse;
+import com.servinetcomputers.api.domain.user.model.dto.UserResponse;
 import com.servinetcomputers.api.exception.AuthenticationException;
-import com.servinetcomputers.api.util.enums.Role;
+import com.servinetcomputers.api.security.util.Role;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-import static com.servinetcomputers.api.util.constants.SecurityConstants.getAuthority;
+import static com.servinetcomputers.api.security.util.SecurityConstants.getAuthority;
 
 /**
  * Json Web Token utils.
@@ -79,13 +79,13 @@ public class JwtProvider {
         try {
             JWT.require(Algorithm.HMAC256(secretKey)).build().verify(token);
         } catch (Exception ex) {
-            throw new AuthenticationException(ex.getMessage(), "EXCEPTION VALIDATIN THE TOKEN");
+            throw new AuthenticationException(ex.getMessage());
         }
 
         final var user = userTokens.get(token);
 
         if (user == null) {
-            throw new AuthenticationException("The user or campus doesn't exists.", "TOKEN PROVIDED NOT FOUND.");
+            throw new AuthenticationException("El usuario no existe");
         }
 
         final Set<GrantedAuthority> authorities = new HashSet<>();

@@ -16,8 +16,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import static com.servinetcomputers.api.util.constants.DateTimeFormats.DATE_TIME_FORMAT;
-import static com.servinetcomputers.api.util.constants.LocalConstants.DEFAULT_ZONE;
+import static com.servinetcomputers.api.util.LocalConstants.DEFAULT_ZONE;
 
 /**
  * The app exceptions handler.
@@ -39,47 +38,7 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.badRequest().body(body);
     }
 
-    @ExceptionHandler(value = {UserUnavailableException.class, UserNotFoundException.class})
-    public ProblemDetail handleUserIdException(UserIdException ex) {
-        final var problemDetail = createProblemDetail(ex);
-        problemDetail.setProperty("userId", ex.getUserId());
-
-        return problemDetail;
-    }
-
-    @ExceptionHandler(value = {PlatformUnavailableException.class, PlatformNotFoundException.class})
-    public ProblemDetail handlePlatformIdException(PlatformIdException ex) {
-        final var problemDetail = createProblemDetail(ex);
-        problemDetail.setProperty("platformId", ex.getPlatformId());
-
-        return problemDetail;
-    }
-
-    @ExceptionHandler(value = PlatformNameNotFoundException.class)
-    public ProblemDetail handlePlatformNameNotFoundException(PlatformNameNotFoundException ex) {
-        final var problemDetail = createProblemDetail(ex);
-        problemDetail.setProperty("platformName", ex.getPlatformName());
-
-        return problemDetail;
-    }
-
-    @ExceptionHandler(value = {TransferUnavailableException.class, TransferNotFoundException.class})
-    public ProblemDetail handleTransferIdException(TransferIdException ex) {
-        final var problemDetail = createProblemDetail(ex);
-        problemDetail.setProperty("transferId", ex.getTransferId());
-
-        return problemDetail;
-    }
-
-    @ExceptionHandler(value = {UserAlreadyExistsException.class, PlatformAlreadyExistsException.class})
-    public ProblemDetail handleAlreadyExists(AlreadyExistsException ex) {
-        final var problemDetail = createProblemDetail(ex);
-        problemDetail.setProperty("property", ex.getProperty());
-
-        return problemDetail;
-    }
-
-    @ExceptionHandler(value = {PasswordsDoNotMatchException.class, AuthenticationException.class})
+    @ExceptionHandler(value = {BadRequestException.class, NotFoundException.class, AppException.class})
     public ProblemDetail handleAppException(AppException ex) {
         return createProblemDetail(ex);
     }
@@ -93,7 +52,6 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
     private ProblemDetail createProblemDetail(AppException ex) {
         final var problemDetail = ProblemDetail.forStatusAndDetail(ex.getStatus(), ex.getLocalizedMessage());
 
-        problemDetail.setTitle(ex.getTitle());
         problemDetail.setProperty("timestamp", timestamp());
         problemDetail.setProperty("ok", false);
 
@@ -106,7 +64,7 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
      * @return the formatted timestamp.
      */
     private String timestamp() {
-        return LocalDateTime.now(DEFAULT_ZONE).format(DateTimeFormatter.ofPattern(DATE_TIME_FORMAT));
+        return LocalDateTime.now(DEFAULT_ZONE).format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
     }
 
 }

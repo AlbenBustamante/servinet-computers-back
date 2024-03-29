@@ -4,16 +4,14 @@ import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
 /**
- * The main and abstract throwable exception.
+ * The main throwable exception.
  */
 @Getter
-public abstract class AppException extends RuntimeException {
+public class AppException extends RuntimeException {
     private final HttpStatus status;
-    private final String title;
 
-    protected AppException(String detail, HttpStatus status, String title) {
+    protected AppException(String detail, HttpStatus status) {
         super(detail + ".");
         this.status = status;
-        this.title = title.toUpperCase() + ".";
     }
 }
