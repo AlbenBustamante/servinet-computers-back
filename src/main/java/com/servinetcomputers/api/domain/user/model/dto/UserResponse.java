@@ -11,15 +11,15 @@ import java.time.LocalDateTime;
  */
 @Getter
 public class UserResponse extends ModelResponse {
-    private final String name, lastName, email;
+    private final String name, lastName, code;
     private final Role role;
 
-    public UserResponse(int id, String name, String lastName, String email, Role role,
-                        boolean isAvailable, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        super(id, isAvailable, createdAt, updatedAt);
+    public UserResponse(int id, String name, String lastName, String code, Role role,
+                        boolean enabled, LocalDateTime createdDate, LocalDateTime modifiedDate) {
+        super(id, enabled, createdDate, modifiedDate);
         this.name = name;
         this.lastName = lastName;
-        this.email = email;
+        this.code = code;
         this.role = role;
     }
 }

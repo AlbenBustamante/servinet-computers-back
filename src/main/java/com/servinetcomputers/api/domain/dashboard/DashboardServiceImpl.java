@@ -64,7 +64,7 @@ public class DashboardServiceImpl implements IDashboardService {
         final var user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("Usuario no encontrado: " + userId));
 
-        if (user.getIsAvailable().equals(Boolean.FALSE)) {
+        if (user.getEnabled().equals(Boolean.FALSE)) {
             throw new NotFoundException("Usuario no encontrado: " + userId);
         }
 

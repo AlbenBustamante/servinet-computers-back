@@ -10,13 +10,13 @@ import java.time.LocalDateTime;
 @Getter
 public abstract class ModelResponse {
     private final int id;
-    private final boolean isAvailable;
-    private final LocalDateTime createdAt, updatedAt;
+    private final boolean enabled;
+    private final LocalDateTime createdDate, modifiedDate;
 
-    public ModelResponse(int id, boolean isAvailable, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public ModelResponse(int id, boolean enabled, LocalDateTime createdDate, LocalDateTime modifiedDate) {
         this.id = id;
-        this.isAvailable = isAvailable;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
+        this.enabled = enabled;
+        this.createdDate = createdDate;
+        this.modifiedDate = modifiedDate;
     }
 }

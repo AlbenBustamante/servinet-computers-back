@@ -18,10 +18,10 @@ public interface UserMapper {
 
     List<UserResponse> toResponses(List<User> entities);
 
-    @Mapping(target = "updatedAt", ignore = true)
-    @Mapping(target = "isAvailable", ignore = true)
+    @Mapping(target = "modifiedDate", ignore = true)
+    @Mapping(target = "enabled", ignore = true)
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "createdDate", ignore = true)
     User toEntity(UserRequest req);
 
 }

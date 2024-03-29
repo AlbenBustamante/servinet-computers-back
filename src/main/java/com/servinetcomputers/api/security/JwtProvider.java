@@ -44,7 +44,7 @@ public class JwtProvider {
      * @return the JWT.
      */
     public String create(final UserResponse user) {
-        final var token = create(user.getId(), user.getEmail(), user.getRole());
+        final var token = create(user.getId(), user.getCode(), user.getRole());
         userTokens.put(token, user);
 
         return token;
@@ -54,7 +54,7 @@ public class JwtProvider {
      * Create and get a new JWT.
      *
      * @param id       the auth id.
-     * @param username the auth username.
+     * @param username the auth code.
      * @param role     the auth role.
      * @return the JWT.
      */

@@ -11,17 +11,17 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User, Integer> {
 
     /**
-     * @param email the email to be searched.
-     * @return {@code true} if the email already exists.
+     * @param code the code to be searched.
+     * @return {@code true} if the code already exists.
      */
-    boolean existsByEmail(String email);
+    boolean existsByCode(String code);
 
     /**
-     * Find an existing user by the email.
+     * Find an existing user by the code.
      *
-     * @param email the email to be searched.
+     * @param code the code to be searched.
      * @return an {@link Optional} of the user found.
      */
-    Optional<User> findByEmail(String email);
+    Optional<User> findByCode(String code);
 
 }

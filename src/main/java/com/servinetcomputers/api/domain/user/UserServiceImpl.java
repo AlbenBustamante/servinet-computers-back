@@ -34,8 +34,8 @@ public class UserServiceImpl implements IUserService {
     @Transactional(rollbackFor = AppException.class)
     @Override
     public PageResponse<UserResponse> create(UserRequest request) {
-        if (repository.existsByEmail(request.email())) {
-            throw new NotFoundException("El email ya se encuentra registrado");
+        if (repository.existsByCode(request.code())) {
+            throw new NotFoundException("El código ya se encuentra registrado");
         }
 
         if (!request.passwordsMatch()) {
@@ -56,7 +56,7 @@ public class UserServiceImpl implements IUserService {
         final var user = repository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("Usuario no encontrado: " + userId));
 
-        if (user.getIsAvailable().equals(Boolean.FALSE)) {
+        if (user.getEnabled().equals(Boolean.FALSE)) {
             throw new NotFoundException("Usuario no encontrado: " + userId);
         }
 
@@ -72,13 +72,12 @@ public class UserServiceImpl implements IUserService {
         final var user = repository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("Usuario no encontrado: " + userId));
 
-        if (user.getIsAvailable().equals(Boolean.FALSE)) {
+        if (user.getEnabled().equals(Boolean.FALSE)) {
             throw new NotFoundException("Usuario no encontrado: " + userId);
         }
 
         user.setName(request.name() == null ? user.getName() : request.name());
         user.setLastName(request.lastName() == null ? user.getLastName() : request.lastName());
-        user.setEmail(request.email() == null ? user.getEmail() : request.email());
 
         final var response = mapper.toResponse(repository.save(user));
 
@@ -94,7 +93,7 @@ public class UserServiceImpl implements IUserService {
             return false;
         }
 
-        userFound.get().setIsAvailable(false);
+        userFound.get().setEnabled(false);
 
         repository.save(userFound.get());
 

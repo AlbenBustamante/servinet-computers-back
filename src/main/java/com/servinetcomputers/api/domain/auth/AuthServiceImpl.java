@@ -25,7 +25,7 @@ public class AuthServiceImpl implements IAuthService {
 
     @Override
     public AuthResponse login(AuthRequest request) {
-        final var user = userRepository.findByEmail(request.username());
+        final var user = userRepository.findByCode(request.username());
 
         if (user.isPresent() && passwordEncoder.matches(request.password(), user.get().getPassword())) {
             return new AuthResponse(jwtProvider.create(userMapper.toResponse(user.get())));
