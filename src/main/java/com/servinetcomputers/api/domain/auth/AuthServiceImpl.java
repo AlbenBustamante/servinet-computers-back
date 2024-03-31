@@ -27,11 +27,14 @@ public class AuthServiceImpl implements IAuthService {
     public AuthResponse login(AuthRequest request) {
         final var user = userRepository.findByCode(request.code());
 
-        if (user.isPresent() && passwordEncoder.matches(request.password(), user.get().getPassword())) {
-            return new AuthResponse(jwtProvider.create(userMapper.toResponse(user.get())));
+        if (user.isEmpty()
+                || user.get().getEnabled().equals(Boolean.FALSE)
+                || !passwordEncoder.matches(request.password(), user.get().getPassword())
+        ) {
+            throw new BadRequestException("La cuenta o la contraseña es inválida");
         }
 
-        throw new BadRequestException("La cuenta o la contraseña es inválida");
+        return new AuthResponse(jwtProvider.create(userMapper.toResponse(user.get())));
     }
 
     @Override
