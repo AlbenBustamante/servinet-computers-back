@@ -1,7 +1,5 @@
 package com.servinetcomputers.api.domain.user;
 
-import com.servinetcomputers.api.domain.DataResponse;
-import com.servinetcomputers.api.domain.PageResponse;
 import com.servinetcomputers.api.domain.user.abs.IUserService;
 import com.servinetcomputers.api.domain.user.abs.UserMapper;
 import com.servinetcomputers.api.domain.user.abs.UserRepository;
@@ -16,9 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
-import static com.servinetcomputers.api.security.util.SecurityConstants.USER_AUTHORITY;
+import static com.servinetcomputers.api.security.util.SecurityConstants.ADMIN_AUTHORITY;
 
 /**
  * The user's service implementation.
@@ -33,9 +29,9 @@ public class UserServiceImpl implements IUserService {
 
     @Transactional(rollbackFor = AppException.class)
     @Override
-    public PageResponse<UserResponse> create(UserRequest request) {
+    public UserResponse create(UserRequest request) {
         if (repository.existsByCode(request.code())) {
-            throw new NotFoundException("El código ya se encuentra registrado");
+            throw new BadRequestException("El código ya se encuentra registrado");
         }
 
         if (!request.passwordsMatch()) {
@@ -46,13 +42,12 @@ public class UserServiceImpl implements IUserService {
 
         entity.setPassword(passwordEncoder.encode(request.password()));
 
-        final var response = mapper.toResponse(repository.save(entity));
-
-        return new PageResponse<>(201, true, new DataResponse<>(1, 1, 1, List.of(response)));
+        return mapper.toResponse(repository.save(entity));
     }
 
+    @Transactional(readOnly = true)
     @Override
-    public PageResponse<UserResponse> get(int userId) {
+    public UserResponse get(int userId) {
         final var user = repository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("Usuario no encontrado: " + userId));
 
@@ -60,15 +55,12 @@ public class UserServiceImpl implements IUserService {
             throw new NotFoundException("Usuario no encontrado: " + userId);
         }
 
-        final var response = mapper.toResponse(user);
-
-        return new PageResponse<>(200, true, new DataResponse<>(1, 1, 1, List.of(response)));
+        return mapper.toResponse(user);
     }
 
     @Transactional(rollbackFor = AppException.class)
-    @Secured(value = USER_AUTHORITY)
     @Override
-    public PageResponse<UserResponse> update(int userId, UserRequest request) {
+    public UserResponse update(int userId, UserRequest request) {
         final var user = repository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("Usuario no encontrado: " + userId));
 
@@ -79,12 +71,10 @@ public class UserServiceImpl implements IUserService {
         user.setName(request.name() == null ? user.getName() : request.name());
         user.setLastName(request.lastName() == null ? user.getLastName() : request.lastName());
 
-        final var response = mapper.toResponse(repository.save(user));
-
-        return new PageResponse<>(200, true, new DataResponse<>(1, 1, 1, List.of(response)));
+        return mapper.toResponse(repository.save(user));
     }
 
-    @Secured(value = USER_AUTHORITY)
+    @Secured(value = ADMIN_AUTHORITY)
     @Override
     public boolean delete(int userId) {
         final var userFound = repository.findById(userId);

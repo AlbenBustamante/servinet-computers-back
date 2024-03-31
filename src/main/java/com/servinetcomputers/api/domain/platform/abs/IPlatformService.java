@@ -1,8 +1,9 @@
 package com.servinetcomputers.api.domain.platform.abs;
 
-import com.servinetcomputers.api.domain.PageResponse;
 import com.servinetcomputers.api.domain.platform.model.dto.PlatformRequest;
 import com.servinetcomputers.api.domain.platform.model.dto.PlatformResponse;
+
+import java.util.List;
 
 /**
  * The platform's uses case.
@@ -15,14 +16,14 @@ public interface IPlatformService {
      * @param request the data to be saved.
      * @return the platform saved.
      */
-    PageResponse<PlatformResponse> create(PlatformRequest request);
+    PlatformResponse create(PlatformRequest request);
 
     /**
      * Get all the available platforms.
      *
      * @return the platforms.
      */
-    PageResponse<PlatformResponse> getAll();
+    List<PlatformResponse> getAll();
 
     /**
      * Update an existing and available platform.
@@ -31,7 +32,7 @@ public interface IPlatformService {
      * @param request    the data to be updated.
      * @return the platform updated.
      */
-    PageResponse<PlatformResponse> update(int platformId, PlatformRequest request);
+    PlatformResponse update(int platformId, PlatformRequest request);
 
     /**
      * Disable an existing and available platform.

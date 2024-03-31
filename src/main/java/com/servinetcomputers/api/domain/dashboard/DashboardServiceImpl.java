@@ -17,7 +17,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.servinetcomputers.api.security.util.SecurityConstants.USER_AUTHORITY;
+import static com.servinetcomputers.api.security.util.SecurityConstants.CASHIER_AUTHORITY;
 import static com.servinetcomputers.api.util.LocalConstants.DEFAULT_ZONE;
 
 /**
@@ -30,7 +30,7 @@ public class DashboardServiceImpl implements IDashboardService {
     private final UserRepository userRepository;
     private final TransferRepository transferRepository;
 
-    @Secured(value = USER_AUTHORITY)
+    @Secured(value = CASHIER_AUTHORITY)
     @Override
     public DashboardResponse getReports(int userId) {
         final var user = getUser(userId);

@@ -1,6 +1,5 @@
 package com.servinetcomputers.api.domain.auth;
 
-import com.servinetcomputers.api.domain.PageResponse;
 import com.servinetcomputers.api.domain.auth.abs.IAuthService;
 import com.servinetcomputers.api.domain.auth.dto.AuthRequest;
 import com.servinetcomputers.api.domain.auth.dto.AuthResponse;
@@ -29,7 +28,7 @@ public class AuthController {
     private final IAuthService authService;
 
     @PostMapping("/register")
-    public ResponseEntity<PageResponse<UserResponse>> register(@RequestBody UserRequest request) {
+    public ResponseEntity<UserResponse> register(@RequestBody UserRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.create(request));
     }
 

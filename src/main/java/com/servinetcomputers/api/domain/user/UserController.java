@@ -1,6 +1,5 @@
 package com.servinetcomputers.api.domain.user;
 
-import com.servinetcomputers.api.domain.PageResponse;
 import com.servinetcomputers.api.domain.dashboard.abs.IDashboardService;
 import com.servinetcomputers.api.domain.dashboard.dto.DashboardResponse;
 import com.servinetcomputers.api.domain.user.abs.IUserService;
@@ -28,12 +27,12 @@ public class UserController {
     private final IDashboardService dashboardService;
 
     @GetMapping("/{userId}")
-    public ResponseEntity<PageResponse<UserResponse>> get(@PathVariable("userId") int userId) {
+    public ResponseEntity<UserResponse> get(@PathVariable("userId") int userId) {
         return ResponseEntity.ok(userService.get(userId));
     }
 
     @PatchMapping("/{userId}")
-    public ResponseEntity<PageResponse<UserResponse>> update(@PathVariable("userId") int userId, @RequestBody UserRequest request) {
+    public ResponseEntity<UserResponse> update(@PathVariable("userId") int userId, @RequestBody UserRequest request) {
         return ResponseEntity.ok(userService.update(userId, request));
     }
 

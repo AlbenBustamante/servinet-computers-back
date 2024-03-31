@@ -1,7 +1,5 @@
 package com.servinetcomputers.api.domain.platform;
 
-import com.servinetcomputers.api.domain.DataResponse;
-import com.servinetcomputers.api.domain.PageResponse;
 import com.servinetcomputers.api.domain.platform.abs.IPlatformService;
 import com.servinetcomputers.api.domain.platform.abs.PlatformMapper;
 import com.servinetcomputers.api.domain.platform.abs.PlatformRepository;
@@ -17,7 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static com.servinetcomputers.api.security.util.SecurityConstants.USER_AUTHORITY;
+import static com.servinetcomputers.api.security.util.SecurityConstants.ADMIN_AUTHORITY;
+import static com.servinetcomputers.api.security.util.SecurityConstants.CASHIER_AUTHORITY;
 
 /**
  * The platform's service implementation.
@@ -30,30 +29,26 @@ public class PlatformServiceImpl implements IPlatformService {
     private final PlatformMapper mapper;
 
     @Transactional(rollbackFor = AppException.class)
-    @Secured(value = USER_AUTHORITY)
+    @Secured(value = ADMIN_AUTHORITY)
     @Override
-    public PageResponse<PlatformResponse> create(PlatformRequest request) {
+    public PlatformResponse create(PlatformRequest request) {
         if (repository.findByName(request.name()).isPresent()) {
             throw new BadRequestException("La plataforma ya existe");
         }
 
-        final var response = mapper.toResponse(repository.save(mapper.toEntity(request)));
-
-        return new PageResponse<>(201, true, new DataResponse<>(1, 1, 1, List.of(response)));
+        return mapper.toResponse(repository.save(mapper.toEntity(request)));
     }
 
     @Transactional(readOnly = true)
-    @Secured(value = USER_AUTHORITY)
     @Override
-    public PageResponse<PlatformResponse> getAll() {
-        final var response = mapper.toResponses(repository.findAllByIsAvailable(true));
-        return new PageResponse<>(200, true, new DataResponse<>(response.size(), 1, 1, response));
+    public List<PlatformResponse> getAll() {
+        return mapper.toResponses(repository.findAllByIsAvailable(true));
     }
 
     @Transactional(rollbackFor = AppException.class)
-    @Secured(value = USER_AUTHORITY)
+    @Secured(value = ADMIN_AUTHORITY)
     @Override
-    public PageResponse<PlatformResponse> update(int platformId, PlatformRequest request) {
+    public PlatformResponse update(int platformId, PlatformRequest request) {
         final var platform = repository.findById(platformId)
                 .orElseThrow(() -> new NotFoundException("Plataforma no encontrada: " + platformId));
 
@@ -63,12 +58,10 @@ public class PlatformServiceImpl implements IPlatformService {
 
         platform.setName(request.name() == null ? platform.getName() : request.name());
 
-        final var response = mapper.toResponse(repository.save(platform));
-
-        return new PageResponse<>(200, true, new DataResponse<>(1, 1, 1, List.of(response)));
+        return mapper.toResponse(repository.save(platform));
     }
 
-    @Secured(value = USER_AUTHORITY)
+    @Secured(value = CASHIER_AUTHORITY)
     @Override
     public boolean delete(int platformId) {
         final var platformFound = repository.findById(platformId);

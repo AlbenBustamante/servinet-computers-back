@@ -1,6 +1,5 @@
 package com.servinetcomputers.api.domain.user.abs;
 
-import com.servinetcomputers.api.domain.PageResponse;
 import com.servinetcomputers.api.domain.user.model.dto.UserRequest;
 import com.servinetcomputers.api.domain.user.model.dto.UserResponse;
 
@@ -15,7 +14,7 @@ public interface IUserService {
      * @param request the data to save.
      * @return the user saved.
      */
-    PageResponse<UserResponse> create(UserRequest request);
+    UserResponse create(UserRequest request);
 
     /**
      * Get an existing and available user by the user ID.
@@ -23,7 +22,7 @@ public interface IUserService {
      * @param userId the ID to search.
      * @return the user found.
      */
-    PageResponse<UserResponse> get(int userId);
+    UserResponse get(int userId);
 
     /**
      * Update an existing and available user.
@@ -32,7 +31,7 @@ public interface IUserService {
      * @param request the data to update.
      * @return the user updated.
      */
-    PageResponse<UserResponse> update(int userId, UserRequest request);
+    UserResponse update(int userId, UserRequest request);
 
     /**
      * Disable an existing and available user.
