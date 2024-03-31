@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 import static com.servinetcomputers.api.security.util.SecurityConstants.ADMIN_AUTHORITY;
-import static com.servinetcomputers.api.security.util.SecurityConstants.CASHIER_AUTHORITY;
 
 /**
  * The platform's service implementation.
@@ -61,7 +60,7 @@ public class PlatformServiceImpl implements IPlatformService {
         return mapper.toResponse(repository.save(platform));
     }
 
-    @Secured(value = CASHIER_AUTHORITY)
+    @Secured(value = ADMIN_AUTHORITY)
     @Override
     public boolean delete(int platformId) {
         final var platformFound = repository.findById(platformId);
