@@ -17,12 +17,11 @@ public interface PlatformMapper {
     PlatformResponse toResponse(Platform entity);
 
     List<PlatformResponse> toResponses(List<Platform> entities);
-
-    @Mapping(target = "transfers", ignore = true)
-    @Mapping(target = "updatedAt", ignore = true)
-    @Mapping(target = "isAvailable", ignore = true)
+    
+    @Mapping(target = "modifiedDate", ignore = true)
+    @Mapping(target = "enabled", ignore = true)
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "createdDate", ignore = true)
     Platform toEntity(PlatformRequest req);
 
 }

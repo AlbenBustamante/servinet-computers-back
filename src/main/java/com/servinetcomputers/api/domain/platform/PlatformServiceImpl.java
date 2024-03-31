@@ -42,7 +42,7 @@ public class PlatformServiceImpl implements IPlatformService {
     @Transactional(readOnly = true)
     @Override
     public List<PlatformResponse> getAll() {
-        return mapper.toResponses(repository.findAllByIsAvailable(true));
+        return mapper.toResponses(repository.findAllByEnabledTrue());
     }
 
     @Transactional(rollbackFor = AppException.class)
@@ -52,7 +52,7 @@ public class PlatformServiceImpl implements IPlatformService {
         final var platform = repository.findById(platformId)
                 .orElseThrow(() -> new NotFoundException("Plataforma no encontrada: " + platformId));
 
-        if (platform.getIsAvailable().equals(Boolean.FALSE)) {
+        if (platform.getEnabled().equals(Boolean.FALSE)) {
             throw new NotFoundException("Plataforma no encontrada: " + platformId);
         }
 
@@ -70,7 +70,7 @@ public class PlatformServiceImpl implements IPlatformService {
             return false;
         }
 
-        platformFound.get().setIsAvailable(false);
+        platformFound.get().setEnabled(false);
 
         repository.save(platformFound.get());
 

@@ -34,7 +34,7 @@ public class BalanceServiceImpl implements IBalanceService {
         final var platform = platformRepository.findByName(request.name())
                 .orElseThrow(() -> new NotFoundException("Plataforma no encontrada: " + request.name()));
 
-        if (!platform.getIsAvailable()) {
+        if (!platform.getEnabled()) {
             throw new NotFoundException("Plataforma no encontrada: " + request.name());
         }
 

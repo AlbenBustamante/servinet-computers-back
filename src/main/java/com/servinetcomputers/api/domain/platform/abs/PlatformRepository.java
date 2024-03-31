@@ -19,6 +19,6 @@ public interface PlatformRepository extends JpaRepository<Platform, Integer> {
      */
     Optional<Platform> findByName(String name);
 
-    List<Platform> findAllByIsAvailable(boolean isAvailable);
+    List<Platform> findAllByEnabledTrue();
 
 }
