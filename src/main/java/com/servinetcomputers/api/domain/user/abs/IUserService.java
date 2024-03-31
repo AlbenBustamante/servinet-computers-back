@@ -3,6 +3,8 @@ package com.servinetcomputers.api.domain.user.abs;
 import com.servinetcomputers.api.domain.user.model.dto.UserRequest;
 import com.servinetcomputers.api.domain.user.model.dto.UserResponse;
 
+import java.util.List;
+
 /**
  * The user's uses case.
  */
@@ -15,6 +17,8 @@ public interface IUserService {
      * @return the user saved.
      */
     UserResponse create(UserRequest request);
+
+    List<UserResponse> getAll();
 
     /**
      * Get an existing and available user by the user ID.

@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 /**
  * The user's routes/endpoints.
  */
@@ -25,6 +27,11 @@ public class UserController {
 
     private final IUserService userService;
     private final IDashboardService dashboardService;
+
+    @GetMapping
+    public ResponseEntity<List<UserResponse>> getAll() {
+        return ResponseEntity.ok(userService.getAll());
+    }
 
     @GetMapping("/{userId}")
     public ResponseEntity<UserResponse> get(@PathVariable("userId") int userId) {

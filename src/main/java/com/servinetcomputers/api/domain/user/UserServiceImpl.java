@@ -14,6 +14,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 import static com.servinetcomputers.api.security.util.SecurityConstants.ADMIN_AUTHORITY;
 
 /**
@@ -43,6 +45,11 @@ public class UserServiceImpl implements IUserService {
         entity.setPassword(passwordEncoder.encode(request.password()));
 
         return mapper.toResponse(repository.save(entity));
+    }
+
+    @Override
+    public List<UserResponse> getAll() {
+        return mapper.toResponses(repository.findAll());
     }
 
     @Transactional(readOnly = true)
