@@ -32,10 +32,6 @@ public class UserServiceImpl implements IUserService {
     @Transactional(rollbackFor = AppException.class)
     @Override
     public UserResponse create(UserRequest request) {
-        if (repository.existsByCode(request.code())) {
-            throw new BadRequestException("El código ya se encuentra registrado");
-        }
-
         if (!request.passwordsMatch()) {
             throw new BadRequestException("Las contraseñas no coinciden");
         }
@@ -43,6 +39,17 @@ public class UserServiceImpl implements IUserService {
         final var entity = mapper.toEntity(request);
 
         entity.setPassword(passwordEncoder.encode(request.password()));
+
+        final var lastUser = repository.findFirstByRoleOrderByCreatedDateDesc(request.role());
+
+        final var code = lastUser.map(user -> Integer.parseInt(user.getCode()
+                .split(request.role()
+                        .getRole()
+                        .toLowerCase())
+                [1])
+        ).orElse(0);
+
+        entity.setCode(request.role().getRole().toLowerCase() + (code + 1));
 
         return mapper.toResponse(repository.save(entity));
     }
