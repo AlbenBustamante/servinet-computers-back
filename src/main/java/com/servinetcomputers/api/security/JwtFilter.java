@@ -13,7 +13,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.Arrays;
 
-import static com.servinetcomputers.api.util.constants.SecurityConstants.WHITE_LIST;
+import static com.servinetcomputers.api.security.util.SecurityConstants.WHITE_LIST;
 
 /**
  * The JWT Authentication Filter.

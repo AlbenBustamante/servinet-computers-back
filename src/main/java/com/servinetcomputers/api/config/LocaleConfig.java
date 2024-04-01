@@ -6,8 +6,8 @@ import org.springframework.context.annotation.Configuration;
 import java.text.NumberFormat;
 import java.util.Locale;
 
-import static com.servinetcomputers.api.util.constants.LocalConstants.LOCALE_COUNTRY;
-import static com.servinetcomputers.api.util.constants.LocalConstants.LOCALE_LANGUAGE;
+import static com.servinetcomputers.api.util.LocalConstants.LOCALE_COUNTRY;
+import static com.servinetcomputers.api.util.LocalConstants.LOCALE_LANGUAGE;
 
 /**
  * Locale and currency configuration.
