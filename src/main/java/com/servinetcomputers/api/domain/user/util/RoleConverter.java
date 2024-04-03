@@ -1,6 +1,6 @@
 package com.servinetcomputers.api.domain.user.util;
 
-import com.servinetcomputers.api.exception.BadRequestException;
+import com.servinetcomputers.api.exception.NotFoundException;
 import com.servinetcomputers.api.security.util.Role;
 import jakarta.persistence.AttributeConverter;
 
@@ -17,6 +17,6 @@ public class RoleConverter implements AttributeConverter<Role, String> {
         return Arrays.stream(Role.values())
                 .filter(role -> role.getRole().equals(s))
                 .findFirst()
-                .orElseThrow(() -> new BadRequestException("Role no encontrado"));
+                .orElseThrow(() -> new NotFoundException("Role no encontrado"));
     }
 }
