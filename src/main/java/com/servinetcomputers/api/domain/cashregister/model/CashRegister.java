@@ -1,6 +1,7 @@
 package com.servinetcomputers.api.domain.cashregister.model;
 
 import com.servinetcomputers.api.audit.Auditable;
+import com.servinetcomputers.api.audit.AuditableCashRegisterStatus;
 import com.servinetcomputers.api.audit.AuditableEnabled;
 import com.servinetcomputers.api.domain.cashregister.util.CashRegisterStatus;
 import com.servinetcomputers.api.domain.cashregister.util.CashRegisterStatusConverter;
@@ -18,7 +19,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @Table(name = "cash_registers")
-@EntityListeners(value = {AuditableEnabled.class, AuditingEntityListener.class})
+@EntityListeners(value = {AuditableCashRegisterStatus.class, AuditableEnabled.class, AuditingEntityListener.class})
 @Getter
 @Setter
 public class CashRegister extends Auditable {
