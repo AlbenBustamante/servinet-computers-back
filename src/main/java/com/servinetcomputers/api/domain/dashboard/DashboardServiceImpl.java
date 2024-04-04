@@ -4,7 +4,7 @@ import com.servinetcomputers.api.domain.dashboard.abs.IDashboardService;
 import com.servinetcomputers.api.domain.dashboard.dto.DashboardResponse;
 import com.servinetcomputers.api.domain.transfer.abs.TransferRepository;
 import com.servinetcomputers.api.domain.user.abs.UserRepository;
-import com.servinetcomputers.api.domain.user.model.User;
+import com.servinetcomputers.api.domain.user.User;
 import com.servinetcomputers.api.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;

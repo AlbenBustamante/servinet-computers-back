@@ -1,4 +1,4 @@
-package com.servinetcomputers.api.domain.platform.model;
+package com.servinetcomputers.api.domain.platform;
 
 import com.servinetcomputers.api.audit.Auditable;
 import com.servinetcomputers.api.audit.AuditableEnabled;

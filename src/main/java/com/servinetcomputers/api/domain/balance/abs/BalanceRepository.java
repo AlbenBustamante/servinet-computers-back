@@ -1,6 +1,6 @@
 package com.servinetcomputers.api.domain.balance.abs;
 
-import com.servinetcomputers.api.domain.balance.model.Balance;
+import com.servinetcomputers.api.domain.balance.Balance;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDateTime;

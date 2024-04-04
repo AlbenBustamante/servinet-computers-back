@@ -1,8 +1,8 @@
 package com.servinetcomputers.api.domain.user.abs;
 
-import com.servinetcomputers.api.domain.user.model.User;
-import com.servinetcomputers.api.domain.user.model.dto.UserRequest;
-import com.servinetcomputers.api.domain.user.model.dto.UserResponse;
+import com.servinetcomputers.api.domain.user.User;
+import com.servinetcomputers.api.domain.user.dto.UserRequest;
+import com.servinetcomputers.api.domain.user.dto.UserResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

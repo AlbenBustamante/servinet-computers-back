@@ -1,4 +1,4 @@
-package com.servinetcomputers.api.domain.transfer.model.dto;
+package com.servinetcomputers.api.domain.transfer.dto;
 
 import java.math.BigDecimal;
 

@@ -1,4 +1,4 @@
-package com.servinetcomputers.api.domain.platform.model.dto;
+package com.servinetcomputers.api.domain.platform.dto;
 
 /**
  * The platform dto model for requests.

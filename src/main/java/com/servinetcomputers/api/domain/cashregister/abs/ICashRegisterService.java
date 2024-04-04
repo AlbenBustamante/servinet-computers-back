@@ -1,7 +1,7 @@
 package com.servinetcomputers.api.domain.cashregister.abs;
 
-import com.servinetcomputers.api.domain.cashregister.model.dto.CashRegisterRequest;
-import com.servinetcomputers.api.domain.cashregister.model.dto.CashRegisterResponse;
+import com.servinetcomputers.api.domain.cashregister.dto.CashRegisterRequest;
+import com.servinetcomputers.api.domain.cashregister.dto.CashRegisterResponse;
 
 import java.util.List;
 

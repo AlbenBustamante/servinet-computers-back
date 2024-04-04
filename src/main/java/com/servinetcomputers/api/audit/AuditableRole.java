@@ -1,6 +1,6 @@
 package com.servinetcomputers.api.audit;
 
-import com.servinetcomputers.api.domain.user.model.User;
+import com.servinetcomputers.api.domain.user.User;
 import com.servinetcomputers.api.security.util.Role;
 import jakarta.persistence.PrePersist;
 

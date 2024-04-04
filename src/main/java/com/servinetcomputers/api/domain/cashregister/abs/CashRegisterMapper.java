@@ -1,8 +1,8 @@
 package com.servinetcomputers.api.domain.cashregister.abs;
 
-import com.servinetcomputers.api.domain.cashregister.model.CashRegister;
-import com.servinetcomputers.api.domain.cashregister.model.dto.CashRegisterRequest;
-import com.servinetcomputers.api.domain.cashregister.model.dto.CashRegisterResponse;
+import com.servinetcomputers.api.domain.cashregister.CashRegister;
+import com.servinetcomputers.api.domain.cashregister.dto.CashRegisterRequest;
+import com.servinetcomputers.api.domain.cashregister.dto.CashRegisterResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

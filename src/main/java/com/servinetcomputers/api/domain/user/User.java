@@ -1,4 +1,4 @@
-package com.servinetcomputers.api.domain.user.model;
+package com.servinetcomputers.api.domain.user;
 
 import com.servinetcomputers.api.audit.Auditable;
 import com.servinetcomputers.api.audit.AuditableEnabled;

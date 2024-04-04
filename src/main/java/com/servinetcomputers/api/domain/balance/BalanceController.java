@@ -2,8 +2,8 @@ package com.servinetcomputers.api.domain.balance;
 
 import com.servinetcomputers.api.domain.PageResponse;
 import com.servinetcomputers.api.domain.balance.abs.IBalanceService;
-import com.servinetcomputers.api.domain.balance.model.dto.BalanceRequest;
-import com.servinetcomputers.api.domain.balance.model.dto.BalanceResponse;
+import com.servinetcomputers.api.domain.balance.dto.BalanceRequest;
+import com.servinetcomputers.api.domain.balance.dto.BalanceResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;

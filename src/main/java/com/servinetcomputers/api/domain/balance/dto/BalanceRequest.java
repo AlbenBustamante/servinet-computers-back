@@ -1,4 +1,4 @@
-package com.servinetcomputers.api.domain.balance.model.dto;
+package com.servinetcomputers.api.domain.balance.dto;
 
 import java.math.BigDecimal;
 

@@ -1,8 +1,8 @@
 package com.servinetcomputers.api.domain.balance.abs;
 
 import com.servinetcomputers.api.domain.PageResponse;
-import com.servinetcomputers.api.domain.balance.model.dto.BalanceRequest;
-import com.servinetcomputers.api.domain.balance.model.dto.BalanceResponse;
+import com.servinetcomputers.api.domain.balance.dto.BalanceRequest;
+import com.servinetcomputers.api.domain.balance.dto.BalanceResponse;
 
 /**
  * The balance's uses case.

@@ -2,7 +2,7 @@ package com.servinetcomputers.api.security;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.servinetcomputers.api.domain.user.model.dto.UserResponse;
+import com.servinetcomputers.api.domain.user.dto.UserResponse;
 import com.servinetcomputers.api.exception.AuthenticationException;
 import com.servinetcomputers.api.security.util.Role;
 import org.springframework.beans.factory.annotation.Value;

@@ -1,8 +1,8 @@
 package com.servinetcomputers.api.domain.platform;
 
 import com.servinetcomputers.api.domain.platform.abs.IPlatformService;
-import com.servinetcomputers.api.domain.platform.model.dto.PlatformRequest;
-import com.servinetcomputers.api.domain.platform.model.dto.PlatformResponse;
+import com.servinetcomputers.api.domain.platform.dto.PlatformRequest;
+import com.servinetcomputers.api.domain.platform.dto.PlatformResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

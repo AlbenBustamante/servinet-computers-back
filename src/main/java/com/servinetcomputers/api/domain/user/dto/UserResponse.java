@@ -1,4 +1,4 @@
-package com.servinetcomputers.api.domain.user.model.dto;
+package com.servinetcomputers.api.domain.user.dto;
 
 import com.servinetcomputers.api.domain.ModelResponse;
 import com.servinetcomputers.api.security.util.Role;

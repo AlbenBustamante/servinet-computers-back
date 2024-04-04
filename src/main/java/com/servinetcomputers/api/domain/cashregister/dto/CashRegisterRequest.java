@@ -1,4 +1,4 @@
-package com.servinetcomputers.api.domain.cashregister.model.dto;
+package com.servinetcomputers.api.domain.cashregister.dto;
 
 import com.servinetcomputers.api.domain.cashregister.util.CashRegisterStatus;
 

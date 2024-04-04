@@ -1,4 +1,4 @@
-package com.servinetcomputers.api.domain.transfer.model.dto;
+package com.servinetcomputers.api.domain.transfer.dto;
 
 import com.servinetcomputers.api.domain.ModelResponse;
 import lombok.Getter;

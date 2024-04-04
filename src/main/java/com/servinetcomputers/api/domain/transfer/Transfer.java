@@ -1,6 +1,6 @@
-package com.servinetcomputers.api.domain.balance.model;
+package com.servinetcomputers.api.domain.transfer;
 
-import com.servinetcomputers.api.domain.platform.model.Platform;
+import com.servinetcomputers.api.domain.platform.Platform;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -20,30 +20,27 @@ import java.time.LocalDateTime;
 import static com.servinetcomputers.api.util.LocalConstants.DEFAULT_ZONE;
 
 /**
- * The balance's model entity.
+ * The transfer's model entity.
  */
 @Entity
-@Table(name = "balances")
-@Getter
+@Table(name = "transfers")
 @Setter
-public class Balance {
+@Getter
+public class Transfer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "balance_id")
+    @Column(name = "transfer_id")
     private Integer id;
 
-    @Column(nullable = false, name = "platform_id")
+    @Column(name = "platform_id", nullable = false)
     private Integer platformId;
 
-    @Column(nullable = false, name = "campus_id")
+    @Column(name = "campus_id", nullable = false)
     private Integer campusId;
 
     @Column(nullable = false)
-    private BigDecimal initialBalance;
-
-    @Column(nullable = false)
-    private BigDecimal finalBalance;
+    private BigDecimal value;
 
     @Column(nullable = false)
     private Boolean isAvailable;
@@ -55,15 +52,11 @@ public class Balance {
     private LocalDateTime updatedAt;
 
     @ManyToOne
-    @JoinColumn(name = "platform_id", updatable = false, insertable = false)
+    @JoinColumn(name = "platform_id", insertable = false, updatable = false)
     private Platform platform;
 
     @PrePersist
     public void prePersist() {
-        if (finalBalance == null) {
-            finalBalance = BigDecimal.ZERO;
-        }
-
         isAvailable = true;
         createdAt = updatedAt = LocalDateTime.now(DEFAULT_ZONE);
     }

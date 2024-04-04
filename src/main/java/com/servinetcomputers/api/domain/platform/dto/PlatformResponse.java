@@ -1,4 +1,4 @@
-package com.servinetcomputers.api.domain.platform.model.dto;
+package com.servinetcomputers.api.domain.platform.dto;
 
 import com.servinetcomputers.api.domain.ModelResponse;
 import lombok.Getter;
