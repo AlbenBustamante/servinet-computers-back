@@ -9,7 +9,7 @@ public interface ICashRegisterService {
 
     CashRegisterResponse create(CashRegisterRequest request);
 
-    List<CashRegisterResponse> getAll();
+    List<CashRegisterResponse> getAll(boolean enabled);
 
     CashRegisterResponse updateStatus(CashRegisterRequest request);
 

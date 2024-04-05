@@ -27,9 +27,9 @@ public class CashRegisterController {
         return ResponseEntity.ok(service.create(request));
     }
 
-    @GetMapping
-    public ResponseEntity<List<CashRegisterResponse>> getAll() {
-        return ResponseEntity.ok(service.getAll());
+    @GetMapping("/{enabled}")
+    public ResponseEntity<List<CashRegisterResponse>> getAll(@PathVariable("enabled") boolean enabled) {
+        return ResponseEntity.ok(service.getAll(enabled));
     }
 
     @PutMapping
