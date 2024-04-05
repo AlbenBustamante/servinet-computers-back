@@ -17,6 +17,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import static com.servinetcomputers.api.domain.cashregister.util.CashRegisterConstants.DESCRIPTION_LENGTH;
+
 @Entity
 @Table(name = "cash_registers")
 @EntityListeners(value = {AuditableCashRegisterStatus.class, AuditableEnabled.class, AuditingEntityListener.class})
@@ -31,6 +33,9 @@ public class CashRegister extends Auditable {
 
     @Column(nullable = false, unique = true, columnDefinition = "SMALLINT")
     private Integer numeral;
+
+    @Column(nullable = false, length = DESCRIPTION_LENGTH)
+    private String description;
 
     @Convert(converter = CashRegisterStatusConverter.class)
     @Column(nullable = false, columnDefinition = "CHAR(1)")
