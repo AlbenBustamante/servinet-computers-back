@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -32,7 +33,12 @@ public class CashRegisterController {
         return ResponseEntity.ok(service.getAll(enabled));
     }
 
-    @PutMapping
+    @PutMapping("/{id}")
+    public ResponseEntity<CashRegisterResponse> update(@PathVariable("id") int cashRegisterId, @RequestBody CashRegisterRequest request) {
+        return ResponseEntity.ok(service.update(cashRegisterId, request));
+    }
+
+    @PatchMapping
     public ResponseEntity<CashRegisterResponse> updateStatus(@RequestBody CashRegisterRequest request) {
         return ResponseEntity.ok(service.updateStatus(request));
     }

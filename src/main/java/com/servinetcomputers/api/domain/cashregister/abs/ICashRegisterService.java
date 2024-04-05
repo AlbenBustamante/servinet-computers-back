@@ -11,6 +11,8 @@ public interface ICashRegisterService {
 
     List<CashRegisterResponse> getAll(boolean enabled);
 
+    CashRegisterResponse update(int id, CashRegisterRequest request);
+
     CashRegisterResponse updateStatus(CashRegisterRequest request);
 
     boolean delete(int id);

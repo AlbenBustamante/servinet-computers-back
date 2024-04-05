@@ -42,10 +42,23 @@ public class CashRegisterServiceImpl implements ICashRegisterService {
     }
 
     @Transactional(rollbackFor = AppException.class)
+    @Secured(value = ADMIN_AUTHORITY)
+    @Override
+    public CashRegisterResponse update(int id, CashRegisterRequest request) {
+        final var cashRegister = repository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Caja registradora #" + id + " not encontrada"));
+
+        cashRegister.setDescription(request.description() != null ? request.description() : cashRegister.getDescription());
+        cashRegister.setStatus(request.status() != null ? request.status() : cashRegister.getStatus());
+
+        return mapper.toResponse(repository.save(cashRegister));
+    }
+
+    @Transactional(rollbackFor = AppException.class)
     @Override
     public CashRegisterResponse updateStatus(CashRegisterRequest request) {
         final var cashRegister = repository.findByNumeral(request.numeral())
-                .orElseThrow(() -> new NotFoundException("Caja registradora con numeral " + request.numeral() + " no encontrada."));
+                .orElseThrow(() -> new NotFoundException("Caja registradora con numeral " + request.numeral() + " no encontrada"));
 
         if (cashRegister.getEnabled().equals(Boolean.FALSE)) {
             throw new NotFoundException("Caja registradora inhabilitada");
