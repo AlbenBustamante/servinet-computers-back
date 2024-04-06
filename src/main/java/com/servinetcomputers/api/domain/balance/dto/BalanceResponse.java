@@ -13,9 +13,9 @@ public class BalanceResponse extends ModelResponse {
     private final String platformName, initialBalance, finalBalance;
     private final int campusId;
 
-    public BalanceResponse(int id, boolean isAvailable, LocalDateTime createdAt, LocalDateTime updatedAt,
-                           String platformName, int campusId, String initialBalance, String finalBalance) {
-        super(id, isAvailable, createdAt, updatedAt);
+    public BalanceResponse(int id, boolean isAvailable, LocalDateTime createdAt, LocalDateTime updatedAt, String createdBy,
+                           String modifiedBy, String platformName, int campusId, String initialBalance, String finalBalance) {
+        super(id, isAvailable, createdAt, updatedAt, createdBy, modifiedBy);
         this.platformName = platformName;
         this.campusId = campusId;
         this.initialBalance = initialBalance;

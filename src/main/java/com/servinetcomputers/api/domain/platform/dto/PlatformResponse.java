@@ -12,8 +12,9 @@ import java.time.LocalDateTime;
 public class PlatformResponse extends ModelResponse {
     private final String name;
 
-    public PlatformResponse(int id, String name, boolean enabled, LocalDateTime createdDate, LocalDateTime modifiedDate) {
-        super(id, enabled, createdDate, modifiedDate);
+    public PlatformResponse(int id, String name, boolean enabled, LocalDateTime createdDate, LocalDateTime modifiedDate,
+                            String createdBy, String modifiedBy) {
+        super(id, enabled, createdDate, modifiedDate, createdBy, modifiedBy);
         this.name = name;
     }
 }

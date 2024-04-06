@@ -15,6 +15,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import static com.servinetcomputers.api.domain.user.util.UserConstants.CODE_LENGTH;
 import static com.servinetcomputers.api.domain.user.util.UserConstants.LAST_NAME_LENGTH;
@@ -25,7 +26,7 @@ import static com.servinetcomputers.api.domain.user.util.UserConstants.NAME_LENG
  */
 @Entity
 @Table(name = "users")
-@EntityListeners(value = {AuditRole.class, AuditAuditable.class})
+@EntityListeners(value = {AuditRole.class, AuditAuditable.class, AuditingEntityListener.class})
 @Getter
 @Setter
 public class User extends Auditable {

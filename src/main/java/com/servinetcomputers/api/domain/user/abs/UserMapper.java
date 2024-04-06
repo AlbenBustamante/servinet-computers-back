@@ -18,6 +18,8 @@ public interface UserMapper {
 
     List<UserResponse> toResponses(List<User> entities);
 
+    @Mapping(target = "modifiedBy", ignore = true)
+    @Mapping(target = "createdBy", ignore = true)
     @Mapping(target = "code", ignore = true)
     @Mapping(target = "modifiedDate", ignore = true)
     @Mapping(target = "enabled", ignore = true)

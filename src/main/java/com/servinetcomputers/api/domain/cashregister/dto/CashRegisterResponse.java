@@ -12,9 +12,9 @@ public class CashRegisterResponse extends ModelResponse {
     private final String description;
     private final CashRegisterStatus status;
 
-    public CashRegisterResponse(int id, boolean enabled, LocalDateTime createdDate, LocalDateTime modifiedDate,
-                                int numeral, String description, CashRegisterStatus status) {
-        super(id, enabled, createdDate, modifiedDate);
+    public CashRegisterResponse(int id, boolean enabled, LocalDateTime createdDate, LocalDateTime modifiedDate, String createdBy,
+                                String modifiedBy, int numeral, String description, CashRegisterStatus status) {
+        super(id, enabled, createdDate, modifiedDate, createdBy, modifiedBy);
         this.numeral = numeral;
         this.description = description;
         this.status = status;

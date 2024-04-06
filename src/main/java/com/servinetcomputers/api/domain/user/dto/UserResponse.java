@@ -15,8 +15,9 @@ public class UserResponse extends ModelResponse {
     private final Role role;
 
     public UserResponse(int id, String name, String lastName, String code, Role role,
-                        boolean enabled, LocalDateTime createdDate, LocalDateTime modifiedDate) {
-        super(id, enabled, createdDate, modifiedDate);
+                        boolean enabled, LocalDateTime createdDate, LocalDateTime modifiedDate,
+                        String createdBy, String modifiedBy) {
+        super(id, enabled, createdDate, modifiedDate, createdBy, modifiedBy);
         this.name = name;
         this.lastName = lastName;
         this.code = code;
