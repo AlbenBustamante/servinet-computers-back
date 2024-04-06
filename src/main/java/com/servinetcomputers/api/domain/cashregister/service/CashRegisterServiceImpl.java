@@ -1,4 +1,4 @@
-package com.servinetcomputers.api.domain.cashregister;
+package com.servinetcomputers.api.domain.cashregister.service;
 
 import com.servinetcomputers.api.domain.cashregister.abs.CashRegisterMapper;
 import com.servinetcomputers.api.domain.cashregister.abs.CashRegisterRepository;
