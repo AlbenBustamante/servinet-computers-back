@@ -4,8 +4,6 @@ import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
 
@@ -18,11 +16,9 @@ public abstract class Auditable {
     private Boolean enabled;
 
     @Column(nullable = false, updatable = false)
-    @CreatedDate
     private LocalDateTime createdDate;
 
-    @Column(insertable = false)
-    @LastModifiedDate
+    @Column(nullable = false)
     private LocalDateTime modifiedDate;
 
 }

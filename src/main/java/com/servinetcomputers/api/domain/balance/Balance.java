@@ -17,8 +17,6 @@ import lombok.Setter;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-import static com.servinetcomputers.api.util.LocalConstants.DEFAULT_ZONE;
-
 /**
  * The balance's model entity.
  */
@@ -65,12 +63,12 @@ public class Balance {
         }
 
         isAvailable = true;
-        createdAt = updatedAt = LocalDateTime.now(DEFAULT_ZONE);
+        createdAt = updatedAt = LocalDateTime.now();
     }
 
     @PreUpdate
     public void preUpdate() {
-        updatedAt = LocalDateTime.now(DEFAULT_ZONE);
+        updatedAt = LocalDateTime.now();
     }
 
 }

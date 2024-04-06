@@ -1,8 +1,8 @@
 package com.servinetcomputers.api.domain.cashregister;
 
+import com.servinetcomputers.api.audit.AuditAuditable;
+import com.servinetcomputers.api.audit.AuditCashRegisterStatus;
 import com.servinetcomputers.api.audit.Auditable;
-import com.servinetcomputers.api.audit.AuditableCashRegisterStatus;
-import com.servinetcomputers.api.audit.AuditableEnabled;
 import com.servinetcomputers.api.domain.cashregister.util.CashRegisterStatus;
 import com.servinetcomputers.api.domain.cashregister.util.CashRegisterStatusConverter;
 import jakarta.persistence.Column;
@@ -21,7 +21,7 @@ import static com.servinetcomputers.api.domain.cashregister.util.CashRegisterCon
 
 @Entity
 @Table(name = "cash_registers")
-@EntityListeners(value = {AuditableCashRegisterStatus.class, AuditableEnabled.class, AuditingEntityListener.class})
+@EntityListeners(value = {AuditCashRegisterStatus.class, AuditAuditable.class, AuditingEntityListener.class})
 @Getter
 @Setter
 public class CashRegister extends Auditable {
@@ -40,4 +40,5 @@ public class CashRegister extends Auditable {
     @Convert(converter = CashRegisterStatusConverter.class)
     @Column(nullable = false, columnDefinition = "CHAR(1)")
     private CashRegisterStatus status;
+
 }

@@ -3,8 +3,8 @@ package com.servinetcomputers.api.domain.dashboard;
 import com.servinetcomputers.api.domain.dashboard.abs.IDashboardService;
 import com.servinetcomputers.api.domain.dashboard.dto.DashboardResponse;
 import com.servinetcomputers.api.domain.transfer.abs.TransferRepository;
-import com.servinetcomputers.api.domain.user.abs.UserRepository;
 import com.servinetcomputers.api.domain.user.User;
+import com.servinetcomputers.api.domain.user.abs.UserRepository;
 import com.servinetcomputers.api.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
@@ -14,11 +14,11 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.servinetcomputers.api.security.util.SecurityConstants.CASHIER_AUTHORITY;
-import static com.servinetcomputers.api.util.LocalConstants.DEFAULT_ZONE;
 
 /**
  * The Admin Dashboard Reports service implementation.
@@ -29,15 +29,16 @@ public class DashboardServiceImpl implements IDashboardService {
 
     private final UserRepository userRepository;
     private final TransferRepository transferRepository;
+    private final ZoneId zoneId;
 
     @Secured(value = CASHIER_AUTHORITY)
     @Override
     public DashboardResponse getReports(int userId) {
         final var user = getUser(userId);
 
-        final var today = LocalDate.now(DEFAULT_ZONE);
+        final var today = LocalDate.now(zoneId);
         final var startDate = LocalDateTime.of(today, LocalTime.MIN);
-        final var endDate = LocalDateTime.of(today, LocalTime.now(DEFAULT_ZONE));
+        final var endDate = LocalDateTime.of(today, LocalTime.now(zoneId));
 
         final List<DashboardResponse.PlatformDetailDashboardResponse> temporaryPlatforms = new ArrayList<>();
         var total = BigDecimal.ZERO;

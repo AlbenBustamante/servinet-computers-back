@@ -1,7 +1,7 @@
 package com.servinetcomputers.api.domain.platform;
 
+import com.servinetcomputers.api.audit.AuditAuditable;
 import com.servinetcomputers.api.audit.Auditable;
-import com.servinetcomputers.api.audit.AuditableEnabled;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -20,7 +20,7 @@ import static com.servinetcomputers.api.domain.platform.util.PlatformConstants.N
  */
 @Entity
 @Table(name = "platforms")
-@EntityListeners(value = {AuditableEnabled.class, AuditingEntityListener.class})
+@EntityListeners(value = {AuditAuditable.class, AuditingEntityListener.class})
 @Getter
 @Setter
 public class Platform extends Auditable {

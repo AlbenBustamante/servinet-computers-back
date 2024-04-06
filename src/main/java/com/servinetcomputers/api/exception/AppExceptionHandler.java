@@ -1,5 +1,6 @@
 package com.servinetcomputers.api.exception;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ProblemDetail;
@@ -11,18 +12,19 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import static com.servinetcomputers.api.util.LocalConstants.DEFAULT_ZONE;
-
 /**
  * The app exceptions handler.
  */
+@RequiredArgsConstructor
 @RestControllerAdvice
 public class AppExceptionHandler extends ResponseEntityExceptionHandler {
+    private final ZoneId zoneId;
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
@@ -64,7 +66,7 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
      * @return the formatted timestamp.
      */
     private String timestamp() {
-        return LocalDateTime.now(DEFAULT_ZONE).format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
+        return LocalDateTime.now(zoneId).format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
     }
 
 }
