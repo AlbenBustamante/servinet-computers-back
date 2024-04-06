@@ -75,7 +75,7 @@ public class JwtProvider {
      * @param token the token provided.
      * @return a {@link UsernamePasswordAuthenticationToken} as the user/campus {@link Authentication}
      */
-    public Authentication validateToken(final String token) {
+    public UsernamePasswordAuthenticationToken validateToken(final String token) {
         try {
             JWT.require(Algorithm.HMAC256(secretKey)).build().verify(token);
         } catch (Exception ex) {
@@ -93,7 +93,7 @@ public class JwtProvider {
 
         authorities.add(new SimpleGrantedAuthority(authority));
 
-        return new UsernamePasswordAuthenticationToken(user, token, authorities);
+        return new UsernamePasswordAuthenticationToken(user.getCode(), token, authorities);
     }
 
     /**
