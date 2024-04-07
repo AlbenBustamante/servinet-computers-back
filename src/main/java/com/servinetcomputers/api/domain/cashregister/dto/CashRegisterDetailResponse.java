@@ -6,12 +6,12 @@ import lombok.Getter;
 import java.time.LocalDateTime;
 
 @Getter
-public class CashRegisterDetailRes extends ModelResponse {
+public class CashRegisterDetailResponse extends ModelResponse {
     private final int cashRegisterId;
     private final String initialWorking, initialBreak, finalBreak, finalWorking;
 
-    public CashRegisterDetailRes(int id, boolean enabled, LocalDateTime createdDate, LocalDateTime modifiedDate, String createdBy, String modifiedBy,
-                                 int cashRegisterId, String workingHours) {
+    public CashRegisterDetailResponse(int id, boolean enabled, LocalDateTime createdDate, LocalDateTime modifiedDate, String createdBy, String modifiedBy,
+                                      int cashRegisterId, String workingHours) {
         super(id, enabled, createdDate, modifiedDate, createdBy, modifiedBy);
         this.cashRegisterId = cashRegisterId;
 

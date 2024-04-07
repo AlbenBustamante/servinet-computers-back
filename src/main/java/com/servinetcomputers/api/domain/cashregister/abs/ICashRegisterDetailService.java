@@ -1,15 +1,15 @@
 package com.servinetcomputers.api.domain.cashregister.abs;
 
-import com.servinetcomputers.api.domain.cashregister.dto.CashRegisterDetailReq;
-import com.servinetcomputers.api.domain.cashregister.dto.CashRegisterDetailRes;
+import com.servinetcomputers.api.domain.cashregister.dto.CashRegisterDetailRequest;
+import com.servinetcomputers.api.domain.cashregister.dto.CashRegisterDetailResponse;
 
 public interface ICashRegisterDetailService {
 
-    CashRegisterDetailRes create(CashRegisterDetailReq request);
+    CashRegisterDetailResponse create(CashRegisterDetailRequest request);
 
     boolean isAlreadyCreated();
 
-    CashRegisterDetailRes updateHours(CashRegisterDetailReq req);
+    CashRegisterDetailResponse updateHours(CashRegisterDetailRequest req);
 
     boolean delete(int id);
 

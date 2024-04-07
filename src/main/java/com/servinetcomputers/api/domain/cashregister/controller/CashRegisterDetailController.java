@@ -1,8 +1,8 @@
 package com.servinetcomputers.api.domain.cashregister.controller;
 
 import com.servinetcomputers.api.domain.cashregister.abs.ICashRegisterDetailService;
-import com.servinetcomputers.api.domain.cashregister.dto.CashRegisterDetailReq;
-import com.servinetcomputers.api.domain.cashregister.dto.CashRegisterDetailRes;
+import com.servinetcomputers.api.domain.cashregister.dto.CashRegisterDetailRequest;
+import com.servinetcomputers.api.domain.cashregister.dto.CashRegisterDetailResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,7 +21,7 @@ public class CashRegisterDetailController {
     private final ICashRegisterDetailService service;
 
     @PostMapping
-    public ResponseEntity<CashRegisterDetailRes> register(@RequestBody CashRegisterDetailReq request) {
+    public ResponseEntity<CashRegisterDetailResponse> register(@RequestBody CashRegisterDetailRequest request) {
         return ResponseEntity.ok(service.create(request));
     }
 
@@ -31,7 +31,7 @@ public class CashRegisterDetailController {
     }
 
     @PutMapping
-    public ResponseEntity<CashRegisterDetailRes> updateHours(@RequestBody CashRegisterDetailReq request) {
+    public ResponseEntity<CashRegisterDetailResponse> updateHours(@RequestBody CashRegisterDetailRequest request) {
         return ResponseEntity.ok(service.updateHours(request));
     }
 

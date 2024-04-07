@@ -4,8 +4,8 @@ import com.servinetcomputers.api.domain.cashregister.abs.CashRegisterDetailMappe
 import com.servinetcomputers.api.domain.cashregister.abs.CashRegisterDetailRepository;
 import com.servinetcomputers.api.domain.cashregister.abs.CashRegisterRepository;
 import com.servinetcomputers.api.domain.cashregister.abs.ICashRegisterDetailService;
-import com.servinetcomputers.api.domain.cashregister.dto.CashRegisterDetailReq;
-import com.servinetcomputers.api.domain.cashregister.dto.CashRegisterDetailRes;
+import com.servinetcomputers.api.domain.cashregister.dto.CashRegisterDetailRequest;
+import com.servinetcomputers.api.domain.cashregister.dto.CashRegisterDetailResponse;
 import com.servinetcomputers.api.domain.cashregister.util.CashRegisterStatus;
 import com.servinetcomputers.api.exception.BadRequestException;
 import com.servinetcomputers.api.exception.NotFoundException;
@@ -27,7 +27,7 @@ public class CashRegisterDetailServiceImpl implements ICashRegisterDetailService
     private final ZoneId zoneId;
 
     @Override
-    public CashRegisterDetailRes create(CashRegisterDetailReq request) {
+    public CashRegisterDetailResponse create(CashRegisterDetailRequest request) {
         if (repository.existsByCreatedByAndCreatedDateBetween(createdBy(), toDateTime(LocalTime.MIN), toDateTime(LocalTime.MAX))) {
             throw new BadRequestException("Ya tienes una caja en funcionamiento");
         }
@@ -60,7 +60,7 @@ public class CashRegisterDetailServiceImpl implements ICashRegisterDetailService
     }
 
     @Override
-    public CashRegisterDetailRes updateHours(CashRegisterDetailReq req) {
+    public CashRegisterDetailResponse updateHours(CashRegisterDetailRequest req) {
         final var cashRegisterDetail = repository.findByCreatedByAndCreatedDateBetween(createdBy(), toDateTime(LocalTime.MIN), toDateTime(LocalTime.MAX))
                 .orElseThrow(() -> new NotFoundException("No se encontró la caja en funcionamiento"));
 
