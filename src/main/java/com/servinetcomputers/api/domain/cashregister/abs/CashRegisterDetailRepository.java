@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface CashRegisterDetailRepository extends JpaRepository<CashRegisterDetail, Integer> {
 
-    boolean existsByCreatedByAndCreatedDateBetween(String createdBy, LocalDateTime firstDate, LocalDateTime lastDate);
+    boolean existsByCreatedByAndCreatedDateBetweenAndEnabledTrue(String createdBy, LocalDateTime firstDate, LocalDateTime lastDate);
 
     Optional<CashRegisterDetail> findByCreatedByAndCreatedDateBetween(String createdBy, LocalDateTime firstDate, LocalDateTime lastDate);
 

@@ -28,15 +28,15 @@ public class CashRegisterDetailServiceImpl implements ICashRegisterDetailService
 
     @Override
     public CashRegisterDetailResponse create(CashRegisterDetailRequest request) {
-        if (repository.existsByCreatedByAndCreatedDateBetween(createdBy(), toDateTime(LocalTime.MIN), toDateTime(LocalTime.MAX))) {
+        if (repository.existsByCreatedByAndCreatedDateBetweenAndEnabledTrue(createdBy(), toDateTime(LocalTime.MIN), toDateTime(LocalTime.MAX))) {
             throw new BadRequestException("Ya tienes una caja en funcionamiento");
         }
 
         final var cashRegister = cashRegisterRepository.findById(request.cashRegisterId())
-                .orElseThrow(() -> new NotFoundException("No se encontró a la caja registradora"));
+                .orElseThrow(() -> new NotFoundException("No se encontró la caja registradora"));
 
         if (cashRegister.getEnabled().equals(Boolean.FALSE)) {
-            throw new NotFoundException("No se encontró a la caja registradora");
+            throw new NotFoundException("No se encontró la caja registradora");
         }
 
         if (cashRegister.getStatus().equals(CashRegisterStatus.OCCUPIED)) {
@@ -56,7 +56,7 @@ public class CashRegisterDetailServiceImpl implements ICashRegisterDetailService
 
     @Override
     public boolean isAlreadyCreated() {
-        return repository.existsByCreatedByAndCreatedDateBetween(createdBy(), toDateTime(LocalTime.MIN), toDateTime(LocalTime.MAX));
+        return repository.existsByCreatedByAndCreatedDateBetweenAndEnabledTrue(createdBy(), toDateTime(LocalTime.MIN), toDateTime(LocalTime.MAX));
     }
 
     @Override
