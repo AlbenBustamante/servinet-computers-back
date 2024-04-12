@@ -10,6 +10,6 @@ public interface CashRegisterDetailRepository extends JpaRepository<CashRegister
 
     boolean existsByCreatedByAndCreatedDateBetweenAndEnabledTrue(String createdBy, LocalDateTime firstDate, LocalDateTime lastDate);
 
-    Optional<CashRegisterDetail> findByCreatedByAndCreatedDateBetween(String createdBy, LocalDateTime firstDate, LocalDateTime lastDate);
+    Optional<CashRegisterDetail> findByCreatedByAndCreatedDateBetweenAndEnabledTrue(String createdBy, LocalDateTime firstDate, LocalDateTime lastDate);
 
 }

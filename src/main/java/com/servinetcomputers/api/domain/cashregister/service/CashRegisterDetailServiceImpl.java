@@ -61,12 +61,8 @@ public class CashRegisterDetailServiceImpl implements ICashRegisterDetailService
 
     @Override
     public CashRegisterDetailResponse updateHours(CashRegisterDetailRequest req) {
-        final var cashRegisterDetail = repository.findByCreatedByAndCreatedDateBetween(createdBy(), toDateTime(LocalTime.MIN), toDateTime(LocalTime.MAX))
+        final var cashRegisterDetail = repository.findByCreatedByAndCreatedDateBetweenAndEnabledTrue(createdBy(), toDateTime(LocalTime.MIN), toDateTime(LocalTime.MAX))
                 .orElseThrow(() -> new NotFoundException("No se encontró la caja en funcionamiento"));
-
-        if (cashRegisterDetail.getEnabled().equals(Boolean.FALSE)) {
-            throw new NotFoundException("No se encontró la caja en funcionamiento");
-        }
 
         cashRegisterDetail.setWorkingHours(req.workingHours());
 
