@@ -16,8 +16,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 @RequiredArgsConstructor
 @RequestMapping("/cash-register-details")
 @RestController
@@ -28,6 +26,11 @@ public class CashRegisterDetailController {
     @PostMapping
     public ResponseEntity<CashRegisterDetailResponse> register(@RequestBody CashRegisterDetailRequest request) {
         return ResponseEntity.ok(service.create(request));
+    }
+
+    @GetMapping
+    public ResponseEntity<CashRegisterDetailResponse> get() {
+        return ResponseEntity.ok(service.get());
     }
 
     @GetMapping("/already-exists")
@@ -45,8 +48,8 @@ public class CashRegisterDetailController {
         return ResponseEntity.ok(service.delete(cashRegisterDetailId));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<List<CashRegisterBaseResponse>> getBases(@PathVariable("id") int cashRegisterDetailId) {
+    @GetMapping("/{id}/base")
+    public ResponseEntity<CashRegisterBaseResponse> getBase(@PathVariable("id") int cashRegisterDetailId) {
         return ResponseEntity.ok(baseService.getByCashRegisterDetailId(cashRegisterDetailId));
     }
 }

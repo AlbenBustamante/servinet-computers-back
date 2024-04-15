@@ -60,6 +60,14 @@ public class CashRegisterDetailServiceImpl implements ICashRegisterDetailService
     }
 
     @Override
+    public CashRegisterDetailResponse get() {
+        final var detail = repository.findByCreatedByAndCreatedDateBetweenAndEnabledTrue(createdBy(), toDateTime(LocalTime.MIN), toDateTime(LocalTime.MAX))
+                .orElseThrow(() -> new NotFoundException("No se encontró la caja en funcionamiento"));
+
+        return mapper.toResponse(detail);
+    }
+
+    @Override
     public CashRegisterDetailResponse updateHours(CashRegisterDetailRequest req) {
         final var cashRegisterDetail = repository.findByCreatedByAndCreatedDateBetweenAndEnabledTrue(createdBy(), toDateTime(LocalTime.MIN), toDateTime(LocalTime.MAX))
                 .orElseThrow(() -> new NotFoundException("No se encontró la caja en funcionamiento"));

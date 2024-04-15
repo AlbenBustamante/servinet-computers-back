@@ -9,6 +9,8 @@ public interface ICashRegisterDetailService {
 
     boolean isAlreadyCreated();
 
+    CashRegisterDetailResponse get();
+
     CashRegisterDetailResponse updateHours(CashRegisterDetailRequest req);
 
     boolean delete(int id);

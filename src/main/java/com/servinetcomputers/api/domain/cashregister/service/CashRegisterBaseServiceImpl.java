@@ -12,8 +12,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 @RequiredArgsConstructor
 @Service
 public class CashRegisterBaseServiceImpl implements ICashRegisterBaseService {
@@ -35,7 +33,7 @@ public class CashRegisterBaseServiceImpl implements ICashRegisterBaseService {
     }
 
     @Override
-    public List<CashRegisterBaseResponse> getByCashRegisterDetailId(int cashRegisterDetailId) {
+    public CashRegisterBaseResponse getByCashRegisterDetailId(int cashRegisterDetailId) {
         final var detail = cashRegisterDetailRepository.findById(cashRegisterDetailId)
                 .orElseThrow(() -> new NotFoundException("La caja registradora no fue encontrada"));
 
@@ -43,6 +41,9 @@ public class CashRegisterBaseServiceImpl implements ICashRegisterBaseService {
             throw new NotFoundException("La caja registradora no fue encontrada");
         }
 
-        return mapper.toResponses(repository.findByCashRegisterDetailIdAndEnabledTrue(cashRegisterDetailId));
+        final var base = repository.findByCashRegisterDetailIdAndEnabledTrue(cashRegisterDetailId)
+                .orElseThrow(() -> new NotFoundException("No se encontró base registrada a la caja registradora"));
+
+        return mapper.toResponse(base);
     }
 }
