@@ -1,8 +1,8 @@
 package com.servinetcomputers.api.domain.transfer.abs;
 
 import com.servinetcomputers.api.domain.PageResponse;
-import com.servinetcomputers.api.domain.transfer.model.dto.TransferRequest;
-import com.servinetcomputers.api.domain.transfer.model.dto.TransferResponse;
+import com.servinetcomputers.api.domain.transfer.dto.TransferRequest;
+import com.servinetcomputers.api.domain.transfer.dto.TransferResponse;
 
 import java.util.Optional;
 

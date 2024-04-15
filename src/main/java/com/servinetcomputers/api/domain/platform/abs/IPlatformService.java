@@ -1,7 +1,7 @@
 package com.servinetcomputers.api.domain.platform.abs;
 
-import com.servinetcomputers.api.domain.platform.model.dto.PlatformRequest;
-import com.servinetcomputers.api.domain.platform.model.dto.PlatformResponse;
+import com.servinetcomputers.api.domain.platform.dto.PlatformRequest;
+import com.servinetcomputers.api.domain.platform.dto.PlatformResponse;
 
 import java.util.List;
 

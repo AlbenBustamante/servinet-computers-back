@@ -2,8 +2,8 @@ package com.servinetcomputers.api.domain.transfer;
 
 import com.servinetcomputers.api.domain.PageResponse;
 import com.servinetcomputers.api.domain.transfer.abs.ITransferService;
-import com.servinetcomputers.api.domain.transfer.model.dto.TransferRequest;
-import com.servinetcomputers.api.domain.transfer.model.dto.TransferResponse;
+import com.servinetcomputers.api.domain.transfer.dto.TransferRequest;
+import com.servinetcomputers.api.domain.transfer.dto.TransferResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;

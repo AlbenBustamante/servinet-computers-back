@@ -1,7 +1,7 @@
 package com.servinetcomputers.api.domain.user.abs;
 
-import com.servinetcomputers.api.domain.user.model.dto.UserRequest;
-import com.servinetcomputers.api.domain.user.model.dto.UserResponse;
+import com.servinetcomputers.api.domain.user.dto.UserRequest;
+import com.servinetcomputers.api.domain.user.dto.UserResponse;
 
 import java.util.List;
 

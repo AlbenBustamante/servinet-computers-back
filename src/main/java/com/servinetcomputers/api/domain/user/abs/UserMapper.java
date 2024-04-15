@@ -1,8 +1,8 @@
 package com.servinetcomputers.api.domain.user.abs;
 
-import com.servinetcomputers.api.domain.user.model.User;
-import com.servinetcomputers.api.domain.user.model.dto.UserRequest;
-import com.servinetcomputers.api.domain.user.model.dto.UserResponse;
+import com.servinetcomputers.api.domain.user.User;
+import com.servinetcomputers.api.domain.user.dto.UserRequest;
+import com.servinetcomputers.api.domain.user.dto.UserResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -18,6 +18,8 @@ public interface UserMapper {
 
     List<UserResponse> toResponses(List<User> entities);
 
+    @Mapping(target = "modifiedBy", ignore = true)
+    @Mapping(target = "createdBy", ignore = true)
     @Mapping(target = "code", ignore = true)
     @Mapping(target = "modifiedDate", ignore = true)
     @Mapping(target = "enabled", ignore = true)

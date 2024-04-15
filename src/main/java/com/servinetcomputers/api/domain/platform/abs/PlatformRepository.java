@@ -1,6 +1,6 @@
 package com.servinetcomputers.api.domain.platform.abs;
 
-import com.servinetcomputers.api.domain.platform.model.Platform;
+import com.servinetcomputers.api.domain.platform.Platform;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

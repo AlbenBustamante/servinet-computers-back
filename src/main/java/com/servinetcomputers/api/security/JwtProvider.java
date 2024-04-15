@@ -2,7 +2,7 @@ package com.servinetcomputers.api.security;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.servinetcomputers.api.domain.user.model.dto.UserResponse;
+import com.servinetcomputers.api.domain.user.dto.UserResponse;
 import com.servinetcomputers.api.exception.AuthenticationException;
 import com.servinetcomputers.api.security.util.Role;
 import org.springframework.beans.factory.annotation.Value;
@@ -75,7 +75,7 @@ public class JwtProvider {
      * @param token the token provided.
      * @return a {@link UsernamePasswordAuthenticationToken} as the user/campus {@link Authentication}
      */
-    public Authentication validateToken(final String token) {
+    public UsernamePasswordAuthenticationToken validateToken(final String token) {
         try {
             JWT.require(Algorithm.HMAC256(secretKey)).build().verify(token);
         } catch (Exception ex) {
@@ -93,7 +93,7 @@ public class JwtProvider {
 
         authorities.add(new SimpleGrantedAuthority(authority));
 
-        return new UsernamePasswordAuthenticationToken(user, token, authorities);
+        return new UsernamePasswordAuthenticationToken(user.getCode(), token, authorities);
     }
 
     /**

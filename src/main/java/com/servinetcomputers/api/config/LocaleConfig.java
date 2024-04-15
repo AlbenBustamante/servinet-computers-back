@@ -4,16 +4,22 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.text.NumberFormat;
+import java.time.ZoneId;
 import java.util.Locale;
-
-import static com.servinetcomputers.api.util.LocalConstants.LOCALE_COUNTRY;
-import static com.servinetcomputers.api.util.LocalConstants.LOCALE_LANGUAGE;
 
 /**
  * Locale and currency configuration.
  */
 @Configuration
 public class LocaleConfig {
+    private static final String LOCALE_LANGUAGE = "es";
+    private static final String LOCALE_COUNTRY = "CO";
+    private static final String LOCALE_ZONE = "America/Bogota";
+
+    @Bean
+    public ZoneId zoneId() {
+        return ZoneId.of(LOCALE_ZONE);
+    }
 
     @Bean
     public Locale locale() {

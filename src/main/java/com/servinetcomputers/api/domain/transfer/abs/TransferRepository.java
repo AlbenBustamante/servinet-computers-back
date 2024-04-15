@@ -1,6 +1,6 @@
 package com.servinetcomputers.api.domain.transfer.abs;
 
-import com.servinetcomputers.api.domain.transfer.model.Transfer;
+import com.servinetcomputers.api.domain.transfer.Transfer;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
