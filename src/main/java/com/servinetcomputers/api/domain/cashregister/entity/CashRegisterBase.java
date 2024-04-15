@@ -18,15 +18,15 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import static com.servinetcomputers.api.domain.cashregister.util.CashRegisterBalanceConstants.BASE_LENGTH;
 
 @Entity
-@Table(name = "cash_register_balances")
+@Table(name = "cash_register_bases")
 @EntityListeners(value = {AuditingEntityListener.class, AuditAuditable.class})
 @Getter
 @Setter
-public class CashRegisterBalance extends Auditable {
+public class CashRegisterBase extends Auditable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "cash_register_balance_id")
+    @Column(name = "cash_register_base_id")
     private Integer id;
 
     @Column(name = "cash_register_detail_id", nullable = false)
@@ -41,5 +41,5 @@ public class CashRegisterBalance extends Auditable {
     @ManyToOne
     @JoinColumn(name = "cash_register_detail_id", referencedColumnName = "cash_register_detail_id", insertable = false, updatable = false)
     private CashRegisterDetail cashRegisterDetail;
-    
+
 }
