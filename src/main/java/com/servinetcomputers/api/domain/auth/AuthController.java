@@ -37,7 +37,7 @@ public class AuthController {
         return ResponseEntity.ok(authService.login(request));
     }
 
-    @PostMapping("sign-out")
+    @PostMapping("/sign-out")
     public ResponseEntity<Boolean> logout(@RequestHeader(name = HttpHeaders.AUTHORIZATION) String token) {
         return ResponseEntity.ok(authService.logout(token));
     }
