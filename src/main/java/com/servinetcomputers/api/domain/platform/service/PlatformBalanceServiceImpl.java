@@ -23,7 +23,7 @@ import java.util.List;
  */
 @Service
 @RequiredArgsConstructor
-public class PlatformPlatformBalanceServiceImpl implements IPlatformBalanceService {
+public class PlatformBalanceServiceImpl implements IPlatformBalanceService {
 
     private final PlatformBalanceRepository platformBalanceRepository;
     private final PlatformBalanceMapper platformBalanceMapper;
