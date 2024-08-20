@@ -1,6 +1,6 @@
 package com.servinetcomputers.api.domain.platform.abs;
 
-import com.servinetcomputers.api.domain.platform.Platform;
+import com.servinetcomputers.api.domain.platform.entity.Platform;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -18,6 +18,8 @@ public interface PlatformRepository extends JpaRepository<Platform, Integer> {
      * @return an {@link Optional} of the platform found.
      */
     Optional<Platform> findByName(String name);
+
+    boolean existsByName(String name);
 
     List<Platform> findAllByEnabledTrue();
 

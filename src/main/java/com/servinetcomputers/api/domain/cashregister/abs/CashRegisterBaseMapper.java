@@ -12,7 +12,6 @@ import java.util.List;
 @Mapper(componentModel = "spring", uses = BaseMapper.class)
 public interface CashRegisterBaseMapper {
 
-
     CashRegisterBaseResponse toResponse(CashRegisterBase entity);
 
     List<CashRegisterBaseResponse> toResponses(List<CashRegisterBase> entities);

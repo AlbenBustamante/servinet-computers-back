@@ -12,9 +12,9 @@ import java.time.LocalDateTime;
 public class TransferResponse extends ModelResponse {
     private final String platformName, value;
 
-    public TransferResponse(int id, String platformName, String value, boolean isAvailable, LocalDateTime createdAt, LocalDateTime updatedAt,
+    public TransferResponse(int id, String platformName, String value, boolean enabled, LocalDateTime createdDate, LocalDateTime modifiedDate,
                             String createdBy, String modifiedBy) {
-        super(id, isAvailable, createdAt, updatedAt, createdBy, modifiedBy);
+        super(id, enabled, createdDate, modifiedDate, createdBy, modifiedBy);
         this.platformName = platformName;
         this.value = value;
     }

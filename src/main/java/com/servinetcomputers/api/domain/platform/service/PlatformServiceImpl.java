@@ -1,4 +1,4 @@
-package com.servinetcomputers.api.domain.platform;
+package com.servinetcomputers.api.domain.platform.service;
 
 import com.servinetcomputers.api.domain.platform.abs.IPlatformService;
 import com.servinetcomputers.api.domain.platform.abs.PlatformMapper;
@@ -31,8 +31,8 @@ public class PlatformServiceImpl implements IPlatformService {
     @Secured(value = ADMIN_AUTHORITY)
     @Override
     public PlatformResponse create(PlatformRequest request) {
-        if (repository.findByName(request.name()).isPresent()) {
-            throw new BadRequestException("La plataforma ya existe");
+        if (repository.existsByName(request.name())) {
+            throw new BadRequestException("Ya existe la plataforma");
         }
 
         return mapper.toResponse(repository.save(mapper.toEntity(request)));

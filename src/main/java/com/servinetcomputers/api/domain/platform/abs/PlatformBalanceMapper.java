@@ -1,25 +1,21 @@
-package com.servinetcomputers.api.domain.transfer.abs;
+package com.servinetcomputers.api.domain.platform.abs;
 
-import com.servinetcomputers.api.domain.transfer.Transfer;
-import com.servinetcomputers.api.domain.transfer.dto.TransferRequest;
-import com.servinetcomputers.api.domain.transfer.dto.TransferResponse;
+import com.servinetcomputers.api.domain.platform.dto.PlatformBalanceRequest;
+import com.servinetcomputers.api.domain.platform.dto.PlatformBalanceResponse;
+import com.servinetcomputers.api.domain.platform.entity.PlatformBalance;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 import java.util.List;
 
-/**
- * The transfer's models mapper.
- */
 @Mapper(componentModel = "spring")
-public interface TransferMapper {
+public interface PlatformBalanceMapper {
 
     @Mapping(target = "platformName", source = "entity.platform.name")
-    TransferResponse toResponse(Transfer entity);
+    PlatformBalanceResponse toResponse(PlatformBalance entity);
 
-    List<TransferResponse> toResponses(List<Transfer> entities);
+    List<PlatformBalanceResponse> toResponses(List<PlatformBalance> entities);
 
-    @Mapping(target = "platformId", ignore = true)
     @Mapping(target = "platform", ignore = true)
     @Mapping(target = "modifiedDate", ignore = true)
     @Mapping(target = "modifiedBy", ignore = true)
@@ -27,6 +23,6 @@ public interface TransferMapper {
     @Mapping(target = "enabled", ignore = true)
     @Mapping(target = "createdDate", ignore = true)
     @Mapping(target = "createdBy", ignore = true)
-    Transfer toEntity(TransferRequest req);
+    PlatformBalance toEntity(PlatformBalanceRequest request);
 
 }

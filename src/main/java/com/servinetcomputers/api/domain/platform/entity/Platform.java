@@ -1,14 +1,8 @@
-package com.servinetcomputers.api.domain.platform;
+package com.servinetcomputers.api.domain.platform.entity;
 
 import com.servinetcomputers.api.audit.AuditAuditable;
 import com.servinetcomputers.api.audit.Auditable;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;

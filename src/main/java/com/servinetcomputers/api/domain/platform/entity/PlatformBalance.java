@@ -1,41 +1,38 @@
-package com.servinetcomputers.api.domain.transfer;
+package com.servinetcomputers.api.domain.platform.entity;
 
 import com.servinetcomputers.api.audit.AuditAuditable;
 import com.servinetcomputers.api.audit.Auditable;
-import com.servinetcomputers.api.domain.platform.entity.Platform;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.math.BigDecimal;
-
 /**
- * The transfer's model entity.
+ * The balance's model entity.
  */
 @Entity
-@Table(name = "transfers")
+@Table(name = "platform_balances")
 @EntityListeners(value = {AuditAuditable.class, AuditingEntityListener.class})
-@Setter
 @Getter
-public class Transfer extends Auditable {
+@Setter
+public class PlatformBalance extends Auditable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "transfer_id")
+    @Column(name = "platform_balance_id")
     private Integer id;
 
-    @Column(name = "platform_id", nullable = false)
+    @Column(nullable = false, name = "platform_id")
     private Integer platformId;
 
-    @Column(name = "campus_id", nullable = false)
-    private Integer campusId;
+    @Column(nullable = false)
+    private Integer initialBalance;
 
     @Column(nullable = false)
-    private BigDecimal value;
+    private Integer finalBalance;
 
     @ManyToOne
-    @JoinColumn(name = "platform_id", insertable = false, updatable = false)
+    @JoinColumn(name = "platform_id", updatable = false, insertable = false)
     private Platform platform;
 
 }

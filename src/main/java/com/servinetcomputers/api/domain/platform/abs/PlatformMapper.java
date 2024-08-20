@@ -1,8 +1,8 @@
 package com.servinetcomputers.api.domain.platform.abs;
 
-import com.servinetcomputers.api.domain.platform.Platform;
 import com.servinetcomputers.api.domain.platform.dto.PlatformRequest;
 import com.servinetcomputers.api.domain.platform.dto.PlatformResponse;
+import com.servinetcomputers.api.domain.platform.entity.Platform;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -19,9 +19,11 @@ public interface PlatformMapper {
     List<PlatformResponse> toResponses(List<Platform> entities);
 
     @Mapping(target = "modifiedDate", ignore = true)
-    @Mapping(target = "enabled", ignore = true)
+    @Mapping(target = "modifiedBy", ignore = true)
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "enabled", ignore = true)
     @Mapping(target = "createdDate", ignore = true)
+    @Mapping(target = "createdBy", ignore = true)
     Platform toEntity(PlatformRequest req);
 
 }

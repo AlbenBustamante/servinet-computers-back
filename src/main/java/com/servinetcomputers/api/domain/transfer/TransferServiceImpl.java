@@ -3,7 +3,7 @@ package com.servinetcomputers.api.domain.transfer;
 import com.servinetcomputers.api.domain.DataResponse;
 import com.servinetcomputers.api.domain.PageResponse;
 import com.servinetcomputers.api.domain.platform.abs.PlatformRepository;
-import com.servinetcomputers.api.domain.platform.Platform;
+import com.servinetcomputers.api.domain.platform.entity.Platform;
 import com.servinetcomputers.api.domain.transfer.abs.ITransferService;
 import com.servinetcomputers.api.domain.transfer.abs.TransferMapper;
 import com.servinetcomputers.api.domain.transfer.abs.TransferRepository;
@@ -58,7 +58,7 @@ public class TransferServiceImpl implements ITransferService {
         final var transfer = repository.findById(transferId)
                 .orElseThrow(() -> new NotFoundException("Transferencia no encontrada: " + transferId));
 
-        if (transfer.getIsAvailable().equals(Boolean.FALSE)) {
+        if (transfer.getEnabled().equals(Boolean.FALSE)) {
             throw new NotFoundException("Transferencia no encontrada: " + transferId);
         }
 
@@ -74,7 +74,7 @@ public class TransferServiceImpl implements ITransferService {
         final var transfer = repository.findById(transferId)
                 .orElseThrow(() -> new NotFoundException("Transferencia no encontrada: " + transferId));
 
-        if (transfer.getIsAvailable().equals(Boolean.FALSE)) {
+        if (transfer.getEnabled().equals(Boolean.FALSE)) {
             throw new NotFoundException("Transferencia no encontrada: " + transferId);
         }
 
@@ -106,7 +106,7 @@ public class TransferServiceImpl implements ITransferService {
             return false;
         }
 
-        transferFound.get().setIsAvailable(false);
+        transferFound.get().setEnabled(false);
 
         repository.save(transferFound.get());
 

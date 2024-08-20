@@ -40,7 +40,7 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.badRequest().body(body);
     }
 
-    @ExceptionHandler(value = {BadRequestException.class, NotFoundException.class, AppException.class})
+    @ExceptionHandler(value = {AlreadyExistsException.class, BadRequestException.class, NotFoundException.class, AppException.class})
     public ProblemDetail handleAppException(AppException ex) {
         return createProblemDetail(ex);
     }
