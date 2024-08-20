@@ -7,14 +7,15 @@ import com.servinetcomputers.api.domain.platform.abs.PlatformRepository;
 import com.servinetcomputers.api.domain.platform.dto.PlatformBalanceRequest;
 import com.servinetcomputers.api.domain.platform.dto.PlatformBalanceResponse;
 import com.servinetcomputers.api.domain.platform.entity.PlatformBalance;
-import com.servinetcomputers.api.exception.AlreadyExistsException;
 import com.servinetcomputers.api.exception.AppException;
 import com.servinetcomputers.api.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,9 +32,14 @@ public class PlatformBalanceServiceImpl implements IPlatformBalanceService {
 
     @Transactional(rollbackFor = AppException.class)
     @Override
-    public List<PlatformBalanceResponse> createInitialBalances() {
-        if (existsCurrentDateBalances()) {
-            throw new AlreadyExistsException("Los saldos del día ya fueron creados");
+    public List<PlatformBalanceResponse> loadInitialBalances() {
+        final var initialDate = LocalDateTime.of(LocalDate.now(), LocalTime.MIN);
+        final var finalDate = LocalDateTime.of(LocalDate.now(), LocalTime.now());
+
+        final var currentBalances = platformBalanceRepository.findAllByEnabledTrueAndCreatedDateBetween(initialDate, finalDate);
+
+        if (!currentBalances.isEmpty()) {
+            return platformBalanceMapper.toResponses(currentBalances);
         }
 
         final var platforms = platformRepository.findAllByEnabledTrue();
@@ -52,14 +58,6 @@ public class PlatformBalanceServiceImpl implements IPlatformBalanceService {
         });
 
         return platformBalanceMapper.toResponses(platformBalanceRepository.saveAll(platformBalances));
-    }
-
-    @Transactional(readOnly = true)
-    @Override
-    public boolean existsCurrentDateBalances() {
-        final var balances = platformBalanceRepository.findAllByEnabledTrueAndCreatedDateBetween(LocalDateTime.now(), LocalDateTime.now());
-
-        return !balances.isEmpty();
     }
 
     @Transactional(rollbackFor = AppException.class)

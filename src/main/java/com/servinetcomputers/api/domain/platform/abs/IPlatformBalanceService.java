@@ -10,9 +10,7 @@ import java.util.List;
  */
 public interface IPlatformBalanceService {
 
-    List<PlatformBalanceResponse> createInitialBalances();
-
-    boolean existsCurrentDateBalances();
+    List<PlatformBalanceResponse> loadInitialBalances();
 
     PlatformBalanceResponse update(int balanceId, PlatformBalanceRequest request);
 

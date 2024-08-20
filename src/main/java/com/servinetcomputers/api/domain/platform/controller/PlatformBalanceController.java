@@ -17,13 +17,8 @@ public class PlatformBalanceController {
     private final IPlatformBalanceService balanceService;
 
     @PostMapping
-    public ResponseEntity<List<PlatformBalanceResponse>> createInitialBalances() {
-        return ResponseEntity.ok(balanceService.createInitialBalances());
-    }
-
-    @GetMapping("/exists-current-date-balances")
-    public ResponseEntity<Boolean> existsCurrentDateBalances() {
-        return ResponseEntity.ok(balanceService.existsCurrentDateBalances());
+    public ResponseEntity<List<PlatformBalanceResponse>> loadInitialBalances() {
+        return ResponseEntity.ok(balanceService.loadInitialBalances());
     }
 
     @PatchMapping("/{balanceId}")

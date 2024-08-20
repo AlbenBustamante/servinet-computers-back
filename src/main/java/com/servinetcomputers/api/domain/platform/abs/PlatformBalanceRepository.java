@@ -18,4 +18,6 @@ public interface PlatformBalanceRepository extends JpaRepository<PlatformBalance
      */
     List<PlatformBalance> findAllByEnabledTrueAndCreatedDateBetween(LocalDateTime startDate, LocalDateTime endDate);
 
+    boolean existsByEnabledTrueAndCreatedDateBetween(LocalDateTime startDate, LocalDateTime endDate);
+
 }
