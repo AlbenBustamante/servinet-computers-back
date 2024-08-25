@@ -1,6 +1,6 @@
-package com.servinetcomputers.api.domain.transfer.abs;
+package com.servinetcomputers.api.domain.platform.abs;
 
-import com.servinetcomputers.api.domain.transfer.Transfer;
+import com.servinetcomputers.api.domain.platform.entity.PlatformTransfer;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -9,9 +9,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 /**
- * The {@link Transfer} repository.
+ * The {@link PlatformTransfer} repository.
  */
-public interface TransferRepository extends JpaRepository<Transfer, Integer> {
+public interface PlatformTransferRepository extends JpaRepository<PlatformTransfer, Integer> {
 
     /**
      * Search all the transfers created between two dates.
@@ -21,7 +21,7 @@ public interface TransferRepository extends JpaRepository<Transfer, Integer> {
      * @param pageable  the pageable.
      * @return a {@link Page} of all the transfers found.
      */
-    Page<Transfer> findAllByEnabledTrueAndCreatedDateBetween(LocalDateTime firstDate, LocalDateTime lastDate, Pageable pageable);
+    Page<PlatformTransfer> findAllByEnabledTrueAndCreatedDateBetween(LocalDateTime firstDate, LocalDateTime lastDate, Pageable pageable);
 
     /**
      * Search all the transfers created between two dates without pageable.
@@ -30,6 +30,6 @@ public interface TransferRepository extends JpaRepository<Transfer, Integer> {
      * @param lastDate  the last date.
      * @return all the transfers found.
      */
-    List<Transfer> findAllByEnabledTrueAndCreatedDateBetween(LocalDateTime firstDate, LocalDateTime lastDate);
+    List<PlatformTransfer> findAllByEnabledTrueAndCreatedDateBetween(LocalDateTime firstDate, LocalDateTime lastDate);
 
 }

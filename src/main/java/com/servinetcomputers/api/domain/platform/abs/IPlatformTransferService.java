@@ -1,15 +1,14 @@
-package com.servinetcomputers.api.domain.transfer.abs;
+package com.servinetcomputers.api.domain.platform.abs;
 
-import com.servinetcomputers.api.domain.PageResponse;
-import com.servinetcomputers.api.domain.transfer.dto.TransferRequest;
-import com.servinetcomputers.api.domain.transfer.dto.TransferResponse;
+import com.servinetcomputers.api.domain.platform.dto.PlatformTransferRequest;
+import com.servinetcomputers.api.domain.platform.dto.PlatformTransferResponse;
 
 import java.util.Optional;
 
 /**
  * The transfer's uses case.
  */
-public interface ITransferService {
+public interface IPlatformTransferService {
 
     /**
      * Create and persist a new transfer.
@@ -17,7 +16,7 @@ public interface ITransferService {
      * @param request the data to be saved.
      * @return the transfer saved.
      */
-    PageResponse<TransferResponse> create(TransferRequest request);
+    PlatformTransferResponse create(PlatformTransferRequest request);
 
     /**
      * Search an existing and available transfer.
@@ -25,7 +24,7 @@ public interface ITransferService {
      * @param transferId the ID to be searched.
      * @return an {@link Optional} of the transfer found.
      */
-    PageResponse<TransferResponse> get(int transferId);
+    PlatformTransferResponse get(int transferId);
 
     /**
      * Update an existing and available transfer.
@@ -34,7 +33,7 @@ public interface ITransferService {
      * @param request    the data to be updated.
      * @return an {@link Optional} of the transfer updated.
      */
-    PageResponse<TransferResponse> update(int transferId, TransferRequest request);
+    PlatformTransferResponse update(int transferId, PlatformTransferRequest request);
 
     /**
      * Disable an existing and available transfer.
