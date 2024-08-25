@@ -53,6 +53,7 @@ public class PlatformBalanceServiceImpl implements IPlatformBalanceService {
         platforms.forEach(platform -> {
             final var request = new PlatformBalanceRequest(platform.getId(), 0, 0);
             final var entity = platformBalanceMapper.toEntity(request);
+            entity.setPlatform(platform);
 
             platformBalances.add(entity);
         });
