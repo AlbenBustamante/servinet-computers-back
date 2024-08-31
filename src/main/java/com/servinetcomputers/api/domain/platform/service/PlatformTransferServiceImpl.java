@@ -8,6 +8,7 @@ import com.servinetcomputers.api.domain.platform.dto.PlatformTransferRequest;
 import com.servinetcomputers.api.domain.platform.dto.PlatformTransferResponse;
 import com.servinetcomputers.api.exception.AppException;
 import com.servinetcomputers.api.exception.NotFoundException;
+import com.servinetcomputers.api.storage.StorageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +23,7 @@ public class PlatformTransferServiceImpl implements IPlatformTransferService {
     private final PlatformTransferRepository repository;
     private final PlatformTransferMapper mapper;
     private final PlatformRepository platformRepository;
+    private final StorageService storageService;
 
     @Transactional(rollbackFor = AppException.class)
     @Override
@@ -35,6 +37,9 @@ public class PlatformTransferServiceImpl implements IPlatformTransferService {
 
         final var transfer = mapper.toEntity(request);
         transfer.setPlatform(platform);
+
+        final var voucherUrls = storageService.uploadFiles(request.vouchers()).toArray(new String[0]);
+        transfer.setVoucherUrls(voucherUrls);
 
         return mapper.toResponse(repository.save(transfer));
     }

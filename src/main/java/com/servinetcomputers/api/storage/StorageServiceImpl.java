@@ -35,7 +35,7 @@ public class StorageServiceImpl implements StorageService {
 
     @Override
     public List<String> uploadFiles(List<MultipartFile> multipartFiles) {
-        final List<String> files = new ArrayList<>();
+        final List<String> files = new ArrayList<>(multipartFiles.size());
 
         multipartFiles.forEach(multipartFile -> files.add(uploadFile(multipartFile)));
 

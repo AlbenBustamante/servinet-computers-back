@@ -18,6 +18,7 @@ public interface PlatformTransferMapper {
 
     List<PlatformTransferResponse> toResponses(List<PlatformTransfer> entities);
 
+    @Mapping(target = "voucherUrls", ignore = true)
     @Mapping(target = "platform", ignore = true)
     @Mapping(target = "modifiedDate", ignore = true)
     @Mapping(target = "modifiedBy", ignore = true)

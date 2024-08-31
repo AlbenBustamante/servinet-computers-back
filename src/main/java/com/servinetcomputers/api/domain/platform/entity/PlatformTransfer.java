@@ -28,6 +28,9 @@ public class PlatformTransfer extends Auditable {
     @Column(nullable = false)
     private Integer value;
 
+    @Column(name = "voucher_urls")
+    private String[] voucherUrls;
+
     @ManyToOne
     @JoinColumn(name = "platform_id", insertable = false, updatable = false)
     private Platform platform;

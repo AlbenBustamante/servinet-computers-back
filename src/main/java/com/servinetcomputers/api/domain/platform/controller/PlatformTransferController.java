@@ -20,7 +20,7 @@ public class PlatformTransferController {
     private final IPlatformTransferService transferService;
 
     @PostMapping
-    public ResponseEntity<PlatformTransferResponse> register(@RequestBody PlatformTransferRequest request) {
+    public ResponseEntity<PlatformTransferResponse> register(@ModelAttribute PlatformTransferRequest request) {
         return ResponseEntity.status(CREATED).body(transferService.create(request));
     }
 
