@@ -38,3 +38,6 @@ out/
 
 ### Docker ###
 docker-compose.yaml
+
+### FIREBASE ###
+src/main/resources/serviceAccountKey.json
