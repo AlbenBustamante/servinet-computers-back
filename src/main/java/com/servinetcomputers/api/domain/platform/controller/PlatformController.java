@@ -3,6 +3,7 @@ package com.servinetcomputers.api.domain.platform.controller;
 import com.servinetcomputers.api.domain.platform.abs.IPlatformService;
 import com.servinetcomputers.api.domain.platform.dto.PlatformRequest;
 import com.servinetcomputers.api.domain.platform.dto.PlatformResponse;
+import com.servinetcomputers.api.domain.platform.dto.PortalPlatformDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +29,11 @@ public class PlatformController {
     @GetMapping
     public ResponseEntity<List<PlatformResponse>> getAll() {
         return ResponseEntity.ok(platformService.getAll());
+    }
+
+    @GetMapping("/portal")
+    public ResponseEntity<List<PortalPlatformDto>> getAllPortalPlatforms() {
+        return ResponseEntity.ok(platformService.getAllPortalPlatforms());
     }
 
     @PatchMapping("/{platformId}")

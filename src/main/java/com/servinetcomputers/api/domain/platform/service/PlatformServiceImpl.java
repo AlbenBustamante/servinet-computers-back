@@ -1,10 +1,7 @@
 package com.servinetcomputers.api.domain.platform.service;
 
-import com.servinetcomputers.api.domain.platform.abs.IPlatformService;
-import com.servinetcomputers.api.domain.platform.abs.PlatformMapper;
-import com.servinetcomputers.api.domain.platform.abs.PlatformRepository;
-import com.servinetcomputers.api.domain.platform.dto.PlatformRequest;
-import com.servinetcomputers.api.domain.platform.dto.PlatformResponse;
+import com.servinetcomputers.api.domain.platform.abs.*;
+import com.servinetcomputers.api.domain.platform.dto.*;
 import com.servinetcomputers.api.exception.AppException;
 import com.servinetcomputers.api.exception.BadRequestException;
 import com.servinetcomputers.api.exception.NotFoundException;
@@ -13,6 +10,10 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.servinetcomputers.api.security.util.SecurityConstants.ADMIN_AUTHORITY;
@@ -26,6 +27,10 @@ public class PlatformServiceImpl implements IPlatformService {
 
     private final PlatformRepository repository;
     private final PlatformMapper mapper;
+    private final PlatformBalanceRepository balanceRepository;
+    private final PlatformBalanceMapper balanceMapper;
+    private final PlatformTransferRepository transferRepository;
+    private final PlatformTransferMapper transferMapper;
 
     @Transactional(rollbackFor = AppException.class)
     @Secured(value = ADMIN_AUTHORITY)
@@ -42,6 +47,39 @@ public class PlatformServiceImpl implements IPlatformService {
     @Override
     public List<PlatformResponse> getAll() {
         return mapper.toResponses(repository.findAllByEnabledTrue());
+    }
+
+    @Override
+    public List<PortalPlatformDto> getAllPortalPlatforms() {
+        final var platforms = repository.findAllByEnabledTrue();
+
+        if (platforms.isEmpty()) {
+            return List.of();
+        }
+
+        final List<PortalPlatformDto> platformReports = new ArrayList<>();
+
+        final var initialDate = LocalDateTime.of(LocalDate.now(), LocalTime.MIN);
+        final var finalDate = LocalDateTime.of(LocalDate.now(), LocalTime.now());
+
+        platforms.forEach(platform -> {
+            final var balance = getPlatformBalance(platform.getId(), initialDate, finalDate);
+            final var transfersAmount = getPlatformTransfersAmount(platform.getId(), initialDate, finalDate);
+            final var transfersTotal = getPlatformTransfersTotal(platform.getId(), initialDate, finalDate);
+
+            final var report = new PortalPlatformDto(
+                    platform.getId(),
+                    platform.getName(),
+                    balance.getInitialBalance(),
+                    balance.getFinalBalance(),
+                    transfersAmount,
+                    transfersTotal
+            );
+
+            platformReports.add(report);
+        });
+
+        return platformReports;
     }
 
     @Transactional(rollbackFor = AppException.class)
@@ -74,6 +112,26 @@ public class PlatformServiceImpl implements IPlatformService {
         repository.save(platformFound.get());
 
         return true;
+    }
+
+    private PlatformBalanceResponse getPlatformBalance(int platformId, LocalDateTime initialDate, LocalDateTime finalDate) {
+        final var platformBalance = balanceRepository.findByPlatformIdAndEnabledTrueAndCreatedDateBetween(platformId, initialDate, finalDate);
+
+        if (platformBalance.isPresent()) {
+            return balanceMapper.toResponse(platformBalance.get());
+        }
+
+        final var request = new PlatformBalanceRequest(platformId, 0, 0);
+
+        return balanceMapper.toResponse(balanceRepository.save(balanceMapper.toEntity(request)));
+    }
+
+    private int getPlatformTransfersAmount(int platformId, LocalDateTime initialDate, LocalDateTime finalDate) {
+        return transferRepository.countByPlatformIdAndEnabledTrueAndCreatedDateBetween(platformId, initialDate, finalDate);
+    }
+
+    private int getPlatformTransfersTotal(int platformId, LocalDateTime initialDate, LocalDateTime finalDate) {
+        return transferRepository.calculateTotalByPlatformIdAndCreatedDateBetween(platformId, initialDate, finalDate);
     }
 
 }

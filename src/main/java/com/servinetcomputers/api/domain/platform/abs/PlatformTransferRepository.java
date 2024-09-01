@@ -4,6 +4,8 @@ import com.servinetcomputers.api.domain.platform.entity.PlatformTransfer;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -12,6 +14,17 @@ import java.util.List;
  * The {@link PlatformTransfer} repository.
  */
 public interface PlatformTransferRepository extends JpaRepository<PlatformTransfer, Integer> {
+
+    @Query("SELECT SUM(pt.value) FROM PlatformTransfer pt " +
+            "WHERE pt.platform.id = :platformId " +
+            "AND pt.platform.enabled = true " +
+            "AND pt.createdDate BETWEEN :startDate AND :endDate")
+    int calculateTotalByPlatformIdAndCreatedDateBetween(
+            @Param("platformId") int platformId,
+            @Param("startDate") LocalDateTime startDate,
+            @Param("endDate") LocalDateTime endDate);
+
+    int countByPlatformIdAndEnabledTrueAndCreatedDateBetween(int platformId, LocalDateTime startDate, LocalDateTime endDate);
 
     /**
      * Search all the transfers created between two dates.
