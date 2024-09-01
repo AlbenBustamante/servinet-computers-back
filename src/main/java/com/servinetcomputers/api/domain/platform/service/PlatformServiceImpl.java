@@ -71,6 +71,7 @@ public class PlatformServiceImpl implements IPlatformService {
             final var report = new PortalPlatformDto(
                     platform.getId(),
                     platform.getName(),
+                    balance.getId(),
                     balance.getInitialBalance(),
                     balance.getFinalBalance(),
                     transfersAmount,
@@ -132,7 +133,8 @@ public class PlatformServiceImpl implements IPlatformService {
     }
 
     private int getPlatformTransfersTotal(int platformId, LocalDateTime initialDate, LocalDateTime finalDate) {
-        return transferRepository.calculateTotalByPlatformIdAndCreatedDateBetween(platformId, initialDate, finalDate);
+        final var total = transferRepository.calculateTotalByPlatformIdAndCreatedDateBetween(platformId, initialDate, finalDate);
+        return total != null ? total : 0;
     }
 
 }

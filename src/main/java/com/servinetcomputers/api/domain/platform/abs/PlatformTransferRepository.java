@@ -19,7 +19,7 @@ public interface PlatformTransferRepository extends JpaRepository<PlatformTransf
             "WHERE pt.platform.id = :platformId " +
             "AND pt.platform.enabled = true " +
             "AND pt.createdDate BETWEEN :startDate AND :endDate")
-    int calculateTotalByPlatformIdAndCreatedDateBetween(
+    Integer calculateTotalByPlatformIdAndCreatedDateBetween(
             @Param("platformId") int platformId,
             @Param("startDate") LocalDateTime startDate,
             @Param("endDate") LocalDateTime endDate);
