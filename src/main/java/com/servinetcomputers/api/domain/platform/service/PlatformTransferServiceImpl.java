@@ -12,6 +12,7 @@ import com.servinetcomputers.api.storage.StorageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * The platform transfer's service implementation.
@@ -27,18 +28,20 @@ public class PlatformTransferServiceImpl implements IPlatformTransferService {
 
     @Transactional(rollbackFor = AppException.class)
     @Override
-    public PlatformTransferResponse create(PlatformTransferRequest request) {
-        final var platform = platformRepository.findById(request.platformId())
-                .orElseThrow(() -> new NotFoundException("Plataforma no encontrada: #" + request.platformId()));
+    public PlatformTransferResponse create(PlatformTransferRequest request, MultipartFile[] vouchers) {
+        final var platform = platformRepository.findById(request.getPlatformId())
+                .orElseThrow(() -> new NotFoundException("Plataforma no encontrada: #" + request.getPlatformId()));
 
         if (!platform.getEnabled()) {
-            throw new NotFoundException("Plataforma no encontrada: #" + request.platformId());
+            throw new NotFoundException("Plataforma no encontrada: #" + request.getPlatformId());
         }
 
         final var transfer = mapper.toEntity(request);
         transfer.setPlatform(platform);
 
-        final var voucherUrls = storageService.uploadFiles(request.vouchers()).toArray(new String[0]);
+        final var folder = "platform_transfers/" + platform.getName().toLowerCase();
+
+        final var voucherUrls = storageService.uploadFiles(folder, vouchers);
         transfer.setVoucherUrls(voucherUrls);
 
         return mapper.toResponse(repository.save(transfer));
@@ -67,18 +70,18 @@ public class PlatformTransferServiceImpl implements IPlatformTransferService {
             throw new NotFoundException("Transferencia no encontrada: " + transferId);
         }
 
-        if (request.platformId() != null) {
-            final var platform = platformRepository.findById(request.platformId())
-                    .orElseThrow(() -> new NotFoundException("Plataforma no encontrada: #" + request.platformId()));
+        if (request.getPlatformId() != null) {
+            final var platform = platformRepository.findById(request.getPlatformId())
+                    .orElseThrow(() -> new NotFoundException("Plataforma no encontrada: #" + request.getPlatformId()));
 
             if (!platform.getEnabled()) {
-                throw new NotFoundException("Plataforma no encontrada: #" + request.platformId());
+                throw new NotFoundException("Plataforma no encontrada: #" + request.getPlatformId());
             }
 
             transfer.setPlatform(platform);
         }
 
-        transfer.setValue(request.value() != null ? request.value() : transfer.getValue());
+        transfer.setValue(request.getValue() != null ? request.getValue() : transfer.getValue());
 
         return mapper.toResponse(repository.save(transfer));
     }

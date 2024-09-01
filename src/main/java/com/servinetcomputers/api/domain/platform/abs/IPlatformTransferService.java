@@ -2,6 +2,7 @@ package com.servinetcomputers.api.domain.platform.abs;
 
 import com.servinetcomputers.api.domain.platform.dto.PlatformTransferRequest;
 import com.servinetcomputers.api.domain.platform.dto.PlatformTransferResponse;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
 
@@ -16,7 +17,7 @@ public interface IPlatformTransferService {
      * @param request the data to be saved.
      * @return the transfer saved.
      */
-    PlatformTransferResponse create(PlatformTransferRequest request);
+    PlatformTransferResponse create(PlatformTransferRequest request, MultipartFile[] vouchers);
 
     /**
      * Search an existing and available transfer.

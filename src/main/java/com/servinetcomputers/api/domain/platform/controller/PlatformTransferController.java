@@ -1,11 +1,14 @@
 package com.servinetcomputers.api.domain.platform.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.servinetcomputers.api.domain.platform.abs.IPlatformTransferService;
 import com.servinetcomputers.api.domain.platform.dto.PlatformTransferRequest;
 import com.servinetcomputers.api.domain.platform.dto.PlatformTransferResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import static org.springframework.http.HttpStatus.CREATED;
 
@@ -20,8 +23,11 @@ public class PlatformTransferController {
     private final IPlatformTransferService transferService;
 
     @PostMapping
-    public ResponseEntity<PlatformTransferResponse> register(@ModelAttribute PlatformTransferRequest request) {
-        return ResponseEntity.status(CREATED).body(transferService.create(request));
+    public ResponseEntity<PlatformTransferResponse> register(@RequestParam(name = "request") String request, @RequestParam(name = "vouchers", required = false) MultipartFile[] vouchers) throws JsonProcessingException {
+        final var mapper = new ObjectMapper();
+        final var platformTransferRequest = mapper.readValue(request, PlatformTransferRequest.class);
+
+        return ResponseEntity.status(CREATED).body(transferService.create(platformTransferRequest, vouchers));
     }
 
     @GetMapping("/{transferId}")

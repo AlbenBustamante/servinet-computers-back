@@ -1,11 +1,14 @@
 package com.servinetcomputers.api.domain.platform.dto;
 
-import org.springframework.web.multipart.MultipartFile;
-
-import java.util.List;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * The transfer dto model for requests.
  */
-public record PlatformTransferRequest(Integer platformId, Integer value, List<MultipartFile> vouchers) {
+@Getter
+@Setter
+public class PlatformTransferRequest {
+    private Integer platformId;
+    private Integer value;
 }

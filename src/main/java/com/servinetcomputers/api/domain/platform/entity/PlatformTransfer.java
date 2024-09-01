@@ -28,7 +28,7 @@ public class PlatformTransfer extends Auditable {
     @Column(nullable = false)
     private Integer value;
 
-    @Column(name = "voucher_urls")
+    @Column(name = "voucher_urls", columnDefinition = "text[]")
     private String[] voucherUrls;
 
     @ManyToOne

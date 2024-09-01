@@ -2,10 +2,8 @@ package com.servinetcomputers.api.storage;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
-
 public interface StorageService {
-    String uploadFile(MultipartFile multipartFile);
+    String uploadFile(String folder, MultipartFile multipartFile);
 
-    List<String> uploadFiles(List<MultipartFile> multipartFiles);
+    String[] uploadFiles(String folder, MultipartFile[] multipartFiles);
 }
