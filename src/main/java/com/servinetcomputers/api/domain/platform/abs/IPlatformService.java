@@ -2,6 +2,7 @@ package com.servinetcomputers.api.domain.platform.abs;
 
 import com.servinetcomputers.api.domain.platform.dto.PlatformRequest;
 import com.servinetcomputers.api.domain.platform.dto.PlatformResponse;
+import com.servinetcomputers.api.domain.platform.dto.PortalPlatformDto;
 
 import java.util.List;
 
@@ -24,6 +25,13 @@ public interface IPlatformService {
      * @return the platforms.
      */
     List<PlatformResponse> getAll();
+
+    /**
+     * Get all the available portal platforms.
+     *
+     * @return the platforms.
+     */
+    List<PortalPlatformDto> loadPortalPlatforms();
 
     /**
      * Update an existing and available platform.

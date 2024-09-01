@@ -31,7 +31,7 @@ public class PlatformBalance extends Auditable {
     @Column(nullable = false)
     private Integer finalBalance;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "platform_id", updatable = false, insertable = false)
     private Platform platform;
 

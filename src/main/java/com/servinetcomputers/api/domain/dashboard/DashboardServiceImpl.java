@@ -2,7 +2,7 @@ package com.servinetcomputers.api.domain.dashboard;
 
 import com.servinetcomputers.api.domain.dashboard.abs.IDashboardService;
 import com.servinetcomputers.api.domain.dashboard.dto.DashboardResponse;
-import com.servinetcomputers.api.domain.transfer.abs.TransferRepository;
+import com.servinetcomputers.api.domain.platform.abs.PlatformTransferRepository;
 import com.servinetcomputers.api.domain.user.User;
 import com.servinetcomputers.api.domain.user.abs.UserRepository;
 import com.servinetcomputers.api.exception.NotFoundException;
@@ -28,7 +28,7 @@ import static com.servinetcomputers.api.security.util.SecurityConstants.CASHIER_
 public class DashboardServiceImpl implements IDashboardService {
 
     private final UserRepository userRepository;
-    private final TransferRepository transferRepository;
+    private final PlatformTransferRepository platformTransferRepository;
     private final ZoneId zoneId;
 
     @Secured(value = CASHIER_AUTHORITY)
