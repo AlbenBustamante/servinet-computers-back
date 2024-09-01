@@ -37,12 +37,13 @@ public class PlatformTransferServiceImpl implements IPlatformTransferService {
         }
 
         final var transfer = mapper.toEntity(request);
-        transfer.setPlatform(platform);
 
-        final var folder = "platform_transfers/" + platform.getName().toLowerCase();
+        if (vouchers != null && vouchers.length > 0) {
+            final var folder = "platform_transfers/" + platform.getName().toLowerCase();
 
-        final var voucherUrls = storageService.uploadFiles(folder, vouchers);
-        transfer.setVoucherUrls(voucherUrls);
+            final var voucherUrls = storageService.uploadFiles(folder, vouchers);
+            transfer.setVoucherUrls(voucherUrls);
+        }
 
         return mapper.toResponse(repository.save(transfer));
     }
