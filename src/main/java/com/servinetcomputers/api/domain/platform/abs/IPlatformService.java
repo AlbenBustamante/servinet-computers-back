@@ -31,7 +31,7 @@ public interface IPlatformService {
      *
      * @return the platforms.
      */
-    List<PortalPlatformDto> getAllPortalPlatforms();
+    List<PortalPlatformDto> loadPortalPlatforms();
 
     /**
      * Update an existing and available platform.

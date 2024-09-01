@@ -32,8 +32,8 @@ public class PlatformController {
     }
 
     @GetMapping("/portal")
-    public ResponseEntity<List<PortalPlatformDto>> getAllPortalPlatforms() {
-        return ResponseEntity.ok(platformService.getAllPortalPlatforms());
+    public ResponseEntity<List<PortalPlatformDto>> loadPortalPlatforms() {
+        return ResponseEntity.ok(platformService.loadPortalPlatforms());
     }
 
     @PatchMapping("/{platformId}")

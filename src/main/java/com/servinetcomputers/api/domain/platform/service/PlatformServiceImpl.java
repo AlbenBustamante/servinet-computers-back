@@ -49,8 +49,9 @@ public class PlatformServiceImpl implements IPlatformService {
         return mapper.toResponses(repository.findAllByEnabledTrue());
     }
 
+    @Transactional(rollbackFor = AppException.class)
     @Override
-    public List<PortalPlatformDto> getAllPortalPlatforms() {
+    public List<PortalPlatformDto> loadPortalPlatforms() {
         final var platforms = repository.findAllByEnabledTrue();
 
         if (platforms.isEmpty()) {
