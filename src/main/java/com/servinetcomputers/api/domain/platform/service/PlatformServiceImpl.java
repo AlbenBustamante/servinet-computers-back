@@ -30,7 +30,6 @@ public class PlatformServiceImpl implements IPlatformService {
     private final PlatformBalanceRepository balanceRepository;
     private final PlatformBalanceMapper balanceMapper;
     private final PlatformTransferRepository transferRepository;
-    private final PlatformTransferMapper transferMapper;
 
     @Transactional(rollbackFor = AppException.class)
     @Secured(value = ADMIN_AUTHORITY)

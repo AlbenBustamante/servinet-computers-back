@@ -8,8 +8,12 @@ import com.servinetcomputers.api.domain.platform.dto.PlatformBalanceResponse;
 import com.servinetcomputers.api.exception.AppException;
 import com.servinetcomputers.api.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import static com.servinetcomputers.api.security.util.SecurityConstants.ADMIN_AUTHORITY;
+import static com.servinetcomputers.api.security.util.SecurityConstants.SUPERVISOR_AUTHORITY;
 
 /**
  * The {@link IPlatformBalanceService} implementation.
@@ -22,6 +26,7 @@ public class PlatformBalanceServiceImpl implements IPlatformBalanceService {
     private final PlatformBalanceMapper platformBalanceMapper;
 
     @Transactional(rollbackFor = AppException.class)
+    @Secured(value = {SUPERVISOR_AUTHORITY, ADMIN_AUTHORITY})
     @Override
     public PlatformBalanceResponse update(int balanceId, PlatformBalanceRequest request) {
         final var balance = platformBalanceRepository.findById(balanceId)

@@ -10,12 +10,14 @@ import java.time.LocalDateTime;
 public class CashRegisterBaseResponse extends ModelResponse {
     private final int cashRegisterDetailId;
     private final BaseDto initialBase, finalBase;
+    private final String observation;
 
     public CashRegisterBaseResponse(int id, boolean enabled, LocalDateTime createdDate, LocalDateTime modifiedDate, String createdBy, String modifiedBy,
-                                    int cashRegisterDetailId, BaseDto initialBase, BaseDto finalBase) {
+                                    int cashRegisterDetailId, BaseDto initialBase, BaseDto finalBase, String observation) {
         super(id, enabled, createdDate, modifiedDate, createdBy, modifiedBy);
         this.cashRegisterDetailId = cashRegisterDetailId;
         this.initialBase = initialBase;
         this.finalBase = finalBase;
+        this.observation = observation;
     }
 }

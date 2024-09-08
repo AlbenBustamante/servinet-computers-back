@@ -1,8 +1,12 @@
 package com.servinetcomputers.api.domain.user;
 
+import com.servinetcomputers.api.domain.platform.abs.PlatformTransferRepository;
 import com.servinetcomputers.api.domain.user.abs.IUserService;
+import com.servinetcomputers.api.domain.user.abs.ReportsMapper;
 import com.servinetcomputers.api.domain.user.abs.UserMapper;
 import com.servinetcomputers.api.domain.user.abs.UserRepository;
+import com.servinetcomputers.api.domain.user.dto.Reports;
+import com.servinetcomputers.api.domain.user.dto.ReportsResponse;
 import com.servinetcomputers.api.domain.user.dto.UserRequest;
 import com.servinetcomputers.api.domain.user.dto.UserResponse;
 import com.servinetcomputers.api.exception.AppException;
@@ -14,6 +18,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 import static com.servinetcomputers.api.security.util.SecurityConstants.ADMIN_AUTHORITY;
@@ -25,9 +32,11 @@ import static com.servinetcomputers.api.security.util.SecurityConstants.ADMIN_AU
 @Service
 public class UserServiceImpl implements IUserService {
 
-    private final UserRepository repository;
-    private final UserMapper mapper;
+    private final UserRepository userRepository;
+    private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
+    private final PlatformTransferRepository platformTransferRepository;
+    private final ReportsMapper reportsMapper;
 
     @Transactional(rollbackFor = AppException.class)
     @Override
@@ -36,11 +45,11 @@ public class UserServiceImpl implements IUserService {
             throw new BadRequestException("Las contraseñas no coinciden");
         }
 
-        final var entity = mapper.toEntity(request);
+        final var entity = userMapper.toEntity(request);
 
         entity.setPassword(passwordEncoder.encode(request.password()));
 
-        final var lastUser = repository.findFirstByRoleOrderByCreatedDateDesc(request.role());
+        final var lastUser = userRepository.findFirstByRoleOrderByCreatedDateDesc(request.role());
 
         final var code = lastUser.map(user -> Integer.parseInt(user.getCode()
                 .split(request.role()
@@ -51,31 +60,31 @@ public class UserServiceImpl implements IUserService {
 
         entity.setCode(request.role().getRole().toLowerCase() + (code + 1));
 
-        return mapper.toResponse(repository.save(entity));
+        return userMapper.toResponse(userRepository.save(entity));
     }
 
     @Override
     public List<UserResponse> getAll() {
-        return mapper.toResponses(repository.findAll());
+        return userMapper.toResponses(userRepository.findAll());
     }
 
     @Transactional(readOnly = true)
     @Override
     public UserResponse get(int userId) {
-        final var user = repository.findById(userId)
+        final var user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("Usuario no encontrado: " + userId));
 
         if (user.getEnabled().equals(Boolean.FALSE)) {
             throw new NotFoundException("Usuario no encontrado: " + userId);
         }
 
-        return mapper.toResponse(user);
+        return userMapper.toResponse(user);
     }
 
     @Transactional(rollbackFor = AppException.class)
     @Override
     public UserResponse update(int userId, UserRequest request) {
-        final var user = repository.findById(userId)
+        final var user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("Usuario no encontrado: " + userId));
 
         if (user.getEnabled().equals(Boolean.FALSE)) {
@@ -85,13 +94,13 @@ public class UserServiceImpl implements IUserService {
         user.setName(request.name() == null ? user.getName() : request.name());
         user.setLastName(request.lastName() == null ? user.getLastName() : request.lastName());
 
-        return mapper.toResponse(repository.save(user));
+        return userMapper.toResponse(userRepository.save(user));
     }
 
     @Secured(value = ADMIN_AUTHORITY)
     @Override
     public boolean delete(int userId) {
-        final var userFound = repository.findById(userId);
+        final var userFound = userRepository.findById(userId);
 
         if (userFound.isEmpty()) {
             return false;
@@ -99,9 +108,24 @@ public class UserServiceImpl implements IUserService {
 
         userFound.get().setEnabled(false);
 
-        repository.save(userFound.get());
+        userRepository.save(userFound.get());
 
         return true;
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public ReportsResponse getReports(String code) {
+        final var startDate = LocalDateTime.of(LocalDate.now(), LocalTime.MIN);
+        final var endDate = LocalDateTime.of(LocalDate.now(), LocalTime.now());
+
+        final var platformTransfers = platformTransferRepository.findAllByCreatedByAndEnabledTrueAndCreatedDateBetween(code, startDate, endDate);
+
+        final var reports = new Reports(
+                platformTransfers
+        );
+
+        return reportsMapper.toResponse(reports);
     }
 
 }

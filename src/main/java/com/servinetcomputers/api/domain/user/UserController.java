@@ -1,6 +1,7 @@
 package com.servinetcomputers.api.domain.user;
 
 import com.servinetcomputers.api.domain.user.abs.IUserService;
+import com.servinetcomputers.api.domain.user.dto.ReportsResponse;
 import com.servinetcomputers.api.domain.user.dto.UserRequest;
 import com.servinetcomputers.api.domain.user.dto.UserResponse;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,11 @@ public class UserController {
     @GetMapping("/{userId}")
     public ResponseEntity<UserResponse> get(@PathVariable("userId") int userId) {
         return ResponseEntity.ok(userService.get(userId));
+    }
+
+    @GetMapping("/{code}/reports")
+    public ResponseEntity<ReportsResponse> getReports(@PathVariable("code") String code) {
+        return ResponseEntity.ok(userService.getReports(code));
     }
 
     @PatchMapping("/{userId}")

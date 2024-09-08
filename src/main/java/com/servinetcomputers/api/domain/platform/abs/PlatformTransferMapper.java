@@ -14,6 +14,7 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface PlatformTransferMapper {
 
+    @Mapping(target = "platformName", source = "platform.name")
     PlatformTransferResponse toResponse(PlatformTransfer entity);
 
     List<PlatformTransferResponse> toResponses(List<PlatformTransfer> entities);
