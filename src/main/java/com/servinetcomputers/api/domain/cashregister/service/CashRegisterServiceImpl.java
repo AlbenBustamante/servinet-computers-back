@@ -28,7 +28,7 @@ public class CashRegisterServiceImpl implements ICashRegisterService {
     @Secured(value = ADMIN_AUTHORITY)
     @Override
     public CashRegisterResponse create(CashRegisterRequest request) {
-        if (repository.existsByNumeral(request.numeral())) {
+        if (repository.existsByNumeralAndEnabledTrue(request.numeral())) {
             throw new BadRequestException("El numeral " + request.numeral() + " ya está siendo usado");
         }
 
@@ -37,8 +37,8 @@ public class CashRegisterServiceImpl implements ICashRegisterService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<CashRegisterResponse> getAll(boolean enabled) {
-        return mapper.toResponses(repository.findAllByEnabled(enabled));
+    public List<CashRegisterResponse> getAll() {
+        return mapper.toResponses(repository.findAllByEnabledTrue());
     }
 
     @Transactional(rollbackFor = AppException.class)
@@ -57,12 +57,8 @@ public class CashRegisterServiceImpl implements ICashRegisterService {
     @Transactional(rollbackFor = AppException.class)
     @Override
     public CashRegisterResponse updateStatus(CashRegisterRequest request) {
-        final var cashRegister = repository.findByNumeral(request.numeral())
+        final var cashRegister = repository.findByNumeralAndEnabledTrue(request.numeral())
                 .orElseThrow(() -> new NotFoundException("Caja registradora con numeral " + request.numeral() + " no encontrada"));
-
-        if (cashRegister.getEnabled().equals(Boolean.FALSE)) {
-            throw new NotFoundException("Caja registradora inhabilitada");
-        }
 
         cashRegister.setStatus(request.status());
 

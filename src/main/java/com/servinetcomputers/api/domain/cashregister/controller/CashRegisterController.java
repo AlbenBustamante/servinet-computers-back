@@ -1,19 +1,13 @@
 package com.servinetcomputers.api.domain.cashregister.controller;
 
+import com.servinetcomputers.api.domain.cashregister.abs.ICashRegisterBaseService;
 import com.servinetcomputers.api.domain.cashregister.abs.ICashRegisterService;
+import com.servinetcomputers.api.domain.cashregister.dto.CashRegisterBaseResponse;
 import com.servinetcomputers.api.domain.cashregister.dto.CashRegisterRequest;
 import com.servinetcomputers.api.domain.cashregister.dto.CashRegisterResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,15 +16,21 @@ import java.util.List;
 @RestController
 public class CashRegisterController {
     private final ICashRegisterService service;
+    private final ICashRegisterBaseService cashRegisterBaseService;
 
     @PostMapping
     public ResponseEntity<CashRegisterResponse> register(@RequestBody CashRegisterRequest request) {
         return ResponseEntity.ok(service.create(request));
     }
 
-    @GetMapping("/{enabled}")
-    public ResponseEntity<List<CashRegisterResponse>> getAll(@PathVariable("enabled") boolean enabled) {
-        return ResponseEntity.ok(service.getAll(enabled));
+    @GetMapping
+    public ResponseEntity<List<CashRegisterResponse>> getAll() {
+        return ResponseEntity.ok(service.getAll());
+    }
+
+    @GetMapping("/{id}/lastBase")
+    public ResponseEntity<CashRegisterBaseResponse> getLastBase(@PathVariable("id") int cashRegisterId) {
+        return ResponseEntity.ok(cashRegisterBaseService.getLastBaseFromCashRegisterId(cashRegisterId));
     }
 
     @PutMapping("/{id}")

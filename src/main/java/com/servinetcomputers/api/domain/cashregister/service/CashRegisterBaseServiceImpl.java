@@ -9,6 +9,7 @@ import com.servinetcomputers.api.domain.cashregister.dto.CashRegisterBaseRespons
 import com.servinetcomputers.api.exception.AppException;
 import com.servinetcomputers.api.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,6 +33,7 @@ public class CashRegisterBaseServiceImpl implements ICashRegisterBaseService {
         return mapper.toResponse(repository.save(mapper.toEntity(request)));
     }
 
+    @Transactional(readOnly = true)
     @Override
     public CashRegisterBaseResponse getByCashRegisterDetailId(int cashRegisterDetailId) {
         final var detail = cashRegisterDetailRepository.findById(cashRegisterDetailId)
@@ -45,5 +47,22 @@ public class CashRegisterBaseServiceImpl implements ICashRegisterBaseService {
                 .orElseThrow(() -> new NotFoundException("No se encontró base registrada a la caja registradora"));
 
         return mapper.toResponse(base);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public CashRegisterBaseResponse getLastBaseFromCashRegisterId(int cashRegisterId) {
+        final var cashRegisterDetailPage = cashRegisterDetailRepository.findIdByCashRegisterId(cashRegisterId, PageRequest.of(0, 1));
+
+        if (cashRegisterDetailPage.isEmpty()) {
+            return null;
+        }
+
+        final var cashRegisterDetailId = cashRegisterDetailPage.getContent().get(0);
+
+        final var cashRegisterBase = repository.findByCashRegisterDetailIdAndEnabledTrue(cashRegisterDetailId)
+                .orElse(null);
+
+        return mapper.toResponse(cashRegisterBase);
     }
 }

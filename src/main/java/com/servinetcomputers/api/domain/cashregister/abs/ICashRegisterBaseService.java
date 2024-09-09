@@ -9,4 +9,6 @@ public interface ICashRegisterBaseService {
 
     CashRegisterBaseResponse getByCashRegisterDetailId(int cashRegisterDetailId);
 
+    CashRegisterBaseResponse getLastBaseFromCashRegisterId(int cashRegisterId);
+
 }
