@@ -1,5 +1,6 @@
 package com.servinetcomputers.api.domain.cashregister.abs;
 
+import com.servinetcomputers.api.domain.base.BaseDto;
 import com.servinetcomputers.api.domain.cashregister.dto.CashRegisterRequest;
 import com.servinetcomputers.api.domain.cashregister.dto.CashRegisterResponse;
 
@@ -10,6 +11,8 @@ public interface ICashRegisterService {
     CashRegisterResponse create(CashRegisterRequest request);
 
     List<CashRegisterResponse> getAll();
+
+    BaseDto getLastFinalBaseFromCashRegisterId(int cashRegisterId);
 
     CashRegisterResponse update(int id, CashRegisterRequest request);
 

@@ -1,5 +1,8 @@
 package com.servinetcomputers.api.domain.cashregister.service;
 
+import com.servinetcomputers.api.domain.base.BaseDto;
+import com.servinetcomputers.api.domain.base.BaseMapper;
+import com.servinetcomputers.api.domain.cashregister.abs.CashRegisterDetailRepository;
 import com.servinetcomputers.api.domain.cashregister.abs.CashRegisterMapper;
 import com.servinetcomputers.api.domain.cashregister.abs.CashRegisterRepository;
 import com.servinetcomputers.api.domain.cashregister.abs.ICashRegisterService;
@@ -10,6 +13,7 @@ import com.servinetcomputers.api.exception.AppException;
 import com.servinetcomputers.api.exception.BadRequestException;
 import com.servinetcomputers.api.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +27,8 @@ import static com.servinetcomputers.api.security.util.SecurityConstants.ADMIN_AU
 public class CashRegisterServiceImpl implements ICashRegisterService {
     private final CashRegisterRepository repository;
     private final CashRegisterMapper mapper;
+    private final CashRegisterDetailRepository cashRegisterDetailRepository;
+    private final BaseMapper baseMapper;
 
     @Transactional(rollbackFor = AppException.class)
     @Secured(value = ADMIN_AUTHORITY)
@@ -39,6 +45,20 @@ public class CashRegisterServiceImpl implements ICashRegisterService {
     @Override
     public List<CashRegisterResponse> getAll() {
         return mapper.toResponses(repository.findAllByEnabledTrue());
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public BaseDto getLastFinalBaseFromCashRegisterId(int cashRegisterId) {
+        final var cashRegisterDetailPage = cashRegisterDetailRepository.findBaseByCashRegisterId(cashRegisterId, PageRequest.of(0, 1));
+
+        if (cashRegisterDetailPage.isEmpty()) {
+            return null;
+        }
+
+        final var finalBase = cashRegisterDetailPage.getContent().get(0);
+
+        return baseMapper.toDto(finalBase);
     }
 
     @Transactional(rollbackFor = AppException.class)

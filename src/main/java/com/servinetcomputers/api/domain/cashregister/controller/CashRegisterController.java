@@ -1,8 +1,7 @@
 package com.servinetcomputers.api.domain.cashregister.controller;
 
-import com.servinetcomputers.api.domain.cashregister.abs.ICashRegisterBaseService;
+import com.servinetcomputers.api.domain.base.BaseDto;
 import com.servinetcomputers.api.domain.cashregister.abs.ICashRegisterService;
-import com.servinetcomputers.api.domain.cashregister.dto.CashRegisterBaseResponse;
 import com.servinetcomputers.api.domain.cashregister.dto.CashRegisterRequest;
 import com.servinetcomputers.api.domain.cashregister.dto.CashRegisterResponse;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +15,6 @@ import java.util.List;
 @RestController
 public class CashRegisterController {
     private final ICashRegisterService service;
-    private final ICashRegisterBaseService cashRegisterBaseService;
 
     @PostMapping
     public ResponseEntity<CashRegisterResponse> register(@RequestBody CashRegisterRequest request) {
@@ -29,8 +27,8 @@ public class CashRegisterController {
     }
 
     @GetMapping("/{id}/lastBase")
-    public ResponseEntity<CashRegisterBaseResponse> getLastBase(@PathVariable("id") int cashRegisterId) {
-        return ResponseEntity.ok(cashRegisterBaseService.getLastBaseFromCashRegisterId(cashRegisterId));
+    public ResponseEntity<BaseDto> getLastBase(@PathVariable("id") int cashRegisterId) {
+        return ResponseEntity.ok(service.getLastFinalBaseFromCashRegisterId(cashRegisterId));
     }
 
     @PutMapping("/{id}")

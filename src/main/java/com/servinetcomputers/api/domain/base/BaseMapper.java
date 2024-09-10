@@ -9,22 +9,30 @@ public class BaseMapper {
     public BaseDto toDto(String base) {
         final var values = base.split(separator);
 
-        return new BaseDto(
-                Integer.parseInt(values[0]),
-                Integer.parseInt(values[1]),
-                Integer.parseInt(values[2]),
-                Integer.parseInt(values[3]),
-                Integer.parseInt(values[4]),
-                Integer.parseInt(values[5]),
-                Integer.parseInt(values[6]),
-                Integer.parseInt(values[7]),
-                Integer.parseInt(values[8]),
-                Integer.parseInt(values[9]),
-                Integer.parseInt(values[10])
-        );
+        try {
+            return new BaseDto(
+                    Integer.parseInt(values[0]),
+                    Integer.parseInt(values[1]),
+                    Integer.parseInt(values[2]),
+                    Integer.parseInt(values[3]),
+                    Integer.parseInt(values[4]),
+                    Integer.parseInt(values[5]),
+                    Integer.parseInt(values[6]),
+                    Integer.parseInt(values[7]),
+                    Integer.parseInt(values[8]),
+                    Integer.parseInt(values[9]),
+                    Integer.parseInt(values[10])
+            );
+        } catch (NumberFormatException ex) {
+            return new BaseDto(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+        }
     }
 
     public String toStr(BaseDto base) {
+        if (base == null) {
+            return "";
+        }
+
         return base.hundredThousand() + separator +
                 base.fiftyThousand() + separator +
                 base.twentyThousand() + separator +

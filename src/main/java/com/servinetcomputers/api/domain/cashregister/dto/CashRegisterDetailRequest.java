@@ -1,4 +1,12 @@
 package com.servinetcomputers.api.domain.cashregister.dto;
 
-public record CashRegisterDetailRequest(int cashRegisterId, String workingHours) {
+import com.servinetcomputers.api.domain.base.BaseDto;
+
+public record CashRegisterDetailRequest(
+        int cashRegisterId,
+        String workingHours,
+        BaseDto initialBase,
+        BaseDto finalBase,
+        String baseObservation
+) {
 }

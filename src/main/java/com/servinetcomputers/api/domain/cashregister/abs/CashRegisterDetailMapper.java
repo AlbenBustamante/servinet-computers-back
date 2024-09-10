@@ -1,5 +1,6 @@
 package com.servinetcomputers.api.domain.cashregister.abs;
 
+import com.servinetcomputers.api.domain.base.BaseMapper;
 import com.servinetcomputers.api.domain.cashregister.dto.CashRegisterDetailRequest;
 import com.servinetcomputers.api.domain.cashregister.dto.CashRegisterDetailResponse;
 import com.servinetcomputers.api.domain.cashregister.entity.CashRegisterDetail;
@@ -8,7 +9,7 @@ import org.mapstruct.Mapping;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = BaseMapper.class)
 public interface CashRegisterDetailMapper {
 
     CashRegisterDetailResponse toResponse(CashRegisterDetail entity);

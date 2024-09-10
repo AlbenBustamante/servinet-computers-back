@@ -16,10 +16,10 @@ public interface CashRegisterDetailRepository extends JpaRepository<CashRegister
 
     Optional<CashRegisterDetail> findByCreatedByAndCreatedDateBetweenAndEnabledTrue(String createdBy, LocalDateTime firstDate, LocalDateTime lastDate);
 
-    @Query("SELECT crd.id FROM CashRegisterDetail crd " +
+    @Query("SELECT crd.finalBase FROM CashRegisterDetail crd " +
             "WHERE crd.cashRegister.id = :cashRegisterId AND " +
             "crd.enabled = true " +
             "ORDER BY crd.createdDate DESC")
-    Page<Integer> findIdByCashRegisterId(@Param("cashRegisterId") int cashRegisterId, Pageable pageable);
+    Page<String> findBaseByCashRegisterId(@Param("cashRegisterId") int cashRegisterId, Pageable pageable);
 
 }

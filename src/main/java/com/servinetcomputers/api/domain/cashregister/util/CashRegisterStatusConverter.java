@@ -2,9 +2,11 @@ package com.servinetcomputers.api.domain.cashregister.util;
 
 import com.servinetcomputers.api.exception.NotFoundException;
 import jakarta.persistence.AttributeConverter;
+import jakarta.persistence.Converter;
 
 import java.util.Arrays;
 
+@Converter
 public class CashRegisterStatusConverter implements AttributeConverter<CashRegisterStatus, Character> {
     @Override
     public Character convertToDatabaseColumn(CashRegisterStatus cashRegisterStatus) {
