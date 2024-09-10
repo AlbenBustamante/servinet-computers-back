@@ -1,6 +1,7 @@
 package com.servinetcomputers.api.domain.cashregister.controller;
 
 import com.servinetcomputers.api.domain.cashregister.abs.ICashRegisterDetailService;
+import com.servinetcomputers.api.domain.cashregister.dto.AlreadyExistsCashRegisterDetailDto;
 import com.servinetcomputers.api.domain.cashregister.dto.CashRegisterDetailRequest;
 import com.servinetcomputers.api.domain.cashregister.dto.CashRegisterDetailResponse;
 import lombok.RequiredArgsConstructor;
@@ -24,8 +25,8 @@ public class CashRegisterDetailController {
     }
 
     @GetMapping("/already-exists")
-    public ResponseEntity<Boolean> isAlreadyCreated() {
-        return ResponseEntity.ok(service.isAlreadyCreated());
+    public ResponseEntity<AlreadyExistsCashRegisterDetailDto> alreadyExists() {
+        return ResponseEntity.ok(service.alreadyExists());
     }
 
     @PutMapping

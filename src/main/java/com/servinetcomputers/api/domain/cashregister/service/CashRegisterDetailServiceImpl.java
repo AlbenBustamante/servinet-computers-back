@@ -1,11 +1,10 @@
 package com.servinetcomputers.api.domain.cashregister.service;
 
-import com.servinetcomputers.api.domain.cashregister.abs.CashRegisterDetailMapper;
-import com.servinetcomputers.api.domain.cashregister.abs.CashRegisterDetailRepository;
-import com.servinetcomputers.api.domain.cashregister.abs.CashRegisterRepository;
-import com.servinetcomputers.api.domain.cashregister.abs.ICashRegisterDetailService;
+import com.servinetcomputers.api.domain.cashregister.abs.*;
+import com.servinetcomputers.api.domain.cashregister.dto.AlreadyExistsCashRegisterDetailDto;
 import com.servinetcomputers.api.domain.cashregister.dto.CashRegisterDetailRequest;
 import com.servinetcomputers.api.domain.cashregister.dto.CashRegisterDetailResponse;
+import com.servinetcomputers.api.domain.cashregister.dto.CashRegisterResponse;
 import com.servinetcomputers.api.domain.cashregister.util.CashRegisterStatus;
 import com.servinetcomputers.api.exception.BadRequestException;
 import com.servinetcomputers.api.exception.NotFoundException;
@@ -17,6 +16,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -24,6 +24,7 @@ public class CashRegisterDetailServiceImpl implements ICashRegisterDetailService
     private final CashRegisterDetailRepository repository;
     private final CashRegisterDetailMapper mapper;
     private final CashRegisterRepository cashRegisterRepository;
+    private final CashRegisterMapper cashRegisterMapper;
     private final ZoneId zoneId;
 
     @Override
@@ -51,12 +52,23 @@ public class CashRegisterDetailServiceImpl implements ICashRegisterDetailService
 
         cashRegisterRepository.save(cashRegister);
 
-        return mapper.toResponse(repository.save(mapper.toEntity(request)));
+        final var entity = mapper.toEntity(request);
+        entity.setCashRegister(cashRegister);
+
+        return mapper.toResponse(repository.save(entity));
     }
 
     @Override
-    public boolean isAlreadyCreated() {
-        return repository.existsByCreatedByAndCreatedDateBetweenAndEnabledTrue(createdBy(), toDateTime(LocalTime.MIN), toDateTime(LocalTime.MAX));
+    public AlreadyExistsCashRegisterDetailDto alreadyExists() {
+        final var detail = repository.findByCreatedByAndCreatedDateBetweenAndEnabledTrue(createdBy(), toDateTime(LocalTime.MIN), toDateTime(LocalTime.MAX));
+        final var alreadyExists = detail.isPresent();
+        final var cashRegisterDetailResponse = alreadyExists ? mapper.toResponse(detail.get()) : null;
+
+        final List<CashRegisterResponse> cashRegisters = alreadyExists
+                ? List.of()
+                : cashRegisterMapper.toResponses(cashRegisterRepository.findAllByEnabledTrue());
+
+        return new AlreadyExistsCashRegisterDetailDto(alreadyExists, cashRegisterDetailResponse, cashRegisters);
     }
 
     @Override
