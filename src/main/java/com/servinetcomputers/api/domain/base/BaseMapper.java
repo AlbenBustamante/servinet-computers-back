@@ -24,7 +24,7 @@ public class BaseMapper {
                     Integer.parseInt(values[10])
             );
         } catch (NumberFormatException ex) {
-            return new BaseDto(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+            return null;
         }
     }
 
