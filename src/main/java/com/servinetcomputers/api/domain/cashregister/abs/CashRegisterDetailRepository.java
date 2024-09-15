@@ -8,13 +8,16 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 public interface CashRegisterDetailRepository extends JpaRepository<CashRegisterDetail, Integer> {
 
+    Optional<CashRegisterDetail> findByIdAndEnabledTrue(int id);
+
     boolean existsByUserIdAndCreatedDateBetweenAndEnabledTrue(int userId, LocalDateTime firstDate, LocalDateTime lastDate);
 
-    Optional<CashRegisterDetail> findByUserIdAndCreatedDateBetweenAndEnabledTrue(int userId, LocalDateTime firstDate, LocalDateTime lastDate);
+    List<CashRegisterDetail> findAllByUserIdAndCreatedDateBetweenAndEnabledTrue(int userId, LocalDateTime firstDate, LocalDateTime lastDate);
 
     @Query("SELECT crd.finalBase FROM CashRegisterDetail crd " +
             "WHERE crd.cashRegister.id = :cashRegisterId AND " +

@@ -2,6 +2,7 @@ package com.servinetcomputers.api.domain.cashregister.controller;
 
 import com.servinetcomputers.api.domain.cashregister.abs.ICashRegisterDetailService;
 import com.servinetcomputers.api.domain.cashregister.dto.AlreadyExistsCashRegisterDetailDto;
+import com.servinetcomputers.api.domain.cashregister.dto.CashRegisterDetailReportsDto;
 import com.servinetcomputers.api.domain.cashregister.dto.CashRegisterDetailRequest;
 import com.servinetcomputers.api.domain.cashregister.dto.CashRegisterDetailResponse;
 import lombok.RequiredArgsConstructor;
@@ -19,9 +20,14 @@ public class CashRegisterDetailController {
         return ResponseEntity.ok(service.create(request));
     }
 
-    @GetMapping
-    public ResponseEntity<CashRegisterDetailResponse> get() {
-        return ResponseEntity.ok(service.get());
+    @GetMapping("/{id}")
+    public ResponseEntity<CashRegisterDetailResponse> getById(@PathVariable("id") int cashRegisterDetailId) {
+        return ResponseEntity.ok(service.getById(cashRegisterDetailId));
+    }
+
+    @GetMapping("/{id}/reports")
+    public ResponseEntity<CashRegisterDetailReportsDto> getReports(@PathVariable("id") int cashRegisterDetailId) {
+        return ResponseEntity.ok(service.getReports(cashRegisterDetailId));
     }
 
     @GetMapping("/already-exists")
@@ -29,9 +35,9 @@ public class CashRegisterDetailController {
         return ResponseEntity.ok(service.alreadyExists());
     }
 
-    @PutMapping
-    public ResponseEntity<CashRegisterDetailResponse> updateHours(@RequestBody CashRegisterDetailRequest request) {
-        return ResponseEntity.ok(service.updateHours(request));
+    @PutMapping("/{id}")
+    public ResponseEntity<CashRegisterDetailResponse> updateHours(@PathVariable("id") int cashRegisterDetailId, @RequestBody CashRegisterDetailRequest request) {
+        return ResponseEntity.ok(service.updateHours(cashRegisterDetailId, request));
     }
 
     @DeleteMapping("/{id}")

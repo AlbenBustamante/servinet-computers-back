@@ -1,6 +1,7 @@
 package com.servinetcomputers.api.domain.cashregister.abs;
 
 import com.servinetcomputers.api.domain.cashregister.dto.AlreadyExistsCashRegisterDetailDto;
+import com.servinetcomputers.api.domain.cashregister.dto.CashRegisterDetailReportsDto;
 import com.servinetcomputers.api.domain.cashregister.dto.CashRegisterDetailRequest;
 import com.servinetcomputers.api.domain.cashregister.dto.CashRegisterDetailResponse;
 
@@ -10,9 +11,11 @@ public interface ICashRegisterDetailService {
 
     AlreadyExistsCashRegisterDetailDto alreadyExists();
 
-    CashRegisterDetailResponse get();
+    CashRegisterDetailResponse getById(int cashRegisterDetailId);
 
-    CashRegisterDetailResponse updateHours(CashRegisterDetailRequest req);
+    CashRegisterDetailReportsDto getReports(int cashRegisterDetailId);
+
+    CashRegisterDetailResponse updateHours(int cashRegisterDetailId, CashRegisterDetailRequest req);
 
     boolean delete(int id);
 

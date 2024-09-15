@@ -13,4 +13,17 @@ public record BaseDto(
         int hundred,
         int fifty
 ) {
+    public int calculate() {
+        return hundredThousand +
+                fiftyThousand +
+                twentyThousand +
+                tenThousand +
+                fiveThousand +
+                twoThousand +
+                thousand +
+                fiveHundred +
+                twoHundred +
+                hundred +
+                fifty;
+    }
 }

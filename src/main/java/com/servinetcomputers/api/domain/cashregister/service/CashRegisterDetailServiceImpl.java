@@ -1,10 +1,7 @@
 package com.servinetcomputers.api.domain.cashregister.service;
 
 import com.servinetcomputers.api.domain.cashregister.abs.*;
-import com.servinetcomputers.api.domain.cashregister.dto.AlreadyExistsCashRegisterDetailDto;
-import com.servinetcomputers.api.domain.cashregister.dto.CashRegisterDetailRequest;
-import com.servinetcomputers.api.domain.cashregister.dto.CashRegisterDetailResponse;
-import com.servinetcomputers.api.domain.cashregister.dto.CashRegisterResponse;
+import com.servinetcomputers.api.domain.cashregister.dto.*;
 import com.servinetcomputers.api.domain.cashregister.util.CashRegisterStatus;
 import com.servinetcomputers.api.domain.user.dto.UserResponse;
 import com.servinetcomputers.api.exception.BadRequestException;
@@ -30,7 +27,7 @@ public class CashRegisterDetailServiceImpl implements ICashRegisterDetailService
 
     @Override
     public CashRegisterDetailResponse create(CashRegisterDetailRequest request) {
-        if (repository.existsByUserIdAndCreatedDateBetweenAndEnabledTrue(userId(), toDateTime(LocalTime.MIN), toDateTime(LocalTime.MAX))) {
+        if (repository.existsByUserIdAndCreatedDateBetweenAndEnabledTrue(request.userId(), toDateTime(LocalTime.MIN), toDateTime(LocalTime.MAX))) {
             throw new BadRequestException("Ya tienes una caja en funcionamiento");
         }
 
@@ -61,28 +58,61 @@ public class CashRegisterDetailServiceImpl implements ICashRegisterDetailService
 
     @Override
     public AlreadyExistsCashRegisterDetailDto alreadyExists() {
-        final var detail = repository.findByUserIdAndCreatedDateBetweenAndEnabledTrue(userId(), toDateTime(LocalTime.MIN), toDateTime(LocalTime.MAX));
-        final var alreadyExists = detail.isPresent();
-        final var cashRegisterDetailResponse = alreadyExists ? mapper.toResponse(detail.get()) : null;
+        final var details = repository.findAllByUserIdAndCreatedDateBetweenAndEnabledTrue(userId(), toDateTime(LocalTime.MIN), toDateTime(LocalTime.MAX));
+        final var alreadyExists = !details.isEmpty();
+        final var myCashRegisters = alreadyExists ? mapper.toResponses(details) : null;
 
         final List<CashRegisterResponse> cashRegisters = alreadyExists
                 ? List.of()
                 : cashRegisterMapper.toResponses(cashRegisterRepository.findAllByEnabledTrue());
 
-        return new AlreadyExistsCashRegisterDetailDto(alreadyExists, cashRegisterDetailResponse, cashRegisters);
+        return new AlreadyExistsCashRegisterDetailDto(alreadyExists, myCashRegisters, cashRegisters);
     }
 
     @Override
-    public CashRegisterDetailResponse get() {
-        final var detail = repository.findByUserIdAndCreatedDateBetweenAndEnabledTrue(userId(), toDateTime(LocalTime.MIN), toDateTime(LocalTime.MAX))
+    public CashRegisterDetailResponse getById(int cashRegisterDetailId) {
+        final var detail = repository.findByIdAndEnabledTrue(cashRegisterDetailId)
                 .orElseThrow(() -> new NotFoundException("No se encontró la caja en funcionamiento"));
 
         return mapper.toResponse(detail);
     }
 
     @Override
-    public CashRegisterDetailResponse updateHours(CashRegisterDetailRequest req) {
-        final var cashRegisterDetail = repository.findByUserIdAndCreatedDateBetweenAndEnabledTrue(userId(), toDateTime(LocalTime.MIN), toDateTime(LocalTime.MAX))
+    public CashRegisterDetailReportsDto getReports(int cashRegisterDetailId) {
+        final var entity = repository.findByIdAndEnabledTrue(cashRegisterDetailId)
+                .orElseThrow(() -> new NotFoundException("El reporte no fue encontrado: #" + cashRegisterDetailId));
+
+        final var cashRegisterDetail = mapper.toResponse(entity);
+
+        final var transactionsAmount = 0;
+        final var initialBase = cashRegisterDetail.getInitialBase().calculate();
+        final var finalBase = cashRegisterDetail.getFinalBase().calculate();
+        final var deposits = 0;
+        final var withdrawals = 0;
+        final var expenses = 0;
+        final var credits = 0;
+
+        final var balance = initialBase + deposits - withdrawals - expenses - credits;
+
+        final var discrepancy = balance - finalBase;
+
+        return new CashRegisterDetailReportsDto(
+                cashRegisterDetail,
+                transactionsAmount,
+                initialBase,
+                finalBase,
+                deposits,
+                withdrawals,
+                expenses,
+                credits,
+                balance,
+                discrepancy
+        );
+    }
+
+    @Override
+    public CashRegisterDetailResponse updateHours(int cashRegisterDetailId, CashRegisterDetailRequest req) {
+        final var cashRegisterDetail = repository.findByIdAndEnabledTrue(cashRegisterDetailId)
                 .orElseThrow(() -> new NotFoundException("No se encontró la caja en funcionamiento"));
 
         cashRegisterDetail.setWorkingHours(req.workingHours());
@@ -114,4 +144,5 @@ public class CashRegisterDetailServiceImpl implements ICashRegisterDetailService
     private LocalDateTime toDateTime(LocalTime time) {
         return LocalDateTime.of(LocalDate.now(zoneId), time);
     }
+
 }
