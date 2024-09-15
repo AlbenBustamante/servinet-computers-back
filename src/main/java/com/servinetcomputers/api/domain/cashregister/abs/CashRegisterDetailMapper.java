@@ -13,10 +13,12 @@ import java.util.List;
 public interface CashRegisterDetailMapper {
 
     @Mapping(target = "cashRegisterNumeral", source = "cashRegister.numeral")
+    @Mapping(target = "cashRegisterDescription", source = "cashRegister.description")
     CashRegisterDetailResponse toResponse(CashRegisterDetail entity);
 
     List<CashRegisterDetailResponse> toResponses(List<CashRegisterDetail> entities);
 
+    @Mapping(target = "user", ignore = true)
     @Mapping(target = "modifiedDate", ignore = true)
     @Mapping(target = "modifiedBy", ignore = true)
     @Mapping(target = "id", ignore = true)

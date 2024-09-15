@@ -12,9 +12,9 @@ import java.util.Optional;
 
 public interface CashRegisterDetailRepository extends JpaRepository<CashRegisterDetail, Integer> {
 
-    boolean existsByCreatedByAndCreatedDateBetweenAndEnabledTrue(String createdBy, LocalDateTime firstDate, LocalDateTime lastDate);
+    boolean existsByUserIdAndCreatedDateBetweenAndEnabledTrue(int userId, LocalDateTime firstDate, LocalDateTime lastDate);
 
-    Optional<CashRegisterDetail> findByCreatedByAndCreatedDateBetweenAndEnabledTrue(String createdBy, LocalDateTime firstDate, LocalDateTime lastDate);
+    Optional<CashRegisterDetail> findByUserIdAndCreatedDateBetweenAndEnabledTrue(int userId, LocalDateTime firstDate, LocalDateTime lastDate);
 
     @Query("SELECT crd.finalBase FROM CashRegisterDetail crd " +
             "WHERE crd.cashRegister.id = :cashRegisterId AND " +

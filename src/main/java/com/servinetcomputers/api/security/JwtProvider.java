@@ -12,11 +12,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 import static com.servinetcomputers.api.security.util.SecurityConstants.getAuthority;
@@ -93,7 +89,7 @@ public class JwtProvider {
 
         authorities.add(new SimpleGrantedAuthority(authority));
 
-        return new UsernamePasswordAuthenticationToken(user.getCode(), token, authorities);
+        return new UsernamePasswordAuthenticationToken(user, token, authorities);
     }
 
     /**

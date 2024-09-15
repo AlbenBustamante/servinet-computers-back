@@ -2,6 +2,7 @@ package com.servinetcomputers.api.domain.cashregister.entity;
 
 import com.servinetcomputers.api.audit.AuditAuditable;
 import com.servinetcomputers.api.audit.Auditable;
+import com.servinetcomputers.api.domain.user.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,6 +26,9 @@ public class CashRegisterDetail extends Auditable {
     @Column(name = "cash_register_id", nullable = false)
     private Integer cashRegisterId;
 
+    @Column(name = "user_id", nullable = false)
+    private Integer userId;
+
     @Column(nullable = false)
     private String workingHours;
 
@@ -40,5 +44,9 @@ public class CashRegisterDetail extends Auditable {
     @ManyToOne
     @JoinColumn(name = "cash_register_id", columnDefinition = "cash_register_id", insertable = false, updatable = false)
     private CashRegister cashRegister;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", columnDefinition = "user_id", insertable = false, updatable = false)
+    private User user;
 
 }

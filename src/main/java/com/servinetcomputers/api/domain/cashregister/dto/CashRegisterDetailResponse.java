@@ -8,15 +8,18 @@ import java.time.LocalDateTime;
 
 @Getter
 public class CashRegisterDetailResponse extends ModelResponse {
-    private final int cashRegisterId, cashRegisterNumeral;
-    private final String initialWorking, initialBreak, finalBreak, finalWorking, baseObservation;
+    private final int cashRegisterId, cashRegisterNumeral, userId;
+    private final String cashRegisterDescription, initialWorking, initialBreak, finalBreak, finalWorking, baseObservation;
     private final BaseDto initialBase, finalBase;
 
     public CashRegisterDetailResponse(int id, boolean enabled, LocalDateTime createdDate, LocalDateTime modifiedDate, String createdBy, String modifiedBy,
-                                      int cashRegisterId, int cashRegisterNumeral, String workingHours, String baseObservation, BaseDto initialBase, BaseDto finalBase) {
+                                      int cashRegisterId, int cashRegisterNumeral, int userId, String workingHours,
+                                      String cashRegisterDescription, String baseObservation, BaseDto initialBase, BaseDto finalBase) {
         super(id, enabled, createdDate, modifiedDate, createdBy, modifiedBy);
         this.cashRegisterId = cashRegisterId;
         this.cashRegisterNumeral = cashRegisterNumeral;
+        this.userId = userId;
+        this.cashRegisterDescription = cashRegisterDescription;
 
         final var hours = workingHours.split(";");
 
