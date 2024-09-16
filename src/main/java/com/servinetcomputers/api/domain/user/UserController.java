@@ -1,5 +1,7 @@
 package com.servinetcomputers.api.domain.user;
 
+import com.servinetcomputers.api.domain.cashregister.abs.ICashRegisterDetailService;
+import com.servinetcomputers.api.domain.cashregister.dto.MyCashRegistersReports;
 import com.servinetcomputers.api.domain.user.abs.IUserService;
 import com.servinetcomputers.api.domain.user.dto.ReportsResponse;
 import com.servinetcomputers.api.domain.user.dto.UserRequest;
@@ -19,6 +21,7 @@ import java.util.List;
 public class UserController {
 
     private final IUserService userService;
+    private final ICashRegisterDetailService cashRegisterDetailService;
 
     @GetMapping
     public ResponseEntity<List<UserResponse>> getAll() {
@@ -28,6 +31,11 @@ public class UserController {
     @GetMapping("/{userId}")
     public ResponseEntity<UserResponse> get(@PathVariable("userId") int userId) {
         return ResponseEntity.ok(userService.get(userId));
+    }
+
+    @GetMapping("/{userId}/reports/cash-register-details")
+    public ResponseEntity<MyCashRegistersReports> getCashRegisterReports(@PathVariable("userId") int userId) {
+        return ResponseEntity.ok(cashRegisterDetailService.getReportsByUserId(userId));
     }
 
     @GetMapping("/{code}/reports")

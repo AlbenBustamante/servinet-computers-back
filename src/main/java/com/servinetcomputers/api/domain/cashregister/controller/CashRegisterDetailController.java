@@ -16,18 +16,13 @@ public class CashRegisterDetailController {
     private final ICashRegisterDetailService service;
 
     @PostMapping
-    public ResponseEntity<CashRegisterDetailResponse> register(@RequestBody CashRegisterDetailRequest request) {
+    public ResponseEntity<CashRegisterDetailReportsDto> register(@RequestBody CashRegisterDetailRequest request) {
         return ResponseEntity.ok(service.create(request));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<CashRegisterDetailResponse> getById(@PathVariable("id") int cashRegisterDetailId) {
         return ResponseEntity.ok(service.getById(cashRegisterDetailId));
-    }
-
-    @GetMapping("/{id}/reports")
-    public ResponseEntity<CashRegisterDetailReportsDto> getReports(@PathVariable("id") int cashRegisterDetailId) {
-        return ResponseEntity.ok(service.getReports(cashRegisterDetailId));
     }
 
     @GetMapping("/already-exists")

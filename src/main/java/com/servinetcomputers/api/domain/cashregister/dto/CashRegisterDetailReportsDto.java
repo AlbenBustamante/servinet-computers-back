@@ -12,4 +12,18 @@ public record CashRegisterDetailReportsDto(
         int balance,
         int discrepancy
 ) {
+    public CashRegisterDetailReportsDto sum(CashRegisterDetailReportsDto reports) {
+        return new CashRegisterDetailReportsDto(
+                cashRegisterDetail,
+                transactionsAmount + reports.transactionsAmount,
+                initialBase + reports.initialBase,
+                finalBase + reports.finalBase,
+                deposits + reports.deposits,
+                withdrawals + reports.withdrawals,
+                expenses + reports.expenses,
+                credits + reports.credits,
+                balance + reports.balance,
+                discrepancy + reports.discrepancy
+        );
+    }
 }

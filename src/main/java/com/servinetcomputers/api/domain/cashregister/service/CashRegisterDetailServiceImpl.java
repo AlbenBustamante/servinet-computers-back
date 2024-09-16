@@ -14,6 +14,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -26,7 +27,7 @@ public class CashRegisterDetailServiceImpl implements ICashRegisterDetailService
     private final ZoneId zoneId;
 
     @Override
-    public CashRegisterDetailResponse create(CashRegisterDetailRequest request) {
+    public CashRegisterDetailReportsDto create(CashRegisterDetailRequest request) {
         if (repository.existsByUserIdAndCreatedDateBetweenAndEnabledTrue(request.userId(), toDateTime(LocalTime.MIN), toDateTime(LocalTime.MAX))) {
             throw new BadRequestException("Ya tienes una caja en funcionamiento");
         }
@@ -53,14 +54,16 @@ public class CashRegisterDetailServiceImpl implements ICashRegisterDetailService
         final var entity = mapper.toEntity(request);
         entity.setCashRegister(cashRegister);
 
-        return mapper.toResponse(repository.save(entity));
+        final var response = mapper.toResponse(repository.save(entity));
+
+        return getCashRegistersReports(response);
     }
 
     @Override
     public AlreadyExistsCashRegisterDetailDto alreadyExists() {
         final var details = repository.findAllByUserIdAndCreatedDateBetweenAndEnabledTrue(userId(), toDateTime(LocalTime.MIN), toDateTime(LocalTime.MAX));
         final var alreadyExists = !details.isEmpty();
-        final var myCashRegisters = alreadyExists ? mapper.toResponses(details) : null;
+        final var myCashRegisters = alreadyExists ? getReportsByUserId(userId()) : null;
 
         final List<CashRegisterResponse> cashRegisters = alreadyExists
                 ? List.of()
@@ -78,15 +81,29 @@ public class CashRegisterDetailServiceImpl implements ICashRegisterDetailService
     }
 
     @Override
-    public CashRegisterDetailReportsDto getReports(int cashRegisterDetailId) {
-        final var entity = repository.findByIdAndEnabledTrue(cashRegisterDetailId)
-                .orElseThrow(() -> new NotFoundException("El reporte no fue encontrado: #" + cashRegisterDetailId));
+    public MyCashRegistersReports getReportsByUserId(int userId) {
+        final var details = repository.findAllByUserIdAndCreatedDateBetweenAndEnabledTrue(userId, toDateTime(LocalTime.MIN), toDateTime(LocalTime.now()));
+        final var cashRegisterDetails = mapper.toResponses(details);
+        final List<CashRegisterDetailReportsDto> reports = new ArrayList<>(details.size());
 
-        final var cashRegisterDetail = mapper.toResponse(entity);
+        var total = new CashRegisterDetailReportsDto(cashRegisterDetails.get(0), 0, 0, 0, 0, 0, 0, 0, 0, 0);
+
+        for (final var cashRegisterDetail : cashRegisterDetails) {
+            final var report = getCashRegistersReports(cashRegisterDetail);
+
+            reports.add(report);
+            total = total.sum(report);
+        }
+
+        return new MyCashRegistersReports(reports, total);
+    }
+
+    private CashRegisterDetailReportsDto getCashRegistersReports(CashRegisterDetailResponse cashRegisterDetail) {
+        final var finalBaseDto = cashRegisterDetail.getFinalBase();
 
         final var transactionsAmount = 0;
         final var initialBase = cashRegisterDetail.getInitialBase().calculate();
-        final var finalBase = cashRegisterDetail.getFinalBase().calculate();
+        final var finalBase = finalBaseDto != null ? finalBaseDto.calculate() : 0;
         final var deposits = 0;
         final var withdrawals = 0;
         final var expenses = 0;
@@ -94,7 +111,7 @@ public class CashRegisterDetailServiceImpl implements ICashRegisterDetailService
 
         final var balance = initialBase + deposits - withdrawals - expenses - credits;
 
-        final var discrepancy = balance - finalBase;
+        final var discrepancy = finalBase - balance;
 
         return new CashRegisterDetailReportsDto(
                 cashRegisterDetail,
