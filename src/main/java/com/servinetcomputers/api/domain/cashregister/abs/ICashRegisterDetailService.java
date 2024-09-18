@@ -1,10 +1,13 @@
 package com.servinetcomputers.api.domain.cashregister.abs;
 
-import com.servinetcomputers.api.domain.cashregister.dto.*;
+import com.servinetcomputers.api.domain.cashregister.dto.AlreadyExistsCashRegisterDetailDto;
+import com.servinetcomputers.api.domain.cashregister.dto.CashRegisterDetailRequest;
+import com.servinetcomputers.api.domain.cashregister.dto.CashRegisterDetailResponse;
+import com.servinetcomputers.api.domain.cashregister.dto.MyCashRegistersReports;
 
 public interface ICashRegisterDetailService {
 
-    CashRegisterDetailReportsDto create(CashRegisterDetailRequest request);
+    MyCashRegistersReports create(CashRegisterDetailRequest request);
 
     AlreadyExistsCashRegisterDetailDto alreadyExists();
 

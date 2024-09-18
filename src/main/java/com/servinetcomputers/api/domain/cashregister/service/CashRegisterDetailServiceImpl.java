@@ -27,7 +27,7 @@ public class CashRegisterDetailServiceImpl implements ICashRegisterDetailService
     private final ZoneId zoneId;
 
     @Override
-    public CashRegisterDetailReportsDto create(CashRegisterDetailRequest request) {
+    public MyCashRegistersReports create(CashRegisterDetailRequest request) {
         if (repository.existsByUserIdAndCreatedDateBetweenAndEnabledTrue(request.userId(), toDateTime(LocalTime.MIN), toDateTime(LocalTime.MAX))) {
             throw new BadRequestException("Ya tienes una caja en funcionamiento");
         }
@@ -54,9 +54,9 @@ public class CashRegisterDetailServiceImpl implements ICashRegisterDetailService
         final var entity = mapper.toEntity(request);
         entity.setCashRegister(cashRegister);
 
-        final var response = mapper.toResponse(repository.save(entity));
+        repository.save(entity);
 
-        return getCashRegistersReports(response);
+        return getReportsByUserId(request.userId());
     }
 
     @Override
