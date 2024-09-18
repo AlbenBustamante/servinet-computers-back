@@ -24,9 +24,9 @@ public class CashRegisterDetailResponse extends ModelResponse {
         final var hours = workingHours.split(";");
 
         this.initialWorking = hours[0];
-        this.initialBreak = hours.length > 1 ? hours[1] : "";
-        this.finalBreak = hours.length > 2 ? hours[2] : "";
-        this.finalWorking = hours.length > 3 ? hours[3] : "";
+        this.initialBreak = hours.length > 1 ? hours[1] : "--:--";
+        this.finalBreak = hours.length > 2 ? hours[2] : "--:--";
+        this.finalWorking = hours.length > 3 ? hours[3] : "--:--";
 
         this.baseObservation = baseObservation;
         this.initialBase = initialBase;
