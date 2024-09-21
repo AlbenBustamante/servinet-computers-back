@@ -8,10 +8,10 @@ import java.util.Optional;
 
 public interface CashRegisterRepository extends JpaRepository<CashRegister, Integer> {
 
+    Optional<CashRegister> findByIdAndEnabledTrue(int id);
+
     List<CashRegister> findAllByEnabledTrue();
 
     boolean existsByNumeralAndEnabledTrue(int numeral);
-
-    Optional<CashRegister> findByNumeralAndEnabledTrue(int numeral);
 
 }

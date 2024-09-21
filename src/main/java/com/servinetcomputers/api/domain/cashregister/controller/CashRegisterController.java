@@ -31,14 +31,14 @@ public class CashRegisterController {
         return ResponseEntity.ok(service.getLastFinalBaseFromCashRegisterId(cashRegisterId));
     }
 
-    @PutMapping("/{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<CashRegisterResponse> update(@PathVariable("id") int cashRegisterId, @RequestBody CashRegisterRequest request) {
         return ResponseEntity.ok(service.update(cashRegisterId, request));
     }
 
-    @PatchMapping
-    public ResponseEntity<CashRegisterResponse> updateStatus(@RequestBody CashRegisterRequest request) {
-        return ResponseEntity.ok(service.updateStatus(request));
+    @PatchMapping("/{id}/status")
+    public ResponseEntity<CashRegisterResponse> updateStatus(@PathVariable("id") int cashRegisterId, @RequestBody CashRegisterRequest request) {
+        return ResponseEntity.ok(service.updateStatus(cashRegisterId, request));
     }
 
     @DeleteMapping("/{id}")

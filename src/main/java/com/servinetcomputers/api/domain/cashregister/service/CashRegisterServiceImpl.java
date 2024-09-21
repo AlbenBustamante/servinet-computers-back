@@ -65,8 +65,8 @@ public class CashRegisterServiceImpl implements ICashRegisterService {
     @Secured(value = ADMIN_AUTHORITY)
     @Override
     public CashRegisterResponse update(int id, CashRegisterRequest request) {
-        final var cashRegister = repository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Caja registradora #" + id + " not encontrada"));
+        final var cashRegister = repository.findByIdAndEnabledTrue(id)
+                .orElseThrow(() -> new NotFoundException("Caja registradora #" + id + " no encontrada"));
 
         cashRegister.setDescription(request.description() != null ? request.description() : cashRegister.getDescription());
         cashRegister.setStatus(request.status() != null ? request.status() : cashRegister.getStatus());
@@ -76,9 +76,9 @@ public class CashRegisterServiceImpl implements ICashRegisterService {
 
     @Transactional(rollbackFor = AppException.class)
     @Override
-    public CashRegisterResponse updateStatus(CashRegisterRequest request) {
-        final var cashRegister = repository.findByNumeralAndEnabledTrue(request.numeral())
-                .orElseThrow(() -> new NotFoundException("Caja registradora con numeral " + request.numeral() + " no encontrada"));
+    public CashRegisterResponse updateStatus(int cashRegisterId, CashRegisterRequest request) {
+        final var cashRegister = repository.findByIdAndEnabledTrue(cashRegisterId)
+                .orElseThrow(() -> new NotFoundException("Caja registradora no encontrada: #" + cashRegisterId));
 
         cashRegister.setStatus(request.status());
 
