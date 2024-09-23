@@ -15,7 +15,9 @@ public interface ICashRegisterDetailService {
 
     MyCashRegistersReports getReportsByUserId(int userId);
 
-    CashRegisterDetailResponse updateHours(int cashRegisterDetailId, CashRegisterDetailRequest req);
+    CashRegisterDetailResponse startBrake(int cashRegisterDetailId);
+
+    CashRegisterDetailResponse endBrake(int cashRegisterDetailId);
 
     boolean delete(int id);
 

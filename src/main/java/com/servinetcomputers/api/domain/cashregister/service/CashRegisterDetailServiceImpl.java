@@ -4,16 +4,19 @@ import com.servinetcomputers.api.domain.cashregister.abs.*;
 import com.servinetcomputers.api.domain.cashregister.dto.*;
 import com.servinetcomputers.api.domain.cashregister.util.CashRegisterStatus;
 import com.servinetcomputers.api.domain.user.dto.UserResponse;
+import com.servinetcomputers.api.exception.AppException;
 import com.servinetcomputers.api.exception.BadRequestException;
 import com.servinetcomputers.api.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +29,7 @@ public class CashRegisterDetailServiceImpl implements ICashRegisterDetailService
     private final CashRegisterMapper cashRegisterMapper;
     private final ZoneId zoneId;
 
+    @Transactional(rollbackFor = AppException.class)
     @Override
     public MyCashRegistersReports create(CashRegisterDetailRequest request) {
         if (repository.existsByUserIdAndCreatedDateBetweenAndEnabledTrue(request.userId(), toDateTime(LocalTime.MIN), toDateTime(LocalTime.MAX))) {
@@ -59,6 +63,7 @@ public class CashRegisterDetailServiceImpl implements ICashRegisterDetailService
         return getReportsByUserId(request.userId());
     }
 
+    @Transactional(rollbackFor = AppException.class)
     @Override
     public AlreadyExistsCashRegisterDetailDto alreadyExists() {
         final var details = repository.findAllByUserIdAndCreatedDateBetweenAndEnabledTrue(userId(), toDateTime(LocalTime.MIN), toDateTime(LocalTime.MAX));
@@ -72,6 +77,7 @@ public class CashRegisterDetailServiceImpl implements ICashRegisterDetailService
         return new AlreadyExistsCashRegisterDetailDto(alreadyExists, myCashRegisters, cashRegisters);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public CashRegisterDetailResponse getById(int cashRegisterDetailId) {
         final var detail = repository.findByIdAndEnabledTrue(cashRegisterDetailId)
@@ -80,6 +86,7 @@ public class CashRegisterDetailServiceImpl implements ICashRegisterDetailService
         return mapper.toResponse(detail);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public MyCashRegistersReports getReportsByUserId(int userId) {
         final var details = repository.findAllByUserIdAndCreatedDateBetweenAndEnabledTrue(userId, toDateTime(LocalTime.MIN), toDateTime(LocalTime.now()));
@@ -127,12 +134,34 @@ public class CashRegisterDetailServiceImpl implements ICashRegisterDetailService
         );
     }
 
+    @Transactional(rollbackFor = AppException.class)
     @Override
-    public CashRegisterDetailResponse updateHours(int cashRegisterDetailId, CashRegisterDetailRequest req) {
+    public CashRegisterDetailResponse startBrake(int cashRegisterDetailId) {
+        return handleBreak(cashRegisterDetailId, true);
+    }
+
+    @Transactional(rollbackFor = AppException.class)
+    @Override
+    public CashRegisterDetailResponse endBrake(int cashRegisterDetailId) {
+        return handleBreak(cashRegisterDetailId, false);
+    }
+
+    private CashRegisterDetailResponse handleBreak(int cashRegisterDetailId, boolean start) {
         final var cashRegisterDetail = repository.findByIdAndEnabledTrue(cashRegisterDetailId)
                 .orElseThrow(() -> new NotFoundException("No se encontró la caja en funcionamiento"));
 
-        cashRegisterDetail.setWorkingHours(req.workingHours());
+        final var workingHours = cashRegisterDetail.getWorkingHours();
+        workingHours[start ? 1 : 2] = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm"));
+
+        cashRegisterDetail.setWorkingHours(workingHours);
+
+        var cashRegister = cashRegisterRepository.findByIdAndEnabledTrue(cashRegisterDetail.getCashRegisterId())
+                .orElseThrow(() -> new NotFoundException("No se encontró la caja registradora"));
+
+        cashRegister.setStatus(start ? CashRegisterStatus.RESTING : CashRegisterStatus.OCCUPIED);
+        cashRegister = cashRegisterRepository.save(cashRegister);
+
+        cashRegisterDetail.setCashRegister(cashRegister);
 
         return mapper.toResponse(repository.save(cashRegisterDetail));
     }

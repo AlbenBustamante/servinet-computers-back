@@ -74,17 +74,6 @@ public class CashRegisterServiceImpl implements ICashRegisterService {
         return mapper.toResponse(repository.save(cashRegister));
     }
 
-    @Transactional(rollbackFor = AppException.class)
-    @Override
-    public CashRegisterResponse updateStatus(int cashRegisterId, CashRegisterRequest request) {
-        final var cashRegister = repository.findByIdAndEnabledTrue(cashRegisterId)
-                .orElseThrow(() -> new NotFoundException("Caja registradora no encontrada: #" + cashRegisterId));
-
-        cashRegister.setStatus(request.status());
-
-        return mapper.toResponse(repository.save(cashRegister));
-    }
-
     @Secured(value = ADMIN_AUTHORITY)
     @Override
     public boolean delete(int id) {

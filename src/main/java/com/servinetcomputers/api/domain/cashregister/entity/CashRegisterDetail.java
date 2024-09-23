@@ -29,8 +29,8 @@ public class CashRegisterDetail extends Auditable {
     @Column(name = "user_id", nullable = false)
     private Integer userId;
 
-    @Column(nullable = false)
-    private String workingHours;
+    @Column(nullable = false, columnDefinition = "text[]")
+    private String[] workingHours;
 
     @Column(nullable = false, length = BASE_LENGTH)
     private String initialBase;

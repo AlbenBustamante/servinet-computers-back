@@ -30,9 +30,14 @@ public class CashRegisterDetailController {
         return ResponseEntity.ok(service.alreadyExists());
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<CashRegisterDetailResponse> updateHours(@PathVariable("id") int cashRegisterDetailId, @RequestBody CashRegisterDetailRequest request) {
-        return ResponseEntity.ok(service.updateHours(cashRegisterDetailId, request));
+    @PatchMapping("/{id}/start-break")
+    public ResponseEntity<CashRegisterDetailResponse> startBreak(@PathVariable("id") int cashRegisterDetailId) {
+        return ResponseEntity.ok(service.startBrake(cashRegisterDetailId));
+    }
+
+    @PatchMapping("/{id}/end-break")
+    public ResponseEntity<CashRegisterDetailResponse> endBrake(@PathVariable("id") int cashRegisterDetailId) {
+        return ResponseEntity.ok(service.endBrake(cashRegisterDetailId));
     }
 
     @DeleteMapping("/{id}")

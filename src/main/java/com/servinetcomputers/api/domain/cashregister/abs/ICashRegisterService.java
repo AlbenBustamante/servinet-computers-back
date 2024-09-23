@@ -16,8 +16,6 @@ public interface ICashRegisterService {
 
     CashRegisterResponse update(int id, CashRegisterRequest request);
 
-    CashRegisterResponse updateStatus(int cashRegisterId, CashRegisterRequest request);
-
     boolean delete(int id);
 
 }

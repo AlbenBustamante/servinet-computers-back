@@ -5,7 +5,7 @@ import com.servinetcomputers.api.domain.base.BaseDto;
 public record CashRegisterDetailRequest(
         int cashRegisterId,
         int userId,
-        String workingHours,
+        String[] workingHours,
         BaseDto initialBase,
         BaseDto finalBase,
         String baseObservation

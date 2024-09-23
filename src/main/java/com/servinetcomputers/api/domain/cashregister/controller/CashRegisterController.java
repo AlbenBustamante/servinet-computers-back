@@ -36,11 +36,6 @@ public class CashRegisterController {
         return ResponseEntity.ok(service.update(cashRegisterId, request));
     }
 
-    @PatchMapping("/{id}/status")
-    public ResponseEntity<CashRegisterResponse> updateStatus(@PathVariable("id") int cashRegisterId, @RequestBody CashRegisterRequest request) {
-        return ResponseEntity.ok(service.updateStatus(cashRegisterId, request));
-    }
-
     @DeleteMapping("/{id}")
     public ResponseEntity<Boolean> delete(@PathVariable("id") int cashRegisterId) {
         return ResponseEntity.ok(service.delete(cashRegisterId));

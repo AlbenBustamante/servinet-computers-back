@@ -9,11 +9,9 @@ import org.mapstruct.Mapping;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = BaseMapper.class)
+@Mapper(componentModel = "spring", uses = {CashRegisterMapper.class, BaseMapper.class})
 public interface CashRegisterDetailMapper {
 
-    @Mapping(target = "cashRegisterNumeral", source = "cashRegister.numeral")
-    @Mapping(target = "cashRegisterDescription", source = "cashRegister.description")
     CashRegisterDetailResponse toResponse(CashRegisterDetail entity);
 
     List<CashRegisterDetailResponse> toResponses(List<CashRegisterDetail> entities);
