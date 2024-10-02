@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.time.LocalTime;
+
 import static com.servinetcomputers.api.domain.cashregister.util.CashRegisterDetailConstants.BASE_LENGTH;
 import static com.servinetcomputers.api.domain.cashregister.util.CashRegisterDetailConstants.BASE_OBSERVATION_LENGTH;
 
@@ -29,8 +31,8 @@ public class CashRegisterDetail extends Auditable {
     @Column(name = "user_id", nullable = false)
     private Integer userId;
 
-    @Column(nullable = false, columnDefinition = "text[]")
-    private String[] workingHours;
+    @Column(nullable = false)
+    private LocalTime[] workingHours;
 
     @Column(nullable = false, length = BASE_LENGTH)
     private String initialBase;

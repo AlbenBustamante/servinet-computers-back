@@ -1,5 +1,7 @@
 package com.servinetcomputers.api.domain.cashregister.service;
 
+import com.servinetcomputers.api.domain.base.BaseDto;
+import com.servinetcomputers.api.domain.base.BaseMapper;
 import com.servinetcomputers.api.domain.cashregister.abs.*;
 import com.servinetcomputers.api.domain.cashregister.dto.*;
 import com.servinetcomputers.api.domain.cashregister.util.CashRegisterStatus;
@@ -16,7 +18,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +28,7 @@ public class CashRegisterDetailServiceImpl implements ICashRegisterDetailService
     private final CashRegisterDetailMapper mapper;
     private final CashRegisterRepository cashRegisterRepository;
     private final CashRegisterMapper cashRegisterMapper;
+    private final BaseMapper baseMapper;
     private final ZoneId zoneId;
 
     @Transactional(rollbackFor = AppException.class)
@@ -146,12 +148,31 @@ public class CashRegisterDetailServiceImpl implements ICashRegisterDetailService
         return handleBreak(cashRegisterDetailId, false);
     }
 
+    @Transactional(rollbackFor = AppException.class)
+    @Override
+    public CashRegisterDetailReportsDto close(int cashRegisterDetailId, BaseDto finalBase) {
+        final var cashRegisterDetail = repository.findByIdAndEnabledTrue(cashRegisterDetailId)
+                .orElseThrow(() -> new NotFoundException("No se encontró la caja en funcionamiento"));
+
+        cashRegisterDetail.getCashRegister().setStatus(CashRegisterStatus.AVAILABLE);
+
+        final var workingHours = cashRegisterDetail.getWorkingHours();
+        workingHours[3] = LocalTime.now();
+
+        cashRegisterDetail.setWorkingHours(workingHours);
+        cashRegisterDetail.setFinalBase(baseMapper.toStr(finalBase));
+
+        final var response = mapper.toResponse(repository.save(cashRegisterDetail));
+
+        return getCashRegistersReports(response);
+    }
+
     private CashRegisterDetailResponse handleBreak(int cashRegisterDetailId, boolean start) {
         final var cashRegisterDetail = repository.findByIdAndEnabledTrue(cashRegisterDetailId)
                 .orElseThrow(() -> new NotFoundException("No se encontró la caja en funcionamiento"));
 
         final var workingHours = cashRegisterDetail.getWorkingHours();
-        workingHours[start ? 1 : 2] = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm"));
+        workingHours[start ? 1 : 2] = LocalTime.now();
 
         cashRegisterDetail.setWorkingHours(workingHours);
 

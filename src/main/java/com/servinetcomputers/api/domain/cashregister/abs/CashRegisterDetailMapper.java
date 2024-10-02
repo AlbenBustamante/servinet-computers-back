@@ -16,6 +16,7 @@ public interface CashRegisterDetailMapper {
 
     List<CashRegisterDetailResponse> toResponses(List<CashRegisterDetail> entities);
 
+    @Mapping(target = "workingHours", expression = "java(new LocalTime[]{request.initialWorking(), null, null, null})")
     @Mapping(target = "user", ignore = true)
     @Mapping(target = "modifiedDate", ignore = true)
     @Mapping(target = "modifiedBy", ignore = true)

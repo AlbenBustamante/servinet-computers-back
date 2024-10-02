@@ -4,24 +4,27 @@ import com.servinetcomputers.api.domain.ModelResponse;
 import com.servinetcomputers.api.domain.base.BaseDto;
 import lombok.Getter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Getter
 public class CashRegisterDetailResponse extends ModelResponse {
     private final int userId;
-    private final String initialWorking, initialBreak, finalBreak, finalWorking, baseObservation;
+    private final String baseObservation;
+    private final LocalDateTime initialWorking, initialBreak, finalBreak, finalWorking;
     private final BaseDto initialBase, finalBase;
     private final CashRegisterResponse cashRegister;
 
     public CashRegisterDetailResponse(int id, boolean enabled, LocalDateTime createdDate, LocalDateTime modifiedDate, String createdBy, String modifiedBy,
-                                      int userId, String[] workingHours, String baseObservation, BaseDto initialBase, BaseDto finalBase, CashRegisterResponse cashRegister) {
+                                      int userId, LocalTime[] workingHours, String baseObservation, BaseDto initialBase, BaseDto finalBase, CashRegisterResponse cashRegister) {
         super(id, enabled, createdDate, modifiedDate, createdBy, modifiedBy);
         this.userId = userId;
 
-        this.initialWorking = workingHours[0];
-        this.initialBreak = workingHours[1].isBlank() ? "--:--" : workingHours[1];
-        this.finalBreak = workingHours[2].isBlank() ? "--:--" : workingHours[2];
-        this.finalWorking = workingHours[3].isBlank() ? "--:--" : workingHours[3];
+        this.initialWorking = LocalDateTime.of(LocalDate.now(), workingHours[0]);
+        this.initialBreak = workingHours[1] != null ? LocalDateTime.of(LocalDate.now(), workingHours[1]) : null;
+        this.finalBreak = workingHours[2] != null ? LocalDateTime.of(LocalDate.now(), workingHours[2]) : null;
+        this.finalWorking = workingHours[3] != null ? LocalDateTime.of(LocalDate.now(), workingHours[3]) : null;
 
         this.baseObservation = baseObservation;
         this.initialBase = initialBase;

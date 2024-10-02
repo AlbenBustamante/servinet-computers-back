@@ -2,10 +2,12 @@ package com.servinetcomputers.api.domain.cashregister.dto;
 
 import com.servinetcomputers.api.domain.base.BaseDto;
 
+import java.time.LocalTime;
+
 public record CashRegisterDetailRequest(
         int cashRegisterId,
         int userId,
-        String[] workingHours,
+        LocalTime initialWorking,
         BaseDto initialBase,
         BaseDto finalBase,
         String baseObservation

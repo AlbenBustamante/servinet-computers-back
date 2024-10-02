@@ -1,10 +1,8 @@
 package com.servinetcomputers.api.domain.cashregister.controller;
 
+import com.servinetcomputers.api.domain.base.BaseDto;
 import com.servinetcomputers.api.domain.cashregister.abs.ICashRegisterDetailService;
-import com.servinetcomputers.api.domain.cashregister.dto.AlreadyExistsCashRegisterDetailDto;
-import com.servinetcomputers.api.domain.cashregister.dto.CashRegisterDetailRequest;
-import com.servinetcomputers.api.domain.cashregister.dto.CashRegisterDetailResponse;
-import com.servinetcomputers.api.domain.cashregister.dto.MyCashRegistersReports;
+import com.servinetcomputers.api.domain.cashregister.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -38,6 +36,11 @@ public class CashRegisterDetailController {
     @PatchMapping("/{id}/end-break")
     public ResponseEntity<CashRegisterDetailResponse> endBrake(@PathVariable("id") int cashRegisterDetailId) {
         return ResponseEntity.ok(service.endBrake(cashRegisterDetailId));
+    }
+
+    @PatchMapping("/{id}/close")
+    public ResponseEntity<CashRegisterDetailReportsDto> close(@PathVariable("id") int cashRegisterDetailId, @RequestBody BaseDto finalBase) {
+        return ResponseEntity.ok(service.close(cashRegisterDetailId, finalBase));
     }
 
     @DeleteMapping("/{id}")
