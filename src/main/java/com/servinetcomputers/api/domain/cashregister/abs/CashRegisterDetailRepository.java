@@ -13,6 +13,8 @@ import java.util.Optional;
 
 public interface CashRegisterDetailRepository extends JpaRepository<CashRegisterDetail, Integer> {
 
+    boolean existsByIdAndEnabledTrue(int id);
+
     Optional<CashRegisterDetail> findByIdAndEnabledTrue(int id);
 
     boolean existsByUserIdAndCreatedDateBetweenAndEnabledTrue(int userId, LocalDateTime firstDate, LocalDateTime lastDate);
