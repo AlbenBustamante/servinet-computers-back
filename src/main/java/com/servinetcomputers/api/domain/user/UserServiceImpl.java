@@ -1,5 +1,6 @@
 package com.servinetcomputers.api.domain.user;
 
+import com.servinetcomputers.api.domain.expense.abs.ExpenseRepository;
 import com.servinetcomputers.api.domain.platform.abs.PlatformTransferRepository;
 import com.servinetcomputers.api.domain.user.abs.IUserService;
 import com.servinetcomputers.api.domain.user.abs.ReportsMapper;
@@ -35,7 +36,9 @@ public class UserServiceImpl implements IUserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
+
     private final PlatformTransferRepository platformTransferRepository;
+    private final ExpenseRepository expenseRepository;
     private final ReportsMapper reportsMapper;
 
     @Transactional(rollbackFor = AppException.class)
@@ -120,9 +123,13 @@ public class UserServiceImpl implements IUserService {
         final var endDate = LocalDateTime.of(LocalDate.now(), LocalTime.now());
 
         final var platformTransfers = platformTransferRepository.findAllByCreatedByAndEnabledTrueAndCreatedDateBetween(code, startDate, endDate);
+        final var expenses = expenseRepository.findAllByCreatedByAndEnabledTrueAndCreatedDateBetweenAndDiscount(code, startDate, endDate, false);
+        final var discounts = expenseRepository.findAllByCreatedByAndEnabledTrueAndCreatedDateBetweenAndDiscount(code, startDate, endDate, true);
 
         final var reports = new Reports(
-                platformTransfers
+                platformTransfers,
+                expenses,
+                discounts
         );
 
         return reportsMapper.toResponse(reports);

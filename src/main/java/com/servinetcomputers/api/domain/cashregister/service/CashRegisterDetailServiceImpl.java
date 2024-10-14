@@ -5,6 +5,7 @@ import com.servinetcomputers.api.domain.base.BaseMapper;
 import com.servinetcomputers.api.domain.cashregister.abs.*;
 import com.servinetcomputers.api.domain.cashregister.dto.*;
 import com.servinetcomputers.api.domain.cashregister.util.CashRegisterStatus;
+import com.servinetcomputers.api.domain.expense.abs.ExpenseRepository;
 import com.servinetcomputers.api.domain.user.dto.UserResponse;
 import com.servinetcomputers.api.exception.AppException;
 import com.servinetcomputers.api.exception.BadRequestException;
@@ -29,6 +30,7 @@ public class CashRegisterDetailServiceImpl implements ICashRegisterDetailService
     private final CashRegisterRepository cashRegisterRepository;
     private final CashRegisterMapper cashRegisterMapper;
     private final BaseMapper baseMapper;
+    private final ExpenseRepository expenseRepository;
     private final ZoneId zoneId;
 
     @Transactional(rollbackFor = AppException.class)
@@ -108,6 +110,10 @@ public class CashRegisterDetailServiceImpl implements ICashRegisterDetailService
     }
 
     private CashRegisterDetailReportsDto getCashRegistersReports(CashRegisterDetailResponse cashRegisterDetail) {
+        final var startDate = cashRegisterDetail.getCreatedDate();
+        final var endDate = LocalDateTime.of(LocalDate.now(), LocalTime.now());
+        final var code = cashRegisterDetail.getCreatedBy();
+
         final var finalBaseDto = cashRegisterDetail.getFinalBase();
 
         final var transactionsAmount = 0;
@@ -115,10 +121,14 @@ public class CashRegisterDetailServiceImpl implements ICashRegisterDetailService
         final var finalBase = finalBaseDto != null ? finalBaseDto.calculate() : 0;
         final var deposits = 0;
         final var withdrawals = 0;
-        final var expenses = 0;
-        final var credits = 0;
 
-        final var balance = initialBase + deposits - withdrawals - expenses - credits;
+        var expenses = expenseRepository.sumAllByCreatedByAndEnabledTrueAndCreatedDateBetweenAndDiscount(code, startDate, endDate, false);
+        var discounts = expenseRepository.sumAllByCreatedByAndEnabledTrueAndCreatedDateBetweenAndDiscount(code, startDate, endDate, true);
+
+        expenses = expenses != null ? expenses : 0;
+        discounts = discounts != null ? discounts : 0;
+
+        final var balance = initialBase + deposits - withdrawals - expenses - discounts;
 
         final var discrepancy = finalBase - balance;
 
@@ -130,7 +140,7 @@ public class CashRegisterDetailServiceImpl implements ICashRegisterDetailService
                 deposits,
                 withdrawals,
                 expenses,
-                credits,
+                discounts,
                 balance,
                 discrepancy
         );

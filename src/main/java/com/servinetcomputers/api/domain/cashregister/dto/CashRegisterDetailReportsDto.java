@@ -8,7 +8,7 @@ public record CashRegisterDetailReportsDto(
         int deposits,
         int withdrawals,
         int expenses,
-        int credits,
+        int discounts,
         int balance,
         int discrepancy
 ) {
@@ -21,7 +21,7 @@ public record CashRegisterDetailReportsDto(
                 deposits + reports.deposits,
                 withdrawals + reports.withdrawals,
                 expenses + reports.expenses,
-                credits + reports.credits,
+                discounts + reports.discounts,
                 balance + reports.balance,
                 discrepancy + reports.discrepancy
         );
