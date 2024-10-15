@@ -17,9 +17,15 @@ public class AuditCode implements AuditorAware<String> {
             return Optional.of("-");
         }
 
-        final var user = (UserResponse) auth.getPrincipal();
+        final var principal = auth.getPrincipal();
+
+        if (principal == "anonymousUser") {
+            return Optional.of("-");
+        }
+
+        final var user = (UserResponse) principal;
         final var code = user.getCode();
 
-        return Optional.of(code.equalsIgnoreCase("anonymousUser") ? "-" : code);
+        return Optional.of(code);
     }
 }
