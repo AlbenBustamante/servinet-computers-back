@@ -1,6 +1,5 @@
 package com.servinetcomputers.api.domain.user.abs;
 
-import com.servinetcomputers.api.domain.user.dto.ReportsResponse;
 import com.servinetcomputers.api.domain.user.dto.UserRequest;
 import com.servinetcomputers.api.domain.user.dto.UserResponse;
 
@@ -45,7 +44,5 @@ public interface IUserService {
      * @return {@code true} if the user was disabled.
      */
     boolean delete(int userId);
-
-    ReportsResponse getReports(String code);
 
 }

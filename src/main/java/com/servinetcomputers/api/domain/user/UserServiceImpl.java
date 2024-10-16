@@ -1,13 +1,8 @@
 package com.servinetcomputers.api.domain.user;
 
-import com.servinetcomputers.api.domain.expense.abs.ExpenseRepository;
-import com.servinetcomputers.api.domain.platform.abs.PlatformTransferRepository;
 import com.servinetcomputers.api.domain.user.abs.IUserService;
-import com.servinetcomputers.api.domain.user.abs.ReportsMapper;
 import com.servinetcomputers.api.domain.user.abs.UserMapper;
 import com.servinetcomputers.api.domain.user.abs.UserRepository;
-import com.servinetcomputers.api.domain.user.dto.Reports;
-import com.servinetcomputers.api.domain.user.dto.ReportsResponse;
 import com.servinetcomputers.api.domain.user.dto.UserRequest;
 import com.servinetcomputers.api.domain.user.dto.UserResponse;
 import com.servinetcomputers.api.exception.AppException;
@@ -19,9 +14,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
 
 import static com.servinetcomputers.api.security.util.SecurityConstants.ADMIN_AUTHORITY;
@@ -36,10 +28,6 @@ public class UserServiceImpl implements IUserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
-
-    private final PlatformTransferRepository platformTransferRepository;
-    private final ExpenseRepository expenseRepository;
-    private final ReportsMapper reportsMapper;
 
     @Transactional(rollbackFor = AppException.class)
     @Override
@@ -66,6 +54,7 @@ public class UserServiceImpl implements IUserService {
         return userMapper.toResponse(userRepository.save(entity));
     }
 
+    @Secured(value = ADMIN_AUTHORITY)
     @Override
     public List<UserResponse> getAll() {
         return userMapper.toResponses(userRepository.findAll());
@@ -116,23 +105,5 @@ public class UserServiceImpl implements IUserService {
         return true;
     }
 
-    @Transactional(readOnly = true)
-    @Override
-    public ReportsResponse getReports(String code) {
-        final var startDate = LocalDateTime.of(LocalDate.now(), LocalTime.MIN);
-        final var endDate = LocalDateTime.of(LocalDate.now(), LocalTime.now());
-
-        final var platformTransfers = platformTransferRepository.findAllByCreatedByAndEnabledTrueAndCreatedDateBetween(code, startDate, endDate);
-        final var expenses = expenseRepository.findAllByCreatedByAndEnabledTrueAndCreatedDateBetweenAndDiscount(code, startDate, endDate, false);
-        final var discounts = expenseRepository.findAllByCreatedByAndEnabledTrueAndCreatedDateBetweenAndDiscount(code, startDate, endDate, true);
-
-        final var reports = new Reports(
-                platformTransfers,
-                expenses,
-                discounts
-        );
-
-        return reportsMapper.toResponse(reports);
-    }
 
 }

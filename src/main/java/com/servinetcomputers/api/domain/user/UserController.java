@@ -2,8 +2,9 @@ package com.servinetcomputers.api.domain.user;
 
 import com.servinetcomputers.api.domain.cashregister.abs.ICashRegisterDetailService;
 import com.servinetcomputers.api.domain.cashregister.dto.MyCashRegistersReports;
+import com.servinetcomputers.api.domain.reports.abs.IReportsService;
+import com.servinetcomputers.api.domain.reports.dto.ReportsResponse;
 import com.servinetcomputers.api.domain.user.abs.IUserService;
-import com.servinetcomputers.api.domain.user.dto.ReportsResponse;
 import com.servinetcomputers.api.domain.user.dto.UserRequest;
 import com.servinetcomputers.api.domain.user.dto.UserResponse;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,7 @@ public class UserController {
 
     private final IUserService userService;
     private final ICashRegisterDetailService cashRegisterDetailService;
+    private final IReportsService reportsService;
 
     @GetMapping
     public ResponseEntity<List<UserResponse>> getAll() {
@@ -40,7 +42,7 @@ public class UserController {
 
     @GetMapping("/{code}/reports")
     public ResponseEntity<ReportsResponse> getReports(@PathVariable("code") String code) {
-        return ResponseEntity.ok(userService.getReports(code));
+        return ResponseEntity.ok(reportsService.getReports(code));
     }
 
     @PatchMapping("/{userId}")

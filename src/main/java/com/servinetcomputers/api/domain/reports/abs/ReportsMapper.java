@@ -1,9 +1,9 @@
-package com.servinetcomputers.api.domain.user.abs;
+package com.servinetcomputers.api.domain.reports.abs;
 
 import com.servinetcomputers.api.domain.expense.abs.ExpenseMapper;
 import com.servinetcomputers.api.domain.platform.abs.PlatformTransferMapper;
-import com.servinetcomputers.api.domain.user.dto.Reports;
-import com.servinetcomputers.api.domain.user.dto.ReportsResponse;
+import com.servinetcomputers.api.domain.reports.dto.Reports;
+import com.servinetcomputers.api.domain.reports.dto.ReportsResponse;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring", uses = {PlatformTransferMapper.class, ExpenseMapper.class})

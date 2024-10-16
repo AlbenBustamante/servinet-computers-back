@@ -1,4 +1,4 @@
-package com.servinetcomputers.api.domain.dashboard.dto;
+package com.servinetcomputers.api.domain.reports.dto;
 
 import com.servinetcomputers.api.domain.platform.dto.PlatformBalanceResponse;
 

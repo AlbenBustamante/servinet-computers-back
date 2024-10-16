@@ -1,4 +1,4 @@
-package com.servinetcomputers.api.domain.user.dto;
+package com.servinetcomputers.api.domain.reports.dto;
 
 import com.servinetcomputers.api.domain.expense.dto.ExpenseResponse;
 import com.servinetcomputers.api.domain.platform.dto.PlatformTransferResponse;
