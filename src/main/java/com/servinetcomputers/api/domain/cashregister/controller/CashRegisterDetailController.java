@@ -28,6 +28,11 @@ public class CashRegisterDetailController {
         return ResponseEntity.ok(service.alreadyExists());
     }
 
+    @GetMapping("/{id}/reports")
+    public ResponseEntity<CashRegisterDetailReportsDto> getReports(@PathVariable("id") int cashRegisterDetailId) {
+        return ResponseEntity.ok(service.getCashRegisterDetailReports(cashRegisterDetailId));
+    }
+
     @PatchMapping("/{id}/start-break")
     public ResponseEntity<CashRegisterDetailResponse> startBreak(@PathVariable("id") int cashRegisterDetailId) {
         return ResponseEntity.ok(service.startBrake(cashRegisterDetailId));

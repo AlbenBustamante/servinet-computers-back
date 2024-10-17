@@ -121,6 +121,14 @@ public class CashRegisterDetailServiceImpl implements ICashRegisterDetailService
         return new MyCashRegistersReports(reports, total);
     }
 
+    @Override
+    public CashRegisterDetailReportsDto getCashRegisterDetailReports(int cashRegisterDetailId) {
+        final var cashRegisterDetail = repository.findByIdAndEnabledTrue(cashRegisterDetailId)
+                .orElseThrow(() -> new NotFoundException("No se encontró la jornada #" + cashRegisterDetailId));
+
+        return getCashRegistersReports(mapper.toResponse(cashRegisterDetail));
+    }
+
     private CashRegisterDetailReportsDto getCashRegistersReports(CashRegisterDetailResponse cashRegisterDetail) {
         final var startDate = cashRegisterDetail.getCreatedDate();
         final var endDate = LocalDateTime.of(LocalDate.now(), LocalTime.now());
@@ -132,13 +140,14 @@ public class CashRegisterDetailServiceImpl implements ICashRegisterDetailService
         final var initialBase = cashRegisterDetail.getInitialBase().calculate();
         final var finalBase = finalBaseDto != null ? finalBaseDto.calculate() : 0;
         final var deposits = 0;
-        final var withdrawals = 0;
 
         var expenses = expenseRepository.sumAllByCreatedByAndEnabledTrueAndCreatedDateBetweenAndDiscount(code, startDate, endDate, false);
         var discounts = expenseRepository.sumAllByCreatedByAndEnabledTrueAndCreatedDateBetweenAndDiscount(code, startDate, endDate, true);
 
         expenses = expenses != null ? expenses : 0;
         discounts = discounts != null ? discounts : 0;
+
+        final var withdrawals = expenses + discounts;
 
         final var balance = initialBase + deposits - withdrawals - expenses - discounts;
 

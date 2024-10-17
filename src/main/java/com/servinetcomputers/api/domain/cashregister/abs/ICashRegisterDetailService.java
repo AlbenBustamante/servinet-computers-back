@@ -13,6 +13,8 @@ public interface ICashRegisterDetailService {
 
     MyCashRegistersReports getReportsByUserId(int userId);
 
+    CashRegisterDetailReportsDto getCashRegisterDetailReports(int cashRegisterDetailId);
+
     CashRegisterDetailResponse startBrake(int cashRegisterDetailId);
 
     CashRegisterDetailResponse endBrake(int cashRegisterDetailId);
