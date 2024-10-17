@@ -71,7 +71,19 @@ public class CashRegisterDetailServiceImpl implements ICashRegisterDetailService
     @Override
     public AlreadyExistsCashRegisterDetailDto alreadyExists() {
         final var details = repository.findAllByUserIdAndCreatedDateBetweenAndEnabledTrue(userId(), toDateTime(LocalTime.MIN), toDateTime(LocalTime.MAX));
-        final var alreadyExists = !details.isEmpty();
+        var alreadyExists = !details.isEmpty();
+
+        if (alreadyExists) {
+            for (final var detail : details) {
+                final var status = detail.getCashRegister().getStatus();
+                alreadyExists = status == CashRegisterStatus.OCCUPIED || status == CashRegisterStatus.RESTING;
+
+                if (alreadyExists) {
+                    break;
+                }
+            }
+        }
+
         final var myCashRegisters = alreadyExists ? getReportsByUserId(userId()) : null;
 
         final List<CashRegisterResponse> cashRegisters = alreadyExists
