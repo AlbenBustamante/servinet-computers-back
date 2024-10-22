@@ -56,7 +56,7 @@ public class ReportsServiceImpl implements IReportsService {
 
         for (final var finalBase : finalBases) {
             final var response = baseMapper.toDto(finalBase);
-            totalBalance += response.calculate();
+            totalBalance += response != null ? response.calculate() : 0;
         }
 
         return new DashboardResponse(totalBalance, platformBalanceMapper.toResponses(platformBalances));
