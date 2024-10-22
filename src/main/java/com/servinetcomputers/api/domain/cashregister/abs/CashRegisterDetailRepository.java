@@ -1,6 +1,7 @@
 package com.servinetcomputers.api.domain.cashregister.abs;
 
 import com.servinetcomputers.api.domain.cashregister.entity.CashRegisterDetail;
+import com.servinetcomputers.api.domain.cashregister.util.CashRegisterStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -17,7 +18,9 @@ public interface CashRegisterDetailRepository extends JpaRepository<CashRegister
 
     Optional<CashRegisterDetail> findByIdAndEnabledTrue(int id);
 
-    boolean existsByUserIdAndCreatedDateBetweenAndEnabledTrue(int userId, LocalDateTime firstDate, LocalDateTime lastDate);
+    boolean existsByUserIdAndCreatedDateBetweenAndEnabledTrueAndCashRegisterStatusNot(int userId, LocalDateTime firstDate, LocalDateTime lastDate, CashRegisterStatus status);
+
+    List<CashRegisterDetail> findAllByUserIdAndCreatedDateBetweenAndEnabledTrueAndCashRegisterStatusNot(int userId, LocalDateTime firstDate, LocalDateTime lastDate, CashRegisterStatus status);
 
     List<CashRegisterDetail> findAllByUserIdAndCreatedDateBetweenAndEnabledTrue(int userId, LocalDateTime firstDate, LocalDateTime lastDate);
 

@@ -36,7 +36,7 @@ public class CashRegisterDetailServiceImpl implements ICashRegisterDetailService
     @Transactional(rollbackFor = AppException.class)
     @Override
     public MyCashRegistersReports create(CashRegisterDetailRequest request) {
-        if (repository.existsByUserIdAndCreatedDateBetweenAndEnabledTrue(request.userId(), toDateTime(LocalTime.MIN), toDateTime(LocalTime.MAX))) {
+        if (repository.existsByUserIdAndCreatedDateBetweenAndEnabledTrueAndCashRegisterStatusNot(request.userId(), toDateTime(LocalTime.MIN), toDateTime(LocalTime.MAX), CashRegisterStatus.AVAILABLE)) {
             throw new BadRequestException("Ya tienes una caja en funcionamiento");
         }
 
@@ -70,19 +70,8 @@ public class CashRegisterDetailServiceImpl implements ICashRegisterDetailService
     @Transactional(rollbackFor = AppException.class)
     @Override
     public AlreadyExistsCashRegisterDetailDto alreadyExists() {
-        final var details = repository.findAllByUserIdAndCreatedDateBetweenAndEnabledTrue(userId(), toDateTime(LocalTime.MIN), toDateTime(LocalTime.MAX));
-        var alreadyExists = !details.isEmpty();
-
-        if (alreadyExists) {
-            for (final var detail : details) {
-                final var status = detail.getCashRegister().getStatus();
-                alreadyExists = status == CashRegisterStatus.OCCUPIED || status == CashRegisterStatus.RESTING;
-
-                if (alreadyExists) {
-                    break;
-                }
-            }
-        }
+        final var details = repository.findAllByUserIdAndCreatedDateBetweenAndEnabledTrueAndCashRegisterStatusNot(userId(), toDateTime(LocalTime.MIN), toDateTime(LocalTime.MAX), CashRegisterStatus.AVAILABLE);
+        final var alreadyExists = !details.isEmpty();
 
         final var myCashRegisters = alreadyExists ? getReportsByUserId(userId()) : null;
 
