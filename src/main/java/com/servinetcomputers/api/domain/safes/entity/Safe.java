@@ -25,7 +25,7 @@ public class Safe extends Auditable {
     @Column(name = "safe_id")
     private Integer id;
 
-    @Column(unique = true, nullable = false, columnDefinition = "SMALLINT")
+    @Column(nullable = false, columnDefinition = "SMALLINT")
     private Integer numeral;
 
 }
