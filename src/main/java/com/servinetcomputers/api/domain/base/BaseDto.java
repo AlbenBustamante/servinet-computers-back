@@ -26,4 +26,18 @@ public record BaseDto(
                 hundred * 100 +
                 fifty * 50;
     }
+
+    public int calculateSafeBase() {
+        return hundredThousand * 100 * 100000 +
+                fiftyThousand * 100 * 50000 +
+                twentyThousand * 100 * 20000 +
+                tenThousand * 100 * 10000 +
+                fiveThousand * 100 * 5000 +
+                twoThousand * 100 * 2000 +
+                thousand * 1000 +
+                fiveHundred * 500 +
+                twoHundred * 200 +
+                hundred * 100 +
+                fifty * 50;
+    }
 }

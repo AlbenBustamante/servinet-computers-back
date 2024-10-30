@@ -11,7 +11,9 @@ import com.servinetcomputers.api.domain.reports.abs.ReportsMapper;
 import com.servinetcomputers.api.domain.reports.dto.DashboardResponse;
 import com.servinetcomputers.api.domain.reports.dto.Reports;
 import com.servinetcomputers.api.domain.reports.dto.ReportsResponse;
+import com.servinetcomputers.api.domain.safes.abs.SafeBaseRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,6 +35,7 @@ public class ReportsServiceImpl implements IReportsService {
     private final CashRegisterDetailRepository cashRegisterDetailRepository;
     private final PlatformBalanceRepository platformBalanceRepository;
     private final PlatformTransferRepository platformTransferRepository;
+    private final SafeBaseRepository safeBaseRepository;
     private final BaseMapper baseMapper;
     private final PlatformBalanceMapper platformBalanceMapper;
     private final ReportsMapper reportsMapper;
@@ -52,11 +55,20 @@ public class ReportsServiceImpl implements IReportsService {
         totalPlatformBalances = totalPlatformBalances != null ? totalPlatformBalances : 0;
         totalBalance += totalPlatformBalances;
 
+
         final var finalBases = cashRegisterDetailRepository.findAllFinalBaseByCreatedDateBetweenAndEnabledTrue(startDate, endDate);
 
         for (final var finalBase : finalBases) {
             final var response = baseMapper.toDto(finalBase);
             totalBalance += response != null ? response.calculate() : 0;
+        }
+
+        final var safeIds = safeBaseRepository.findAllIds();
+
+        for (Integer safeId : safeIds) {
+            final var page = safeBaseRepository.findLastBase(safeId, startDate, endDate, PageRequest.of(0, 1));
+            final var response = baseMapper.toDto(page.getContent().get(0));
+            totalBalance += response != null ? response.calculateSafeBase() : 0;
         }
 
         return new DashboardResponse(totalBalance, platformBalanceMapper.toResponses(platformBalances));

@@ -6,9 +6,11 @@ import com.servinetcomputers.api.domain.safes.abs.SafeBaseRepository;
 import com.servinetcomputers.api.domain.safes.abs.SafeRepository;
 import com.servinetcomputers.api.domain.safes.dto.SafeBaseRequest;
 import com.servinetcomputers.api.domain.safes.dto.SafeBaseResponse;
+import com.servinetcomputers.api.exception.AppException;
 import com.servinetcomputers.api.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -18,6 +20,7 @@ public class SafeBaseServiceImpl implements ISafeBaseService {
     private final SafeBaseMapper mapper;
     private final SafeRepository safeRepository;
 
+    @Transactional(rollbackFor = AppException.class)
     @Override
     public SafeBaseResponse create(SafeBaseRequest request) {
         final var safe = safeRepository.findByIdAndEnabledTrue(request.safeId())
