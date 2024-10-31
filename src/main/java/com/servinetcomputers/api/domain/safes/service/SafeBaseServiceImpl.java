@@ -22,9 +22,9 @@ public class SafeBaseServiceImpl implements ISafeBaseService {
 
     @Transactional(rollbackFor = AppException.class)
     @Override
-    public SafeBaseResponse create(SafeBaseRequest request) {
-        final var safe = safeRepository.findByIdAndEnabledTrue(request.safeId())
-                .orElseThrow(() -> new NotFoundException("No se encontró la caja con id #" + request.safeId()));
+    public SafeBaseResponse create(int safeId, SafeBaseRequest request) {
+        final var safe = safeRepository.findByIdAndEnabledTrue(safeId)
+                .orElseThrow(() -> new NotFoundException("No se encontró la caja con id #" + safeId));
 
         final var safeBase = mapper.toEntity(request);
         safeBase.setSafe(safe);

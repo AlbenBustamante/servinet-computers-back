@@ -31,8 +31,8 @@ public class SafeController {
     }
 
     @PostMapping("/{id}/base")
-    public ResponseEntity<SafeBaseResponse> addBase(@RequestBody SafeBaseRequest request) {
-        return ResponseEntity.ok(baseService.create(request));
+    public ResponseEntity<SafeBaseResponse> addBase(@PathVariable("id") int safeId, @RequestBody SafeBaseRequest request) {
+        return ResponseEntity.ok(baseService.create(safeId, request));
     }
 
 }
