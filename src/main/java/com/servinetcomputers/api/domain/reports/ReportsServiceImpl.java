@@ -60,7 +60,7 @@ public class ReportsServiceImpl implements IReportsService {
         totalBalance += platformBalancesTotal;
 
         final var platformsStats = getPlatformsStats(platformBalanceMapper.toResponses(platformBalances), startDate, endDate);
-        
+
         final var finalBases = cashRegisterDetailRepository.findAllFinalBaseByCreatedDateBetweenAndEnabledTrue(startDate, endDate);
 
         for (final var finalBase : finalBases) {
@@ -115,7 +115,7 @@ public class ReportsServiceImpl implements IReportsService {
 
             final var transfersTotal = totalTransfers != null ? totalTransfers : 0;
 
-            final var total = finalBalance - initialBalance + transfersTotal;
+            final var total = initialBalance + transfersTotal - finalBalance;
 
             platformsStats.add(new PlatformStatsDto(platformId, platformName, initialBalance, finalBalance, transfersAmount, transfersTotal, total));
         });
