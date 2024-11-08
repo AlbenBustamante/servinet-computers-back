@@ -6,6 +6,8 @@ import com.servinetcomputers.api.domain.expense.abs.ExpenseRepository;
 import com.servinetcomputers.api.domain.platform.abs.PlatformBalanceMapper;
 import com.servinetcomputers.api.domain.platform.abs.PlatformBalanceRepository;
 import com.servinetcomputers.api.domain.platform.abs.PlatformTransferRepository;
+import com.servinetcomputers.api.domain.platform.dto.PlatformBalanceResponse;
+import com.servinetcomputers.api.domain.platform.dto.PlatformStatsDto;
 import com.servinetcomputers.api.domain.reports.abs.IReportsService;
 import com.servinetcomputers.api.domain.reports.abs.ReportsMapper;
 import com.servinetcomputers.api.domain.reports.dto.DashboardResponse;
@@ -21,6 +23,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.servinetcomputers.api.security.util.SecurityConstants.ADMIN_AUTHORITY;
 
@@ -50,12 +54,13 @@ public class ReportsServiceImpl implements IReportsService {
         var totalBalance = 0;
 
         final var platformBalances = platformBalanceRepository.findAllByEnabledTrueAndCreatedDateBetween(startDate, endDate);
-        var totalPlatformBalances = platformBalanceRepository.calculateTotalByFinalBalanceAndCreatedDateBetween(startDate, endDate);
+        final var totalPlatformBalances = platformBalanceRepository.calculateTotalByFinalBalanceAndCreatedDateBetween(startDate, endDate);
 
-        totalPlatformBalances = totalPlatformBalances != null ? totalPlatformBalances : 0;
-        totalBalance += totalPlatformBalances;
+        final var platformBalancesTotal = totalPlatformBalances != null ? totalPlatformBalances : 0;
+        totalBalance += platformBalancesTotal;
 
-
+        final var platformsStats = getPlatformsStats(platformBalanceMapper.toResponses(platformBalances), startDate, endDate);
+        
         final var finalBases = cashRegisterDetailRepository.findAllFinalBaseByCreatedDateBetweenAndEnabledTrue(startDate, endDate);
 
         for (final var finalBase : finalBases) {
@@ -71,7 +76,11 @@ public class ReportsServiceImpl implements IReportsService {
             totalBalance += response != null ? response.calculateSafeBase() : 0;
         }
 
-        return new DashboardResponse(totalBalance, platformBalanceMapper.toResponses(platformBalances));
+        return new DashboardResponse(
+                totalBalance,
+                platformsStats,
+                platformBalancesTotal
+        );
     }
 
     @Transactional(readOnly = true)
@@ -91,6 +100,27 @@ public class ReportsServiceImpl implements IReportsService {
         );
 
         return reportsMapper.toResponse(reports);
+    }
+
+    private List<PlatformStatsDto> getPlatformsStats(List<PlatformBalanceResponse> balances, LocalDateTime startDate, LocalDateTime endDate) {
+        final List<PlatformStatsDto> platformsStats = new ArrayList<>(balances.size());
+
+        balances.forEach(balance -> {
+            final var platformId = balance.getPlatformId();
+            final var platformName = balance.getPlatformName();
+            final var initialBalance = balance.getInitialBalance();
+            final var finalBalance = balance.getFinalBalance();
+            final var transfersAmount = platformTransferRepository.countByPlatformIdAndEnabledTrueAndCreatedDateBetween(platformId, startDate, endDate);
+            final var totalTransfers = platformTransferRepository.calculateTotalByPlatformIdAndCreatedDateBetween(platformId, startDate, endDate);
+
+            final var transfersTotal = totalTransfers != null ? totalTransfers : 0;
+
+            final var total = finalBalance - initialBalance + transfersTotal;
+
+            platformsStats.add(new PlatformStatsDto(platformId, platformName, initialBalance, finalBalance, transfersAmount, transfersTotal, total));
+        });
+
+        return platformsStats;
     }
 
 }
