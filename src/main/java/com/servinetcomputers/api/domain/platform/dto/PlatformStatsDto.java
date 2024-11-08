@@ -2,6 +2,7 @@ package com.servinetcomputers.api.domain.platform.dto;
 
 public record PlatformStatsDto(
         int platformId,
+        String platformName,
         int initialBalance,
         int finalBalance,
         int transfersAmount,

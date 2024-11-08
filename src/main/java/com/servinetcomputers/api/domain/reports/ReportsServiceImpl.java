@@ -96,6 +96,7 @@ public class ReportsServiceImpl implements IReportsService {
 
         balances.forEach(balance -> {
             final var platformId = balance.getPlatformId();
+            final var platformName = balance.getPlatformName();
             final var initialBalance = balance.getInitialBalance();
             final var finalBalance = balance.getFinalBalance();
             final var transfersAmount = platformTransferRepository.countByPlatformIdAndEnabledTrueAndCreatedDateBetween(platformId, startDate, endDate);
@@ -105,7 +106,7 @@ public class ReportsServiceImpl implements IReportsService {
 
             final var total = finalBalance - initialBalance + transfersTotal;
 
-            platformsStats.add(new PlatformStatsDto(platformId, initialBalance, finalBalance, transfersAmount, transfersTotal, total));
+            platformsStats.add(new PlatformStatsDto(platformId, platformName, initialBalance, finalBalance, transfersAmount, transfersTotal, total));
         });
 
         return platformsStats;
