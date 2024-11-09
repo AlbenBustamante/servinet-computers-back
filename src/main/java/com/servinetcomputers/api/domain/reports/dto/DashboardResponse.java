@@ -10,6 +10,8 @@ import java.util.List;
 public record DashboardResponse(
         int totalBalance,
         List<PlatformStatsDto> platformsStats,
-        int platformBalancesTotal
+        int platformBalancesTotal,
+        int cashRegistersTotal,
+        int safesTotal
 ) {
 }

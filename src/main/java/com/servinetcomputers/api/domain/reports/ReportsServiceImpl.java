@@ -51,35 +51,40 @@ public class ReportsServiceImpl implements IReportsService {
         final var startDate = LocalDateTime.of(LocalDate.now(), LocalTime.MIN);
         final var endDate = LocalDateTime.of(LocalDate.now(), LocalTime.now());
 
-        var totalBalance = 0;
-
         final var platformBalances = platformBalanceRepository.findAllByEnabledTrueAndCreatedDateBetween(startDate, endDate);
         final var totalPlatformBalances = platformBalanceRepository.calculateTotalByFinalBalanceAndCreatedDateBetween(startDate, endDate);
 
         final var platformBalancesTotal = totalPlatformBalances != null ? totalPlatformBalances : 0;
-        totalBalance += platformBalancesTotal;
 
         final var platformsStats = getPlatformsStats(platformBalanceMapper.toResponses(platformBalances), startDate, endDate);
 
         final var finalBases = cashRegisterDetailRepository.findAllFinalBaseByCreatedDateBetweenAndEnabledTrue(startDate, endDate);
 
+        var cashRegistersTotal = 0;
+
         for (final var finalBase : finalBases) {
             final var response = baseMapper.toDto(finalBase);
-            totalBalance += response != null ? response.calculate() : 0;
+            final var base = response != null ? response.calculate() : 0;
+            cashRegistersTotal += base;
         }
 
         final var safeIds = safeBaseRepository.findAllIds();
+        var safesTotal = 0;
 
         for (Integer safeId : safeIds) {
             final var page = safeBaseRepository.findLastBase(safeId, startDate, endDate, PageRequest.of(0, 1));
             final var response = baseMapper.toDto(page.getContent().get(0));
-            totalBalance += response != null ? response.calculateSafeBase() : 0;
+            safesTotal += response != null ? response.calculateSafeBase() : 0;
         }
+
+        final var totalBalance = platformBalancesTotal + cashRegistersTotal + safesTotal;
 
         return new DashboardResponse(
                 totalBalance,
                 platformsStats,
-                platformBalancesTotal
+                platformBalancesTotal,
+                cashRegistersTotal,
+                safesTotal
         );
     }
 
