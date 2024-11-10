@@ -10,7 +10,7 @@ import java.time.LocalTime;
 
 @Getter
 public class CashRegisterDetailResponse extends ModelResponse {
-    private final int userId;
+    private final int userId, detailInitialBase, detailFinalBase;
     private final String baseObservation;
     private final LocalDateTime initialWorking, initialBreak, finalBreak, finalWorking;
     private final BaseDto initialBase, finalBase;
@@ -30,5 +30,8 @@ public class CashRegisterDetailResponse extends ModelResponse {
         this.initialBase = initialBase;
         this.finalBase = finalBase;
         this.cashRegister = cashRegister;
+
+        this.detailInitialBase = this.initialBase.calculate();
+        this.detailFinalBase = this.finalBase.calculate();
     }
 }

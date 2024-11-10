@@ -1,5 +1,6 @@
 package com.servinetcomputers.api.domain.reports.dto;
 
+import com.servinetcomputers.api.domain.cashregister.dto.CashRegisterDetailResponse;
 import com.servinetcomputers.api.domain.platform.dto.PlatformStatsDto;
 
 import java.util.List;
@@ -11,6 +12,7 @@ public record DashboardResponse(
         int totalBalance,
         List<PlatformStatsDto> platformsStats,
         int platformBalancesTotal,
+        List<CashRegisterDetailResponse> cashRegisterDetails,
         int cashRegistersTotal,
         int safesTotal
 ) {

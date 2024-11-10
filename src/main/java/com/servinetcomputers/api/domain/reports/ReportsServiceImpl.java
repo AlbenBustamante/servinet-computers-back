@@ -1,6 +1,7 @@
 package com.servinetcomputers.api.domain.reports;
 
 import com.servinetcomputers.api.domain.base.BaseMapper;
+import com.servinetcomputers.api.domain.cashregister.abs.CashRegisterDetailMapper;
 import com.servinetcomputers.api.domain.cashregister.abs.CashRegisterDetailRepository;
 import com.servinetcomputers.api.domain.expense.abs.ExpenseRepository;
 import com.servinetcomputers.api.domain.platform.abs.PlatformBalanceMapper;
@@ -41,6 +42,7 @@ public class ReportsServiceImpl implements IReportsService {
     private final PlatformTransferRepository platformTransferRepository;
     private final SafeBaseRepository safeBaseRepository;
     private final BaseMapper baseMapper;
+    private final CashRegisterDetailMapper cashRegisterDetailMapper;
     private final PlatformBalanceMapper platformBalanceMapper;
     private final ReportsMapper reportsMapper;
 
@@ -58,12 +60,12 @@ public class ReportsServiceImpl implements IReportsService {
 
         final var platformsStats = getPlatformsStats(platformBalanceMapper.toResponses(platformBalances), startDate, endDate);
 
-        final var finalBases = cashRegisterDetailRepository.findAllFinalBaseByCreatedDateBetweenAndEnabledTrue(startDate, endDate);
+        final var cashRegisterDetails = cashRegisterDetailRepository.findAllByEnabledTrueAndCreatedDateBetween(startDate, endDate);
 
         var cashRegistersTotal = 0;
 
-        for (final var finalBase : finalBases) {
-            final var response = baseMapper.toDto(finalBase);
+        for (final var cashRegisterDetail : cashRegisterDetails) {
+            final var response = baseMapper.toDto(cashRegisterDetail.getFinalBase());
             final var base = response != null ? response.calculate() : 0;
             cashRegistersTotal += base;
         }
@@ -83,6 +85,7 @@ public class ReportsServiceImpl implements IReportsService {
                 totalBalance,
                 platformsStats,
                 platformBalancesTotal,
+                cashRegisterDetailMapper.toResponses(cashRegisterDetails),
                 cashRegistersTotal,
                 safesTotal
         );
