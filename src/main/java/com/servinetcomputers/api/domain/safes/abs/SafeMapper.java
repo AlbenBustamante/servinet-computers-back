@@ -1,16 +1,19 @@
 package com.servinetcomputers.api.domain.safes.abs;
 
+import com.servinetcomputers.api.domain.base.BaseMapper;
+import com.servinetcomputers.api.domain.safes.Safe;
 import com.servinetcomputers.api.domain.safes.dto.SafeRequest;
 import com.servinetcomputers.api.domain.safes.dto.SafeResponse;
-import com.servinetcomputers.api.domain.safes.entity.Safe;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = BaseMapper.class)
 public interface SafeMapper {
 
+    @Mapping(target = "detailInitialBase", source = "initialBase")
+    @Mapping(target = "detailFinalBase", source = "finalBase")
     SafeResponse toResponse(Safe entity);
 
     List<SafeResponse> toResponses(List<Safe> entities);

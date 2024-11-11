@@ -1,7 +1,6 @@
 package com.servinetcomputers.api.domain.safes.abs;
 
-import com.servinetcomputers.api.domain.safes.entity.Safe;
-import org.springframework.data.domain.Example;
+import com.servinetcomputers.api.domain.safes.Safe;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

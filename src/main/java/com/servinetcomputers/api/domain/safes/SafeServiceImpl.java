@@ -1,5 +1,6 @@
-package com.servinetcomputers.api.domain.safes.service;
+package com.servinetcomputers.api.domain.safes;
 
+import com.servinetcomputers.api.domain.base.BaseMapper;
 import com.servinetcomputers.api.domain.safes.abs.ISafeService;
 import com.servinetcomputers.api.domain.safes.abs.SafeMapper;
 import com.servinetcomputers.api.domain.safes.abs.SafeRepository;
@@ -19,12 +20,13 @@ public class SafeServiceImpl implements ISafeService {
 
     private final SafeRepository repository;
     private final SafeMapper mapper;
+    private final BaseMapper baseMapper;
 
     @Transactional(rollbackFor = AppException.class)
     @Override
     public SafeResponse create(SafeRequest request) {
         if (repository.existsByNumeralAndEnabledTrue(request.numeral())) {
-            throw new AlreadyExistsException("Ya exite una caja con el numeral ingresado");
+            throw new AlreadyExistsException("Ya existe una caja con el numeral ingresado");
         }
 
         return mapper.toResponse(repository.save(mapper.toEntity(request)));

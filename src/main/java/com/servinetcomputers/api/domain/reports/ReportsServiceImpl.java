@@ -14,9 +14,9 @@ import com.servinetcomputers.api.domain.reports.abs.ReportsMapper;
 import com.servinetcomputers.api.domain.reports.dto.DashboardResponse;
 import com.servinetcomputers.api.domain.reports.dto.Reports;
 import com.servinetcomputers.api.domain.reports.dto.ReportsResponse;
-import com.servinetcomputers.api.domain.safes.abs.SafeBaseRepository;
+import com.servinetcomputers.api.domain.safes.abs.SafeMapper;
+import com.servinetcomputers.api.domain.safes.abs.SafeRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,11 +40,12 @@ public class ReportsServiceImpl implements IReportsService {
     private final CashRegisterDetailRepository cashRegisterDetailRepository;
     private final PlatformBalanceRepository platformBalanceRepository;
     private final PlatformTransferRepository platformTransferRepository;
-    private final SafeBaseRepository safeBaseRepository;
+    private final SafeRepository safeRepository;
     private final BaseMapper baseMapper;
     private final CashRegisterDetailMapper cashRegisterDetailMapper;
     private final PlatformBalanceMapper platformBalanceMapper;
     private final ReportsMapper reportsMapper;
+    private final SafeMapper safeMapper;
 
     @Transactional(readOnly = true)
     @Secured(value = ADMIN_AUTHORITY)
@@ -70,13 +71,12 @@ public class ReportsServiceImpl implements IReportsService {
             cashRegistersTotal += base;
         }
 
-        final var safeIds = safeBaseRepository.findAllIds();
+        final var safes = safeRepository.findAllByEnabledTrue();
         var safesTotal = 0;
 
-        for (Integer safeId : safeIds) {
-            final var page = safeBaseRepository.findLastBase(safeId, startDate, endDate, PageRequest.of(0, 1));
-            final var response = baseMapper.toDto(page.getContent().get(0));
-            safesTotal += response != null ? response.calculateSafeBase() : 0;
+        for (final var safe : safes) {
+            final var finalBase = baseMapper.toDto(safe.getFinalBase());
+            safesTotal += finalBase.calculateSafeBase();
         }
 
         final var totalBalance = platformBalancesTotal + cashRegistersTotal + safesTotal;
@@ -87,6 +87,7 @@ public class ReportsServiceImpl implements IReportsService {
                 platformBalancesTotal,
                 cashRegisterDetailMapper.toResponses(cashRegisterDetails),
                 cashRegistersTotal,
+                safeMapper.toResponses(safes),
                 safesTotal
         );
     }

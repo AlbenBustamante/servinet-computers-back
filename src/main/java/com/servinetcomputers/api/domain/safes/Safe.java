@@ -1,6 +1,7 @@
-package com.servinetcomputers.api.domain.safes.entity;
+package com.servinetcomputers.api.domain.safes;
 
 import com.servinetcomputers.api.audit.AuditAuditable;
+import com.servinetcomputers.api.audit.AuditSafeBase;
 import com.servinetcomputers.api.audit.Auditable;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -13,9 +14,11 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import static com.servinetcomputers.api.domain.safes.util.SafeConstants.BASE_LENGTH;
+
 @Entity
 @Table(name = "safes")
-@EntityListeners(value = {AuditAuditable.class, AuditingEntityListener.class})
+@EntityListeners(value = {AuditSafeBase.class, AuditAuditable.class, AuditingEntityListener.class})
 @Getter
 @Setter
 public class Safe extends Auditable {
@@ -27,5 +30,11 @@ public class Safe extends Auditable {
 
     @Column(nullable = false, columnDefinition = "SMALLINT")
     private Integer numeral;
+
+    @Column(nullable = false, length = BASE_LENGTH)
+    private String initialBase;
+
+    @Column(nullable = false, length = BASE_LENGTH)
+    private String finalBase;
 
 }
