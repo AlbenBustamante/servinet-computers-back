@@ -1,4 +1,4 @@
-package com.servinetcomputers.api.domain.safes;
+package com.servinetcomputers.api.domain.safes.controller;
 
 import com.servinetcomputers.api.domain.safes.abs.ISafeService;
 import com.servinetcomputers.api.domain.safes.dto.SafeRequest;

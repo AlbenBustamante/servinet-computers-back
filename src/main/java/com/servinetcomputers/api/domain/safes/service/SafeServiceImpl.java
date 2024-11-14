@@ -1,6 +1,5 @@
-package com.servinetcomputers.api.domain.safes;
+package com.servinetcomputers.api.domain.safes.service;
 
-import com.servinetcomputers.api.domain.base.BaseMapper;
 import com.servinetcomputers.api.domain.safes.abs.ISafeService;
 import com.servinetcomputers.api.domain.safes.abs.SafeMapper;
 import com.servinetcomputers.api.domain.safes.abs.SafeRepository;
@@ -20,7 +19,6 @@ public class SafeServiceImpl implements ISafeService {
 
     private final SafeRepository repository;
     private final SafeMapper mapper;
-    private final BaseMapper baseMapper;
 
     @Transactional(rollbackFor = AppException.class)
     @Override

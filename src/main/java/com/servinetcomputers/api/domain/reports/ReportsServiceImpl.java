@@ -72,12 +72,12 @@ public class ReportsServiceImpl implements IReportsService {
         }
 
         final var safes = safeRepository.findAllByEnabledTrue();
-        var safesTotal = 0;
+        final var safesTotal = 0;
 
-        for (final var safe : safes) {
+        /* for (final var safe : safes) {
             final var finalBase = baseMapper.toDto(safe.getFinalBase());
             safesTotal += finalBase.calculateSafeBase();
-        }
+        } */
 
         final var totalBalance = platformBalancesTotal + cashRegistersTotal + safesTotal;
 
