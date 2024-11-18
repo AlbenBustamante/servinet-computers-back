@@ -2,8 +2,17 @@ package com.servinetcomputers.api.domain.cashregister.service;
 
 import com.servinetcomputers.api.domain.base.BaseDto;
 import com.servinetcomputers.api.domain.base.BaseMapper;
-import com.servinetcomputers.api.domain.cashregister.abs.*;
-import com.servinetcomputers.api.domain.cashregister.dto.*;
+import com.servinetcomputers.api.domain.cashregister.abs.CashRegisterDetailMapper;
+import com.servinetcomputers.api.domain.cashregister.abs.CashRegisterDetailRepository;
+import com.servinetcomputers.api.domain.cashregister.abs.CashRegisterMapper;
+import com.servinetcomputers.api.domain.cashregister.abs.CashRegisterRepository;
+import com.servinetcomputers.api.domain.cashregister.abs.ICashRegisterDetailService;
+import com.servinetcomputers.api.domain.cashregister.dto.AlreadyExistsCashRegisterDetailDto;
+import com.servinetcomputers.api.domain.cashregister.dto.CashRegisterDetailReportsDto;
+import com.servinetcomputers.api.domain.cashregister.dto.CashRegisterDetailRequest;
+import com.servinetcomputers.api.domain.cashregister.dto.CashRegisterDetailResponse;
+import com.servinetcomputers.api.domain.cashregister.dto.CashRegisterResponse;
+import com.servinetcomputers.api.domain.cashregister.dto.MyCashRegistersReports;
 import com.servinetcomputers.api.domain.cashregister.util.CashRegisterStatus;
 import com.servinetcomputers.api.domain.expense.abs.ExpenseRepository;
 import com.servinetcomputers.api.domain.user.dto.UserResponse;
@@ -123,10 +132,10 @@ public class CashRegisterDetailServiceImpl implements ICashRegisterDetailService
         final var endDate = LocalDateTime.of(LocalDate.now(), LocalTime.now());
         final var code = cashRegisterDetail.getCreatedBy();
 
-        final var finalBaseDto = cashRegisterDetail.getFinalBase();
+        final var finalBaseDto = cashRegisterDetail.getDetailFinalBase();
 
         final var transactionsAmount = 0;
-        final var initialBase = cashRegisterDetail.getInitialBase().calculate();
+        final var initialBase = cashRegisterDetail.getDetailInitialBase().calculate();
         final var finalBase = finalBaseDto != null ? finalBaseDto.calculate() : 0;
         final var deposits = 0;
 

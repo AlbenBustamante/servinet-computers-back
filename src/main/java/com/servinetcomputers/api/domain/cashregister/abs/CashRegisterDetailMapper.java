@@ -12,6 +12,8 @@ import java.util.List;
 @Mapper(componentModel = "spring", uses = {CashRegisterMapper.class, BaseMapper.class})
 public interface CashRegisterDetailMapper {
 
+    @Mapping(target = "detailFinalBase", source = "finalBase")
+    @Mapping(target = "detailInitialBase", source = "initialBase")
     CashRegisterDetailResponse toResponse(CashRegisterDetail entity);
 
     List<CashRegisterDetailResponse> toResponses(List<CashRegisterDetail> entities);

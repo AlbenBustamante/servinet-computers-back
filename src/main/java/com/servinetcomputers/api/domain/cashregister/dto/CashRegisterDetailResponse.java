@@ -10,14 +10,14 @@ import java.time.LocalTime;
 
 @Getter
 public class CashRegisterDetailResponse extends ModelResponse {
-    private final int userId, detailInitialBase, detailFinalBase;
+    private final int userId, initialBase, finalBase;
     private final String baseObservation;
     private final LocalDateTime initialWorking, initialBreak, finalBreak, finalWorking;
-    private final BaseDto initialBase, finalBase;
+    private final BaseDto detailInitialBase, detailFinalBase;
     private final CashRegisterResponse cashRegister;
 
     public CashRegisterDetailResponse(int id, boolean enabled, LocalDateTime createdDate, LocalDateTime modifiedDate, String createdBy, String modifiedBy,
-                                      int userId, LocalTime[] workingHours, String baseObservation, BaseDto initialBase, BaseDto finalBase, CashRegisterResponse cashRegister) {
+                                      int userId, LocalTime[] workingHours, String baseObservation, BaseDto detailInitialBase, BaseDto detailFinalBase, CashRegisterResponse cashRegister) {
         super(id, enabled, createdDate, modifiedDate, createdBy, modifiedBy);
         this.userId = userId;
 
@@ -27,11 +27,11 @@ public class CashRegisterDetailResponse extends ModelResponse {
         this.finalWorking = workingHours[3] != null ? LocalDateTime.of(LocalDate.now(), workingHours[3]) : null;
 
         this.baseObservation = baseObservation;
-        this.initialBase = initialBase;
-        this.finalBase = finalBase;
+        this.detailInitialBase = detailInitialBase;
+        this.detailFinalBase = detailFinalBase;
         this.cashRegister = cashRegister;
 
-        this.detailInitialBase = this.initialBase.calculate();
-        this.detailFinalBase = this.finalBase.calculate();
+        this.initialBase = this.detailInitialBase.calculate();
+        this.finalBase = this.detailFinalBase != null ? this.detailFinalBase.calculate() : 0;
     }
 }
