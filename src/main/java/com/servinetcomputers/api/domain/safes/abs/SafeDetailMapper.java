@@ -9,7 +9,7 @@ import org.mapstruct.Mapping;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = BaseMapper.class)
+@Mapper(componentModel = "spring", uses = {SafeMapper.class, BaseMapper.class})
 public interface SafeDetailMapper {
 
     @Mapping(target = "safeId", source = "safe.id")

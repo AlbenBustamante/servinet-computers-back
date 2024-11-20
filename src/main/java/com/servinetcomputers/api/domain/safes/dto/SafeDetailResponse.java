@@ -10,9 +10,10 @@ import java.time.LocalDateTime;
 public class SafeDetailResponse extends ModelResponse {
     private final BaseDto detailInitialBase, detailFinalBase;
     private final int safeId, initialBase, finalBase, calculatedBase;
+    private final SafeResponse safe;
 
     public SafeDetailResponse(int id, boolean enabled, LocalDateTime createdDate, LocalDateTime modifiedDate, String createdBy, String modifiedBy,
-                              BaseDto detailInitialBase, BaseDto detailFinalBase, int safeId, int calculatedBase) {
+                              BaseDto detailInitialBase, BaseDto detailFinalBase, int safeId, int calculatedBase, SafeResponse safe) {
         super(id, enabled, createdDate, modifiedDate, createdBy, modifiedBy);
         this.detailInitialBase = detailInitialBase;
         this.detailFinalBase = detailFinalBase;
@@ -20,5 +21,6 @@ public class SafeDetailResponse extends ModelResponse {
         this.finalBase = this.detailFinalBase != null ? this.detailFinalBase.calculateSafeBase() : 0;
         this.calculatedBase = calculatedBase;
         this.safeId = safeId;
+        this.safe = safe;
     }
 }
