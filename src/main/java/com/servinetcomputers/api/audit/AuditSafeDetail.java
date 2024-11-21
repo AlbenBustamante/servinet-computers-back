@@ -6,11 +6,11 @@ import jakarta.persistence.PrePersist;
 public class AuditSafeDetail {
     @PrePersist
     public void onPrePersist(SafeDetail safeDetail) {
-        if (safeDetail.getInitialBase() == null) {
+        if (safeDetail.getInitialBase() == null || safeDetail.getInitialBase().isEmpty()) {
             safeDetail.setInitialBase("0;0;0;0;0;0;0;0;0;0;0");
         }
 
-        if (safeDetail.getFinalBase() == null) {
+        if (safeDetail.getFinalBase() == null || safeDetail.getFinalBase().isEmpty()) {
             safeDetail.setFinalBase(safeDetail.getInitialBase());
         }
 
