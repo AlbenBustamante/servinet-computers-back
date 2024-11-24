@@ -3,11 +3,13 @@ package com.servinetcomputers.api.audit;
 import com.servinetcomputers.api.domain.safes.entity.SafeDetail;
 import jakarta.persistence.PrePersist;
 
+import static com.servinetcomputers.api.domain.safes.util.SafeConstants.DEFAULT_BASE;
+
 public class AuditSafeDetail {
     @PrePersist
     public void onPrePersist(SafeDetail safeDetail) {
         if (safeDetail.getInitialBase() == null || safeDetail.getInitialBase().isEmpty()) {
-            safeDetail.setInitialBase("0;0;0;0;0;0;0;0;0;0;0");
+            safeDetail.setInitialBase(DEFAULT_BASE);
         }
 
         if (safeDetail.getFinalBase() == null || safeDetail.getFinalBase().isEmpty()) {
