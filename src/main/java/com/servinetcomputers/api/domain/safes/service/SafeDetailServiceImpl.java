@@ -1,15 +1,10 @@
 package com.servinetcomputers.api.domain.safes.service;
 
 import com.servinetcomputers.api.domain.base.BaseMapper;
-import com.servinetcomputers.api.domain.safes.abs.ISafeDetailService;
-import com.servinetcomputers.api.domain.safes.abs.SafeBaseMapper;
-import com.servinetcomputers.api.domain.safes.abs.SafeBaseRepository;
-import com.servinetcomputers.api.domain.safes.abs.SafeDetailMapper;
-import com.servinetcomputers.api.domain.safes.abs.SafeDetailRepository;
-import com.servinetcomputers.api.domain.safes.abs.SafeRepository;
+import com.servinetcomputers.api.domain.safes.abs.*;
 import com.servinetcomputers.api.domain.safes.dto.SafeBaseRequest;
-import com.servinetcomputers.api.domain.safes.dto.SafeDetailRequest;
 import com.servinetcomputers.api.domain.safes.dto.SafeDetailResponse;
+import com.servinetcomputers.api.domain.safes.entity.SafeDetail;
 import com.servinetcomputers.api.exception.AppException;
 import com.servinetcomputers.api.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -51,14 +46,33 @@ public class SafeDetailServiceImpl implements ISafeDetailService {
         final var safes = safeRepository.findAllByEnabledTrue();
         final var newDetails = new ArrayList<SafeDetailResponse>(safes.size());
 
+        final var yesterdayStartDate = startDate.minusDays(1);
+        final var yesterdayEndDate = endDate.minusDays(1);
+
+        final var yesterdayDetails = repository.findAllByEnabledTrueAndCreatedDateBetween(yesterdayStartDate, yesterdayEndDate);
+
         for (final var safe : safes) {
-            final var detail = new SafeDetailRequest(safe.getId(), null, null);
-            final var entity = mapper.toEntity(detail);
-            entity.setSafe(safe);
+            final var detail = new SafeDetail();
 
-            final var result = repository.save(entity);
+            if (!yesterdayDetails.isEmpty()) {
+                final var safeFound = yesterdayDetails
+                        .stream()
+                        .filter(d -> d.getSafe().getNumeral().equals(safe.getNumeral()))
+                        .findFirst();
 
-            newDetails.add(mapper.toResponse(result));
+                if (safeFound.isEmpty()) continue;
+
+                final var finalBase = safeFound.get().getFinalBase();
+
+                detail.setInitialBase(finalBase);
+                detail.setFinalBase(finalBase);
+            }
+
+            detail.setSafe(safe);
+
+            final var newDetail = repository.save(detail);
+
+            newDetails.add(mapper.toResponse(newDetail));
         }
 
         return newDetails;
