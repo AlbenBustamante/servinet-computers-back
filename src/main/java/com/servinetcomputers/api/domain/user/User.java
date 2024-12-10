@@ -1,10 +1,10 @@
 package com.servinetcomputers.api.domain.user;
 
-import com.servinetcomputers.api.audit.AuditAuditable;
-import com.servinetcomputers.api.audit.AuditRole;
-import com.servinetcomputers.api.audit.Auditable;
+import com.servinetcomputers.api.core.audit.AuditAuditable;
+import com.servinetcomputers.api.core.audit.AuditRole;
+import com.servinetcomputers.api.core.audit.Auditable;
 import com.servinetcomputers.api.domain.user.util.RoleConverter;
-import com.servinetcomputers.api.security.util.Role;
+import com.servinetcomputers.api.core.security.util.Role;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;

@@ -1,4 +1,4 @@
-package com.servinetcomputers.api.security.util;
+package com.servinetcomputers.api.core.security.util;
 
 import com.servinetcomputers.api.domain.user.dto.UserResponse;
 

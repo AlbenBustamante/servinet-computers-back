@@ -1,4 +1,4 @@
-package com.servinetcomputers.api.storage;
+package com.servinetcomputers.api.core.storage;
 
 import org.springframework.web.multipart.MultipartFile;
 

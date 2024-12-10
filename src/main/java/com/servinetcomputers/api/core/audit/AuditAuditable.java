@@ -1,4 +1,4 @@
-package com.servinetcomputers.api.audit;
+package com.servinetcomputers.api.core.audit;
 
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;

@@ -1,7 +1,7 @@
 package com.servinetcomputers.api.domain.user.util;
 
-import com.servinetcomputers.api.exception.NotFoundException;
-import com.servinetcomputers.api.security.util.Role;
+import com.servinetcomputers.api.core.exception.NotFoundException;
+import com.servinetcomputers.api.core.security.util.Role;
 import jakarta.persistence.AttributeConverter;
 
 import java.util.Arrays;

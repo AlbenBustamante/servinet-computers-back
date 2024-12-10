@@ -1,4 +1,4 @@
-package com.servinetcomputers.api.config;
+package com.servinetcomputers.api.core.config;
 
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.storage.Storage;

@@ -1,4 +1,4 @@
-package com.servinetcomputers.api.audit;
+package com.servinetcomputers.api.core.audit;
 
 import com.servinetcomputers.api.domain.safes.entity.SafeDetail;
 import jakarta.persistence.PrePersist;

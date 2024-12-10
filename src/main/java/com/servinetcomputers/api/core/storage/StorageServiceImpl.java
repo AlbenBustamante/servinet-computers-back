@@ -1,7 +1,7 @@
-package com.servinetcomputers.api.storage;
+package com.servinetcomputers.api.core.storage;
 
 import com.google.cloud.storage.Storage;
-import com.servinetcomputers.api.exception.AppException;
+import com.servinetcomputers.api.core.exception.AppException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;

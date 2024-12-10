@@ -1,6 +1,6 @@
 package com.servinetcomputers.api.domain.user.dto;
 
-import com.servinetcomputers.api.security.util.Role;
+import com.servinetcomputers.api.core.security.util.Role;
 
 /**
  * The user dto model for requests.

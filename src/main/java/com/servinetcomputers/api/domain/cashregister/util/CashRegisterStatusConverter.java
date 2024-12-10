@@ -1,6 +1,6 @@
 package com.servinetcomputers.api.domain.cashregister.util;
 
-import com.servinetcomputers.api.exception.NotFoundException;
+import com.servinetcomputers.api.core.exception.NotFoundException;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 

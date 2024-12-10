@@ -2,9 +2,9 @@ package com.servinetcomputers.api.domain.platform.service;
 
 import com.servinetcomputers.api.domain.platform.abs.*;
 import com.servinetcomputers.api.domain.platform.dto.*;
-import com.servinetcomputers.api.exception.AppException;
-import com.servinetcomputers.api.exception.BadRequestException;
-import com.servinetcomputers.api.exception.NotFoundException;
+import com.servinetcomputers.api.core.exception.AppException;
+import com.servinetcomputers.api.core.exception.BadRequestException;
+import com.servinetcomputers.api.core.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
@@ -16,7 +16,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.servinetcomputers.api.security.util.SecurityConstants.ADMIN_AUTHORITY;
+import static com.servinetcomputers.api.core.security.util.SecurityConstants.ADMIN_AUTHORITY;
 
 /**
  * The platform's service implementation.

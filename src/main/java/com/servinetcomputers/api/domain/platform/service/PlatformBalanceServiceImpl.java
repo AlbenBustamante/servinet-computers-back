@@ -5,15 +5,15 @@ import com.servinetcomputers.api.domain.platform.abs.PlatformBalanceMapper;
 import com.servinetcomputers.api.domain.platform.abs.PlatformBalanceRepository;
 import com.servinetcomputers.api.domain.platform.dto.PlatformBalanceRequest;
 import com.servinetcomputers.api.domain.platform.dto.PlatformBalanceResponse;
-import com.servinetcomputers.api.exception.AppException;
-import com.servinetcomputers.api.exception.NotFoundException;
+import com.servinetcomputers.api.core.exception.AppException;
+import com.servinetcomputers.api.core.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.servinetcomputers.api.security.util.SecurityConstants.ADMIN_AUTHORITY;
-import static com.servinetcomputers.api.security.util.SecurityConstants.SUPERVISOR_AUTHORITY;
+import static com.servinetcomputers.api.core.security.util.SecurityConstants.ADMIN_AUTHORITY;
+import static com.servinetcomputers.api.core.security.util.SecurityConstants.SUPERVISOR_AUTHORITY;
 
 /**
  * The {@link IPlatformBalanceService} implementation.

@@ -1,7 +1,7 @@
 package com.servinetcomputers.api.domain.user.abs;
 
 import com.servinetcomputers.api.domain.user.User;
-import com.servinetcomputers.api.security.util.Role;
+import com.servinetcomputers.api.core.security.util.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

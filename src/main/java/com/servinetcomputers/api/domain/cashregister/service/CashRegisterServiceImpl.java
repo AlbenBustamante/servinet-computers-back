@@ -9,9 +9,9 @@ import com.servinetcomputers.api.domain.cashregister.abs.ICashRegisterService;
 import com.servinetcomputers.api.domain.cashregister.dto.CashRegisterRequest;
 import com.servinetcomputers.api.domain.cashregister.dto.CashRegisterResponse;
 import com.servinetcomputers.api.domain.cashregister.util.CashRegisterStatus;
-import com.servinetcomputers.api.exception.AppException;
-import com.servinetcomputers.api.exception.BadRequestException;
-import com.servinetcomputers.api.exception.NotFoundException;
+import com.servinetcomputers.api.core.exception.AppException;
+import com.servinetcomputers.api.core.exception.BadRequestException;
+import com.servinetcomputers.api.core.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.annotation.Secured;
@@ -20,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static com.servinetcomputers.api.security.util.SecurityConstants.ADMIN_AUTHORITY;
+import static com.servinetcomputers.api.core.security.util.SecurityConstants.ADMIN_AUTHORITY;
 
 @RequiredArgsConstructor
 @Service

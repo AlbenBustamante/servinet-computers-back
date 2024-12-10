@@ -1,8 +1,8 @@
 package com.servinetcomputers.api.domain.cashregister.entity;
 
-import com.servinetcomputers.api.audit.AuditAuditable;
-import com.servinetcomputers.api.audit.AuditCashRegisterStatus;
-import com.servinetcomputers.api.audit.Auditable;
+import com.servinetcomputers.api.core.audit.AuditAuditable;
+import com.servinetcomputers.api.core.audit.AuditCashRegisterStatus;
+import com.servinetcomputers.api.core.audit.Auditable;
 import com.servinetcomputers.api.domain.cashregister.util.CashRegisterStatus;
 import com.servinetcomputers.api.domain.cashregister.util.CashRegisterStatusConverter;
 import jakarta.persistence.Column;

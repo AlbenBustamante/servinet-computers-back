@@ -1,4 +1,4 @@
-package com.servinetcomputers.api.security;
+package com.servinetcomputers.api.core.security;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -14,7 +14,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.Arrays;
 
-import static com.servinetcomputers.api.security.util.SecurityConstants.WHITE_LIST;
+import static com.servinetcomputers.api.core.security.util.SecurityConstants.WHITE_LIST;
 
 /**
  * The JWT Authentication Filter.

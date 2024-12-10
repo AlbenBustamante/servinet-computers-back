@@ -5,9 +5,9 @@ import com.servinetcomputers.api.domain.user.abs.UserMapper;
 import com.servinetcomputers.api.domain.user.abs.UserRepository;
 import com.servinetcomputers.api.domain.user.dto.UserRequest;
 import com.servinetcomputers.api.domain.user.dto.UserResponse;
-import com.servinetcomputers.api.exception.AppException;
-import com.servinetcomputers.api.exception.BadRequestException;
-import com.servinetcomputers.api.exception.NotFoundException;
+import com.servinetcomputers.api.core.exception.AppException;
+import com.servinetcomputers.api.core.exception.BadRequestException;
+import com.servinetcomputers.api.core.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static com.servinetcomputers.api.security.util.SecurityConstants.ADMIN_AUTHORITY;
+import static com.servinetcomputers.api.core.security.util.SecurityConstants.ADMIN_AUTHORITY;
 
 /**
  * The user's service implementation.

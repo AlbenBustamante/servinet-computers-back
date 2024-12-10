@@ -1,7 +1,7 @@
 package com.servinetcomputers.api.domain.cashtransfer;
 
-import com.servinetcomputers.api.audit.AuditAuditable;
-import com.servinetcomputers.api.audit.Auditable;
+import com.servinetcomputers.api.core.audit.AuditAuditable;
+import com.servinetcomputers.api.core.audit.Auditable;
 import com.servinetcomputers.api.domain.cashregister.entity.CashRegisterDetail;
 import com.servinetcomputers.api.domain.safes.entity.SafeDetail;
 import jakarta.persistence.Column;

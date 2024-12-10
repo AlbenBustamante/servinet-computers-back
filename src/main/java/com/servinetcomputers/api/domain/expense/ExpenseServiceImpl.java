@@ -6,7 +6,7 @@ import com.servinetcomputers.api.domain.expense.abs.ExpenseRepository;
 import com.servinetcomputers.api.domain.expense.abs.IExpenseService;
 import com.servinetcomputers.api.domain.expense.dto.ExpenseRequest;
 import com.servinetcomputers.api.domain.expense.dto.ExpenseResponse;
-import com.servinetcomputers.api.exception.NotFoundException;
+import com.servinetcomputers.api.core.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

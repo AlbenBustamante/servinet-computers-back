@@ -27,7 +27,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.servinetcomputers.api.security.util.SecurityConstants.ADMIN_AUTHORITY;
+import static com.servinetcomputers.api.core.security.util.SecurityConstants.ADMIN_AUTHORITY;
 
 /**
  * The Admin Dashboard Reports service implementation.

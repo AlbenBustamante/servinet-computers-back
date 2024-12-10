@@ -1,7 +1,7 @@
 package com.servinetcomputers.api.domain.platform.entity;
 
-import com.servinetcomputers.api.audit.AuditAuditable;
-import com.servinetcomputers.api.audit.Auditable;
+import com.servinetcomputers.api.core.audit.AuditAuditable;
+import com.servinetcomputers.api.core.audit.Auditable;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

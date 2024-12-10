@@ -1,10 +1,10 @@
-package com.servinetcomputers.api.security;
+package com.servinetcomputers.api.core.security;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.servinetcomputers.api.domain.user.dto.UserResponse;
-import com.servinetcomputers.api.exception.AuthenticationException;
-import com.servinetcomputers.api.security.util.Role;
+import com.servinetcomputers.api.core.exception.AuthenticationException;
+import com.servinetcomputers.api.core.security.util.Role;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
-import static com.servinetcomputers.api.security.util.SecurityConstants.getAuthority;
+import static com.servinetcomputers.api.core.security.util.SecurityConstants.getAuthority;
 
 /**
  * Json Web Token utils.

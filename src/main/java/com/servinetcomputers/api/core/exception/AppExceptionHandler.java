@@ -1,4 +1,4 @@
-package com.servinetcomputers.api.exception;
+package com.servinetcomputers.api.core.exception;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;

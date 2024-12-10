@@ -1,6 +1,6 @@
-package com.servinetcomputers.api.config;
+package com.servinetcomputers.api.core.config;
 
-import com.servinetcomputers.api.security.JwtFilter;
+import com.servinetcomputers.api.core.security.JwtFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,7 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import static com.servinetcomputers.api.security.util.SecurityConstants.WHITE_LIST;
+import static com.servinetcomputers.api.core.security.util.SecurityConstants.WHITE_LIST;
 
 /**
  * The security configuration class.

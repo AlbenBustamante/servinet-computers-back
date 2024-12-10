@@ -1,4 +1,4 @@
-package com.servinetcomputers.api.audit;
+package com.servinetcomputers.api.core.audit;
 
 import com.servinetcomputers.api.domain.cashregister.entity.CashRegister;
 import com.servinetcomputers.api.domain.cashregister.util.CashRegisterStatus;
