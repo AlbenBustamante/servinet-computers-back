@@ -10,6 +10,11 @@ import com.servinetcomputers.api.core.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.List;
+
 @RequiredArgsConstructor
 @Service
 public class ExpenseServiceImpl implements IExpenseService {
@@ -26,5 +31,16 @@ public class ExpenseServiceImpl implements IExpenseService {
 
         return mapper.toResponse(repository.save(mapper.toEntity(request)));
     }
-    
+
+    @Override
+    public List<ExpenseResponse> getByCashRegisterDetailId(int cashRegisterDetailId) {
+        final var today = LocalDate.now();
+        final var startDate = LocalDateTime.of(today, LocalTime.MIN);
+        final var endDate = LocalDateTime.of(today, LocalTime.now());
+
+        final var expenses = repository.findAllByCashRegisterDetailIdAndEnabledTrueAndCreatedDateBetween(cashRegisterDetailId, startDate, endDate);
+
+        return mapper.toResponses(expenses);
+    }
+
 }
