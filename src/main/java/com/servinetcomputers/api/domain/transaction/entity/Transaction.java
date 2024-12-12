@@ -1,5 +1,6 @@
 package com.servinetcomputers.api.domain.transaction.entity;
 
+import com.servinetcomputers.api.core.audit.AuditTransaction;
 import com.servinetcomputers.api.core.audit.Auditable;
 import com.servinetcomputers.api.domain.transaction.util.TransactionType;
 import com.servinetcomputers.api.domain.transaction.util.TransactionTypeConverter;
@@ -12,7 +13,7 @@ import static com.servinetcomputers.api.domain.transaction.util.TransactionConst
 
 @Entity
 @Table(name = "transactions")
-@EntityListeners(value = {AuditingEntityListener.class})
+@EntityListeners(value = {AuditTransaction.class, AuditingEntityListener.class})
 @Getter
 @Setter
 public class Transaction extends Auditable {
@@ -28,5 +29,5 @@ public class Transaction extends Auditable {
     @Convert(converter = TransactionTypeConverter.class)
     @Column(nullable = false, columnDefinition = "CHAR(1)")
     private TransactionType type;
-    
+
 }
