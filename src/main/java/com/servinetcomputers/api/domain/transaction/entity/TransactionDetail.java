@@ -1,5 +1,6 @@
 package com.servinetcomputers.api.domain.transaction.entity;
 
+import com.servinetcomputers.api.core.audit.Auditable;
 import com.servinetcomputers.api.domain.cashregister.entity.CashRegisterDetail;
 import com.servinetcomputers.api.domain.transaction.util.TransactionDetailType;
 import com.servinetcomputers.api.domain.transaction.util.TransactionDetailTypeConverter;
@@ -13,7 +14,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @EntityListeners(value = AuditingEntityListener.class)
 @Getter
 @Setter
-public class TransactionDetail {
+public class TransactionDetail extends Auditable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

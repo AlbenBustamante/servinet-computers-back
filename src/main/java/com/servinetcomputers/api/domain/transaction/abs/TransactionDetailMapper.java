@@ -1,0 +1,30 @@
+package com.servinetcomputers.api.domain.transaction.abs;
+
+import com.servinetcomputers.api.domain.transaction.dto.TransactionDetailRequest;
+import com.servinetcomputers.api.domain.transaction.dto.TransactionDetailResponse;
+import com.servinetcomputers.api.domain.transaction.entity.TransactionDetail;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+
+import java.util.List;
+
+@Mapper(componentModel = "spring")
+public interface TransactionDetailMapper {
+
+    @Mapping(target = "transactionId", source = "transaction.id")
+    @Mapping(target = "cashRegisterDetailId", source = "cashRegisterDetail.id")
+    TransactionDetailResponse toResponse(TransactionDetail entity);
+
+    List<TransactionDetailResponse> toResponses(List<TransactionDetail> entities);
+
+    @Mapping(target = "transaction", ignore = true)
+    @Mapping(target = "modifiedDate", ignore = true)
+    @Mapping(target = "modifiedBy", ignore = true)
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "enabled", ignore = true)
+    @Mapping(target = "createdDate", ignore = true)
+    @Mapping(target = "createdBy", ignore = true)
+    @Mapping(target = "cashRegisterDetail", ignore = true)
+    TransactionDetail toEntity(TransactionDetailRequest request);
+
+}

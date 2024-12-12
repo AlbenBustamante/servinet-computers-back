@@ -1,0 +1,23 @@
+package com.servinetcomputers.api.domain.transaction.dto;
+
+import com.servinetcomputers.api.domain.ModelResponse;
+import com.servinetcomputers.api.domain.transaction.util.TransactionDetailType;
+import lombok.Getter;
+
+import java.time.LocalDateTime;
+
+@Getter
+public class TransactionDetailResponse extends ModelResponse {
+    private final int cashRegisterDetailId, transactionId, value, commission;
+    private final TransactionDetailType type;
+
+    public TransactionDetailResponse(int id, boolean enabled, LocalDateTime createdDate, LocalDateTime modifiedDate, String createdBy, String modifiedBy,
+                                     int cashRegisterDetailId, int transactionId, int value, int commission, TransactionDetailType type) {
+        super(id, enabled, createdDate, modifiedDate, createdBy, modifiedBy);
+        this.cashRegisterDetailId = cashRegisterDetailId;
+        this.transactionId = transactionId;
+        this.value = value;
+        this.commission = commission;
+        this.type = type;
+    }
+}
