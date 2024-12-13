@@ -10,14 +10,16 @@ import java.time.LocalDateTime;
 public class TransactionDetailResponse extends ModelResponse {
     private final int cashRegisterDetailId, transactionId, value, commission;
     private final TransactionDetailType type;
+    private final LocalDateTime date;
 
     public TransactionDetailResponse(int id, boolean enabled, LocalDateTime createdDate, LocalDateTime modifiedDate, String createdBy, String modifiedBy,
-                                     int cashRegisterDetailId, int transactionId, int value, int commission, TransactionDetailType type) {
+                                     int cashRegisterDetailId, int transactionId, int value, int commission, TransactionDetailType type, LocalDateTime date) {
         super(id, enabled, createdDate, modifiedDate, createdBy, modifiedBy);
         this.cashRegisterDetailId = cashRegisterDetailId;
         this.transactionId = transactionId;
         this.value = value;
         this.commission = commission;
         this.type = type;
+        this.date = date;
     }
 }

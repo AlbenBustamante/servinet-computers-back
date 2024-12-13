@@ -1,5 +1,6 @@
 package com.servinetcomputers.api.domain.transaction.entity;
 
+import com.servinetcomputers.api.core.audit.AuditTransactionDetail;
 import com.servinetcomputers.api.core.audit.Auditable;
 import com.servinetcomputers.api.domain.cashregister.entity.CashRegisterDetail;
 import com.servinetcomputers.api.domain.transaction.util.TransactionDetailType;
@@ -9,9 +10,11 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "transaction_details")
-@EntityListeners(value = AuditingEntityListener.class)
+@EntityListeners(value = {AuditTransactionDetail.class, AuditingEntityListener.class})
 @Getter
 @Setter
 public class TransactionDetail extends Auditable {
@@ -26,6 +29,9 @@ public class TransactionDetail extends Auditable {
 
     @Column(nullable = false)
     private Integer commission;
+
+    @Column(nullable = false)
+    private LocalDateTime date;
 
     @Convert(converter = TransactionDetailTypeConverter.class)
     @Column(nullable = false, columnDefinition = "CHAR(1)")
