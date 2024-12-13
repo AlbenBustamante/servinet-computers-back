@@ -15,6 +15,7 @@ public interface TransactionMapper {
 
     List<TransactionResponse> toResponses(List<Transaction> entities);
 
+    @Mapping(target = "transactionDetails", ignore = true)
     @Mapping(target = "modifiedDate", ignore = true)
     @Mapping(target = "modifiedBy", ignore = true)
     @Mapping(target = "id", ignore = true)
