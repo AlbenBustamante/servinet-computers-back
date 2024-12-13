@@ -5,6 +5,8 @@ import com.servinetcomputers.api.domain.cashregister.abs.ICashRegisterDetailServ
 import com.servinetcomputers.api.domain.cashregister.dto.*;
 import com.servinetcomputers.api.domain.expense.abs.IExpenseService;
 import com.servinetcomputers.api.domain.expense.dto.ExpenseResponse;
+import com.servinetcomputers.api.domain.transaction.abs.ITransactionDetailService;
+import com.servinetcomputers.api.domain.transaction.dto.TransactionDetailResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,15 +19,11 @@ import java.util.List;
 public class CashRegisterDetailController {
     private final ICashRegisterDetailService service;
     private final IExpenseService expenseService;
+    private final ITransactionDetailService transactionDetailService;
 
     @PostMapping
     public ResponseEntity<MyCashRegistersReports> register(@RequestBody CashRegisterDetailRequest request) {
         return ResponseEntity.ok(service.create(request));
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<CashRegisterDetailResponse> getById(@PathVariable("id") int cashRegisterDetailId) {
-        return ResponseEntity.ok(service.getById(cashRegisterDetailId));
     }
 
     @GetMapping("/already-exists")
@@ -33,9 +31,24 @@ public class CashRegisterDetailController {
         return ResponseEntity.ok(service.alreadyExists());
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<CashRegisterDetailResponse> getById(@PathVariable("id") int cashRegisterDetailId) {
+        return ResponseEntity.ok(service.getById(cashRegisterDetailId));
+    }
+
     @GetMapping("/{id}/reports")
     public ResponseEntity<CashRegisterDetailReportsDto> getReports(@PathVariable("id") int cashRegisterDetailId) {
         return ResponseEntity.ok(service.getCashRegisterDetailReports(cashRegisterDetailId));
+    }
+
+    @GetMapping("/{id}/transactions")
+    public ResponseEntity<List<TransactionDetailResponse>> getTransactions(@PathVariable("id") int cashRegisterDetailId) {
+        return ResponseEntity.ok(transactionDetailService.getByCashRegisterDetailId(cashRegisterDetailId));
+    }
+
+    @GetMapping("/{id}/expenses")
+    public ResponseEntity<List<ExpenseResponse>> getExpenses(@PathVariable("id") int cashRegisterDetailId) {
+        return ResponseEntity.ok(expenseService.getByCashRegisterDetailId(cashRegisterDetailId));
     }
 
     @PatchMapping("/{id}/start-break")
@@ -51,11 +64,6 @@ public class CashRegisterDetailController {
     @PatchMapping("/{id}/close")
     public ResponseEntity<CashRegisterDetailReportsDto> close(@PathVariable("id") int cashRegisterDetailId, @RequestBody BaseDto finalBase) {
         return ResponseEntity.ok(service.close(cashRegisterDetailId, finalBase));
-    }
-
-    @GetMapping("/{id}/expenses")
-    public ResponseEntity<List<ExpenseResponse>> getExpenses(@PathVariable("id") int cashRegisterDetailId) {
-        return ResponseEntity.ok(expenseService.getByCashRegisterDetailId(cashRegisterDetailId));
     }
 
     @DeleteMapping("/{id}")

@@ -9,6 +9,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.util.List;
+
 import static com.servinetcomputers.api.domain.transaction.util.TransactionConstants.DESCRIPTION_LENGTH;
 
 @Entity
@@ -29,5 +31,8 @@ public class Transaction extends Auditable {
     @Convert(converter = TransactionTypeConverter.class)
     @Column(nullable = false, columnDefinition = "CHAR(1)")
     private TransactionType type;
+
+    @OneToMany(mappedBy = "transaction", cascade = {CascadeType.PERSIST})
+    private List<TransactionDetail> transactionDetails;
 
 }

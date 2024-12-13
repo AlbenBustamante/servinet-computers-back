@@ -4,7 +4,7 @@ import com.servinetcomputers.api.domain.transaction.util.TransactionDetailType;
 
 public record TransactionDetailRequest(
         int cashRegisterDetailId,
-        int transactionId,
+        Integer transactionId,
         String description,
         TransactionDetailType type,
         int value,

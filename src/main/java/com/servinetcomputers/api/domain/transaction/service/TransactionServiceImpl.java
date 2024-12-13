@@ -6,6 +6,7 @@ import com.servinetcomputers.api.domain.transaction.abs.TransactionRepository;
 import com.servinetcomputers.api.domain.transaction.dto.TransactionResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -16,6 +17,7 @@ public class TransactionServiceImpl implements ITransactionService {
     private final TransactionRepository repository;
     private final TransactionMapper mapper;
 
+    @Transactional(readOnly = true)
     @Override
     public List<TransactionResponse> getAll() {
         return mapper.toResponses(repository.findAllByEnabledTrue());
