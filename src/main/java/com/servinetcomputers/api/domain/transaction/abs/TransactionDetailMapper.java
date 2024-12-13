@@ -11,7 +11,7 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface TransactionDetailMapper {
 
-    @Mapping(target = "transactionId", source = "transaction.id")
+    @Mapping(target = "description", source = "transaction.description")
     @Mapping(target = "cashRegisterDetailId", source = "cashRegisterDetail.id")
     TransactionDetailResponse toResponse(TransactionDetail entity);
 

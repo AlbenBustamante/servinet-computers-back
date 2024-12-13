@@ -2,6 +2,7 @@ package com.servinetcomputers.api.domain.transaction.service;
 
 import com.servinetcomputers.api.core.exception.AppException;
 import com.servinetcomputers.api.core.exception.NotFoundException;
+import com.servinetcomputers.api.domain.cashregister.abs.CashRegisterDetailRepository;
 import com.servinetcomputers.api.domain.transaction.abs.*;
 import com.servinetcomputers.api.domain.transaction.dto.TransactionDetailRequest;
 import com.servinetcomputers.api.domain.transaction.dto.TransactionDetailResponse;
@@ -23,6 +24,7 @@ public class TransactionDetailServiceImpl implements ITransactionDetailService {
     private final TransactionDetailMapper mapper;
     private final TransactionRepository transactionRepository;
     private final TransactionMapper transactionMapper;
+    private final CashRegisterDetailRepository cashRegisterDetailRepository;
 
     @Transactional(rollbackFor = AppException.class)
     @Override
@@ -37,10 +39,16 @@ public class TransactionDetailServiceImpl implements ITransactionDetailService {
             entity.setTransaction(transaction);
         } else {
             final var newTransaction = new TransactionRequest(request.description(), null);
-            final var newEntity = transactionMapper.toEntity(newTransaction);
+            var newEntity = transactionMapper.toEntity(newTransaction);
+            newEntity = transactionRepository.save(newEntity);
 
             entity.setTransaction(newEntity);
         }
+
+        final var cashRegisterDetail = cashRegisterDetailRepository.findByIdAndEnabledTrue(request.cashRegisterDetailId())
+                .orElseThrow(() -> new NotFoundException("Caja no encontrada: #" + request.cashRegisterDetailId()));
+
+        entity.setCashRegisterDetail(cashRegisterDetail);
 
         return mapper.toResponse(repository.save(entity));
     }

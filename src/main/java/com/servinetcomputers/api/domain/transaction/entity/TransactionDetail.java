@@ -1,5 +1,6 @@
 package com.servinetcomputers.api.domain.transaction.entity;
 
+import com.servinetcomputers.api.core.audit.AuditAuditable;
 import com.servinetcomputers.api.core.audit.AuditTransactionDetail;
 import com.servinetcomputers.api.core.audit.Auditable;
 import com.servinetcomputers.api.domain.cashregister.entity.CashRegisterDetail;
@@ -14,7 +15,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "transaction_details")
-@EntityListeners(value = {AuditTransactionDetail.class, AuditingEntityListener.class})
+@EntityListeners(value = {AuditTransactionDetail.class, AuditAuditable.class, AuditingEntityListener.class})
 @Getter
 @Setter
 public class TransactionDetail extends Auditable {
@@ -38,7 +39,7 @@ public class TransactionDetail extends Auditable {
     private TransactionDetailType type;
 
     @ManyToOne
-    @JoinColumn(name = "transaction_id", nullable = false)
+    @JoinColumn(name = "transaction_id")
     private Transaction transaction;
 
     @ManyToOne

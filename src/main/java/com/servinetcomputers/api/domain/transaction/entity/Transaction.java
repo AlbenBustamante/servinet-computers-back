@@ -1,5 +1,6 @@
 package com.servinetcomputers.api.domain.transaction.entity;
 
+import com.servinetcomputers.api.core.audit.AuditAuditable;
 import com.servinetcomputers.api.core.audit.AuditTransaction;
 import com.servinetcomputers.api.core.audit.Auditable;
 import com.servinetcomputers.api.domain.transaction.util.TransactionType;
@@ -9,13 +10,11 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.util.List;
-
 import static com.servinetcomputers.api.domain.transaction.util.TransactionConstants.DESCRIPTION_LENGTH;
 
 @Entity
 @Table(name = "transactions")
-@EntityListeners(value = {AuditTransaction.class, AuditingEntityListener.class})
+@EntityListeners(value = {AuditTransaction.class, AuditAuditable.class, AuditingEntityListener.class})
 @Getter
 @Setter
 public class Transaction extends Auditable {
@@ -31,8 +30,5 @@ public class Transaction extends Auditable {
     @Convert(converter = TransactionTypeConverter.class)
     @Column(nullable = false, columnDefinition = "CHAR(1)")
     private TransactionType type;
-
-    @OneToMany(mappedBy = "transaction", cascade = {CascadeType.PERSIST})
-    private List<TransactionDetail> transactionDetails;
 
 }
