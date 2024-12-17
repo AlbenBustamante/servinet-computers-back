@@ -4,6 +4,7 @@ import com.servinetcomputers.api.domain.transaction.abs.ITransactionDetailServic
 import com.servinetcomputers.api.domain.transaction.abs.ITransactionService;
 import com.servinetcomputers.api.domain.transaction.dto.TransactionDetailRequest;
 import com.servinetcomputers.api.domain.transaction.dto.TransactionDetailResponse;
+import com.servinetcomputers.api.domain.transaction.dto.TransactionResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,8 +25,8 @@ public class TransactionController {
     }
 
     @GetMapping
-    public ResponseEntity<List<String>> getAllDescriptions() {
-        return ResponseEntity.ok(service.getAllDescriptions());
+    public ResponseEntity<List<TransactionResponse>> getAll() {
+        return ResponseEntity.ok(service.getAll());
     }
 
 }

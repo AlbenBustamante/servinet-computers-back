@@ -3,6 +3,7 @@ package com.servinetcomputers.api.domain.transaction.service;
 import com.servinetcomputers.api.domain.transaction.abs.ITransactionService;
 import com.servinetcomputers.api.domain.transaction.abs.TransactionMapper;
 import com.servinetcomputers.api.domain.transaction.abs.TransactionRepository;
+import com.servinetcomputers.api.domain.transaction.dto.TransactionResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,8 +19,8 @@ public class TransactionServiceImpl implements ITransactionService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<String> getAllDescriptions() {
-        return repository.findAllDescriptions();
+    public List<TransactionResponse> getAll() {
+        return mapper.toResponses(repository.findAllByEnabledTrueOrderByUsesAsc());
     }
 
 }
