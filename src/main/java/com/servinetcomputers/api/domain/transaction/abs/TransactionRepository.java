@@ -9,7 +9,9 @@ import java.util.Optional;
 
 public interface TransactionRepository extends JpaRepository<Transaction, Integer> {
 
-    @Query("SELECT t.description FROM Transaction t WHERE t.enabled = true")
+    @Query("SELECT t.description FROM Transaction t " +
+            "WHERE t.enabled = true " +
+            "ORDER BY t.uses ASC")
     List<String> findAllDescriptions();
 
     Optional<Transaction> findByIdAndEnabledTrue(int cashRegisterDetailId);

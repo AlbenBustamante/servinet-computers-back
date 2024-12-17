@@ -7,6 +7,7 @@ import com.servinetcomputers.api.domain.transaction.abs.*;
 import com.servinetcomputers.api.domain.transaction.dto.TransactionDetailRequest;
 import com.servinetcomputers.api.domain.transaction.dto.TransactionDetailResponse;
 import com.servinetcomputers.api.domain.transaction.dto.TransactionRequest;
+import com.servinetcomputers.api.domain.transaction.entity.Transaction;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,19 +32,19 @@ public class TransactionDetailServiceImpl implements ITransactionDetailService {
     public TransactionDetailResponse create(TransactionDetailRequest request) {
         final var transactionId = request.transactionId();
         final var entity = mapper.toEntity(request);
+        Transaction transaction;
 
         if (transactionId != null) {
-            final var transaction = transactionRepository.findByIdAndEnabledTrue(transactionId)
+            transaction = transactionRepository.findByIdAndEnabledTrue(transactionId)
                     .orElseThrow(() -> new NotFoundException("Transacción no encontrada: #" + transactionId));
-
-            entity.setTransaction(transaction);
+            transaction.addUse();
         } else {
             final var newTransaction = new TransactionRequest(request.description(), null);
-            var newEntity = transactionMapper.toEntity(newTransaction);
-            newEntity = transactionRepository.save(newEntity);
-
-            entity.setTransaction(newEntity);
+            transaction = transactionMapper.toEntity(newTransaction);
         }
+
+        transaction = transactionRepository.save(transaction);
+        entity.setTransaction(transaction);
 
         final var cashRegisterDetail = cashRegisterDetailRepository.findByIdAndEnabledTrue(request.cashRegisterDetailId())
                 .orElseThrow(() -> new NotFoundException("Caja no encontrada: #" + request.cashRegisterDetailId()));

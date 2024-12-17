@@ -27,8 +27,15 @@ public class Transaction extends Auditable {
     @Column(nullable = false, length = DESCRIPTION_LENGTH)
     private String description;
 
+    @Column(nullable = false)
+    private Integer uses;
+
     @Convert(converter = TransactionTypeConverter.class)
     @Column(nullable = false, columnDefinition = "CHAR(1)")
     private TransactionType type;
+
+    public void addUse() {
+        uses++;
+    }
 
 }

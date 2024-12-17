@@ -7,6 +7,10 @@ import jakarta.persistence.PrePersist;
 public class AuditTransaction {
     @PrePersist
     public void prePersist(Transaction transaction) {
+        if (transaction.getUses() == null) {
+            transaction.setUses(1);
+        }
+
         if (transaction.getType() == null) {
             transaction.setType(TransactionType.NORMAL);
         }
