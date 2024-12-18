@@ -1,24 +1,17 @@
 package com.servinetcomputers.api.domain.cashregister.service;
 
-import com.servinetcomputers.api.domain.base.BaseDto;
-import com.servinetcomputers.api.domain.base.BaseMapper;
-import com.servinetcomputers.api.domain.cashregister.abs.CashRegisterDetailMapper;
-import com.servinetcomputers.api.domain.cashregister.abs.CashRegisterDetailRepository;
-import com.servinetcomputers.api.domain.cashregister.abs.CashRegisterMapper;
-import com.servinetcomputers.api.domain.cashregister.abs.CashRegisterRepository;
-import com.servinetcomputers.api.domain.cashregister.abs.ICashRegisterDetailService;
-import com.servinetcomputers.api.domain.cashregister.dto.AlreadyExistsCashRegisterDetailDto;
-import com.servinetcomputers.api.domain.cashregister.dto.CashRegisterDetailReportsDto;
-import com.servinetcomputers.api.domain.cashregister.dto.CashRegisterDetailRequest;
-import com.servinetcomputers.api.domain.cashregister.dto.CashRegisterDetailResponse;
-import com.servinetcomputers.api.domain.cashregister.dto.CashRegisterResponse;
-import com.servinetcomputers.api.domain.cashregister.dto.MyCashRegistersReports;
-import com.servinetcomputers.api.domain.cashregister.util.CashRegisterStatus;
-import com.servinetcomputers.api.domain.expense.abs.ExpenseRepository;
-import com.servinetcomputers.api.domain.user.dto.UserResponse;
 import com.servinetcomputers.api.core.exception.AppException;
 import com.servinetcomputers.api.core.exception.BadRequestException;
 import com.servinetcomputers.api.core.exception.NotFoundException;
+import com.servinetcomputers.api.domain.base.BaseDto;
+import com.servinetcomputers.api.domain.base.BaseMapper;
+import com.servinetcomputers.api.domain.cashregister.abs.*;
+import com.servinetcomputers.api.domain.cashregister.dto.*;
+import com.servinetcomputers.api.domain.cashregister.util.CashRegisterStatus;
+import com.servinetcomputers.api.domain.expense.abs.ExpenseRepository;
+import com.servinetcomputers.api.domain.transaction.abs.TransactionDetailRepository;
+import com.servinetcomputers.api.domain.transaction.util.TransactionDetailType;
+import com.servinetcomputers.api.domain.user.dto.UserResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -38,8 +31,9 @@ public class CashRegisterDetailServiceImpl implements ICashRegisterDetailService
     private final CashRegisterDetailMapper mapper;
     private final CashRegisterRepository cashRegisterRepository;
     private final CashRegisterMapper cashRegisterMapper;
-    private final BaseMapper baseMapper;
     private final ExpenseRepository expenseRepository;
+    private final TransactionDetailRepository transactionDetailRepository;
+    private final BaseMapper baseMapper;
     private final ZoneId zoneId;
 
     @Transactional(rollbackFor = AppException.class)
@@ -137,7 +131,12 @@ public class CashRegisterDetailServiceImpl implements ICashRegisterDetailService
         final var transactionsAmount = 0;
         final var initialBase = cashRegisterDetail.getDetailInitialBase().calculate();
         final var finalBase = finalBaseDto != null ? finalBaseDto.calculate() : 0;
-        final var deposits = 0;
+
+        var deposits = transactionDetailRepository.sumAllByCreatedByAndEnabledTrueAndCreatedDateBetween(code, startDate, endDate, TransactionDetailType.DEPOSIT);
+        var withdrawals = transactionDetailRepository.sumAllByCreatedByAndEnabledTrueAndCreatedDateBetween(code, startDate, endDate, TransactionDetailType.WITHDRAWAL);
+
+        deposits = deposits != null ? deposits : 0;
+        withdrawals = withdrawals != null ? withdrawals : 0;
 
         var expenses = expenseRepository.sumAllByCreatedByAndEnabledTrueAndCreatedDateBetweenAndDiscount(code, startDate, endDate, false);
         var discounts = expenseRepository.sumAllByCreatedByAndEnabledTrueAndCreatedDateBetweenAndDiscount(code, startDate, endDate, true);
@@ -145,7 +144,7 @@ public class CashRegisterDetailServiceImpl implements ICashRegisterDetailService
         expenses = expenses != null ? expenses : 0;
         discounts = discounts != null ? discounts : 0;
 
-        final var withdrawals = expenses + discounts;
+        withdrawals += expenses + discounts;
 
         final var balance = initialBase + deposits - withdrawals - expenses - discounts;
 
