@@ -8,4 +8,6 @@ import java.util.List;
 
 public interface TransactionDetailRepository extends JpaRepository<TransactionDetail, Integer> {
     List<TransactionDetail> findAllByCashRegisterDetailIdAndEnabledTrueAndCreatedDateBetween(int cashRegisterDetailId, LocalDateTime startDate, LocalDateTime endDate);
+
+    List<TransactionDetail> findAllByCreatedByAndEnabledTrueAndCreatedDateBetween(String createdBy, LocalDateTime startDate, LocalDateTime endDate);
 }

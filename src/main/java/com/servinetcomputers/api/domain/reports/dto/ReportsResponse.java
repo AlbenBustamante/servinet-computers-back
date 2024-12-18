@@ -2,6 +2,7 @@ package com.servinetcomputers.api.domain.reports.dto;
 
 import com.servinetcomputers.api.domain.expense.dto.ExpenseResponse;
 import com.servinetcomputers.api.domain.platform.dto.PlatformTransferResponse;
+import com.servinetcomputers.api.domain.transaction.dto.TransactionDetailResponse;
 import lombok.Builder;
 
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.List;
 public record ReportsResponse(
         List<PlatformTransferResponse> platformTransfers,
         List<ExpenseResponse> expenses,
-        List<ExpenseResponse> discounts
+        List<ExpenseResponse> discounts,
+        List<TransactionDetailResponse> transactions
 ) {
 }

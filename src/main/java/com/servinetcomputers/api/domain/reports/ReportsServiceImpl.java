@@ -16,6 +16,7 @@ import com.servinetcomputers.api.domain.reports.dto.Reports;
 import com.servinetcomputers.api.domain.reports.dto.ReportsResponse;
 import com.servinetcomputers.api.domain.safes.abs.SafeMapper;
 import com.servinetcomputers.api.domain.safes.abs.SafeRepository;
+import com.servinetcomputers.api.domain.transaction.abs.TransactionDetailRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
@@ -41,6 +42,7 @@ public class ReportsServiceImpl implements IReportsService {
     private final PlatformBalanceRepository platformBalanceRepository;
     private final PlatformTransferRepository platformTransferRepository;
     private final SafeRepository safeRepository;
+    private final TransactionDetailRepository transactionDetailRepository;
     private final BaseMapper baseMapper;
     private final CashRegisterDetailMapper cashRegisterDetailMapper;
     private final PlatformBalanceMapper platformBalanceMapper;
@@ -95,17 +97,20 @@ public class ReportsServiceImpl implements IReportsService {
     @Transactional(readOnly = true)
     @Override
     public ReportsResponse getReports(String code) {
-        final var startDate = LocalDateTime.of(LocalDate.now(), LocalTime.MIN);
-        final var endDate = LocalDateTime.of(LocalDate.now(), LocalTime.now());
+        final var today = LocalDate.now();
+        final var startDate = LocalDateTime.of(today, LocalTime.MIN);
+        final var endDate = LocalDateTime.of(today, LocalTime.now());
 
         final var platformTransfers = platformTransferRepository.findAllByCreatedByAndEnabledTrueAndCreatedDateBetween(code, startDate, endDate);
         final var expenses = expenseRepository.findAllByCreatedByAndEnabledTrueAndCreatedDateBetweenAndDiscount(code, startDate, endDate, false);
         final var discounts = expenseRepository.findAllByCreatedByAndEnabledTrueAndCreatedDateBetweenAndDiscount(code, startDate, endDate, true);
+        final var transactions = transactionDetailRepository.findAllByCreatedByAndEnabledTrueAndCreatedDateBetween(code, startDate, endDate);
 
         final var reports = new Reports(
                 platformTransfers,
                 expenses,
-                discounts
+                discounts,
+                transactions
         );
 
         return reportsMapper.toResponse(reports);
