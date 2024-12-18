@@ -10,5 +10,5 @@ public interface TransactionRepository extends JpaRepository<Transaction, Intege
 
     List<Transaction> findAllByEnabledTrueOrderByUsesAsc();
 
-    Optional<Transaction> findByIdAndEnabledTrue(int cashRegisterDetailId);
+    Optional<Transaction> findByDescriptionAndEnabledTrue(String description);
 }

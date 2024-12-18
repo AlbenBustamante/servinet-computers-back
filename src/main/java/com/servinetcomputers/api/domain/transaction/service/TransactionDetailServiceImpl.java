@@ -30,28 +30,28 @@ public class TransactionDetailServiceImpl implements ITransactionDetailService {
     @Transactional(rollbackFor = AppException.class)
     @Override
     public TransactionDetailResponse create(TransactionDetailRequest request) {
-        final var transactionId = request.transactionId();
-        final var entity = mapper.toEntity(request);
+        final var transactionFound = transactionRepository.findByDescriptionAndEnabledTrue(request.description().toUpperCase());
         Transaction transaction;
 
-        if (transactionId != null) {
-            transaction = transactionRepository.findByIdAndEnabledTrue(transactionId)
-                    .orElseThrow(() -> new NotFoundException("Transacción no encontrada: #" + transactionId));
-            transaction.addUse();
+        if (transactionFound.isEmpty()) {
+            final var newRequest = new TransactionRequest(request.description(), null);
+            transaction = transactionMapper.toEntity(newRequest);
         } else {
-            final var newTransaction = new TransactionRequest(request.description(), null);
-            transaction = transactionMapper.toEntity(newTransaction);
+            transaction = transactionFound.get();
+            transaction.addUse();
         }
 
         transaction = transactionRepository.save(transaction);
-        entity.setTransaction(transaction);
+
+        final var detail = mapper.toEntity(request);
+        detail.setTransaction(transaction);
 
         final var cashRegisterDetail = cashRegisterDetailRepository.findByIdAndEnabledTrue(request.cashRegisterDetailId())
                 .orElseThrow(() -> new NotFoundException("Caja no encontrada: #" + request.cashRegisterDetailId()));
 
-        entity.setCashRegisterDetail(cashRegisterDetail);
+        detail.setCashRegisterDetail(cashRegisterDetail);
 
-        return mapper.toResponse(repository.save(entity));
+        return mapper.toResponse(repository.save(detail));
     }
 
     @Transactional(readOnly = true)

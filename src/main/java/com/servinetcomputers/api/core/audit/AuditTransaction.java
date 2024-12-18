@@ -7,6 +7,8 @@ import jakarta.persistence.PrePersist;
 public class AuditTransaction {
     @PrePersist
     public void prePersist(Transaction transaction) {
+        transaction.setDescription(transaction.getDescription().toUpperCase());
+        
         if (transaction.getUses() == null) {
             transaction.setUses(1);
         }

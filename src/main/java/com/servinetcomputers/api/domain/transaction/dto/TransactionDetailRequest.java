@@ -6,7 +6,6 @@ import java.time.LocalDateTime;
 
 public record TransactionDetailRequest(
         int cashRegisterDetailId,
-        Integer transactionId,
         String description,
         TransactionDetailType type,
         int value,
