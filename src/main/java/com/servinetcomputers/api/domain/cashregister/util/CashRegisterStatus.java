@@ -5,7 +5,6 @@ import lombok.Getter;
 @Getter
 public enum CashRegisterStatus {
     AVAILABLE('A'),
-    RESTING('R'),
     OCCUPIED('O'),
     DISABLED('D');
 

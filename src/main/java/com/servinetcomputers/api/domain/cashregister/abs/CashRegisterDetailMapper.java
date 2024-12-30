@@ -12,12 +12,14 @@ import java.util.List;
 @Mapper(componentModel = "spring", uses = {CashRegisterMapper.class, BaseMapper.class})
 public interface CashRegisterDetailMapper {
 
+    @Mapping(target = "userId", source = "user.id")
     @Mapping(target = "detailFinalBase", source = "finalBase")
     @Mapping(target = "detailInitialBase", source = "initialBase")
     CashRegisterDetailResponse toResponse(CashRegisterDetail entity);
 
     List<CashRegisterDetailResponse> toResponses(List<CashRegisterDetail> entities);
 
+    @Mapping(target = "status", ignore = true)
     @Mapping(target = "workingHours", expression = "java(new LocalTime[]{request.initialWorking(), null, null, null})")
     @Mapping(target = "user", ignore = true)
     @Mapping(target = "modifiedDate", ignore = true)

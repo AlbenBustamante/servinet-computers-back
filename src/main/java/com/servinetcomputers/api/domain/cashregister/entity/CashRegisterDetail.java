@@ -2,6 +2,8 @@ package com.servinetcomputers.api.domain.cashregister.entity;
 
 import com.servinetcomputers.api.core.audit.AuditAuditable;
 import com.servinetcomputers.api.core.audit.Auditable;
+import com.servinetcomputers.api.domain.cashregister.util.CashRegisterDetailStatus;
+import com.servinetcomputers.api.domain.cashregister.util.CashRegisterDetailStatusConverter;
 import com.servinetcomputers.api.domain.user.User;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -25,12 +27,6 @@ public class CashRegisterDetail extends Auditable {
     @Column(name = "cash_register_detail_id")
     private Integer id;
 
-    @Column(name = "cash_register_id", nullable = false)
-    private Integer cashRegisterId;
-
-    @Column(name = "user_id", nullable = false)
-    private Integer userId;
-
     @Column(nullable = false)
     private LocalTime[] workingHours;
 
@@ -43,12 +39,16 @@ public class CashRegisterDetail extends Auditable {
     @Column(length = BASE_OBSERVATION_LENGTH)
     private String baseObservation;
 
+    @Convert(converter = CashRegisterDetailStatusConverter.class)
+    @Column(nullable = false, columnDefinition = "CHAR(1)")
+    private CashRegisterDetailStatus status;
+
     @ManyToOne
-    @JoinColumn(name = "cash_register_id", columnDefinition = "cash_register_id", insertable = false, updatable = false)
+    @JoinColumn(name = "cash_register_id", nullable = false)
     private CashRegister cashRegister;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", columnDefinition = "user_id", insertable = false, updatable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
 }

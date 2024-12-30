@@ -2,6 +2,7 @@ package com.servinetcomputers.api.domain.cashregister.dto;
 
 import com.servinetcomputers.api.domain.ModelResponse;
 import com.servinetcomputers.api.domain.base.BaseDto;
+import com.servinetcomputers.api.domain.cashregister.util.CashRegisterDetailStatus;
 import lombok.Getter;
 
 import java.time.LocalDate;
@@ -14,10 +15,12 @@ public class CashRegisterDetailResponse extends ModelResponse {
     private final String baseObservation;
     private final LocalDateTime initialWorking, initialBreak, finalBreak, finalWorking;
     private final BaseDto detailInitialBase, detailFinalBase;
+    private final CashRegisterDetailStatus status;
     private final CashRegisterResponse cashRegister;
 
     public CashRegisterDetailResponse(int id, boolean enabled, LocalDateTime createdDate, LocalDateTime modifiedDate, String createdBy, String modifiedBy,
-                                      int userId, LocalTime[] workingHours, String baseObservation, BaseDto detailInitialBase, BaseDto detailFinalBase, CashRegisterResponse cashRegister) {
+                                      int userId, LocalTime[] workingHours, String baseObservation, BaseDto detailInitialBase, BaseDto detailFinalBase,
+                                      CashRegisterDetailStatus status, CashRegisterResponse cashRegister) {
         super(id, enabled, createdDate, modifiedDate, createdBy, modifiedBy);
         this.userId = userId;
 
@@ -33,5 +36,7 @@ public class CashRegisterDetailResponse extends ModelResponse {
 
         this.initialBase = this.detailInitialBase.calculate();
         this.finalBase = this.detailFinalBase != null ? this.detailFinalBase.calculate() : 0;
+
+        this.status = status;
     }
 }

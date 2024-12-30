@@ -7,6 +7,7 @@ import com.servinetcomputers.api.domain.base.BaseDto;
 import com.servinetcomputers.api.domain.base.BaseMapper;
 import com.servinetcomputers.api.domain.cashregister.abs.*;
 import com.servinetcomputers.api.domain.cashregister.dto.*;
+import com.servinetcomputers.api.domain.cashregister.util.CashRegisterDetailStatus;
 import com.servinetcomputers.api.domain.cashregister.util.CashRegisterStatus;
 import com.servinetcomputers.api.domain.expense.abs.ExpenseRepository;
 import com.servinetcomputers.api.domain.transaction.abs.TransactionDetailRepository;
@@ -183,6 +184,7 @@ public class CashRegisterDetailServiceImpl implements ICashRegisterDetailService
                 .orElseThrow(() -> new NotFoundException("No se encontró la caja en funcionamiento"));
 
         cashRegisterDetail.getCashRegister().setStatus(CashRegisterStatus.AVAILABLE);
+        cashRegisterDetail.setStatus(CashRegisterDetailStatus.CLOSED);
 
         final var workingHours = cashRegisterDetail.getWorkingHours();
         workingHours[3] = LocalTime.now();
@@ -195,22 +197,15 @@ public class CashRegisterDetailServiceImpl implements ICashRegisterDetailService
         return getCashRegistersReports(response);
     }
 
-    private CashRegisterDetailResponse handleBreak(int cashRegisterDetailId, boolean start) {
+    private CashRegisterDetailResponse handleBreak(int cashRegisterDetailId, boolean startBreak) {
         final var cashRegisterDetail = repository.findByIdAndEnabledTrue(cashRegisterDetailId)
                 .orElseThrow(() -> new NotFoundException("No se encontró la caja en funcionamiento"));
 
         final var workingHours = cashRegisterDetail.getWorkingHours();
-        workingHours[start ? 1 : 2] = LocalTime.now();
+        workingHours[startBreak ? 1 : 2] = LocalTime.now();
 
         cashRegisterDetail.setWorkingHours(workingHours);
-
-        var cashRegister = cashRegisterRepository.findByIdAndEnabledTrue(cashRegisterDetail.getCashRegisterId())
-                .orElseThrow(() -> new NotFoundException("No se encontró la caja registradora"));
-
-        cashRegister.setStatus(start ? CashRegisterStatus.RESTING : CashRegisterStatus.OCCUPIED);
-        cashRegister = cashRegisterRepository.save(cashRegister);
-
-        cashRegisterDetail.setCashRegister(cashRegister);
+        cashRegisterDetail.setStatus(startBreak ? CashRegisterDetailStatus.RESTING : CashRegisterDetailStatus.WORKING);
 
         return mapper.toResponse(repository.save(cashRegisterDetail));
     }
