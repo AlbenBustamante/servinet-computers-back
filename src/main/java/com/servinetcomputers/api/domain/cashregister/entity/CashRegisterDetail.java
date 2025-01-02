@@ -1,6 +1,7 @@
 package com.servinetcomputers.api.domain.cashregister.entity;
 
 import com.servinetcomputers.api.core.audit.AuditAuditable;
+import com.servinetcomputers.api.core.audit.AuditCashRegisterDetail;
 import com.servinetcomputers.api.core.audit.Auditable;
 import com.servinetcomputers.api.domain.cashregister.util.CashRegisterDetailStatus;
 import com.servinetcomputers.api.domain.cashregister.util.CashRegisterDetailStatusConverter;
@@ -17,7 +18,7 @@ import static com.servinetcomputers.api.domain.cashregister.util.CashRegisterDet
 
 @Entity
 @Table(name = "cash_register_details")
-@EntityListeners(value = {AuditAuditable.class, AuditingEntityListener.class})
+@EntityListeners(value = {AuditCashRegisterDetail.class, AuditAuditable.class, AuditingEntityListener.class})
 @Getter
 @Setter
 public class CashRegisterDetail extends Auditable {

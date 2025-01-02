@@ -12,6 +12,7 @@ import com.servinetcomputers.api.domain.cashregister.util.CashRegisterStatus;
 import com.servinetcomputers.api.domain.expense.abs.ExpenseRepository;
 import com.servinetcomputers.api.domain.transaction.abs.TransactionDetailRepository;
 import com.servinetcomputers.api.domain.transaction.util.TransactionDetailType;
+import com.servinetcomputers.api.domain.user.abs.UserRepository;
 import com.servinetcomputers.api.domain.user.dto.UserResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -29,11 +30,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CashRegisterDetailServiceImpl implements ICashRegisterDetailService {
     private final CashRegisterDetailRepository repository;
-    private final CashRegisterDetailMapper mapper;
     private final CashRegisterRepository cashRegisterRepository;
-    private final CashRegisterMapper cashRegisterMapper;
     private final ExpenseRepository expenseRepository;
     private final TransactionDetailRepository transactionDetailRepository;
+    private final UserRepository userRepository;
+    private final CashRegisterDetailMapper mapper;
+    private final CashRegisterMapper cashRegisterMapper;
     private final BaseMapper baseMapper;
     private final ZoneId zoneId;
 
@@ -60,12 +62,15 @@ public class CashRegisterDetailServiceImpl implements ICashRegisterDetailService
         }
 
         cashRegister.setStatus(CashRegisterStatus.OCCUPIED);
-
         cashRegisterRepository.save(cashRegister);
 
         final var entity = mapper.toEntity(request);
         entity.setCashRegister(cashRegister);
 
+        final var user = userRepository.findByIdAndEnabledTrue(request.userId())
+                .orElseThrow(() -> new NotFoundException("Usuario #" + request.userId() + " no encontrado"));
+
+        entity.setUser(user);
         repository.save(entity);
 
         return getReportsByUserId(request.userId());
