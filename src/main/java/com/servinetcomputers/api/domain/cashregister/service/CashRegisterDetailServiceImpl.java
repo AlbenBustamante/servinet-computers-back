@@ -15,6 +15,7 @@ import com.servinetcomputers.api.domain.transaction.util.TransactionDetailType;
 import com.servinetcomputers.api.domain.user.abs.UserRepository;
 import com.servinetcomputers.api.domain.user.dto.UserResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +26,8 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.servinetcomputers.api.core.security.util.SecurityConstants.ADMIN_AUTHORITY;
 
 @Service
 @RequiredArgsConstructor
@@ -74,6 +77,17 @@ public class CashRegisterDetailServiceImpl implements ICashRegisterDetailService
         repository.save(entity);
 
         return getReportsByUserId(request.userId());
+    }
+
+    @Transactional(readOnly = true)
+    @Secured(value = ADMIN_AUTHORITY)
+    @Override
+    public List<CashRegisterDetailResponse> getAllOfToday() {
+        final var today = LocalDate.now();
+        final var startDate = LocalDateTime.of(today, LocalTime.MIN);
+        final var endDate = LocalDateTime.of(today, LocalTime.now());
+
+        return mapper.toResponses(repository.findAllByEnabledTrueAndCreatedDateBetween(startDate, endDate));
     }
 
     @Transactional(rollbackFor = AppException.class)

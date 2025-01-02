@@ -31,6 +31,11 @@ public class CashRegisterDetailController {
         return ResponseEntity.ok(service.alreadyExists());
     }
 
+    @GetMapping("/today")
+    public ResponseEntity<List<CashRegisterDetailResponse>> getAllOfToday() {
+        return ResponseEntity.ok(service.getAllOfToday());
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<CashRegisterDetailResponse> getById(@PathVariable("id") int cashRegisterDetailId) {
         return ResponseEntity.ok(service.getById(cashRegisterDetailId));

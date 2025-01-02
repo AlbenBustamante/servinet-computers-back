@@ -3,9 +3,13 @@ package com.servinetcomputers.api.domain.cashregister.abs;
 import com.servinetcomputers.api.domain.base.BaseDto;
 import com.servinetcomputers.api.domain.cashregister.dto.*;
 
+import java.util.List;
+
 public interface ICashRegisterDetailService {
 
     MyCashRegistersReports create(CashRegisterDetailRequest request);
+
+    List<CashRegisterDetailResponse> getAllOfToday();
 
     AlreadyExistsCashRegisterDetailDto alreadyExists();
 
