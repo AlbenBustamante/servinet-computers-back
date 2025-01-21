@@ -1,6 +1,6 @@
 package com.servinetcomputers.api.domain.reports.abs;
 
-import com.servinetcomputers.api.domain.expense.abs.ExpenseMapper;
+import com.servinetcomputers.api.domain.expense.persistence.mapper.ExpenseMapper;
 import com.servinetcomputers.api.domain.platform.abs.PlatformTransferMapper;
 import com.servinetcomputers.api.domain.reports.dto.Reports;
 import com.servinetcomputers.api.domain.reports.dto.ReportsResponse;

@@ -1,6 +1,6 @@
 package com.servinetcomputers.api.domain.reports.dto;
 
-import com.servinetcomputers.api.domain.cashregister.dto.CashRegisterDetailResponse;
+import com.servinetcomputers.api.domain.cashregister.domain.dto.CashRegisterDetailResponse;
 import com.servinetcomputers.api.domain.platform.dto.PlatformStatsDto;
 import com.servinetcomputers.api.domain.safes.dto.SafeResponse;
 

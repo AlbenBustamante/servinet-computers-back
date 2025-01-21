@@ -3,7 +3,7 @@ package com.servinetcomputers.api.domain.transaction.entity;
 import com.servinetcomputers.api.core.audit.AuditAuditable;
 import com.servinetcomputers.api.core.audit.AuditTransactionDetail;
 import com.servinetcomputers.api.core.audit.Auditable;
-import com.servinetcomputers.api.domain.cashregister.entity.CashRegisterDetail;
+import com.servinetcomputers.api.domain.cashregister.persistence.entity.CashRegisterDetail;
 import com.servinetcomputers.api.domain.transaction.util.TransactionDetailType;
 import com.servinetcomputers.api.domain.transaction.util.TransactionDetailTypeConverter;
 import jakarta.persistence.*;

@@ -1,7 +1,7 @@
 package com.servinetcomputers.api.domain.user;
 
-import com.servinetcomputers.api.domain.cashregister.abs.ICashRegisterDetailService;
-import com.servinetcomputers.api.domain.cashregister.dto.MyCashRegistersReports;
+import com.servinetcomputers.api.domain.cashregister.domain.dto.MyCashRegistersReports;
+import com.servinetcomputers.api.domain.cashregister.domain.repository.CashRegisterDetailRepository;
 import com.servinetcomputers.api.domain.reports.abs.IReportsService;
 import com.servinetcomputers.api.domain.reports.dto.ReportsResponse;
 import com.servinetcomputers.api.domain.user.abs.IUserService;
@@ -22,7 +22,7 @@ import java.util.List;
 public class UserController {
 
     private final IUserService userService;
-    private final ICashRegisterDetailService cashRegisterDetailService;
+    private final CashRegisterDetailRepository cashRegisterDetailService;
     private final IReportsService reportsService;
 
     @GetMapping

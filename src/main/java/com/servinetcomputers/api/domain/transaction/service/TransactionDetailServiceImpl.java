@@ -2,7 +2,7 @@ package com.servinetcomputers.api.domain.transaction.service;
 
 import com.servinetcomputers.api.core.exception.AppException;
 import com.servinetcomputers.api.core.exception.NotFoundException;
-import com.servinetcomputers.api.domain.cashregister.abs.CashRegisterDetailRepository;
+import com.servinetcomputers.api.domain.cashregister.persistence.JpaCashRegisterDetailRepository;
 import com.servinetcomputers.api.domain.transaction.abs.*;
 import com.servinetcomputers.api.domain.transaction.dto.TransactionDetailRequest;
 import com.servinetcomputers.api.domain.transaction.dto.TransactionDetailResponse;
@@ -21,11 +21,11 @@ import java.util.List;
 @Service
 public class TransactionDetailServiceImpl implements ITransactionDetailService {
 
-    private final TransactionDetailRepository repository;
+    private final JpaTransactionDetailRepository repository;
     private final TransactionDetailMapper mapper;
     private final TransactionRepository transactionRepository;
     private final TransactionMapper transactionMapper;
-    private final CashRegisterDetailRepository cashRegisterDetailRepository;
+    private final JpaCashRegisterDetailRepository jpaCashRegisterDetailRepository;
 
     @Transactional(rollbackFor = AppException.class)
     @Override
@@ -46,7 +46,7 @@ public class TransactionDetailServiceImpl implements ITransactionDetailService {
         final var detail = mapper.toEntity(request);
         detail.setTransaction(transaction);
 
-        final var cashRegisterDetail = cashRegisterDetailRepository.findByIdAndEnabledTrue(request.cashRegisterDetailId())
+        final var cashRegisterDetail = jpaCashRegisterDetailRepository.findByIdAndEnabledTrue(request.cashRegisterDetailId())
                 .orElseThrow(() -> new NotFoundException("Caja no encontrada: #" + request.cashRegisterDetailId()));
 
         detail.setCashRegisterDetail(cashRegisterDetail);

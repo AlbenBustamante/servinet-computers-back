@@ -1,9 +1,10 @@
 package com.servinetcomputers.api.domain.cashregister.controller;
 
 import com.servinetcomputers.api.domain.base.BaseDto;
-import com.servinetcomputers.api.domain.cashregister.abs.ICashRegisterService;
-import com.servinetcomputers.api.domain.cashregister.dto.CashRegisterRequest;
-import com.servinetcomputers.api.domain.cashregister.dto.CashRegisterResponse;
+import com.servinetcomputers.api.domain.cashregister.application.usecase.*;
+import com.servinetcomputers.api.domain.cashregister.domain.dto.CashRegisterRequest;
+import com.servinetcomputers.api.domain.cashregister.domain.dto.CashRegisterResponse;
+import com.servinetcomputers.api.domain.cashregister.domain.dto.UpdateCashRegisterDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,33 +12,37 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RequiredArgsConstructor
-@RequestMapping("/cash-registers")
+@RequestMapping(path = "/cash-registers")
 @RestController
 public class CashRegisterController {
-    private final ICashRegisterService service;
+    private final CreateCashRegisterUseCase createCashRegisterUseCase;
+    private final GetAllCashRegistersUseCase getAllCashRegistersUseCase;
+    private final GetLastBaseUseCase getLastBaseUseCase;
+    private final UpdateCashRegisterUseCase updateCashRegisterUseCase;
+    private final DeleteCashRegisterUseCase deleteCashRegisterUseCase;
 
     @PostMapping
     public ResponseEntity<CashRegisterResponse> register(@RequestBody CashRegisterRequest request) {
-        return ResponseEntity.ok(service.create(request));
+        return ResponseEntity.ok(createCashRegisterUseCase.call(request));
     }
 
     @GetMapping
     public ResponseEntity<List<CashRegisterResponse>> getAll() {
-        return ResponseEntity.ok(service.getAll());
+        return ResponseEntity.ok(getAllCashRegistersUseCase.call());
     }
 
-    @GetMapping("/{id}/lastBase")
+    @GetMapping(path = "/{id}/lastBase")
     public ResponseEntity<BaseDto> getLastBase(@PathVariable("id") int cashRegisterId) {
-        return ResponseEntity.ok(service.getLastFinalBaseFromCashRegisterId(cashRegisterId));
+        return ResponseEntity.ok(getLastBaseUseCase.call(cashRegisterId));
     }
 
-    @PatchMapping("/{id}")
-    public ResponseEntity<CashRegisterResponse> update(@PathVariable("id") int cashRegisterId, @RequestBody CashRegisterRequest request) {
-        return ResponseEntity.ok(service.update(cashRegisterId, request));
+    @PatchMapping
+    public ResponseEntity<CashRegisterResponse> update(@RequestBody UpdateCashRegisterDto updateCashRegisterDto) {
+        return ResponseEntity.ok(updateCashRegisterUseCase.call(updateCashRegisterDto));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping(path = "/{id}")
     public ResponseEntity<Boolean> delete(@PathVariable("id") int cashRegisterId) {
-        return ResponseEntity.ok(service.delete(cashRegisterId));
+        return ResponseEntity.ok(deleteCashRegisterUseCase.call(cashRegisterId));
     }
 }

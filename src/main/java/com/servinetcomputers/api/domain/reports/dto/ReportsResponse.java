@@ -1,6 +1,6 @@
 package com.servinetcomputers.api.domain.reports.dto;
 
-import com.servinetcomputers.api.domain.expense.dto.ExpenseResponse;
+import com.servinetcomputers.api.domain.expense.domain.dto.ExpenseResponse;
 import com.servinetcomputers.api.domain.platform.dto.PlatformTransferResponse;
 import com.servinetcomputers.api.domain.transaction.dto.TransactionDetailResponse;
 import lombok.Builder;

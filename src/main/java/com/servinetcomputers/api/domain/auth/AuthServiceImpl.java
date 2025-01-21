@@ -1,12 +1,12 @@
 package com.servinetcomputers.api.domain.auth;
 
+import com.servinetcomputers.api.core.exception.BadRequestException;
+import com.servinetcomputers.api.core.security.JwtProvider;
 import com.servinetcomputers.api.domain.auth.abs.IAuthService;
 import com.servinetcomputers.api.domain.auth.dto.AuthRequest;
 import com.servinetcomputers.api.domain.auth.dto.AuthResponse;
+import com.servinetcomputers.api.domain.user.abs.JpaUserRepository;
 import com.servinetcomputers.api.domain.user.abs.UserMapper;
-import com.servinetcomputers.api.domain.user.abs.UserRepository;
-import com.servinetcomputers.api.core.exception.BadRequestException;
-import com.servinetcomputers.api.core.security.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -20,12 +20,12 @@ public class AuthServiceImpl implements IAuthService {
 
     private final PasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
-    private final UserRepository userRepository;
+    private final JpaUserRepository jpaUserRepository;
     private final UserMapper userMapper;
 
     @Override
     public AuthResponse login(AuthRequest request) {
-        final var user = userRepository.findByCode(request.code());
+        final var user = jpaUserRepository.findByCode(request.code());
 
         if (user.isEmpty()
                 || user.get().getEnabled().equals(Boolean.FALSE)

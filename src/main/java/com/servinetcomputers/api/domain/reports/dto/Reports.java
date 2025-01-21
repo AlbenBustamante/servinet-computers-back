@@ -1,6 +1,6 @@
 package com.servinetcomputers.api.domain.reports.dto;
 
-import com.servinetcomputers.api.domain.expense.Expense;
+import com.servinetcomputers.api.domain.expense.persistence.entity.Expense;
 import com.servinetcomputers.api.domain.platform.entity.PlatformTransfer;
 import com.servinetcomputers.api.domain.transaction.entity.TransactionDetail;
 
