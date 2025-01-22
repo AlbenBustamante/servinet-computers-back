@@ -1,19 +1,14 @@
 package com.servinetcomputers.api.domain.safes.controller;
 
-import com.servinetcomputers.api.domain.safes.abs.ISafeDetailService;
-import com.servinetcomputers.api.domain.safes.abs.ISafeService;
-import com.servinetcomputers.api.domain.safes.dto.SafeBaseRequest;
-import com.servinetcomputers.api.domain.safes.dto.SafeDetailResponse;
-import com.servinetcomputers.api.domain.safes.dto.SafeRequest;
-import com.servinetcomputers.api.domain.safes.dto.SafeResponse;
+import com.servinetcomputers.api.domain.safes.domain.dto.SafeBaseRequest;
+import com.servinetcomputers.api.domain.safes.domain.dto.SafeDetailResponse;
+import com.servinetcomputers.api.domain.safes.domain.dto.SafeRequest;
+import com.servinetcomputers.api.domain.safes.domain.dto.SafeResponse;
+import com.servinetcomputers.api.domain.safes.domain.repository.SafeDetailRepository;
+import com.servinetcomputers.api.domain.safes.domain.repository.SafeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,8 +17,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SafeController {
 
-    private final ISafeService service;
-    private final ISafeDetailService detailService;
+    private final SafeRepository service;
+    private final SafeDetailRepository detailService;
 
     @PostMapping
     public ResponseEntity<SafeResponse> register(@RequestBody SafeRequest request) {

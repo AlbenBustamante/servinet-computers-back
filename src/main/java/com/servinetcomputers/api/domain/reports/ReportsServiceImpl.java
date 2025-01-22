@@ -4,19 +4,19 @@ import com.servinetcomputers.api.domain.base.BaseMapper;
 import com.servinetcomputers.api.domain.cashregister.persistence.JpaCashRegisterDetailRepository;
 import com.servinetcomputers.api.domain.cashregister.persistence.mapper.CashRegisterDetailMapper;
 import com.servinetcomputers.api.domain.expense.persistence.JpaExpenseRepository;
-import com.servinetcomputers.api.domain.platform.abs.PlatformBalanceMapper;
-import com.servinetcomputers.api.domain.platform.abs.PlatformBalanceRepository;
-import com.servinetcomputers.api.domain.platform.abs.PlatformTransferRepository;
-import com.servinetcomputers.api.domain.platform.dto.PlatformBalanceResponse;
-import com.servinetcomputers.api.domain.platform.dto.PlatformStatsDto;
+import com.servinetcomputers.api.domain.platform.domain.dto.PlatformBalanceResponse;
+import com.servinetcomputers.api.domain.platform.domain.dto.PlatformStatsDto;
+import com.servinetcomputers.api.domain.platform.persistence.JpaPlatformBalanceRepository;
+import com.servinetcomputers.api.domain.platform.persistence.JpaPlatformTransferRepository;
+import com.servinetcomputers.api.domain.platform.persistence.mapper.PlatformBalanceMapper;
 import com.servinetcomputers.api.domain.reports.abs.IReportsService;
 import com.servinetcomputers.api.domain.reports.abs.ReportsMapper;
 import com.servinetcomputers.api.domain.reports.dto.DashboardResponse;
 import com.servinetcomputers.api.domain.reports.dto.Reports;
 import com.servinetcomputers.api.domain.reports.dto.ReportsResponse;
-import com.servinetcomputers.api.domain.safes.abs.SafeMapper;
-import com.servinetcomputers.api.domain.safes.abs.SafeRepository;
-import com.servinetcomputers.api.domain.transaction.abs.JpaTransactionDetailRepository;
+import com.servinetcomputers.api.domain.safes.persistence.JpaSafeRepository;
+import com.servinetcomputers.api.domain.safes.persistence.mapper.SafeMapper;
+import com.servinetcomputers.api.domain.transaction.persistence.JpaTransactionDetailRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
@@ -39,9 +39,9 @@ public class ReportsServiceImpl implements IReportsService {
 
     private final JpaExpenseRepository jpaExpenseRepository;
     private final JpaCashRegisterDetailRepository jpaCashRegisterDetailRepository;
-    private final PlatformBalanceRepository platformBalanceRepository;
-    private final PlatformTransferRepository platformTransferRepository;
-    private final SafeRepository safeRepository;
+    private final JpaPlatformBalanceRepository jpaPlatformBalanceRepository;
+    private final JpaPlatformTransferRepository jpaPlatformTransferRepository;
+    private final JpaSafeRepository jpaSafeRepository;
     private final JpaTransactionDetailRepository jpaTransactionDetailRepository;
     private final BaseMapper baseMapper;
     private final CashRegisterDetailMapper cashRegisterDetailMapper;
@@ -56,8 +56,8 @@ public class ReportsServiceImpl implements IReportsService {
         final var startDate = LocalDateTime.of(LocalDate.now(), LocalTime.MIN);
         final var endDate = LocalDateTime.of(LocalDate.now(), LocalTime.now());
 
-        final var platformBalances = platformBalanceRepository.findAllByEnabledTrueAndCreatedDateBetween(startDate, endDate);
-        final var totalPlatformBalances = platformBalanceRepository.calculateTotalByFinalBalanceAndCreatedDateBetween(startDate, endDate);
+        final var platformBalances = jpaPlatformBalanceRepository.findAllByEnabledTrueAndCreatedDateBetween(startDate, endDate);
+        final var totalPlatformBalances = jpaPlatformBalanceRepository.calculateTotalByFinalBalanceAndCreatedDateBetween(startDate, endDate);
 
         final var platformBalancesTotal = totalPlatformBalances != null ? totalPlatformBalances : 0;
 
@@ -73,7 +73,7 @@ public class ReportsServiceImpl implements IReportsService {
             cashRegistersTotal += base;
         }
 
-        final var safes = safeRepository.findAllByEnabledTrue();
+        final var safes = jpaSafeRepository.findAllByEnabledTrue();
         final var safesTotal = 0;
 
         /* for (final var safe : safes) {
@@ -101,7 +101,7 @@ public class ReportsServiceImpl implements IReportsService {
         final var startDate = LocalDateTime.of(today, LocalTime.MIN);
         final var endDate = LocalDateTime.of(today, LocalTime.now());
 
-        final var platformTransfers = platformTransferRepository.findAllByCreatedByAndEnabledTrueAndCreatedDateBetween(code, startDate, endDate);
+        final var platformTransfers = jpaPlatformTransferRepository.findAllByCreatedByAndEnabledTrueAndCreatedDateBetween(code, startDate, endDate);
         final var expenses = jpaExpenseRepository.findAllByCreatedByAndEnabledTrueAndCreatedDateBetweenAndDiscount(code, startDate, endDate, false);
         final var discounts = jpaExpenseRepository.findAllByCreatedByAndEnabledTrueAndCreatedDateBetweenAndDiscount(code, startDate, endDate, true);
         final var transactions = jpaTransactionDetailRepository.findAllByCreatedByAndEnabledTrueAndCreatedDateBetween(code, startDate, endDate);
@@ -124,8 +124,8 @@ public class ReportsServiceImpl implements IReportsService {
             final var platformName = balance.getPlatformName();
             final var initialBalance = balance.getInitialBalance();
             final var finalBalance = balance.getFinalBalance();
-            final var transfersAmount = platformTransferRepository.countByPlatformIdAndEnabledTrueAndCreatedDateBetween(platformId, startDate, endDate);
-            final var totalTransfers = platformTransferRepository.calculateTotalByPlatformIdAndCreatedDateBetween(platformId, startDate, endDate);
+            final var transfersAmount = jpaPlatformTransferRepository.countByPlatformIdAndEnabledTrueAndCreatedDateBetween(platformId, startDate, endDate);
+            final var totalTransfers = jpaPlatformTransferRepository.calculateTotalByPlatformIdAndCreatedDateBetween(platformId, startDate, endDate);
 
             final var transfersTotal = totalTransfers != null ? totalTransfers : 0;
 

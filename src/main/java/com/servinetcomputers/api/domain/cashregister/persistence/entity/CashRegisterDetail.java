@@ -5,7 +5,7 @@ import com.servinetcomputers.api.core.audit.AuditCashRegisterDetail;
 import com.servinetcomputers.api.core.audit.Auditable;
 import com.servinetcomputers.api.domain.cashregister.util.CashRegisterDetailStatus;
 import com.servinetcomputers.api.domain.cashregister.util.CashRegisterDetailStatusConverter;
-import com.servinetcomputers.api.domain.user.User;
+import com.servinetcomputers.api.domain.user.persistence.entity.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

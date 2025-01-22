@@ -1,8 +1,8 @@
 package com.servinetcomputers.api.domain.platform.controller;
 
-import com.servinetcomputers.api.domain.platform.abs.IPlatformBalanceService;
-import com.servinetcomputers.api.domain.platform.dto.PlatformBalanceRequest;
-import com.servinetcomputers.api.domain.platform.dto.PlatformBalanceResponse;
+import com.servinetcomputers.api.domain.platform.domain.dto.PlatformBalanceRequest;
+import com.servinetcomputers.api.domain.platform.domain.dto.PlatformBalanceResponse;
+import com.servinetcomputers.api.domain.platform.domain.repository.PlatformBalanceRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class PlatformBalanceController {
 
-    private final IPlatformBalanceService balanceService;
+    private final PlatformBalanceRepository balanceService;
 
     @PatchMapping("/{balanceId}")
     public ResponseEntity<PlatformBalanceResponse> update(@PathVariable("balanceId") int balanceId, @RequestBody PlatformBalanceRequest request) {

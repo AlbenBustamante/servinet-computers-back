@@ -2,11 +2,11 @@ package com.servinetcomputers.api.domain.expense.persistence.repository;
 
 import com.servinetcomputers.api.core.exception.NotFoundException;
 import com.servinetcomputers.api.domain.cashregister.persistence.JpaCashRegisterDetailRepository;
-import com.servinetcomputers.api.domain.expense.persistence.mapper.ExpenseMapper;
-import com.servinetcomputers.api.domain.expense.domain.repository.ExpenseRepository;
-import com.servinetcomputers.api.domain.expense.persistence.JpaExpenseRepository;
 import com.servinetcomputers.api.domain.expense.domain.dto.ExpenseRequest;
 import com.servinetcomputers.api.domain.expense.domain.dto.ExpenseResponse;
+import com.servinetcomputers.api.domain.expense.domain.repository.ExpenseRepository;
+import com.servinetcomputers.api.domain.expense.persistence.JpaExpenseRepository;
+import com.servinetcomputers.api.domain.expense.persistence.mapper.ExpenseMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -41,5 +41,4 @@ public class ExpenseRepositoryImpl implements ExpenseRepository {
 
         return mapper.toResponses(expenses);
     }
-
 }

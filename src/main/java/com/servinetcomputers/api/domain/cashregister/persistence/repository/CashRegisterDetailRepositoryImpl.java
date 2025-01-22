@@ -13,10 +13,10 @@ import com.servinetcomputers.api.domain.cashregister.persistence.mapper.CashRegi
 import com.servinetcomputers.api.domain.cashregister.util.CashRegisterDetailStatus;
 import com.servinetcomputers.api.domain.cashregister.util.CashRegisterStatus;
 import com.servinetcomputers.api.domain.expense.persistence.JpaExpenseRepository;
-import com.servinetcomputers.api.domain.transaction.abs.JpaTransactionDetailRepository;
+import com.servinetcomputers.api.domain.transaction.persistence.JpaTransactionDetailRepository;
 import com.servinetcomputers.api.domain.transaction.util.TransactionDetailType;
-import com.servinetcomputers.api.domain.user.abs.JpaUserRepository;
-import com.servinetcomputers.api.domain.user.dto.UserResponse;
+import com.servinetcomputers.api.domain.user.domain.dto.UserResponse;
+import com.servinetcomputers.api.domain.user.persistence.JpaUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
@@ -243,5 +243,4 @@ public class CashRegisterDetailRepositoryImpl implements CashRegisterDetailRepos
     private LocalDateTime toDateTime(LocalTime time) {
         return LocalDateTime.of(LocalDate.now(zoneId), time);
     }
-
 }

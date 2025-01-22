@@ -3,7 +3,7 @@ package com.servinetcomputers.api.domain.cashregister.controller;
 import com.servinetcomputers.api.domain.cashregister.application.usecase.detail.*;
 import com.servinetcomputers.api.domain.cashregister.domain.dto.*;
 import com.servinetcomputers.api.domain.expense.domain.dto.ExpenseResponse;
-import com.servinetcomputers.api.domain.transaction.dto.TransactionDetailResponse;
+import com.servinetcomputers.api.domain.transaction.domain.dto.TransactionDetailResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

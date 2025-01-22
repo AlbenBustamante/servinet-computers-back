@@ -1,8 +1,8 @@
 package com.servinetcomputers.api.domain.reports.dto;
 
 import com.servinetcomputers.api.domain.expense.persistence.entity.Expense;
-import com.servinetcomputers.api.domain.platform.entity.PlatformTransfer;
-import com.servinetcomputers.api.domain.transaction.entity.TransactionDetail;
+import com.servinetcomputers.api.domain.platform.persistence.entity.PlatformTransfer;
+import com.servinetcomputers.api.domain.transaction.persistence.entity.TransactionDetail;
 
 import java.util.List;
 

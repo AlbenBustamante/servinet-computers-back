@@ -1,6 +1,6 @@
 package com.servinetcomputers.api.core.audit;
 
-import com.servinetcomputers.api.domain.safes.entity.SafeDetail;
+import com.servinetcomputers.api.domain.safes.persistence.entity.SafeDetail;
 import jakarta.persistence.PrePersist;
 
 import static com.servinetcomputers.api.domain.safes.util.SafeConstants.DEFAULT_BASE;

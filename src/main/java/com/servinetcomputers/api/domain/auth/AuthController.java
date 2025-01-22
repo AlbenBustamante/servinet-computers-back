@@ -3,18 +3,14 @@ package com.servinetcomputers.api.domain.auth;
 import com.servinetcomputers.api.domain.auth.abs.IAuthService;
 import com.servinetcomputers.api.domain.auth.dto.AuthRequest;
 import com.servinetcomputers.api.domain.auth.dto.AuthResponse;
-import com.servinetcomputers.api.domain.user.abs.IUserService;
-import com.servinetcomputers.api.domain.user.dto.UserRequest;
-import com.servinetcomputers.api.domain.user.dto.UserResponse;
+import com.servinetcomputers.api.domain.user.domain.dto.UserRequest;
+import com.servinetcomputers.api.domain.user.domain.dto.UserResponse;
+import com.servinetcomputers.api.domain.user.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * The authentication routes/endpoints.
@@ -24,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class AuthController {
 
-    private final IUserService userService;
+    private final UserRepository userService;
     private final IAuthService authService;
 
     @PostMapping("/register")

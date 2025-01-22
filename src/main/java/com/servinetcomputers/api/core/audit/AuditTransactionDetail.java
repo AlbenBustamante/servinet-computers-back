@@ -1,6 +1,6 @@
 package com.servinetcomputers.api.core.audit;
 
-import com.servinetcomputers.api.domain.transaction.entity.TransactionDetail;
+import com.servinetcomputers.api.domain.transaction.persistence.entity.TransactionDetail;
 import jakarta.persistence.PrePersist;
 
 import java.time.LocalDateTime;

@@ -3,7 +3,7 @@ package com.servinetcomputers.api.domain.cashtransfer;
 import com.servinetcomputers.api.core.audit.AuditAuditable;
 import com.servinetcomputers.api.core.audit.Auditable;
 import com.servinetcomputers.api.domain.cashregister.persistence.entity.CashRegisterDetail;
-import com.servinetcomputers.api.domain.safes.entity.SafeDetail;
+import com.servinetcomputers.api.domain.safes.persistence.entity.SafeDetail;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

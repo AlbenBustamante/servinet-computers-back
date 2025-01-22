@@ -1,9 +1,9 @@
 package com.servinetcomputers.api.domain.platform.controller;
 
-import com.servinetcomputers.api.domain.platform.abs.IPlatformService;
-import com.servinetcomputers.api.domain.platform.dto.PlatformRequest;
-import com.servinetcomputers.api.domain.platform.dto.PlatformResponse;
-import com.servinetcomputers.api.domain.platform.dto.PortalPlatformDto;
+import com.servinetcomputers.api.domain.platform.domain.dto.PlatformRequest;
+import com.servinetcomputers.api.domain.platform.domain.dto.PlatformResponse;
+import com.servinetcomputers.api.domain.platform.domain.dto.PortalPlatformDto;
+import com.servinetcomputers.api.domain.platform.domain.repository.PlatformRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +19,7 @@ import java.util.List;
 @RestController
 public class PlatformController {
 
-    private final IPlatformService platformService;
+    private final PlatformRepository platformService;
 
     @PostMapping
     public ResponseEntity<PlatformResponse> register(@RequestBody PlatformRequest request) {
