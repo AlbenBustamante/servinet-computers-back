@@ -9,6 +9,8 @@ public interface DateTimeService {
 
     LocalTime timeNow();
 
+    LocalDateTime now();
+
     LocalDateTime getMinByDate(LocalDate date);
 
     LocalDateTime getMaxByDate(LocalDate date);

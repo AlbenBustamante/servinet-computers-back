@@ -42,6 +42,11 @@ public class CashRegisterDetailRepositoryImpl implements CashRegisterDetailRepos
     private final ZoneId zoneId;
 
     @Override
+    public boolean existsById(int id) {
+        return repository.existsByIdAndEnabledTrue(id);
+    }
+
+    @Override
     public MyCashRegistersReports create(CashRegisterDetailRequest request) {
         if (repository.existsByUserIdAndCreatedDateBetweenAndEnabledTrueAndCashRegisterStatusNot(request.userId(), toDateTime(LocalTime.MIN), toDateTime(LocalTime.MAX), CashRegisterStatus.AVAILABLE)) {
             throw new BadRequestException("Ya tienes una caja en funcionamiento");

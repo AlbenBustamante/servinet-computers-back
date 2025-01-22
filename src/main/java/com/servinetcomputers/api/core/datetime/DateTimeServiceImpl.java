@@ -24,12 +24,17 @@ public class DateTimeServiceImpl implements DateTimeService {
     }
 
     @Override
+    public LocalDateTime now() {
+        return LocalDateTime.now(zoneId);
+    }
+
+    @Override
     public LocalDateTime getMinByDate(LocalDate date) {
         return LocalDateTime.of(date, LocalTime.MIN);
     }
 
     @Override
     public LocalDateTime getMaxByDate(LocalDate date) {
-        return LocalDateTime.of(date, LocalTime.now(zoneId));
+        return LocalDateTime.of(date, timeNow());
     }
 }

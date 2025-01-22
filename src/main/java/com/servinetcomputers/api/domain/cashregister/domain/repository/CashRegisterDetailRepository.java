@@ -6,6 +6,8 @@ import com.servinetcomputers.api.domain.cashregister.domain.dto.*;
 import java.util.List;
 
 public interface CashRegisterDetailRepository {
+    boolean existsById(int id);
+
     MyCashRegistersReports create(CashRegisterDetailRequest request);
 
     List<CashRegisterDetailResponse> getAllOfToday();
