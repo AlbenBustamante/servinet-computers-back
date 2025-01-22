@@ -10,7 +10,6 @@ import java.util.Optional;
  * The {@link User} repository.
  */
 public interface JpaUserRepository extends JpaRepository<User, Integer> {
-
     /**
      * Find an existing user by the code.
      *
@@ -28,5 +27,4 @@ public interface JpaUserRepository extends JpaRepository<User, Integer> {
     Optional<User> findFirstByRoleOrderByCreatedDateDesc(Role role);
 
     Optional<User> findByIdAndEnabledTrue(int id);
-
 }

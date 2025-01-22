@@ -1,12 +1,21 @@
 package com.servinetcomputers.api.domain.user.domain.dto;
 
 import com.servinetcomputers.api.core.security.util.Role;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 /**
  * The user dto model for requests.
  */
-public record UserRequest(String name, String lastName, String password, String repeatPassword,
-                          Role role) {
+@RequiredArgsConstructor
+@Getter
+@Setter
+public class UserRequest {
+    private String password, code;
+    private final String name, lastName, repeatPassword;
+    private final Role role;
+
     public boolean passwordsMatch() {
         return password.equals(repeatPassword);
     }

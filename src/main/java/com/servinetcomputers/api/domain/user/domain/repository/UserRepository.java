@@ -1,21 +1,21 @@
 package com.servinetcomputers.api.domain.user.domain.repository;
 
+import com.servinetcomputers.api.core.security.util.Role;
 import com.servinetcomputers.api.domain.user.domain.dto.UserRequest;
 import com.servinetcomputers.api.domain.user.domain.dto.UserResponse;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * The user's repository.
  */
 public interface UserRepository {
-    /**
-     * Create and persist a new user.
-     *
-     * @param request the data to save.
-     * @return the user saved.
-     */
-    UserResponse create(UserRequest request);
+    UserResponse save(UserRequest request);
+
+    UserResponse save(UserResponse response);
+
+    Optional<UserResponse> getLastByRole(Role role);
 
     List<UserResponse> getAll();
 
@@ -25,22 +25,5 @@ public interface UserRepository {
      * @param userId the ID to search.
      * @return the user found.
      */
-    UserResponse get(int userId);
-
-    /**
-     * Update an existing and available user.
-     *
-     * @param userId  the ID of the user to be updated.
-     * @param request the data to update.
-     * @return the user updated.
-     */
-    UserResponse update(int userId, UserRequest request);
-
-    /**
-     * Disable an existing and available user.
-     *
-     * @param userId the ID to be searched.
-     * @return {@code true} if the user was disabled.
-     */
-    boolean delete(int userId);
+    Optional<UserResponse> get(int userId);
 }

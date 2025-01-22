@@ -13,7 +13,6 @@ import java.util.List;
  */
 @Mapper(componentModel = "spring")
 public interface UserMapper {
-
     UserResponse toResponse(User entity);
 
     List<UserResponse> toResponses(List<User> entities);
@@ -27,4 +26,6 @@ public interface UserMapper {
     @Mapping(target = "createdDate", ignore = true)
     User toEntity(UserRequest req);
 
+    @Mapping(target = "password", ignore = true)
+    User toEntity(UserResponse res);
 }

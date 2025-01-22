@@ -1,6 +1,7 @@
 package com.servinetcomputers.api.domain;
 
 import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
@@ -8,9 +9,10 @@ import java.time.LocalDateTime;
  * Abstract class for the dto responses.
  */
 @Getter
+@Setter
 public abstract class ModelResponse {
     private final int id;
-    private final boolean enabled;
+    private boolean enabled;
     private final String createdBy, modifiedBy;
     private final LocalDateTime createdDate, modifiedDate;
 

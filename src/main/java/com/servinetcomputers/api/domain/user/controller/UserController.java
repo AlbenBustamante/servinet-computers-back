@@ -4,9 +4,12 @@ import com.servinetcomputers.api.domain.cashregister.domain.dto.MyCashRegistersR
 import com.servinetcomputers.api.domain.cashregister.domain.repository.CashRegisterDetailRepository;
 import com.servinetcomputers.api.domain.reports.abs.IReportsService;
 import com.servinetcomputers.api.domain.reports.dto.ReportsResponse;
-import com.servinetcomputers.api.domain.user.domain.dto.UserRequest;
+import com.servinetcomputers.api.domain.user.application.usecase.DeleteUserUseCase;
+import com.servinetcomputers.api.domain.user.application.usecase.GetAllUsersUseCase;
+import com.servinetcomputers.api.domain.user.application.usecase.GetUserUseCase;
+import com.servinetcomputers.api.domain.user.application.usecase.UpdateUserUseCase;
+import com.servinetcomputers.api.domain.user.domain.dto.UpdateUserDto;
 import com.servinetcomputers.api.domain.user.domain.dto.UserResponse;
-import com.servinetcomputers.api.domain.user.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,42 +20,44 @@ import java.util.List;
  * The user's routes/endpoints.
  */
 @RequiredArgsConstructor
-@RequestMapping("/users")
+@RequestMapping(path = "/users")
 @RestController
 public class UserController {
-
-    private final UserRepository userService;
+    private final GetAllUsersUseCase getAllUsersUseCase;
+    private final GetUserUseCase getUserUseCase;
+    private final UpdateUserUseCase updateUserUseCase;
+    private final DeleteUserUseCase deleteUserUseCase;
     private final CashRegisterDetailRepository cashRegisterDetailService;
     private final IReportsService reportsService;
 
     @GetMapping
     public ResponseEntity<List<UserResponse>> getAll() {
-        return ResponseEntity.ok(userService.getAll());
+        return ResponseEntity.ok(getAllUsersUseCase.call());
     }
 
-    @GetMapping("/{userId}")
+    @GetMapping(path = "/{userId}")
     public ResponseEntity<UserResponse> get(@PathVariable("userId") int userId) {
-        return ResponseEntity.ok(userService.get(userId));
+        return ResponseEntity.ok(getUserUseCase.call(userId));
     }
 
-    @GetMapping("/{userId}/reports/cash-register-details")
+    @GetMapping(path = "/{userId}/reports/cash-register-details")
     public ResponseEntity<MyCashRegistersReports> getCashRegisterReports(@PathVariable("userId") int userId) {
         return ResponseEntity.ok(cashRegisterDetailService.getReportsByUserId(userId));
     }
 
-    @GetMapping("/{code}/reports")
+    @GetMapping(path = "/{code}/reports")
     public ResponseEntity<ReportsResponse> getReports(@PathVariable("code") String code) {
         return ResponseEntity.ok(reportsService.getReports(code));
     }
 
-    @PatchMapping("/{userId}")
-    public ResponseEntity<UserResponse> update(@PathVariable("userId") int userId, @RequestBody UserRequest request) {
-        return ResponseEntity.ok(userService.update(userId, request));
+    @PatchMapping
+    public ResponseEntity<UserResponse> update(@RequestBody UpdateUserDto updateUserDto) {
+        return ResponseEntity.ok(updateUserUseCase.call(updateUserDto));
     }
 
-    @DeleteMapping("/{userId}")
+    @DeleteMapping(path = "/{userId}")
     public ResponseEntity<Boolean> delete(@PathVariable("userId") int userId) {
-        return ResponseEntity.ok(userService.delete(userId));
+        deleteUserUseCase.call(userId);
+        return ResponseEntity.noContent().build();
     }
-
 }
