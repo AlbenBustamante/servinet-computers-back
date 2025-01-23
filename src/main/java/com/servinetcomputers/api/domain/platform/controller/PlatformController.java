@@ -1,9 +1,10 @@
 package com.servinetcomputers.api.domain.platform.controller;
 
+import com.servinetcomputers.api.domain.platform.application.usecase.*;
 import com.servinetcomputers.api.domain.platform.domain.dto.PlatformRequest;
 import com.servinetcomputers.api.domain.platform.domain.dto.PlatformResponse;
 import com.servinetcomputers.api.domain.platform.domain.dto.PortalPlatformDto;
-import com.servinetcomputers.api.domain.platform.domain.repository.PlatformRepository;
+import com.servinetcomputers.api.domain.platform.domain.dto.UpdatePlatformDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,35 +16,38 @@ import java.util.List;
  * The platform's routes/endpoints.
  */
 @RequiredArgsConstructor
-@RequestMapping("/platforms")
+@RequestMapping(path = "/platforms")
 @RestController
 public class PlatformController {
-
-    private final PlatformRepository platformService;
+    private final CreatePlatformUseCase createPlatformUseCase;
+    private final GetAllPlatformsUseCase getAllPlatformsUseCase;
+    private final LoadPortalPlatformsUseCase loadPortalPlatformsUseCase;
+    private final UpdatePlatformUseCase updatePlatformUseCase;
+    private final DeletePlatformUseCase deletePlatformUseCase;
 
     @PostMapping
     public ResponseEntity<PlatformResponse> register(@RequestBody PlatformRequest request) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(platformService.create(request));
+        return ResponseEntity.status(HttpStatus.CREATED).body(createPlatformUseCase.call(request));
     }
 
     @GetMapping
     public ResponseEntity<List<PlatformResponse>> getAll() {
-        return ResponseEntity.ok(platformService.getAll());
+        return ResponseEntity.ok(getAllPlatformsUseCase.call());
     }
 
-    @GetMapping("/portal")
+    @GetMapping(path = "/portal")
     public ResponseEntity<List<PortalPlatformDto>> loadPortalPlatforms() {
-        return ResponseEntity.ok(platformService.loadPortalPlatforms());
+        return ResponseEntity.ok(loadPortalPlatformsUseCase.call());
     }
 
-    @PatchMapping("/{platformId}")
-    public ResponseEntity<PlatformResponse> update(@PathVariable("platformId") int platformId, @RequestBody PlatformRequest request) {
-        return ResponseEntity.ok(platformService.update(platformId, request));
+    @PatchMapping
+    public ResponseEntity<PlatformResponse> update(@RequestBody UpdatePlatformDto updatePlatformDto) {
+        return ResponseEntity.ok(updatePlatformUseCase.call(updatePlatformDto));
     }
 
-    @DeleteMapping("/{platformId}")
+    @DeleteMapping(path = "/{platformId}")
     public ResponseEntity<Boolean> delete(@PathVariable("platformId") int platformId) {
-        return ResponseEntity.ok(platformService.delete(platformId));
+        deletePlatformUseCase.call(platformId);
+        return ResponseEntity.noContent().build();
     }
-
 }

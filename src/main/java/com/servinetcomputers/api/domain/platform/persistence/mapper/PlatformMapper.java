@@ -13,7 +13,6 @@ import java.util.List;
  */
 @Mapper(componentModel = "spring")
 public interface PlatformMapper {
-
     PlatformResponse toResponse(Platform entity);
 
     List<PlatformResponse> toResponses(List<Platform> entities);
@@ -26,4 +25,5 @@ public interface PlatformMapper {
     @Mapping(target = "createdBy", ignore = true)
     Platform toEntity(PlatformRequest req);
 
+    Platform toEntity(PlatformResponse response);
 }

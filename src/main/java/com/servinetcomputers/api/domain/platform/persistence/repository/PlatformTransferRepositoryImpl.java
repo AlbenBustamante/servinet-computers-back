@@ -14,6 +14,8 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
+
 /**
  * The platform transfer's repository implementation.
  */
@@ -58,6 +60,17 @@ public class PlatformTransferRepositoryImpl implements PlatformTransferRepositor
         }
 
         return mapper.toResponse(transfer);
+    }
+    
+    @Override
+    public int getPlatformTransfersAmount(int platformId, LocalDateTime startDate, LocalDateTime endDate) {
+        return repository.countByPlatformIdAndEnabledTrueAndCreatedDateBetween(platformId, startDate, endDate);
+    }
+
+    @Override
+    public int getPlatformTransfersTotal(int platformId, LocalDateTime startDate, LocalDateTime endDate) {
+        final var total = repository.calculateTotalByPlatformIdAndCreatedDateBetween(platformId, startDate, endDate);
+        return total != null ? total : 0;
     }
 
     @Transactional(rollbackFor = AppException.class)

@@ -4,12 +4,17 @@ import com.servinetcomputers.api.domain.platform.domain.dto.PlatformTransferRequ
 import com.servinetcomputers.api.domain.platform.domain.dto.PlatformTransferResponse;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 /**
  * The transfer's repository.
  */
 public interface PlatformTransferRepository {
+    int getPlatformTransfersAmount(int platformId, LocalDateTime initialDate, LocalDateTime finalDate);
+
+    int getPlatformTransfersTotal(int platformId, LocalDateTime startDate, LocalDateTime endDate);
+    
     /**
      * Create and persist a new transfer.
      *
