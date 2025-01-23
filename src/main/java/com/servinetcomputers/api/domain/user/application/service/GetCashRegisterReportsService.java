@@ -10,6 +10,7 @@ import com.servinetcomputers.api.domain.transaction.domain.repository.Transactio
 import com.servinetcomputers.api.domain.user.application.usecase.GetCashRegisterReportsUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +23,7 @@ public class GetCashRegisterReportsService implements GetCashRegisterReportsUseC
     private final ExpenseRepository expenseRepository;
     private final DateTimeService dateTimeService;
 
+    @Transactional(readOnly = true)
     @Override
     public MyCashRegistersReports call(Integer param) {
         final var today = dateTimeService.dateNow();
