@@ -4,12 +4,13 @@ import com.servinetcomputers.api.domain.base.BaseMapper;
 import com.servinetcomputers.api.domain.cashregister.domain.dto.CashRegisterDetailRequest;
 import com.servinetcomputers.api.domain.cashregister.domain.dto.CashRegisterDetailResponse;
 import com.servinetcomputers.api.domain.cashregister.persistence.entity.CashRegisterDetail;
+import com.servinetcomputers.api.domain.user.persistence.mapper.UserMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = {CashRegisterMapper.class, BaseMapper.class})
+@Mapper(componentModel = "spring", uses = {CashRegisterMapper.class, UserMapper.class, BaseMapper.class})
 public interface CashRegisterDetailMapper {
 
     @Mapping(target = "userId", source = "user.id")
@@ -20,15 +21,13 @@ public interface CashRegisterDetailMapper {
     List<CashRegisterDetailResponse> toResponses(List<CashRegisterDetail> entities);
 
     @Mapping(target = "status", ignore = true)
-    @Mapping(target = "workingHours", expression = "java(new LocalTime[]{request.initialWorking(), null, null, null})")
-    @Mapping(target = "user", ignore = true)
+    @Mapping(target = "workingHours", expression = "java(new LocalTime[]{request.getInitialWorking(), null, null, null})")
     @Mapping(target = "modifiedDate", ignore = true)
     @Mapping(target = "modifiedBy", ignore = true)
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "enabled", ignore = true)
     @Mapping(target = "createdDate", ignore = true)
     @Mapping(target = "createdBy", ignore = true)
-    @Mapping(target = "cashRegister", ignore = true)
     CashRegisterDetail toEntity(CashRegisterDetailRequest request);
 
 }

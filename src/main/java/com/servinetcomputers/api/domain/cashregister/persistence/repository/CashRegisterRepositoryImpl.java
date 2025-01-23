@@ -17,14 +17,28 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Repository
 public class CashRegisterRepositoryImpl implements CashRegisterRepository {
     private final JpaCashRegisterRepository repository;
-    private final CashRegisterMapper mapper;
     private final JpaCashRegisterDetailRepository jpaCashRegisterDetailRepository;
     private final BaseMapper baseMapper;
+    private final CashRegisterMapper mapper;
+
+    @Override
+    public Optional<CashRegisterResponse> get(int id) {
+        return repository.findByIdAndEnabledTrue(id).map(mapper::toResponse);
+    }
+
+    @Override
+    public CashRegisterResponse save(CashRegisterResponse response) {
+        final var entity = mapper.toEntity(response);
+        final var newCashRegister = repository.save(entity);
+
+        return mapper.toResponse(newCashRegister);
+    }
 
     @Override
     public CashRegisterResponse create(CashRegisterRequest request) {

@@ -12,6 +12,10 @@ public record CashRegisterDetailReportsDto(
         int balance,
         int discrepancy
 ) {
+    public static CashRegisterDetailReportsDto empty(CashRegisterDetailResponse cashRegisterDetail) {
+        return new CashRegisterDetailReportsDto(cashRegisterDetail, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+    }
+
     public CashRegisterDetailReportsDto sum(CashRegisterDetailReportsDto reports) {
         return new CashRegisterDetailReportsDto(
                 cashRegisterDetail,

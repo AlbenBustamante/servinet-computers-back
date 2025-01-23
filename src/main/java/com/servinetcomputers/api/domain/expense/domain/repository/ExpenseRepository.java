@@ -10,4 +10,8 @@ public interface ExpenseRepository {
     ExpenseResponse save(ExpenseRequest request);
 
     List<ExpenseResponse> getByCashRegisterDetailId(int cashRegisterDetailId, LocalDateTime startDate, LocalDateTime endDate);
+
+    Integer sumExpenses(String code, LocalDateTime startDate, LocalDateTime endDate);
+
+    Integer sumDiscounts(String code, LocalDateTime startDate, LocalDateTime endDate);
 }

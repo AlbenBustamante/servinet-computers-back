@@ -1,6 +1,5 @@
 package com.servinetcomputers.api.domain.cashregister.persistence.repository;
 
-import com.servinetcomputers.api.core.exception.BadRequestException;
 import com.servinetcomputers.api.core.exception.NotFoundException;
 import com.servinetcomputers.api.domain.base.BaseDto;
 import com.servinetcomputers.api.domain.base.BaseMapper;
@@ -12,11 +11,8 @@ import com.servinetcomputers.api.domain.cashregister.persistence.mapper.CashRegi
 import com.servinetcomputers.api.domain.cashregister.persistence.mapper.CashRegisterMapper;
 import com.servinetcomputers.api.domain.cashregister.util.CashRegisterDetailStatus;
 import com.servinetcomputers.api.domain.cashregister.util.CashRegisterStatus;
-import com.servinetcomputers.api.domain.expense.persistence.JpaExpenseRepository;
 import com.servinetcomputers.api.domain.transaction.persistence.JpaTransactionDetailRepository;
-import com.servinetcomputers.api.domain.transaction.util.TransactionDetailType;
 import com.servinetcomputers.api.domain.user.domain.dto.UserResponse;
-import com.servinetcomputers.api.domain.user.persistence.JpaUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
@@ -33,9 +29,7 @@ import java.util.List;
 public class CashRegisterDetailRepositoryImpl implements CashRegisterDetailRepository {
     private final JpaCashRegisterDetailRepository repository;
     private final JpaCashRegisterRepository jpaCashRegisterRepository;
-    private final JpaExpenseRepository jpaExpenseRepository;
     private final JpaTransactionDetailRepository jpaTransactionDetailRepository;
-    private final JpaUserRepository jpaUserRepository;
     private final CashRegisterDetailMapper mapper;
     private final CashRegisterMapper cashRegisterMapper;
     private final BaseMapper baseMapper;
@@ -47,39 +41,20 @@ public class CashRegisterDetailRepositoryImpl implements CashRegisterDetailRepos
     }
 
     @Override
-    public MyCashRegistersReports create(CashRegisterDetailRequest request) {
-        if (repository.existsByUserIdAndCreatedDateBetweenAndEnabledTrueAndCashRegisterStatusNot(request.userId(), toDateTime(LocalTime.MIN), toDateTime(LocalTime.MAX), CashRegisterStatus.AVAILABLE)) {
-            throw new BadRequestException("Ya tienes una caja en funcionamiento");
-        }
+    public boolean existsByUserIdAndStatusNot(int userId, LocalDateTime startDate, LocalDateTime endDate, CashRegisterStatus status) {
+        return repository.existsByUserIdAndCreatedDateBetweenAndEnabledTrueAndCashRegisterStatusNot(userId, startDate, endDate, status);
+    }
 
-        final var cashRegister = jpaCashRegisterRepository.findById(request.cashRegisterId())
-                .orElseThrow(() -> new NotFoundException("No se encontró la caja registradora"));
+    @Override
+    public List<CashRegisterDetailResponse> getAllByUserId(int userId, LocalDateTime startDate, LocalDateTime endDate) {
+        final var details = repository.findAllByUserIdAndCreatedDateBetweenAndEnabledTrue(userId, startDate, endDate);
+        return mapper.toResponses(details);
+    }
 
-        if (cashRegister.getEnabled().equals(Boolean.FALSE)) {
-            throw new NotFoundException("No se encontró la caja registradora");
-        }
-
-        if (cashRegister.getStatus().equals(CashRegisterStatus.OCCUPIED)) {
-            throw new BadRequestException("La caja registradora ya está ocupada");
-        }
-
-        if (cashRegister.getStatus().equals(CashRegisterStatus.DISABLED)) {
-            throw new BadRequestException("La caja registradora no está habilitada");
-        }
-
-        cashRegister.setStatus(CashRegisterStatus.OCCUPIED);
-        jpaCashRegisterRepository.save(cashRegister);
-
+    @Override
+    public void save(CashRegisterDetailRequest request) {
         final var entity = mapper.toEntity(request);
-        entity.setCashRegister(cashRegister);
-
-        final var user = jpaUserRepository.findByIdAndEnabledTrue(request.userId())
-                .orElseThrow(() -> new NotFoundException("Usuario #" + request.userId() + " no encontrado"));
-
-        entity.setUser(user);
         repository.save(entity);
-
-        return getReportsByUserId(request.userId());
     }
 
     @Override
@@ -139,48 +114,6 @@ public class CashRegisterDetailRepositoryImpl implements CashRegisterDetailRepos
         return getCashRegistersReports(mapper.toResponse(cashRegisterDetail));
     }
 
-    private CashRegisterDetailReportsDto getCashRegistersReports(CashRegisterDetailResponse cashRegisterDetail) {
-        final var startDate = cashRegisterDetail.getCreatedDate();
-        final var endDate = LocalDateTime.of(LocalDate.now(), LocalTime.now());
-        final var code = cashRegisterDetail.getCreatedBy();
-
-        final var finalBaseDto = cashRegisterDetail.getDetailFinalBase();
-
-        final var transactionsAmount = 0;
-        final var initialBase = cashRegisterDetail.getDetailInitialBase().calculate();
-        final var finalBase = finalBaseDto != null ? finalBaseDto.calculate() : 0;
-
-        var deposits = jpaTransactionDetailRepository.sumAllByCreatedByAndEnabledTrueAndCreatedDateBetween(code, startDate, endDate, TransactionDetailType.DEPOSIT);
-        var withdrawals = jpaTransactionDetailRepository.sumAllByCreatedByAndEnabledTrueAndCreatedDateBetween(code, startDate, endDate, TransactionDetailType.WITHDRAWAL);
-
-        deposits = deposits != null ? deposits : 0;
-        withdrawals = withdrawals != null ? withdrawals : 0;
-
-        var expenses = jpaExpenseRepository.sumAllByCreatedByAndEnabledTrueAndCreatedDateBetweenAndDiscount(code, startDate, endDate, false);
-        var discounts = jpaExpenseRepository.sumAllByCreatedByAndEnabledTrueAndCreatedDateBetweenAndDiscount(code, startDate, endDate, true);
-
-        expenses = expenses != null ? expenses : 0;
-        discounts = discounts != null ? discounts : 0;
-
-        withdrawals += expenses + discounts;
-
-        final var balance = initialBase + deposits - withdrawals - expenses - discounts;
-
-        final var discrepancy = finalBase - balance;
-
-        return new CashRegisterDetailReportsDto(
-                cashRegisterDetail,
-                transactionsAmount,
-                initialBase,
-                finalBase,
-                deposits,
-                withdrawals,
-                expenses,
-                discounts,
-                balance,
-                discrepancy
-        );
-    }
 
     @Override
     public CashRegisterDetailResponse startBreak(int cashRegisterDetailId) {

@@ -1,13 +1,9 @@
 package com.servinetcomputers.api.domain.user.controller;
 
 import com.servinetcomputers.api.domain.cashregister.domain.dto.MyCashRegistersReports;
-import com.servinetcomputers.api.domain.cashregister.domain.repository.CashRegisterDetailRepository;
 import com.servinetcomputers.api.domain.reports.abs.IReportsService;
 import com.servinetcomputers.api.domain.reports.dto.ReportsResponse;
-import com.servinetcomputers.api.domain.user.application.usecase.DeleteUserUseCase;
-import com.servinetcomputers.api.domain.user.application.usecase.GetAllUsersUseCase;
-import com.servinetcomputers.api.domain.user.application.usecase.GetUserUseCase;
-import com.servinetcomputers.api.domain.user.application.usecase.UpdateUserUseCase;
+import com.servinetcomputers.api.domain.user.application.usecase.*;
 import com.servinetcomputers.api.domain.user.domain.dto.UpdateUserDto;
 import com.servinetcomputers.api.domain.user.domain.dto.UserResponse;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +23,7 @@ public class UserController {
     private final GetUserUseCase getUserUseCase;
     private final UpdateUserUseCase updateUserUseCase;
     private final DeleteUserUseCase deleteUserUseCase;
-    private final CashRegisterDetailRepository cashRegisterDetailService;
+    private final GetCashRegisterReportsUseCase getReportsUseCase;
     private final IReportsService reportsService;
 
     @GetMapping
@@ -42,7 +38,7 @@ public class UserController {
 
     @GetMapping(path = "/{userId}/reports/cash-register-details")
     public ResponseEntity<MyCashRegistersReports> getCashRegisterReports(@PathVariable("userId") int userId) {
-        return ResponseEntity.ok(cashRegisterDetailService.getReportsByUserId(userId));
+        return ResponseEntity.ok(getReportsUseCase.call(userId));
     }
 
     @GetMapping(path = "/{code}/reports")

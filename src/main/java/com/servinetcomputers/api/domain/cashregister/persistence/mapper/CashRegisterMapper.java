@@ -23,4 +23,6 @@ public interface CashRegisterMapper {
     @Mapping(target = "createdDate", ignore = true)
     CashRegister toEntity(CashRegisterRequest request);
 
+    CashRegister toEntity(CashRegisterResponse response);
+
 }

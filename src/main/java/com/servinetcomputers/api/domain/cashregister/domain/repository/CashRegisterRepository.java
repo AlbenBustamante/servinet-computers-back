@@ -6,8 +6,13 @@ import com.servinetcomputers.api.domain.cashregister.domain.dto.CashRegisterResp
 import com.servinetcomputers.api.domain.cashregister.domain.dto.UpdateCashRegisterDto;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface CashRegisterRepository {
+    Optional<CashRegisterResponse> get(int id);
+
+    CashRegisterResponse save(CashRegisterResponse response);
+
     CashRegisterResponse create(CashRegisterRequest request);
 
     List<CashRegisterResponse> getAll();

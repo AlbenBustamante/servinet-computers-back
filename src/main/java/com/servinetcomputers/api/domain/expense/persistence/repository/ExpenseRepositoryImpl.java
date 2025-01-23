@@ -30,4 +30,16 @@ public class ExpenseRepositoryImpl implements ExpenseRepository {
         final var expenses = repository.findAllByCashRegisterDetailIdAndEnabledTrueAndCreatedDateBetween(cashRegisterDetailId, startDate, endDate);
         return mapper.toResponses(expenses);
     }
+
+    @Override
+    public Integer sumExpenses(String code, LocalDateTime startDate, LocalDateTime endDate) {
+        final var expenses = repository.sumAllByCreatedByAndEnabledTrueAndCreatedDateBetweenAndDiscount(code, startDate, endDate, false);
+        return expenses != null ? expenses : 0;
+    }
+
+    @Override
+    public Integer sumDiscounts(String code, LocalDateTime startDate, LocalDateTime endDate) {
+        final var discounts = repository.sumAllByCreatedByAndEnabledTrueAndCreatedDateBetweenAndDiscount(code, startDate, endDate, true);
+        return discounts != null ? discounts : 0;
+    }
 }

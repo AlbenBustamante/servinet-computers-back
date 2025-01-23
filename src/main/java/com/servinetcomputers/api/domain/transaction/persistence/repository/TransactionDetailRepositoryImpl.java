@@ -12,6 +12,7 @@ import com.servinetcomputers.api.domain.transaction.persistence.JpaTransactionRe
 import com.servinetcomputers.api.domain.transaction.persistence.entity.Transaction;
 import com.servinetcomputers.api.domain.transaction.persistence.mapper.TransactionDetailMapper;
 import com.servinetcomputers.api.domain.transaction.persistence.mapper.TransactionMapper;
+import com.servinetcomputers.api.domain.transaction.util.TransactionDetailType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -67,5 +68,17 @@ public class TransactionDetailRepositoryImpl implements TransactionDetailReposit
         final var details = repository.findAllByCashRegisterDetailIdAndEnabledTrueAndCreatedDateBetween(cashRegisterDetailId, startDate, endDate);
 
         return mapper.toResponses(details);
+    }
+
+    @Override
+    public Integer sumDeposits(String code, LocalDateTime startDate, LocalDateTime endDate) {
+        final var deposits = repository.sumAllByCreatedByAndEnabledTrueAndCreatedDateBetween(code, startDate, endDate, TransactionDetailType.DEPOSIT);
+        return deposits != null ? deposits : 0;
+    }
+
+    @Override
+    public Integer sumWithdrawals(String code, LocalDateTime startDate, LocalDateTime endDate) {
+        final var withdrawals = repository.sumAllByCreatedByAndEnabledTrueAndCreatedDateBetween(code, startDate, endDate, TransactionDetailType.WITHDRAWAL);
+        return withdrawals != null ? withdrawals : 0;
     }
 }

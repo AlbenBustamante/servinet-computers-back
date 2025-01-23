@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface JpaCashRegisterDetailRepository extends JpaRepository<CashRegisterDetail, Integer> {
-
     boolean existsByIdAndEnabledTrue(int id);
 
     Optional<CashRegisterDetail> findByIdAndEnabledTrue(int id);
@@ -31,10 +30,4 @@ public interface JpaCashRegisterDetailRepository extends JpaRepository<CashRegis
             "crd.enabled = true " +
             "ORDER BY crd.createdDate DESC")
     Page<String> findBaseByCashRegisterId(@Param("cashRegisterId") int cashRegisterId, Pageable pageable);
-
-    @Query("SELECT crd.finalBase FROM CashRegisterDetail crd WHERE " +
-            "crd.enabled = true AND " +
-            "crd.createdDate BETWEEN :startDate AND :endDate")
-    List<String> findAllFinalBaseByCreatedDateBetweenAndEnabledTrue(LocalDateTime startDate, LocalDateTime endDate);
-
 }

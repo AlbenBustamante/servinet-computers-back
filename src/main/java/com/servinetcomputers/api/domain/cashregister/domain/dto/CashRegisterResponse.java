@@ -3,14 +3,16 @@ package com.servinetcomputers.api.domain.cashregister.domain.dto;
 import com.servinetcomputers.api.domain.ModelResponse;
 import com.servinetcomputers.api.domain.cashregister.util.CashRegisterStatus;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
+@Setter
 @Getter
 public class CashRegisterResponse extends ModelResponse {
     private final int numeral;
     private final String description;
-    private final CashRegisterStatus status;
+    private CashRegisterStatus status;
 
     public CashRegisterResponse(int id, boolean enabled, LocalDateTime createdDate, LocalDateTime modifiedDate, String createdBy,
                                 String modifiedBy, int numeral, String description, CashRegisterStatus status) {
