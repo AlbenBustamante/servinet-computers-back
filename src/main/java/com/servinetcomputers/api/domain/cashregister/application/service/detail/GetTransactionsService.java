@@ -1,5 +1,6 @@
 package com.servinetcomputers.api.domain.cashregister.application.service.detail;
 
+import com.servinetcomputers.api.core.datetime.DateTimeService;
 import com.servinetcomputers.api.domain.cashregister.application.usecase.detail.GetTransactionsUseCase;
 import com.servinetcomputers.api.domain.transaction.domain.dto.TransactionDetailResponse;
 import com.servinetcomputers.api.domain.transaction.domain.repository.TransactionDetailRepository;
@@ -13,10 +14,15 @@ import java.util.List;
 @Service
 public class GetTransactionsService implements GetTransactionsUseCase {
     private final TransactionDetailRepository repository;
+    private final DateTimeService dateTimeService;
 
     @Transactional(readOnly = true)
     @Override
     public List<TransactionDetailResponse> call(Integer param) {
-        return repository.getByCashRegisterDetailId(param);
+        final var today = dateTimeService.dateNow();
+        final var startDate = dateTimeService.getMinByDate(today);
+        final var endDate = dateTimeService.now();
+
+        return repository.getByCashRegisterDetailId(param, startDate, endDate);
     }
 }

@@ -8,11 +8,8 @@ import com.servinetcomputers.api.domain.transaction.persistence.mapper.Transacti
 import com.servinetcomputers.api.domain.transaction.util.TransactionDetailType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -29,15 +26,9 @@ public class TransactionDetailRepositoryImpl implements TransactionDetailReposit
         return mapper.toResponse(newDetail);
     }
 
-    @Transactional(readOnly = true)
     @Override
-    public List<TransactionDetailResponse> getByCashRegisterDetailId(int cashRegisterDetailId) {
-        final var today = LocalDate.now();
-        final var startDate = LocalDateTime.of(today, LocalTime.MIN);
-        final var endDate = LocalDateTime.of(today, LocalTime.now());
-
+    public List<TransactionDetailResponse> getByCashRegisterDetailId(int cashRegisterDetailId, LocalDateTime startDate, LocalDateTime endDate) {
         final var details = repository.findAllByCashRegisterDetailIdAndEnabledTrueAndCreatedDateBetween(cashRegisterDetailId, startDate, endDate);
-
         return mapper.toResponses(details);
     }
 

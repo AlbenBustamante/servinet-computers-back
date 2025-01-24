@@ -9,7 +9,7 @@ import java.util.List;
 public interface TransactionDetailRepository {
     TransactionDetailResponse save(TransactionDetailRequest request);
 
-    List<TransactionDetailResponse> getByCashRegisterDetailId(int cashRegisterDetailId);
+    List<TransactionDetailResponse> getByCashRegisterDetailId(int cashRegisterDetailId, LocalDateTime startDate, LocalDateTime endDate);
 
     Integer sumDeposits(String code, LocalDateTime startDate, LocalDateTime endDate);
 
