@@ -48,6 +48,6 @@ public class PlatformController {
     @DeleteMapping(path = "/{platformId}")
     public ResponseEntity<Boolean> delete(@PathVariable("platformId") int platformId) {
         deletePlatformUseCase.call(platformId);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().build();
     }
 }

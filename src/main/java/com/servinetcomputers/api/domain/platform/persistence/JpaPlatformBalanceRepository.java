@@ -13,6 +13,8 @@ import java.util.Optional;
  * The {@link PlatformBalance} repository.
  */
 public interface JpaPlatformBalanceRepository extends JpaRepository<PlatformBalance, Integer> {
+    Optional<PlatformBalance> findByIdAndEnabledTrue(int id);
+
     Optional<PlatformBalance> findByPlatformIdAndEnabledTrueAndCreatedDateBetween(int platformId, LocalDateTime startDate, LocalDateTime endDate);
 
     List<PlatformBalance> findAllByEnabledTrueAndCreatedDateBetween(LocalDateTime startDate, LocalDateTime endDate);

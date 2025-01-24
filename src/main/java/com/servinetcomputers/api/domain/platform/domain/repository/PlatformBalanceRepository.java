@@ -12,9 +12,9 @@ import java.util.Optional;
 public interface PlatformBalanceRepository {
     PlatformBalanceResponse save(PlatformBalanceRequest request);
 
+    PlatformBalanceResponse save(PlatformBalanceResponse response);
+
     Optional<PlatformBalanceResponse> get(int platformId, LocalDateTime startDate, LocalDateTime endDate);
 
-    PlatformBalanceResponse update(int balanceId, PlatformBalanceRequest request);
-
-    boolean delete(int balanceId);
+    Optional<PlatformBalanceResponse> get(int balanceId);
 }

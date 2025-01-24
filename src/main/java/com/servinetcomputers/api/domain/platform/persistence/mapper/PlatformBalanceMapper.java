@@ -10,7 +10,6 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface PlatformBalanceMapper {
-
     @Mapping(target = "platformName", source = "entity.platform.name")
     PlatformBalanceResponse toResponse(PlatformBalance entity);
 
@@ -25,4 +24,6 @@ public interface PlatformBalanceMapper {
     @Mapping(target = "createdBy", ignore = true)
     PlatformBalance toEntity(PlatformBalanceRequest request);
 
+    @Mapping(target = "platform", ignore = true)
+    PlatformBalance toEntity(PlatformBalanceResponse response);
 }
