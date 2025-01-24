@@ -19,7 +19,6 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class TransactionDetail extends Auditable {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "transaction_detail_id")
@@ -45,5 +44,4 @@ public class TransactionDetail extends Auditable {
     @ManyToOne
     @JoinColumn(name = "cash_register_detail_id", nullable = false)
     private CashRegisterDetail cashRegisterDetail;
-
 }

@@ -10,7 +10,6 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface TransactionMapper {
-
     TransactionResponse toResponse(Transaction entity);
 
     List<TransactionResponse> toResponses(List<Transaction> entities);
@@ -24,4 +23,5 @@ public interface TransactionMapper {
     @Mapping(target = "createdBy", ignore = true)
     Transaction toEntity(TransactionRequest request);
 
+    Transaction toEntity(TransactionResponse response);
 }

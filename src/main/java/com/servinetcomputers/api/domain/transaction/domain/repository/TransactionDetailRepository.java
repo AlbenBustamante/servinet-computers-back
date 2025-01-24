@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface TransactionDetailRepository {
-    TransactionDetailResponse create(TransactionDetailRequest request);
+    TransactionDetailResponse save(TransactionDetailRequest request);
 
     List<TransactionDetailResponse> getByCashRegisterDetailId(int cashRegisterDetailId);
 

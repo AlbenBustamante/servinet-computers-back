@@ -10,11 +10,17 @@ import java.time.LocalDateTime;
 public class TransactionResponse extends ModelResponse {
     private final String description;
     private final TransactionType type;
+    private int uses;
 
     public TransactionResponse(int id, boolean enabled, LocalDateTime createdDate, LocalDateTime modifiedDate, String createdBy, String modifiedBy,
-                               String description, TransactionType type) {
+                               String description, TransactionType type, int uses) {
         super(id, enabled, createdDate, modifiedDate, createdBy, modifiedBy);
         this.description = description;
         this.type = type;
+        this.uses = uses;
+    }
+
+    public void addUse() {
+        uses++;
     }
 }

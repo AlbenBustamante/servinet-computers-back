@@ -18,7 +18,6 @@ import static com.servinetcomputers.api.domain.transaction.util.TransactionConst
 @Getter
 @Setter
 public class Transaction extends Auditable {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "transaction_id")
@@ -33,9 +32,4 @@ public class Transaction extends Auditable {
     @Convert(converter = TransactionTypeConverter.class)
     @Column(nullable = false, columnDefinition = "CHAR(1)")
     private TransactionType type;
-
-    public void addUse() {
-        uses++;
-    }
-
 }

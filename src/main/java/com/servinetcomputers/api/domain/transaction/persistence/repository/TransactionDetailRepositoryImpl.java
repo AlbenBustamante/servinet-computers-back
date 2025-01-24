@@ -1,17 +1,10 @@
 package com.servinetcomputers.api.domain.transaction.persistence.repository;
 
-import com.servinetcomputers.api.core.exception.AppException;
-import com.servinetcomputers.api.core.exception.NotFoundException;
-import com.servinetcomputers.api.domain.cashregister.persistence.JpaCashRegisterDetailRepository;
 import com.servinetcomputers.api.domain.transaction.domain.dto.TransactionDetailRequest;
 import com.servinetcomputers.api.domain.transaction.domain.dto.TransactionDetailResponse;
-import com.servinetcomputers.api.domain.transaction.domain.dto.TransactionRequest;
 import com.servinetcomputers.api.domain.transaction.domain.repository.TransactionDetailRepository;
 import com.servinetcomputers.api.domain.transaction.persistence.JpaTransactionDetailRepository;
-import com.servinetcomputers.api.domain.transaction.persistence.JpaTransactionRepository;
-import com.servinetcomputers.api.domain.transaction.persistence.entity.Transaction;
 import com.servinetcomputers.api.domain.transaction.persistence.mapper.TransactionDetailMapper;
-import com.servinetcomputers.api.domain.transaction.persistence.mapper.TransactionMapper;
 import com.servinetcomputers.api.domain.transaction.util.TransactionDetailType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -27,35 +20,13 @@ import java.util.List;
 public class TransactionDetailRepositoryImpl implements TransactionDetailRepository {
     private final JpaTransactionDetailRepository repository;
     private final TransactionDetailMapper mapper;
-    private final JpaTransactionRepository jpaTransactionRepository;
-    private final TransactionMapper transactionMapper;
-    private final JpaCashRegisterDetailRepository jpaCashRegisterDetailRepository;
 
-    @Transactional(rollbackFor = AppException.class)
     @Override
-    public TransactionDetailResponse create(TransactionDetailRequest request) {
-        final var transactionFound = jpaTransactionRepository.findByDescriptionAndEnabledTrue(request.description().toUpperCase());
-        Transaction transaction;
+    public TransactionDetailResponse save(TransactionDetailRequest request) {
+        final var entity = mapper.toEntity(request);
+        final var newDetail = repository.save(entity);
 
-        if (transactionFound.isEmpty()) {
-            final var newRequest = new TransactionRequest(request.description(), null);
-            transaction = transactionMapper.toEntity(newRequest);
-        } else {
-            transaction = transactionFound.get();
-            transaction.addUse();
-        }
-
-        transaction = jpaTransactionRepository.save(transaction);
-
-        final var detail = mapper.toEntity(request);
-        detail.setTransaction(transaction);
-
-        final var cashRegisterDetail = jpaCashRegisterDetailRepository.findByIdAndEnabledTrue(request.cashRegisterDetailId())
-                .orElseThrow(() -> new NotFoundException("Caja no encontrada: #" + request.cashRegisterDetailId()));
-
-        detail.setCashRegisterDetail(cashRegisterDetail);
-
-        return mapper.toResponse(repository.save(detail));
+        return mapper.toResponse(newDetail);
     }
 
     @Transactional(readOnly = true)
