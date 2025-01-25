@@ -9,7 +9,7 @@ public interface UseCaseWithoutParam<R> {
     /**
      * Execute the use case.
      *
-     * @return the return object.
+     * @return the object type.
      */
     R call();
 }

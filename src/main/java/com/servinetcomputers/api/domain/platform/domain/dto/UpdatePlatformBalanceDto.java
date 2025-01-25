@@ -1,4 +1,4 @@
 package com.servinetcomputers.api.domain.platform.domain.dto;
 
-public record UpdatePlatformBalanceDto(int balanceId, Integer initialBalance, Integer finalBalance) {
+public record UpdatePlatformBalanceDto(Integer initialBalance, Integer finalBalance) {
 }

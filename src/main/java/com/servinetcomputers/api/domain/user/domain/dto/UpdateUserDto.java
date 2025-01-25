@@ -1,4 +1,4 @@
 package com.servinetcomputers.api.domain.user.domain.dto;
 
-public record UpdateUserDto(int userId, UserRequest request) {
+public record UpdateUserDto(String name, String lastName) {
 }

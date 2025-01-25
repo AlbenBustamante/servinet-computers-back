@@ -71,9 +71,9 @@ public class CashRegisterDetailController {
         return ResponseEntity.ok(endBreakUseCase.call(cashRegisterDetailId));
     }
 
-    @PatchMapping(path = "/close")
-    public ResponseEntity<CashRegisterDetailReportsDto> close(@RequestBody CloseCashRegisterDetailDto closeCashRegisterDetailDto) {
-        return ResponseEntity.ok(closeUseCase.call(closeCashRegisterDetailDto));
+    @PatchMapping(path = "/{id}/close")
+    public ResponseEntity<CashRegisterDetailReportsDto> close(@PathVariable("id") int id, @RequestBody CloseCashRegisterDetailDto closeCashRegisterDetailDto) {
+        return ResponseEntity.ok(closeUseCase.call(id, closeCashRegisterDetailDto));
     }
 
     @DeleteMapping(path = "/{id}")

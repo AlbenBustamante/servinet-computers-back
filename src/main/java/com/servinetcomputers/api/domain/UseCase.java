@@ -10,8 +10,8 @@ public interface UseCase<R, P> {
     /**
      * Execute the use case.
      *
-     * @param param the params.
-     * @return the return object.
+     * @param param the param.
+     * @return the object type.
      */
     R call(P param);
 }

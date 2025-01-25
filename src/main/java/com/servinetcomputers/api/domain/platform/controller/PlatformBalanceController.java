@@ -15,13 +15,13 @@ public class PlatformBalanceController {
     private final UpdatePlatformBalanceUseCase updatePlatformBalanceUseCase;
     private final DeletePlatformBalanceUseCase deletePlatformBalanceUseCase;
 
-    @PatchMapping
-    public ResponseEntity<PlatformBalanceResponse> update(@RequestBody UpdatePlatformBalanceDto updatePlatformBalanceDto) {
-        return ResponseEntity.ok(updatePlatformBalanceUseCase.call(updatePlatformBalanceDto));
+    @PatchMapping(path = "/{id}")
+    public ResponseEntity<PlatformBalanceResponse> update(@PathVariable("id") int balanceId, @RequestBody UpdatePlatformBalanceDto updatePlatformBalanceDto) {
+        return ResponseEntity.ok(updatePlatformBalanceUseCase.call(balanceId, updatePlatformBalanceDto));
     }
 
-    @DeleteMapping(path = "/{balanceId}")
-    public ResponseEntity<Boolean> delete(@PathVariable("balanceId") int balanceId) {
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity<Boolean> delete(@PathVariable("id") int balanceId) {
         deletePlatformBalanceUseCase.call(balanceId);
         return ResponseEntity.ok().build();
     }

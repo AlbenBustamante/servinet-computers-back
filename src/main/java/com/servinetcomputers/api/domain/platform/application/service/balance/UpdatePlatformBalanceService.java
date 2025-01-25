@@ -22,12 +22,12 @@ public class UpdatePlatformBalanceService implements UpdatePlatformBalanceUseCas
     @Transactional(rollbackFor = AppException.class)
     @Secured(value = {SUPERVISOR_AUTHORITY, ADMIN_AUTHORITY})
     @Override
-    public PlatformBalanceResponse call(UpdatePlatformBalanceDto param) {
-        final var balance = repository.get(param.balanceId())
-                .orElseThrow(() -> new NotFoundException("Saldo no encontrado: #" + param.balanceId()));
+    public PlatformBalanceResponse call(Integer balanceId, UpdatePlatformBalanceDto dto) {
+        final var balance = repository.get(balanceId)
+                .orElseThrow(() -> new NotFoundException("Saldo no encontrado: #" + balanceId));
 
-        balance.setInitialBalance(param.initialBalance() != null ? param.initialBalance() : balance.getInitialBalance());
-        balance.setFinalBalance(param.finalBalance() != null ? param.finalBalance() : balance.getFinalBalance());
+        balance.setInitialBalance(dto.initialBalance() != null ? dto.initialBalance() : balance.getInitialBalance());
+        balance.setFinalBalance(dto.finalBalance() != null ? dto.finalBalance() : balance.getFinalBalance());
 
         return repository.save(balance);
     }

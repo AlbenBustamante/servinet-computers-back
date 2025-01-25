@@ -30,18 +30,18 @@ public class PlatformTransferController {
         return ResponseEntity.status(CREATED).body(transferService.create(platformTransferRequest, vouchers));
     }
 
-    @GetMapping("/{transferId}")
-    public ResponseEntity<PlatformTransferResponse> get(@PathVariable("transferId") int transferId) {
+    @GetMapping("/{id}")
+    public ResponseEntity<PlatformTransferResponse> get(@PathVariable("id") int transferId) {
         return ResponseEntity.ok(transferService.get(transferId));
     }
 
-    @PatchMapping("/{transferId}")
-    public ResponseEntity<PlatformTransferResponse> update(@PathVariable("transferId") int transferId, @RequestBody PlatformTransferRequest request) {
+    @PatchMapping("/{id}")
+    public ResponseEntity<PlatformTransferResponse> update(@PathVariable("id") int transferId, @RequestBody PlatformTransferRequest request) {
         return ResponseEntity.ok(transferService.update(transferId, request));
     }
 
-    @DeleteMapping("/{transferId}")
-    public ResponseEntity<Boolean> delete(@PathVariable("transferId") int transferId) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Boolean> delete(@PathVariable("id") int transferId) {
         return ResponseEntity.ok(transferService.delete(transferId));
     }
 

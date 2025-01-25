@@ -31,13 +31,13 @@ public class UserController {
         return ResponseEntity.ok(getAllUsersUseCase.call());
     }
 
-    @GetMapping(path = "/{userId}")
-    public ResponseEntity<UserResponse> get(@PathVariable("userId") int userId) {
+    @GetMapping(path = "/{id}")
+    public ResponseEntity<UserResponse> get(@PathVariable("id") int userId) {
         return ResponseEntity.ok(getUserUseCase.call(userId));
     }
 
-    @GetMapping(path = "/{userId}/reports/cash-register-details")
-    public ResponseEntity<MyCashRegistersReports> getCashRegisterReports(@PathVariable("userId") int userId) {
+    @GetMapping(path = "/{id}/reports/cash-register-details")
+    public ResponseEntity<MyCashRegistersReports> getCashRegisterReports(@PathVariable("id") int userId) {
         return ResponseEntity.ok(getReportsUseCase.call(userId));
     }
 
@@ -46,13 +46,13 @@ public class UserController {
         return ResponseEntity.ok(reportsService.getReports(code));
     }
 
-    @PatchMapping
-    public ResponseEntity<UserResponse> update(@RequestBody UpdateUserDto updateUserDto) {
-        return ResponseEntity.ok(updateUserUseCase.call(updateUserDto));
+    @PatchMapping(path = "/{id}")
+    public ResponseEntity<UserResponse> update(@PathVariable("id") int id, @RequestBody UpdateUserDto updateUserDto) {
+        return ResponseEntity.ok(updateUserUseCase.call(id, updateUserDto));
     }
 
-    @DeleteMapping(path = "/{userId}")
-    public ResponseEntity<Boolean> delete(@PathVariable("userId") int userId) {
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity<Boolean> delete(@PathVariable("id") int userId) {
         deleteUserUseCase.call(userId);
         return ResponseEntity.ok().build();
     }

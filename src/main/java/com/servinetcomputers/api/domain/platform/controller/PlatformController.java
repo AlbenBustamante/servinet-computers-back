@@ -40,13 +40,13 @@ public class PlatformController {
         return ResponseEntity.ok(loadPortalPlatformsUseCase.call());
     }
 
-    @PatchMapping
-    public ResponseEntity<PlatformResponse> update(@RequestBody UpdatePlatformDto updatePlatformDto) {
-        return ResponseEntity.ok(updatePlatformUseCase.call(updatePlatformDto));
+    @PatchMapping(path = "/{id}")
+    public ResponseEntity<PlatformResponse> update(@PathVariable("id") int id, @RequestBody UpdatePlatformDto updatePlatformDto) {
+        return ResponseEntity.ok(updatePlatformUseCase.call(id, updatePlatformDto));
     }
 
-    @DeleteMapping(path = "/{platformId}")
-    public ResponseEntity<Boolean> delete(@PathVariable("platformId") int platformId) {
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity<Boolean> delete(@PathVariable("id") int platformId) {
         deletePlatformUseCase.call(platformId);
         return ResponseEntity.ok().build();
     }

@@ -16,7 +16,7 @@ public class CloseService implements CloseUseCase {
 
     @Transactional(rollbackFor = AppException.class)
     @Override
-    public CashRegisterDetailReportsDto call(CloseCashRegisterDetailDto param) {
-        return repository.close(param.cashRegisterDetailId(), param.finalBase());
+    public CashRegisterDetailReportsDto call(Integer id, CloseCashRegisterDetailDto dto) {
+        return repository.close(id, dto.finalBase());
     }
 }

@@ -20,7 +20,7 @@ public class UpdateCashRegisterService implements UpdateCashRegisterUseCase {
     @Transactional(rollbackFor = AppException.class)
     @Secured(value = ADMIN_AUTHORITY)
     @Override
-    public CashRegisterResponse call(UpdateCashRegisterDto param) {
+    public CashRegisterResponse call(Integer id, UpdateCashRegisterDto param) {
         return repository.update(param);
     }
 }

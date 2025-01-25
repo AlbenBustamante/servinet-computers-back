@@ -36,9 +36,9 @@ public class CashRegisterController {
         return ResponseEntity.ok(getLastBaseUseCase.call(cashRegisterId));
     }
 
-    @PatchMapping
-    public ResponseEntity<CashRegisterResponse> update(@RequestBody UpdateCashRegisterDto updateCashRegisterDto) {
-        return ResponseEntity.ok(updateCashRegisterUseCase.call(updateCashRegisterDto));
+    @PatchMapping(path = "/{id}")
+    public ResponseEntity<CashRegisterResponse> update(@PathVariable("id") int id, @RequestBody UpdateCashRegisterDto updateCashRegisterDto) {
+        return ResponseEntity.ok(updateCashRegisterUseCase.call(id, updateCashRegisterDto));
     }
 
     @DeleteMapping(path = "/{id}")

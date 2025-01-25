@@ -21,17 +21,17 @@ public class UpdatePlatformService implements UpdatePlatformUseCase {
     /**
      * Update an existing and available platform.
      *
-     * @param param the info to update the platform.
+     * @param dto the info to update the platform.
      * @return the platform updated.
      */
     @Transactional(rollbackFor = AppException.class)
     @Secured(value = ADMIN_AUTHORITY)
     @Override
-    public PlatformResponse call(UpdatePlatformDto param) {
-        final var platform = repository.get(param.platformId())
-                .orElseThrow(() -> new NotFoundException("Plataforma no encontrada: " + param.platformId()));
+    public PlatformResponse call(Integer id, UpdatePlatformDto dto) {
+        final var platform = repository.get(id)
+                .orElseThrow(() -> new NotFoundException("Plataforma no encontrada: " + id));
 
-        platform.setName(param.name() != null ? param.name() : platform.getName());
+        platform.setName(dto.name() != null ? dto.name() : platform.getName());
 
         return repository.save(platform);
     }

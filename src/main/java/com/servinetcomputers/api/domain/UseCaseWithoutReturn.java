@@ -9,7 +9,7 @@ public interface UseCaseWithoutReturn<P> {
     /**
      * Execute the use case.
      *
-     * @param param the param type object.
+     * @param param the param.
      */
     void call(P param);
 }

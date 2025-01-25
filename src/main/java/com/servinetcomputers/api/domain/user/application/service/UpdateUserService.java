@@ -1,5 +1,6 @@
 package com.servinetcomputers.api.domain.user.application.service;
 
+import com.servinetcomputers.api.core.exception.AppException;
 import com.servinetcomputers.api.domain.user.application.usecase.GetUserUseCase;
 import com.servinetcomputers.api.domain.user.application.usecase.UpdateUserUseCase;
 import com.servinetcomputers.api.domain.user.domain.dto.UpdateUserDto;
@@ -15,14 +16,13 @@ public class UpdateUserService implements UpdateUserUseCase {
     private final UserRepository repository;
     private final GetUserUseCase getUserUseCase;
 
-    @Transactional(readOnly = true)
+    @Transactional(rollbackFor = AppException.class)
     @Override
-    public UserResponse call(UpdateUserDto param) {
-        final var user = getUserUseCase.call(param.userId());
-        final var request = param.request();
+    public UserResponse call(Integer id, UpdateUserDto dto) {
+        final var user = getUserUseCase.call(id);
 
-        user.setName(request.getName() == null ? user.getName() : request.getName());
-        user.setLastName(request.getLastName() == null ? user.getLastName() : request.getLastName());
+        user.setName(dto.name() == null ? user.getName() : dto.name());
+        user.setLastName(dto.lastName() == null ? user.getLastName() : dto.lastName());
 
         return repository.save(user);
     }
