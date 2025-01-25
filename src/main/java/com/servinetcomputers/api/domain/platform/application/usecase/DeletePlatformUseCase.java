@@ -1,6 +1,6 @@
 package com.servinetcomputers.api.domain.platform.application.usecase;
 
-import com.servinetcomputers.api.domain.UseCaseWithoutReturn;
+import com.servinetcomputers.api.core.usecase.UseCaseWithoutReturn;
 
 /**
  * Disable an existing and available platform.

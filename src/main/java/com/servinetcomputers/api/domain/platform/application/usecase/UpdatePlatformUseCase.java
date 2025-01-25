@@ -1,6 +1,6 @@
 package com.servinetcomputers.api.domain.platform.application.usecase;
 
-import com.servinetcomputers.api.domain.UseCaseBiParam;
+import com.servinetcomputers.api.core.usecase.UseCaseBiParam;
 import com.servinetcomputers.api.domain.platform.domain.dto.PlatformResponse;
 import com.servinetcomputers.api.domain.platform.domain.dto.UpdatePlatformDto;
 

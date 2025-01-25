@@ -1,4 +1,4 @@
-package com.servinetcomputers.api.domain;
+package com.servinetcomputers.api.core.usecase;
 
 /**
  * Generic use case that requires two params.
