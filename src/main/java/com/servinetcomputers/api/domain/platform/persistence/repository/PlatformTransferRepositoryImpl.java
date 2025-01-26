@@ -3,7 +3,6 @@ package com.servinetcomputers.api.domain.platform.persistence.repository;
 import com.servinetcomputers.api.domain.platform.domain.dto.PlatformTransferRequest;
 import com.servinetcomputers.api.domain.platform.domain.dto.PlatformTransferResponse;
 import com.servinetcomputers.api.domain.platform.domain.repository.PlatformTransferRepository;
-import com.servinetcomputers.api.domain.platform.persistence.JpaPlatformRepository;
 import com.servinetcomputers.api.domain.platform.persistence.JpaPlatformTransferRepository;
 import com.servinetcomputers.api.domain.platform.persistence.mapper.PlatformTransferMapper;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +19,6 @@ import java.util.Optional;
 public class PlatformTransferRepositoryImpl implements PlatformTransferRepository {
     private final JpaPlatformTransferRepository repository;
     private final PlatformTransferMapper mapper;
-    private final JpaPlatformRepository jpaPlatformRepository;
 
     @Override
     public PlatformTransferResponse save(PlatformTransferRequest request) {
