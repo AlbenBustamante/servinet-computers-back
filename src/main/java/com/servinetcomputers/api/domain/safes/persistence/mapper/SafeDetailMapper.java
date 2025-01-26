@@ -11,7 +11,6 @@ import java.util.List;
 
 @Mapper(componentModel = "spring", uses = {SafeMapper.class, BaseMapper.class})
 public interface SafeDetailMapper {
-
     @Mapping(target = "safeId", source = "safe.id")
     @Mapping(target = "detailInitialBase", source = "initialBase")
     @Mapping(target = "detailFinalBase", source = "finalBase")
@@ -29,4 +28,5 @@ public interface SafeDetailMapper {
     @Mapping(target = "calculatedBase", ignore = true)
     SafeDetail toEntity(SafeDetailRequest request);
 
+    SafeDetail toEntity(SafeDetailResponse response);
 }

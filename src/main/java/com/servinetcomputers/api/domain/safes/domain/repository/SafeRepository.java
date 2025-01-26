@@ -6,7 +6,9 @@ import com.servinetcomputers.api.domain.safes.domain.dto.SafeResponse;
 import java.util.List;
 
 public interface SafeRepository {
-    SafeResponse create(SafeRequest request);
+    SafeResponse save(SafeRequest request);
+
+    boolean existsByNumeral(int numeral);
 
     List<SafeResponse> getAll();
 }

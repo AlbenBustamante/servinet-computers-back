@@ -16,7 +16,6 @@ import static com.servinetcomputers.api.domain.safes.util.SafeConstants.BASE_LEN
 @Getter
 @Setter
 public class SafeDetail extends Auditable {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "safe_detail_id")
@@ -34,5 +33,4 @@ public class SafeDetail extends Auditable {
     @ManyToOne
     @JoinColumn(name = "safe_id", nullable = false)
     private Safe safe;
-
 }

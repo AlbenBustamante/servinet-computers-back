@@ -11,7 +11,6 @@ import java.util.List;
 
 @Mapper(componentModel = "spring", uses = BaseMapper.class)
 public interface SafeMapper {
-
     SafeResponse toResponse(Safe entity);
 
     List<SafeResponse> toResponses(List<Safe> entities);
@@ -24,4 +23,5 @@ public interface SafeMapper {
     @Mapping(target = "createdBy", ignore = true)
     Safe toEntity(SafeRequest request);
 
+    Safe toEntity(SafeResponse response);
 }

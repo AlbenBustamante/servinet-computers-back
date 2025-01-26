@@ -3,12 +3,14 @@ package com.servinetcomputers.api.domain.safes.domain.dto;
 import com.servinetcomputers.api.domain.ModelResponse;
 import com.servinetcomputers.api.domain.base.BaseDto;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
+@Setter
 @Getter
 public class SafeDetailResponse extends ModelResponse {
-    private final BaseDto detailInitialBase, detailFinalBase;
+    private BaseDto detailInitialBase, detailFinalBase;
     private final int safeId, initialBase, finalBase, calculatedBase;
     private final SafeResponse safe;
 

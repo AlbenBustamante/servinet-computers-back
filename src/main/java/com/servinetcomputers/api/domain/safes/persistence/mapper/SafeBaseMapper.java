@@ -9,16 +9,15 @@ import org.mapstruct.Mapping;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = BaseMapper.class)
+@Mapper(componentModel = "spring", uses = {BaseMapper.class, SafeDetailMapper.class})
 public interface SafeBaseMapper {
-
     @Mapping(target = "safeDetailId", source = "safeDetail.id")
     @Mapping(target = "detailBase", source = "base")
     SafeBaseResponse toResponse(SafeBase entity);
 
     List<SafeBaseResponse> toResponses(List<SafeBase> entities);
 
-    @Mapping(target = "safeDetail", ignore = true)
+    @Mapping(target = "base", expression = "java(baseMapper.toStr(request.getBaseDto()))")
     @Mapping(target = "modifiedDate", ignore = true)
     @Mapping(target = "modifiedBy", ignore = true)
     @Mapping(target = "id", ignore = true)
@@ -26,5 +25,4 @@ public interface SafeBaseMapper {
     @Mapping(target = "createdDate", ignore = true)
     @Mapping(target = "createdBy", ignore = true)
     SafeBase toEntity(SafeBaseRequest request);
-
 }
