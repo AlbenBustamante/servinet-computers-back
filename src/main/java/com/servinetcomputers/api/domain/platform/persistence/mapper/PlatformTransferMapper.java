@@ -25,5 +25,7 @@ public interface PlatformTransferMapper {
     @Mapping(target = "enabled", ignore = true)
     @Mapping(target = "createdDate", ignore = true)
     @Mapping(target = "createdBy", ignore = true)
-    PlatformTransfer toEntity(PlatformTransferRequest req);
+    PlatformTransfer toEntity(PlatformTransferRequest request);
+
+    PlatformTransfer toEntity(PlatformTransferResponse response);
 }

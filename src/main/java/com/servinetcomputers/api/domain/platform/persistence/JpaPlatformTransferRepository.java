@@ -7,11 +7,14 @@ import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * The {@link PlatformTransfer} repository.
  */
 public interface JpaPlatformTransferRepository extends JpaRepository<PlatformTransfer, Integer> {
+    Optional<PlatformTransfer> findByIdAndEnabledTrue(int id);
+
     @Query("SELECT SUM(pt.value) FROM PlatformTransfer pt " +
             "WHERE pt.platform.id = :platformId " +
             "AND pt.platform.enabled = true " +

@@ -2,17 +2,21 @@ package com.servinetcomputers.api.domain.platform.domain.dto;
 
 import com.servinetcomputers.api.domain.ModelResponse;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 /**
  * The transfer dto model for responses.
  */
+@Setter
 @Getter
 public class PlatformTransferResponse extends ModelResponse {
-    private final int platformId, value;
+    private final int platformId;
     private final String platformName;
     private final String[] voucherUrls;
+    private int value;
+    private PlatformResponse platform;
 
     public PlatformTransferResponse(int id, boolean enabled, LocalDateTime createdDate, LocalDateTime modifiedDate,
                                     String createdBy, String modifiedBy, int platformId, int value, String platformName, String[] voucherUrls) {
