@@ -2,7 +2,6 @@ package com.servinetcomputers.api.domain.platform.persistence.repository;
 
 import com.servinetcomputers.api.core.exception.AppException;
 import com.servinetcomputers.api.core.exception.NotFoundException;
-import com.servinetcomputers.api.core.storage.StorageService;
 import com.servinetcomputers.api.domain.platform.domain.dto.PlatformTransferRequest;
 import com.servinetcomputers.api.domain.platform.domain.dto.PlatformTransferResponse;
 import com.servinetcomputers.api.domain.platform.domain.repository.PlatformTransferRepository;
@@ -12,7 +11,6 @@ import com.servinetcomputers.api.domain.platform.persistence.mapper.PlatformTran
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 
@@ -25,29 +23,6 @@ public class PlatformTransferRepositoryImpl implements PlatformTransferRepositor
     private final JpaPlatformTransferRepository repository;
     private final PlatformTransferMapper mapper;
     private final JpaPlatformRepository jpaPlatformRepository;
-    private final StorageService storageService;
-
-    @Transactional(rollbackFor = AppException.class)
-    @Override
-    public PlatformTransferResponse create(PlatformTransferRequest request, MultipartFile[] vouchers) {
-        final var platform = jpaPlatformRepository.findById(request.getPlatformId())
-                .orElseThrow(() -> new NotFoundException("Plataforma no encontrada: #" + request.getPlatformId()));
-
-        if (!platform.getEnabled()) {
-            throw new NotFoundException("Plataforma no encontrada: #" + request.getPlatformId());
-        }
-
-        final var transfer = mapper.toEntity(request);
-
-        if (vouchers != null && vouchers.length > 0) {
-            final var folder = "platform_transfers/" + platform.getName().toLowerCase();
-
-            final var voucherUrls = storageService.uploadFiles(folder, vouchers);
-            transfer.setVoucherUrls(voucherUrls);
-        }
-
-        return mapper.toResponse(repository.save(transfer));
-    }
 
     @Transactional(readOnly = true)
     @Override
@@ -61,7 +36,15 @@ public class PlatformTransferRepositoryImpl implements PlatformTransferRepositor
 
         return mapper.toResponse(transfer);
     }
-    
+
+    @Override
+    public PlatformTransferResponse save(PlatformTransferRequest request) {
+        final var entity = mapper.toEntity(request);
+        final var newTransfer = repository.save(entity);
+
+        return mapper.toResponse(newTransfer);
+    }
+
     @Override
     public int getPlatformTransfersAmount(int platformId, LocalDateTime startDate, LocalDateTime endDate) {
         return repository.countByPlatformIdAndEnabledTrueAndCreatedDateBetween(platformId, startDate, endDate);

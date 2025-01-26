@@ -16,14 +16,10 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Setter
 @Getter
 public class PlatformTransfer extends Auditable {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "platform_transfer_id")
     private Integer id;
-
-    @Column(name = "platform_id", nullable = false)
-    private Integer platformId;
 
     @Column(nullable = false)
     private Integer value;
@@ -32,7 +28,6 @@ public class PlatformTransfer extends Auditable {
     private String[] voucherUrls;
 
     @ManyToOne
-    @JoinColumn(name = "platform_id", insertable = false, updatable = false)
+    @JoinColumn(name = "platform_id", nullable = false)
     private Platform platform;
-
 }

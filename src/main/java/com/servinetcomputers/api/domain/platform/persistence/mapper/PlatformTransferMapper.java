@@ -11,16 +11,14 @@ import java.util.List;
 /**
  * The transfer's models mapper.
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {PlatformMapper.class})
 public interface PlatformTransferMapper {
-
+    @Mapping(target = "platformId", source = "platform.id")
     @Mapping(target = "platformName", source = "platform.name")
     PlatformTransferResponse toResponse(PlatformTransfer entity);
 
     List<PlatformTransferResponse> toResponses(List<PlatformTransfer> entities);
 
-    @Mapping(target = "voucherUrls", ignore = true)
-    @Mapping(target = "platform", ignore = true)
     @Mapping(target = "modifiedDate", ignore = true)
     @Mapping(target = "modifiedBy", ignore = true)
     @Mapping(target = "id", ignore = true)
@@ -28,5 +26,4 @@ public interface PlatformTransferMapper {
     @Mapping(target = "createdDate", ignore = true)
     @Mapping(target = "createdBy", ignore = true)
     PlatformTransfer toEntity(PlatformTransferRequest req);
-
 }

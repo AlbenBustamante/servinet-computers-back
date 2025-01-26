@@ -2,7 +2,6 @@ package com.servinetcomputers.api.domain.platform.domain.repository;
 
 import com.servinetcomputers.api.domain.platform.domain.dto.PlatformTransferRequest;
 import com.servinetcomputers.api.domain.platform.domain.dto.PlatformTransferResponse;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -11,17 +10,11 @@ import java.util.Optional;
  * The transfer's repository.
  */
 public interface PlatformTransferRepository {
+    PlatformTransferResponse save(PlatformTransferRequest request);
+
     int getPlatformTransfersAmount(int platformId, LocalDateTime initialDate, LocalDateTime finalDate);
 
     int getPlatformTransfersTotal(int platformId, LocalDateTime startDate, LocalDateTime endDate);
-    
-    /**
-     * Create and persist a new transfer.
-     *
-     * @param request the data to be saved.
-     * @return the transfer saved.
-     */
-    PlatformTransferResponse create(PlatformTransferRequest request, MultipartFile[] vouchers);
 
     /**
      * Search an existing and available transfer.

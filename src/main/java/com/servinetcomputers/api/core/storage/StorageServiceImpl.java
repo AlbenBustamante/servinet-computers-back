@@ -14,7 +14,6 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Service
 public class StorageServiceImpl implements StorageService {
-
     private final Storage storage;
 
     @Value("${bucket-name}")
@@ -43,5 +42,4 @@ public class StorageServiceImpl implements StorageService {
 
         return files;
     }
-
 }

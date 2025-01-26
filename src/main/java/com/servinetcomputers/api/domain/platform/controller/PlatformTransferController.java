@@ -2,9 +2,9 @@ package com.servinetcomputers.api.domain.platform.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.servinetcomputers.api.domain.platform.application.usecase.transfer.CreatePlatformTransferUseCase;
 import com.servinetcomputers.api.domain.platform.domain.dto.PlatformTransferRequest;
 import com.servinetcomputers.api.domain.platform.domain.dto.PlatformTransferResponse;
-import com.servinetcomputers.api.domain.platform.domain.repository.PlatformTransferRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,33 +16,31 @@ import static org.springframework.http.HttpStatus.CREATED;
  * The transfer's routes/endpoints.
  */
 @RequiredArgsConstructor
-@RequestMapping("/platform-transfers")
+@RequestMapping(path = "/platform-transfers")
 @RestController
 public class PlatformTransferController {
-
-    private final PlatformTransferRepository transferService;
+    private final CreatePlatformTransferUseCase createPlatformTransferUseCase;
 
     @PostMapping
     public ResponseEntity<PlatformTransferResponse> register(@RequestParam(name = "request") String request, @RequestParam(name = "vouchers", required = false) MultipartFile[] vouchers) throws JsonProcessingException {
         final var mapper = new ObjectMapper();
         final var platformTransferRequest = mapper.readValue(request, PlatformTransferRequest.class);
 
-        return ResponseEntity.status(CREATED).body(transferService.create(platformTransferRequest, vouchers));
+        return ResponseEntity.status(CREATED).body(createPlatformTransferUseCase.call(platformTransferRequest, vouchers));
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(path = "/{id}")
     public ResponseEntity<PlatformTransferResponse> get(@PathVariable("id") int transferId) {
         return ResponseEntity.ok(transferService.get(transferId));
     }
 
-    @PatchMapping("/{id}")
+    @PatchMapping(path = "/{id}")
     public ResponseEntity<PlatformTransferResponse> update(@PathVariable("id") int transferId, @RequestBody PlatformTransferRequest request) {
         return ResponseEntity.ok(transferService.update(transferId, request));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping(path = "/{id}")
     public ResponseEntity<Boolean> delete(@PathVariable("id") int transferId) {
         return ResponseEntity.ok(transferService.delete(transferId));
     }
-
 }

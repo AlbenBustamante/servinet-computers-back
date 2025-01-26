@@ -1,6 +1,5 @@
 package com.servinetcomputers.api.domain.platform.persistence.repository;
 
-import com.servinetcomputers.api.core.exception.NotFoundException;
 import com.servinetcomputers.api.domain.platform.domain.dto.PlatformBalanceRequest;
 import com.servinetcomputers.api.domain.platform.domain.dto.PlatformBalanceResponse;
 import com.servinetcomputers.api.domain.platform.domain.repository.PlatformBalanceRepository;
@@ -47,20 +46,5 @@ public class PlatformBalanceRepositoryImpl implements PlatformBalanceRepository 
         final var newBalance = repository.save(entity);
 
         return mapper.toResponse(newBalance);
-    }
-
-    @Override
-    public boolean delete(int balanceId) {
-        final var balance = repository.findById(balanceId);
-
-        if (balance.isEmpty() || !balance.get().getEnabled()) {
-            throw new NotFoundException("Saldo no encontrado: #" + balanceId);
-        }
-
-        balance.get().setEnabled(false);
-
-        repository.save(balance.get());
-
-        return true;
     }
 }

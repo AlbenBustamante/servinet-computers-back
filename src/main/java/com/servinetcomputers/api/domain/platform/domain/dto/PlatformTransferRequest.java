@@ -1,14 +1,18 @@
 package com.servinetcomputers.api.domain.platform.domain.dto;
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 /**
  * The transfer dto model for requests.
  */
+@RequiredArgsConstructor
 @Getter
 @Setter
 public class PlatformTransferRequest {
-    private Integer platformId;
-    private Integer value;
+    private final Integer platformId;
+    private final Integer value;
+    private String[] voucherUrls;
+    private PlatformResponse platform;
 }
