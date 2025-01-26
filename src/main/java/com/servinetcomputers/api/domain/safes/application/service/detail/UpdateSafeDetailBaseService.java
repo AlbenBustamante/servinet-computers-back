@@ -48,7 +48,6 @@ public class UpdateSafeDetailBaseService implements UpdateSafeDetailBaseUseCase 
 
         final var safeBase = new SafeBaseRequest(safeDetailId, baseDto);
         safeBase.setSafeDetail(newSafeDetail);
-
         safeBaseRepository.save(safeBase);
 
         return newSafeDetail;

@@ -13,6 +13,10 @@ public record BaseDto(
         int hundred,
         int fifty
 ) {
+    public static BaseDto zero() {
+        return new BaseDto(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+    }
+
     public int calculate() {
         return hundredThousand * 100000 +
                 fiftyThousand * 50000 +

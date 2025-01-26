@@ -13,7 +13,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Getter
 @Setter
 public class Safe extends Auditable {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "safe_id")
@@ -21,5 +20,4 @@ public class Safe extends Auditable {
 
     @Column(nullable = false, columnDefinition = "SMALLINT")
     private Integer numeral;
-
 }

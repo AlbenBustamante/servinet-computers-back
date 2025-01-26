@@ -33,4 +33,9 @@ public class SafeRepositoryImpl implements SafeRepository {
     public List<SafeResponse> getAll() {
         return mapper.toResponses(repository.findAllByEnabledTrue());
     }
+
+    @Override
+    public List<Integer> getAllIds() {
+        return repository.findAllIds();
+    }
 }
