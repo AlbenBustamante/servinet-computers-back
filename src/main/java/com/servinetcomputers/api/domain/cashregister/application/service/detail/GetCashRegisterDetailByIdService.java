@@ -1,5 +1,6 @@
 package com.servinetcomputers.api.domain.cashregister.application.service.detail;
 
+import com.servinetcomputers.api.core.exception.NotFoundException;
 import com.servinetcomputers.api.domain.cashregister.application.usecase.detail.GetCashRegisterDetailByIdUseCase;
 import com.servinetcomputers.api.domain.cashregister.domain.dto.CashRegisterDetailResponse;
 import com.servinetcomputers.api.domain.cashregister.domain.repository.CashRegisterDetailRepository;
@@ -15,6 +16,7 @@ public class GetCashRegisterDetailByIdService implements GetCashRegisterDetailBy
     @Transactional(readOnly = true)
     @Override
     public CashRegisterDetailResponse call(Integer param) {
-        return repository.get(param);
+        return repository.get(param)
+                .orElseThrow(() -> new NotFoundException("No se encontró la caja en funcionamiento: #" + param));
     }
 }

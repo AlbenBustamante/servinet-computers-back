@@ -1,8 +1,10 @@
 package com.servinetcomputers.api.domain.cashregister.application.service.detail;
 
 import com.servinetcomputers.api.core.exception.AppException;
+import com.servinetcomputers.api.core.exception.NotFoundException;
 import com.servinetcomputers.api.domain.cashregister.application.usecase.detail.DeleteCashRegisterDetailUseCase;
 import com.servinetcomputers.api.domain.cashregister.domain.repository.CashRegisterDetailRepository;
+import com.servinetcomputers.api.domain.cashregister.util.CashRegisterDetailStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,10 +13,16 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class DeleteCashRegisterDetailService implements DeleteCashRegisterDetailUseCase {
     private final CashRegisterDetailRepository repository;
-    
+
     @Transactional(rollbackFor = AppException.class)
     @Override
-    public Boolean call(Integer param) {
-        return repository.delete(param);
+    public void call(Integer param) {
+        final var cashRegisterDetail = repository.get(param)
+                .orElseThrow(() -> new NotFoundException("No se encontró la caja del día: #" + param));
+
+        cashRegisterDetail.setStatus(CashRegisterDetailStatus.CLOSED);
+        cashRegisterDetail.setEnabled(false);
+
+        repository.save(cashRegisterDetail);
     }
 }

@@ -62,23 +62,24 @@ public class CashRegisterDetailController {
         return ResponseEntity.ok(getExpensesUseCase.call(cashRegisterDetailId));
     }
 
-    @PatchMapping(path = "/{id}/start-break")
+    @PutMapping(path = "/{id}/start-break")
     public ResponseEntity<CashRegisterDetailResponse> startBreak(@PathVariable("id") int cashRegisterDetailId) {
         return ResponseEntity.ok(startBreakUseCase.call(cashRegisterDetailId));
     }
 
-    @PatchMapping(path = "/{id}/end-break")
+    @PutMapping(path = "/{id}/end-break")
     public ResponseEntity<CashRegisterDetailResponse> endBreak(@PathVariable("id") int cashRegisterDetailId) {
         return ResponseEntity.ok(endBreakUseCase.call(cashRegisterDetailId));
     }
 
-    @PatchMapping(path = "/{id}/close")
+    @PutMapping(path = "/{id}/close")
     public ResponseEntity<CashRegisterDetailReportsDto> close(@PathVariable("id") int id, @RequestBody BaseDto baseDto) {
         return ResponseEntity.ok(closeUseCase.call(id, baseDto));
     }
 
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<Boolean> delete(@PathVariable("id") int cashRegisterDetailId) {
-        return ResponseEntity.ok(deleteUseCase.call(cashRegisterDetailId));
+        deleteUseCase.call(cashRegisterDetailId);
+        return ResponseEntity.ok().build();
     }
 }

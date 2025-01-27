@@ -1,5 +1,6 @@
 package com.servinetcomputers.api.domain.cashregister.application.service.detail;
 
+import com.servinetcomputers.api.core.datetime.DateTimeService;
 import com.servinetcomputers.api.domain.cashregister.application.usecase.detail.GetAllCashRegisterDetailsOfTodayUseCase;
 import com.servinetcomputers.api.domain.cashregister.domain.dto.CashRegisterDetailResponse;
 import com.servinetcomputers.api.domain.cashregister.domain.repository.CashRegisterDetailRepository;
@@ -16,11 +17,16 @@ import static com.servinetcomputers.api.core.security.util.SecurityConstants.ADM
 @Service
 public class GetAllCashRegisterDetailsOfTodayService implements GetAllCashRegisterDetailsOfTodayUseCase {
     private final CashRegisterDetailRepository repository;
+    private final DateTimeService dateTimeService;
 
     @Transactional(readOnly = true)
     @Secured(value = ADMIN_AUTHORITY)
     @Override
     public List<CashRegisterDetailResponse> call() {
-        return repository.getAllOfToday();
+        final var today = dateTimeService.dateNow();
+        final var startDate = dateTimeService.getMinByDate(today);
+        final var endDate = dateTimeService.now();
+
+        return repository.getAllBetween(startDate, endDate);
     }
 }

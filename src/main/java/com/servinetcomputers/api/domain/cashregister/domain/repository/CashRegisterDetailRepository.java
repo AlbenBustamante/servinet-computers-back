@@ -1,6 +1,5 @@
 package com.servinetcomputers.api.domain.cashregister.domain.repository;
 
-import com.servinetcomputers.api.domain.base.BaseDto;
 import com.servinetcomputers.api.domain.cashregister.domain.dto.CashRegisterDetailReportsDto;
 import com.servinetcomputers.api.domain.cashregister.domain.dto.CashRegisterDetailRequest;
 import com.servinetcomputers.api.domain.cashregister.domain.dto.CashRegisterDetailResponse;
@@ -32,17 +31,9 @@ public interface CashRegisterDetailRepository {
 
     List<CashRegisterDetailResponse> getAllByUserIdWhereStatusIsNotBetween(int userId, LocalDateTime startDate, LocalDateTime endDate, CashRegisterStatus status);
 
-    List<CashRegisterDetailResponse> getAllOfToday();
+    List<CashRegisterDetailResponse> getAllBetween(LocalDateTime startDate, LocalDateTime endDate);
 
     Optional<CashRegisterDetailResponse> get(int cashRegisterDetailId);
 
     CashRegisterDetailReportsDto getCashRegisterDetailReports(int cashRegisterDetailId);
-
-    CashRegisterDetailResponse startBreak(int cashRegisterDetailId);
-
-    CashRegisterDetailResponse endBreak(int cashRegisterDetailId);
-
-    CashRegisterDetailReportsDto close(int cashRegisterDetailId, BaseDto finalBase);
-
-    boolean delete(int id);
 }
