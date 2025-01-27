@@ -5,7 +5,7 @@ import com.servinetcomputers.api.core.exception.AppException;
 import com.servinetcomputers.api.core.exception.BadRequestException;
 import com.servinetcomputers.api.core.exception.NotFoundException;
 import com.servinetcomputers.api.domain.cashregister.application.usecase.detail.CreateCashRegisterDetailUseCase;
-import com.servinetcomputers.api.domain.cashregister.domain.dto.CashRegisterDetailRequest;
+import com.servinetcomputers.api.domain.cashregister.domain.dto.CreateCashRegisterDetailDto;
 import com.servinetcomputers.api.domain.cashregister.domain.dto.MyCashRegistersReports;
 import com.servinetcomputers.api.domain.cashregister.domain.repository.CashRegisterDetailRepository;
 import com.servinetcomputers.api.domain.cashregister.domain.repository.CashRegisterRepository;
@@ -27,7 +27,7 @@ public class CreateCashRegisterDetailService implements CreateCashRegisterDetail
 
     @Transactional(rollbackFor = AppException.class)
     @Override
-    public MyCashRegistersReports call(CashRegisterDetailRequest param) {
+    public MyCashRegistersReports call(CreateCashRegisterDetailDto param) {
         final var today = dateTimeService.dateNow();
         final var startDate = dateTimeService.getMinByDate(today);
         final var endDate = dateTimeService.now();

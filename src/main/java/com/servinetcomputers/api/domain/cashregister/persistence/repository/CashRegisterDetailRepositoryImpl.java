@@ -1,7 +1,7 @@
 package com.servinetcomputers.api.domain.cashregister.persistence.repository;
 
-import com.servinetcomputers.api.domain.cashregister.domain.dto.CashRegisterDetailRequest;
 import com.servinetcomputers.api.domain.cashregister.domain.dto.CashRegisterDetailResponse;
+import com.servinetcomputers.api.domain.cashregister.domain.dto.CreateCashRegisterDetailDto;
 import com.servinetcomputers.api.domain.cashregister.domain.repository.CashRegisterDetailRepository;
 import com.servinetcomputers.api.domain.cashregister.persistence.JpaCashRegisterDetailRepository;
 import com.servinetcomputers.api.domain.cashregister.persistence.mapper.CashRegisterDetailMapper;
@@ -20,7 +20,7 @@ public class CashRegisterDetailRepositoryImpl implements CashRegisterDetailRepos
     private final CashRegisterDetailMapper mapper;
 
     @Override
-    public void save(CashRegisterDetailRequest request) {
+    public void save(CreateCashRegisterDetailDto request) {
         final var entity = mapper.toEntity(request);
         repository.save(entity);
     }

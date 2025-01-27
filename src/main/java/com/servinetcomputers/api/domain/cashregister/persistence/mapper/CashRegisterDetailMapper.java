@@ -1,16 +1,17 @@
 package com.servinetcomputers.api.domain.cashregister.persistence.mapper;
 
 import com.servinetcomputers.api.domain.base.BaseMapper;
-import com.servinetcomputers.api.domain.cashregister.domain.dto.CashRegisterDetailRequest;
 import com.servinetcomputers.api.domain.cashregister.domain.dto.CashRegisterDetailResponse;
+import com.servinetcomputers.api.domain.cashregister.domain.dto.CreateCashRegisterDetailDto;
 import com.servinetcomputers.api.domain.cashregister.persistence.entity.CashRegisterDetail;
 import com.servinetcomputers.api.domain.user.persistence.mapper.UserMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import java.time.LocalTime;
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = {CashRegisterMapper.class, UserMapper.class, BaseMapper.class})
+@Mapper(componentModel = "spring", uses = {CashRegisterMapper.class, UserMapper.class, BaseMapper.class}, imports = LocalTime.class)
 public interface CashRegisterDetailMapper {
     @Mapping(target = "initialWorking", expression = "java(entity.getWorkingHours()[0])")
     @Mapping(target = "initialBreak", expression = "java(entity.getWorkingHours()[1])")
@@ -31,7 +32,7 @@ public interface CashRegisterDetailMapper {
     @Mapping(target = "enabled", ignore = true)
     @Mapping(target = "createdDate", ignore = true)
     @Mapping(target = "createdBy", ignore = true)
-    CashRegisterDetail toEntity(CashRegisterDetailRequest request);
+    CashRegisterDetail toEntity(CreateCashRegisterDetailDto request);
 
     @Mapping(target = "initialBase", source = "detailInitialBase")
     @Mapping(target = "finalBase", source = "detailFinalBase")

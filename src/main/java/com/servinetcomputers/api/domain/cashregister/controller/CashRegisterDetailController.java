@@ -28,7 +28,7 @@ public class CashRegisterDetailController {
     private final GetTransactionsUseCase getTransactionsUseCase;
 
     @PostMapping
-    public ResponseEntity<MyCashRegistersReports> register(@RequestBody CashRegisterDetailRequest request) {
+    public ResponseEntity<MyCashRegistersReports> register(@RequestBody CreateCashRegisterDetailDto request) {
         return ResponseEntity.ok(createCashRegisterDetailUseCase.call(request));
     }
 

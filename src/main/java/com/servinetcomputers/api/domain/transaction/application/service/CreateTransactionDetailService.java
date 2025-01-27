@@ -1,6 +1,7 @@
 package com.servinetcomputers.api.domain.transaction.application.service;
 
 import com.servinetcomputers.api.core.exception.AppException;
+import com.servinetcomputers.api.core.exception.NotFoundException;
 import com.servinetcomputers.api.domain.cashregister.domain.repository.CashRegisterDetailRepository;
 import com.servinetcomputers.api.domain.transaction.application.usecase.CreateTransactionDetailUseCase;
 import com.servinetcomputers.api.domain.transaction.domain.dto.TransactionDetailRequest;
@@ -26,7 +27,9 @@ public class CreateTransactionDetailService implements CreateTransactionDetailUs
         final var transaction = getTransaction(param.getDescription());
         param.setTransaction(transaction);
 
-        final var cashRegisterDetail = cashRegisterDetailRepository.get(param.getCashRegisterDetailId());
+        final var cashRegisterDetail = cashRegisterDetailRepository.get(param.getCashRegisterDetailId())
+                .orElseThrow(() -> new NotFoundException("No se encontró la caja en funcionamiento: #" + param.getCashRegisterDetailId()));
+
         param.setCashRegisterDetail(cashRegisterDetail);
 
         return repository.save(param);
