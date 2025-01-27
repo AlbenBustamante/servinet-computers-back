@@ -22,7 +22,6 @@ import static com.servinetcomputers.api.domain.cashregister.util.CashRegisterDet
 @Getter
 @Setter
 public class CashRegisterDetail extends Auditable {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cash_register_detail_id")
@@ -51,5 +50,4 @@ public class CashRegisterDetail extends Auditable {
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
-
 }

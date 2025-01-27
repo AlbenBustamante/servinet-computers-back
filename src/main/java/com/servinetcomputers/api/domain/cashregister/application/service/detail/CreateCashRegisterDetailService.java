@@ -10,7 +10,7 @@ import com.servinetcomputers.api.domain.cashregister.domain.dto.MyCashRegistersR
 import com.servinetcomputers.api.domain.cashregister.domain.repository.CashRegisterDetailRepository;
 import com.servinetcomputers.api.domain.cashregister.domain.repository.CashRegisterRepository;
 import com.servinetcomputers.api.domain.cashregister.util.CashRegisterStatus;
-import com.servinetcomputers.api.domain.user.application.usecase.GetCashRegisterReportsUseCase;
+import com.servinetcomputers.api.domain.user.application.usecase.GetUserCashRegisterReportsUseCase;
 import com.servinetcomputers.api.domain.user.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,7 +23,7 @@ public class CreateCashRegisterDetailService implements CreateCashRegisterDetail
     private final CashRegisterRepository cashRegisterRepository;
     private final UserRepository userRepository;
     private final DateTimeService dateTimeService;
-    private final GetCashRegisterReportsUseCase getReportsUseCase;
+    private final GetUserCashRegisterReportsUseCase getReportsUseCase;
 
     @Transactional(rollbackFor = AppException.class)
     @Override

@@ -26,7 +26,7 @@ public class CreateTransactionDetailService implements CreateTransactionDetailUs
         final var transaction = getTransaction(param.getDescription());
         param.setTransaction(transaction);
 
-        final var cashRegisterDetail = cashRegisterDetailRepository.getById(param.getCashRegisterDetailId());
+        final var cashRegisterDetail = cashRegisterDetailRepository.get(param.getCashRegisterDetailId());
         param.setCashRegisterDetail(cashRegisterDetail);
 
         return repository.save(param);

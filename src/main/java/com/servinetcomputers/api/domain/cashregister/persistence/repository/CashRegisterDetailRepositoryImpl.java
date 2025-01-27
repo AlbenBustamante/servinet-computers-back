@@ -3,41 +3,42 @@ package com.servinetcomputers.api.domain.cashregister.persistence.repository;
 import com.servinetcomputers.api.core.exception.NotFoundException;
 import com.servinetcomputers.api.domain.base.BaseDto;
 import com.servinetcomputers.api.domain.base.BaseMapper;
-import com.servinetcomputers.api.domain.cashregister.domain.dto.*;
+import com.servinetcomputers.api.domain.cashregister.domain.dto.CashRegisterDetailReportsDto;
+import com.servinetcomputers.api.domain.cashregister.domain.dto.CashRegisterDetailRequest;
+import com.servinetcomputers.api.domain.cashregister.domain.dto.CashRegisterDetailResponse;
 import com.servinetcomputers.api.domain.cashregister.domain.repository.CashRegisterDetailRepository;
 import com.servinetcomputers.api.domain.cashregister.persistence.JpaCashRegisterDetailRepository;
-import com.servinetcomputers.api.domain.cashregister.persistence.JpaCashRegisterRepository;
 import com.servinetcomputers.api.domain.cashregister.persistence.mapper.CashRegisterDetailMapper;
-import com.servinetcomputers.api.domain.cashregister.persistence.mapper.CashRegisterMapper;
 import com.servinetcomputers.api.domain.cashregister.util.CashRegisterDetailStatus;
 import com.servinetcomputers.api.domain.cashregister.util.CashRegisterStatus;
-import com.servinetcomputers.api.domain.transaction.persistence.JpaTransactionDetailRepository;
-import com.servinetcomputers.api.domain.user.domain.dto.UserResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.ZoneId;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Repository
 public class CashRegisterDetailRepositoryImpl implements CashRegisterDetailRepository {
     private final JpaCashRegisterDetailRepository repository;
-    private final JpaCashRegisterRepository jpaCashRegisterRepository;
-    private final JpaTransactionDetailRepository jpaTransactionDetailRepository;
     private final CashRegisterDetailMapper mapper;
-    private final CashRegisterMapper cashRegisterMapper;
     private final BaseMapper baseMapper;
-    private final ZoneId zoneId;
 
     @Override
-    public boolean existsById(int id) {
-        return repository.existsByIdAndEnabledTrue(id);
+    public void save(CashRegisterDetailRequest request) {
+        final var entity = mapper.toEntity(request);
+        repository.save(entity);
+    }
+
+    @Override
+    public CashRegisterDetailResponse save(CashRegisterDetailResponse response) {
+        final var entity = mapper.toEntity(response);
+        final var newDetail = repository.save(entity);
+
+        return mapper.toResponse(newDetail);
     }
 
     @Override
@@ -46,15 +47,20 @@ public class CashRegisterDetailRepositoryImpl implements CashRegisterDetailRepos
     }
 
     @Override
-    public List<CashRegisterDetailResponse> getAllByUserId(int userId, LocalDateTime startDate, LocalDateTime endDate) {
+    public boolean existsById(int id) {
+        return repository.existsByIdAndEnabledTrue(id);
+    }
+
+    @Override
+    public List<CashRegisterDetailResponse> getAllByUserIdBetween(int userId, LocalDateTime startDate, LocalDateTime endDate) {
         final var details = repository.findAllByUserIdAndCreatedDateBetweenAndEnabledTrue(userId, startDate, endDate);
         return mapper.toResponses(details);
     }
 
     @Override
-    public void save(CashRegisterDetailRequest request) {
-        final var entity = mapper.toEntity(request);
-        repository.save(entity);
+    public List<CashRegisterDetailResponse> getAllByUserIdWhereStatusIsNotBetween(int userId, LocalDateTime startDate, LocalDateTime endDate, CashRegisterStatus status) {
+        final var details = repository.findAllByUserIdAndCreatedDateBetweenAndEnabledTrueAndCashRegisterStatusNot(userId, startDate, endDate, status);
+        return mapper.toResponses(details);
     }
 
     @Override
@@ -67,43 +73,9 @@ public class CashRegisterDetailRepositoryImpl implements CashRegisterDetailRepos
     }
 
     @Override
-    public AlreadyExistsCashRegisterDetailDto alreadyExists() {
-        final var details = repository.findAllByUserIdAndCreatedDateBetweenAndEnabledTrueAndCashRegisterStatusNot(userId(), toDateTime(LocalTime.MIN), toDateTime(LocalTime.MAX), CashRegisterStatus.AVAILABLE);
-        final var alreadyExists = !details.isEmpty();
-
-        final var myCashRegisters = alreadyExists ? getReportsByUserId(userId()) : null;
-
-        final List<CashRegisterResponse> cashRegisters = alreadyExists
-                ? List.of()
-                : cashRegisterMapper.toResponses(jpaCashRegisterRepository.findAllByEnabledTrue());
-
-        return new AlreadyExistsCashRegisterDetailDto(alreadyExists, myCashRegisters, cashRegisters);
-    }
-
-    @Override
-    public CashRegisterDetailResponse getById(int cashRegisterDetailId) {
-        final var detail = repository.findByIdAndEnabledTrue(cashRegisterDetailId)
-                .orElseThrow(() -> new NotFoundException("No se encontró la caja en funcionamiento"));
-
-        return mapper.toResponse(detail);
-    }
-
-    @Override
-    public MyCashRegistersReports getReportsByUserId(int userId) {
-        final var details = repository.findAllByUserIdAndCreatedDateBetweenAndEnabledTrue(userId, toDateTime(LocalTime.MIN), toDateTime(LocalTime.now()));
-        final var cashRegisterDetails = mapper.toResponses(details);
-        final List<CashRegisterDetailReportsDto> reports = new ArrayList<>(details.size());
-
-        var total = new CashRegisterDetailReportsDto(cashRegisterDetails.get(0), 0, 0, 0, 0, 0, 0, 0, 0, 0);
-
-        for (final var cashRegisterDetail : cashRegisterDetails) {
-            final var report = getCashRegistersReports(cashRegisterDetail);
-
-            reports.add(report);
-            total = total.sum(report);
-        }
-
-        return new MyCashRegistersReports(reports, total);
+    public Optional<CashRegisterDetailResponse> get(int cashRegisterDetailId) {
+        final var detail = repository.findByIdAndEnabledTrue(cashRegisterDetailId);
+        return detail.map(mapper::toResponse);
     }
 
     @Override
@@ -170,15 +142,5 @@ public class CashRegisterDetailRepositoryImpl implements CashRegisterDetailRepos
         repository.save(cashRegisterDetail.get());
 
         return true;
-    }
-
-    private int userId() {
-        final var auth = SecurityContextHolder.getContext().getAuthentication();
-
-        return ((UserResponse) auth.getPrincipal()).getId();
-    }
-
-    private LocalDateTime toDateTime(LocalTime time) {
-        return LocalDateTime.of(LocalDate.now(zoneId), time);
     }
 }

@@ -15,6 +15,6 @@ public class GetCashRegisterDetailByIdService implements GetCashRegisterDetailBy
     @Transactional(readOnly = true)
     @Override
     public CashRegisterDetailResponse call(Integer param) {
-        return repository.getById(param);
+        return repository.get(param);
     }
 }

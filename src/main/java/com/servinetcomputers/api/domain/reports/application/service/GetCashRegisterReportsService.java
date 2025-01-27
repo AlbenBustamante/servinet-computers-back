@@ -1,51 +1,23 @@
-package com.servinetcomputers.api.domain.user.application.service;
+package com.servinetcomputers.api.domain.reports.application.service;
 
 import com.servinetcomputers.api.core.datetime.DateTimeService;
 import com.servinetcomputers.api.domain.cashregister.domain.dto.CashRegisterDetailReportsDto;
 import com.servinetcomputers.api.domain.cashregister.domain.dto.CashRegisterDetailResponse;
-import com.servinetcomputers.api.domain.cashregister.domain.dto.MyCashRegistersReports;
-import com.servinetcomputers.api.domain.cashregister.domain.repository.CashRegisterDetailRepository;
 import com.servinetcomputers.api.domain.expense.domain.repository.ExpenseRepository;
+import com.servinetcomputers.api.domain.reports.application.usecase.GetCashRegisterReportsUseCase;
 import com.servinetcomputers.api.domain.transaction.domain.repository.TransactionDetailRepository;
-import com.servinetcomputers.api.domain.user.application.usecase.GetCashRegisterReportsUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @RequiredArgsConstructor
 @Service
 public class GetCashRegisterReportsService implements GetCashRegisterReportsUseCase {
-    private final CashRegisterDetailRepository repository;
     private final TransactionDetailRepository transactionDetailRepository;
     private final ExpenseRepository expenseRepository;
     private final DateTimeService dateTimeService;
 
-    @Transactional(readOnly = true)
     @Override
-    public MyCashRegistersReports call(Integer param) {
-        final var today = dateTimeService.dateNow();
-        final var startDate = dateTimeService.getMinByDate(today);
-        final var endDate = dateTimeService.now();
-
-        final var details = repository.getAllByUserId(param, startDate, endDate);
-        final List<CashRegisterDetailReportsDto> reports = new ArrayList<>(details.size());
-
-        var total = CashRegisterDetailReportsDto.empty(details.get(0));
-
-        for (final var cashRegisterDetail : details) {
-            final var report = getCashRegistersReports(cashRegisterDetail);
-
-            reports.add(report);
-            total = total.sum(report);
-        }
-
-        return new MyCashRegistersReports(reports, total);
-    }
-
-    private CashRegisterDetailReportsDto getCashRegistersReports(CashRegisterDetailResponse cashRegisterDetail) {
+    public CashRegisterDetailReportsDto call(CashRegisterDetailResponse cashRegisterDetail) {
         final var startDate = cashRegisterDetail.getCreatedDate();
         final var endDate = dateTimeService.now();
         final var code = cashRegisterDetail.getCreatedBy();

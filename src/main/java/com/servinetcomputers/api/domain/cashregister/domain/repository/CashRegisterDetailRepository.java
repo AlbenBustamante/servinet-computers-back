@@ -1,13 +1,20 @@
 package com.servinetcomputers.api.domain.cashregister.domain.repository;
 
 import com.servinetcomputers.api.domain.base.BaseDto;
-import com.servinetcomputers.api.domain.cashregister.domain.dto.*;
+import com.servinetcomputers.api.domain.cashregister.domain.dto.CashRegisterDetailReportsDto;
+import com.servinetcomputers.api.domain.cashregister.domain.dto.CashRegisterDetailRequest;
+import com.servinetcomputers.api.domain.cashregister.domain.dto.CashRegisterDetailResponse;
 import com.servinetcomputers.api.domain.cashregister.util.CashRegisterStatus;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 public interface CashRegisterDetailRepository {
+    void save(CashRegisterDetailRequest request);
+
+    CashRegisterDetailResponse save(CashRegisterDetailResponse response);
+
     boolean existsById(int id);
 
     /**
@@ -21,17 +28,13 @@ public interface CashRegisterDetailRepository {
      */
     boolean existsByUserIdAndStatusNot(int userId, LocalDateTime startDate, LocalDateTime endDate, CashRegisterStatus status);
 
-    List<CashRegisterDetailResponse> getAllByUserId(int userId, LocalDateTime startDate, LocalDateTime endDate);
+    List<CashRegisterDetailResponse> getAllByUserIdBetween(int userId, LocalDateTime startDate, LocalDateTime endDate);
 
-    void save(CashRegisterDetailRequest request);
+    List<CashRegisterDetailResponse> getAllByUserIdWhereStatusIsNotBetween(int userId, LocalDateTime startDate, LocalDateTime endDate, CashRegisterStatus status);
 
     List<CashRegisterDetailResponse> getAllOfToday();
 
-    AlreadyExistsCashRegisterDetailDto alreadyExists();
-
-    CashRegisterDetailResponse getById(int cashRegisterDetailId);
-
-    MyCashRegistersReports getReportsByUserId(int userId);
+    Optional<CashRegisterDetailResponse> get(int cashRegisterDetailId);
 
     CashRegisterDetailReportsDto getCashRegisterDetailReports(int cashRegisterDetailId);
 

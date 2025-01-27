@@ -12,6 +12,10 @@ import java.util.List;
 
 @Mapper(componentModel = "spring", uses = {CashRegisterMapper.class, UserMapper.class, BaseMapper.class})
 public interface CashRegisterDetailMapper {
+    @Mapping(target = "initialWorking", expression = "java(entity.getWorkingHours()[0])")
+    @Mapping(target = "initialBreak", expression = "java(entity.getWorkingHours()[1])")
+    @Mapping(target = "finalWorking", expression = "java(entity.getWorkingHours()[2])")
+    @Mapping(target = "finalBreak", expression = "java(entity.getWorkingHours()[3])")
     @Mapping(target = "userId", source = "user.id")
     @Mapping(target = "detailFinalBase", source = "finalBase")
     @Mapping(target = "detailInitialBase", source = "initialBase")
@@ -29,6 +33,8 @@ public interface CashRegisterDetailMapper {
     @Mapping(target = "createdBy", ignore = true)
     CashRegisterDetail toEntity(CashRegisterDetailRequest request);
 
+    @Mapping(target = "initialBase", source = "detailInitialBase")
+    @Mapping(target = "finalBase", source = "detailFinalBase")
     @Mapping(target = "workingHours", ignore = true)
     @Mapping(target = "user", ignore = true)
     CashRegisterDetail toEntity(CashRegisterDetailResponse response);

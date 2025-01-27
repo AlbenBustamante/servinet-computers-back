@@ -4,31 +4,27 @@ import com.servinetcomputers.api.domain.ModelResponse;
 import com.servinetcomputers.api.domain.base.BaseDto;
 import com.servinetcomputers.api.domain.cashregister.util.CashRegisterDetailStatus;
 import lombok.Getter;
+import lombok.Setter;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
+@Setter
 @Getter
 public class CashRegisterDetailResponse extends ModelResponse {
     private final int userId, initialBase, finalBase;
     private final String baseObservation;
-    private final LocalDateTime initialWorking, initialBreak, finalBreak, finalWorking;
-    private final BaseDto detailInitialBase, detailFinalBase;
-    private final CashRegisterDetailStatus status;
+    private final BaseDto detailInitialBase;
     private final CashRegisterResponse cashRegister;
+    private BaseDto detailFinalBase;
+    private LocalTime initialWorking, initialBreak, finalBreak, finalWorking;
+    private CashRegisterDetailStatus status;
 
     public CashRegisterDetailResponse(int id, boolean enabled, LocalDateTime createdDate, LocalDateTime modifiedDate, String createdBy, String modifiedBy,
-                                      int userId, LocalTime[] workingHours, String baseObservation, BaseDto detailInitialBase, BaseDto detailFinalBase,
+                                      int userId, String baseObservation, BaseDto detailInitialBase, BaseDto detailFinalBase,
                                       CashRegisterDetailStatus status, CashRegisterResponse cashRegister) {
         super(id, enabled, createdDate, modifiedDate, createdBy, modifiedBy);
         this.userId = userId;
-
-        this.initialWorking = LocalDateTime.of(LocalDate.now(), workingHours[0]);
-        this.initialBreak = workingHours[1] != null ? LocalDateTime.of(LocalDate.now(), workingHours[1]) : null;
-        this.finalBreak = workingHours[2] != null ? LocalDateTime.of(LocalDate.now(), workingHours[2]) : null;
-        this.finalWorking = workingHours[3] != null ? LocalDateTime.of(LocalDate.now(), workingHours[3]) : null;
-
         this.baseObservation = baseObservation;
         this.detailInitialBase = detailInitialBase;
         this.detailFinalBase = detailFinalBase;

@@ -23,7 +23,7 @@ public class UserController {
     private final GetUserUseCase getUserUseCase;
     private final UpdateUserUseCase updateUserUseCase;
     private final DeleteUserUseCase deleteUserUseCase;
-    private final GetCashRegisterReportsUseCase getReportsUseCase;
+    private final GetUserCashRegisterReportsUseCase getReportsUseCase;
     private final IReportsService reportsService;
 
     @GetMapping
