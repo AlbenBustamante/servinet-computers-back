@@ -17,7 +17,7 @@ public class GetLastBaseService implements GetLastBaseUseCase {
     @Transactional(readOnly = true)
     @Override
     public BaseDto call(Integer param) {
-        final var cashRegisterDetailPage = repository.getLastFinalBaseFromCashRegisterId(param);
+        final var cashRegisterDetailPage = repository.getLastFinalBase(param);
 
         if (cashRegisterDetailPage.isEmpty()) {
             return BaseDto.zero();

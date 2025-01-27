@@ -1,7 +1,5 @@
 package com.servinetcomputers.api.domain.cashregister.persistence.repository;
 
-import com.servinetcomputers.api.core.exception.NotFoundException;
-import com.servinetcomputers.api.domain.cashregister.domain.dto.CashRegisterDetailReportsDto;
 import com.servinetcomputers.api.domain.cashregister.domain.dto.CashRegisterDetailRequest;
 import com.servinetcomputers.api.domain.cashregister.domain.dto.CashRegisterDetailResponse;
 import com.servinetcomputers.api.domain.cashregister.domain.repository.CashRegisterDetailRepository;
@@ -67,13 +65,5 @@ public class CashRegisterDetailRepositoryImpl implements CashRegisterDetailRepos
     public Optional<CashRegisterDetailResponse> get(int cashRegisterDetailId) {
         final var detail = repository.findByIdAndEnabledTrue(cashRegisterDetailId);
         return detail.map(mapper::toResponse);
-    }
-
-    @Override
-    public CashRegisterDetailReportsDto getCashRegisterDetailReports(int cashRegisterDetailId) {
-        final var cashRegisterDetail = repository.findByIdAndEnabledTrue(cashRegisterDetailId)
-                .orElseThrow(() -> new NotFoundException("No se encontró la jornada #" + cashRegisterDetailId));
-
-        return getCashRegistersReports(mapper.toResponse(cashRegisterDetail));
     }
 }

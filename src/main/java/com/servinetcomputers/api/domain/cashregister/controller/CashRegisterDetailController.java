@@ -19,7 +19,7 @@ public class CashRegisterDetailController {
     private final CashRegisterDetailAlreadyExistsUseCase alreadyExistsUseCase;
     private final GetAllCashRegisterDetailsOfTodayUseCase getAllOfTodayUseCase;
     private final GetCashRegisterDetailByIdUseCase getByIdUseCase;
-    private final GetCashRegisterDetailReportsUseCase getReportsUseCase;
+    private final GetCashRegisterDetailReportsByIdUseCase getReportsUseCase;
     private final StartBreakUseCase startBreakUseCase;
     private final EndBreakUseCase endBreakUseCase;
     private final CloseUseCase closeUseCase;

@@ -4,14 +4,14 @@ import com.servinetcomputers.api.core.datetime.DateTimeService;
 import com.servinetcomputers.api.domain.cashregister.domain.dto.CashRegisterDetailReportsDto;
 import com.servinetcomputers.api.domain.cashregister.domain.dto.CashRegisterDetailResponse;
 import com.servinetcomputers.api.domain.expense.domain.repository.ExpenseRepository;
-import com.servinetcomputers.api.domain.reports.application.usecase.GetCashRegisterReportsUseCase;
+import com.servinetcomputers.api.domain.reports.application.usecase.GetCashRegisterDetailReportsUseCase;
 import com.servinetcomputers.api.domain.transaction.domain.repository.TransactionDetailRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
-public class GetCashRegisterReportsService implements GetCashRegisterReportsUseCase {
+public class GetCashRegisterDetailReportsService implements GetCashRegisterDetailReportsUseCase {
     private final TransactionDetailRepository transactionDetailRepository;
     private final ExpenseRepository expenseRepository;
     private final DateTimeService dateTimeService;

@@ -1,6 +1,5 @@
 package com.servinetcomputers.api.domain.cashregister.domain.repository;
 
-import com.servinetcomputers.api.domain.cashregister.domain.dto.CashRegisterDetailReportsDto;
 import com.servinetcomputers.api.domain.cashregister.domain.dto.CashRegisterDetailRequest;
 import com.servinetcomputers.api.domain.cashregister.domain.dto.CashRegisterDetailResponse;
 import com.servinetcomputers.api.domain.cashregister.util.CashRegisterStatus;
@@ -34,6 +33,4 @@ public interface CashRegisterDetailRepository {
     List<CashRegisterDetailResponse> getAllBetween(LocalDateTime startDate, LocalDateTime endDate);
 
     Optional<CashRegisterDetailResponse> get(int cashRegisterDetailId);
-
-    CashRegisterDetailReportsDto getCashRegisterDetailReports(int cashRegisterDetailId);
 }

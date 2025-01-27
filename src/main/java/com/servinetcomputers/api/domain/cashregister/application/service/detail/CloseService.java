@@ -9,7 +9,7 @@ import com.servinetcomputers.api.domain.cashregister.domain.dto.CashRegisterDeta
 import com.servinetcomputers.api.domain.cashregister.domain.repository.CashRegisterDetailRepository;
 import com.servinetcomputers.api.domain.cashregister.util.CashRegisterDetailStatus;
 import com.servinetcomputers.api.domain.cashregister.util.CashRegisterStatus;
-import com.servinetcomputers.api.domain.reports.application.usecase.GetCashRegisterReportsUseCase;
+import com.servinetcomputers.api.domain.reports.application.usecase.GetCashRegisterDetailReportsUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class CloseService implements CloseUseCase {
     private final CashRegisterDetailRepository repository;
     private final DateTimeService dateTimeService;
-    private final GetCashRegisterReportsUseCase getCashRegisterReportsUseCase;
+    private final GetCashRegisterDetailReportsUseCase getCashRegisterDetailReportsUseCase;
 
     @Transactional(rollbackFor = AppException.class)
     @Override
@@ -34,6 +34,6 @@ public class CloseService implements CloseUseCase {
 
         final var closedCashRegisterDetail = repository.save(cashRegisterDetail);
 
-        return getCashRegisterReportsUseCase.call(closedCashRegisterDetail);
+        return getCashRegisterDetailReportsUseCase.call(closedCashRegisterDetail);
     }
 }

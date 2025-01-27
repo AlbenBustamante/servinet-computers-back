@@ -1,13 +1,11 @@
 package com.servinetcomputers.api.domain.cashregister.persistence.repository;
 
-import com.servinetcomputers.api.domain.base.BaseMapper;
 import com.servinetcomputers.api.domain.cashregister.domain.dto.CashRegisterRequest;
 import com.servinetcomputers.api.domain.cashregister.domain.dto.CashRegisterResponse;
 import com.servinetcomputers.api.domain.cashregister.domain.repository.CashRegisterRepository;
 import com.servinetcomputers.api.domain.cashregister.persistence.JpaCashRegisterDetailRepository;
 import com.servinetcomputers.api.domain.cashregister.persistence.JpaCashRegisterRepository;
 import com.servinetcomputers.api.domain.cashregister.persistence.mapper.CashRegisterMapper;
-import com.servinetcomputers.api.domain.cashregister.util.CashRegisterStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,7 +19,6 @@ import java.util.Optional;
 public class CashRegisterRepositoryImpl implements CashRegisterRepository {
     private final JpaCashRegisterRepository repository;
     private final JpaCashRegisterDetailRepository jpaCashRegisterDetailRepository;
-    private final BaseMapper baseMapper;
     private final CashRegisterMapper mapper;
 
     @Override
@@ -58,23 +55,7 @@ public class CashRegisterRepositoryImpl implements CashRegisterRepository {
     }
 
     @Override
-    public Page<String> getLastFinalBaseFromCashRegisterId(int cashRegisterId) {
+    public Page<String> getLastFinalBase(int cashRegisterId) {
         return jpaCashRegisterDetailRepository.findBaseByCashRegisterId(cashRegisterId, PageRequest.of(0, 1));
-    }
-
-    @Override
-    public boolean delete(int id) {
-        final var cashRegister = repository.findById(id);
-
-        if (cashRegister.isEmpty()) {
-            return false;
-        }
-
-        cashRegister.get().setStatus(CashRegisterStatus.DISABLED);
-        cashRegister.get().setEnabled(false);
-
-        repository.save(cashRegister.get());
-
-        return true;
     }
 }

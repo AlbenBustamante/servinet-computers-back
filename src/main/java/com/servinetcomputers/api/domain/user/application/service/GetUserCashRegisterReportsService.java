@@ -4,7 +4,7 @@ import com.servinetcomputers.api.core.datetime.DateTimeService;
 import com.servinetcomputers.api.domain.cashregister.domain.dto.CashRegisterDetailReportsDto;
 import com.servinetcomputers.api.domain.cashregister.domain.dto.MyCashRegistersReports;
 import com.servinetcomputers.api.domain.cashregister.domain.repository.CashRegisterDetailRepository;
-import com.servinetcomputers.api.domain.reports.application.usecase.GetCashRegisterReportsUseCase;
+import com.servinetcomputers.api.domain.reports.application.usecase.GetCashRegisterDetailReportsUseCase;
 import com.servinetcomputers.api.domain.user.application.usecase.GetUserCashRegisterReportsUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,7 +18,7 @@ import java.util.List;
 public class GetUserCashRegisterReportsService implements GetUserCashRegisterReportsUseCase {
     private final CashRegisterDetailRepository repository;
     private final DateTimeService dateTimeService;
-    private final GetCashRegisterReportsUseCase getCashRegisterReportsUseCase;
+    private final GetCashRegisterDetailReportsUseCase getCashRegisterDetailReportsUseCase;
 
     @Transactional(readOnly = true)
     @Override
@@ -33,7 +33,7 @@ public class GetUserCashRegisterReportsService implements GetUserCashRegisterRep
         var total = CashRegisterDetailReportsDto.empty(details.get(0));
 
         for (final var cashRegisterDetail : details) {
-            final var report = getCashRegisterReportsUseCase.call(cashRegisterDetail);
+            final var report = getCashRegisterDetailReportsUseCase.call(cashRegisterDetail);
 
             reports.add(report);
             total = total.sum(report);

@@ -18,5 +18,5 @@ public interface CashRegisterRepository {
 
     boolean existsByNumeral(int numeral);
 
-    Page<String> getLastFinalBaseFromCashRegisterId(int cashRegisterId);
+    Page<String> getLastFinalBase(int cashRegisterId);
 }
