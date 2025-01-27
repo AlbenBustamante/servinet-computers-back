@@ -1,25 +1,22 @@
 package com.servinetcomputers.api.domain.cashregister.domain.repository;
 
-import com.servinetcomputers.api.domain.base.BaseDto;
 import com.servinetcomputers.api.domain.cashregister.domain.dto.CashRegisterRequest;
 import com.servinetcomputers.api.domain.cashregister.domain.dto.CashRegisterResponse;
-import com.servinetcomputers.api.domain.cashregister.domain.dto.UpdateCashRegisterDto;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface CashRegisterRepository {
-    Optional<CashRegisterResponse> get(int id);
+    CashRegisterResponse save(CashRegisterRequest request);
 
     CashRegisterResponse save(CashRegisterResponse response);
 
-    CashRegisterResponse create(CashRegisterRequest request);
+    Optional<CashRegisterResponse> get(int id);
 
     List<CashRegisterResponse> getAll();
 
-    BaseDto getLastFinalBaseFromCashRegisterId(int cashRegisterId);
+    boolean existsByNumeral(int numeral);
 
-    CashRegisterResponse update(UpdateCashRegisterDto updateCashRegisterDto);
-
-    boolean delete(int id);
+    Page<String> getLastFinalBaseFromCashRegisterId(int cashRegisterId);
 }

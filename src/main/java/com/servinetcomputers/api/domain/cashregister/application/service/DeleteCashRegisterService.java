@@ -1,8 +1,10 @@
 package com.servinetcomputers.api.domain.cashregister.application.service;
 
 import com.servinetcomputers.api.core.exception.AppException;
+import com.servinetcomputers.api.core.exception.NotFoundException;
 import com.servinetcomputers.api.domain.cashregister.application.usecase.DeleteCashRegisterUseCase;
 import com.servinetcomputers.api.domain.cashregister.domain.repository.CashRegisterRepository;
+import com.servinetcomputers.api.domain.cashregister.util.CashRegisterStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
@@ -18,7 +20,13 @@ public class DeleteCashRegisterService implements DeleteCashRegisterUseCase {
     @Transactional(rollbackFor = AppException.class)
     @Secured(value = ADMIN_AUTHORITY)
     @Override
-    public Boolean call(Integer param) {
-        return repository.delete(param);
+    public void call(Integer param) {
+        final var cashRegister = repository.get(param)
+                .orElseThrow(() -> new NotFoundException("No se encontró la caja: #" + param));
+
+        cashRegister.setStatus(CashRegisterStatus.DISABLED);
+        cashRegister.setEnabled(false);
+
+        repository.save(cashRegister);
     }
 }

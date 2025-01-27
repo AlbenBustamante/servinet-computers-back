@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Getter
 public class CashRegisterResponse extends ModelResponse {
     private final int numeral;
-    private final String description;
+    private String description;
     private CashRegisterStatus status;
 
     public CashRegisterResponse(int id, boolean enabled, LocalDateTime createdDate, LocalDateTime modifiedDate, String createdBy,

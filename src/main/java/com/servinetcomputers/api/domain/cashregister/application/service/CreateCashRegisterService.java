@@ -1,6 +1,7 @@
 package com.servinetcomputers.api.domain.cashregister.application.service;
 
 import com.servinetcomputers.api.core.exception.AppException;
+import com.servinetcomputers.api.core.exception.BadRequestException;
 import com.servinetcomputers.api.domain.cashregister.application.usecase.CreateCashRegisterUseCase;
 import com.servinetcomputers.api.domain.cashregister.domain.dto.CashRegisterRequest;
 import com.servinetcomputers.api.domain.cashregister.domain.dto.CashRegisterResponse;
@@ -21,6 +22,10 @@ public class CreateCashRegisterService implements CreateCashRegisterUseCase {
     @Secured(value = ADMIN_AUTHORITY)
     @Override
     public CashRegisterResponse call(CashRegisterRequest request) {
-        return repository.create(request);
+        if (repository.existsByNumeral(request.getNumeral())) {
+            throw new BadRequestException("El numeral " + request.getNumeral() + " ya está siendo usado");
+        }
+
+        return repository.save(request);
     }
 }

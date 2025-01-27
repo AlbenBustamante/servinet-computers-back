@@ -1,6 +1,7 @@
 package com.servinetcomputers.api.domain.cashregister.application.service;
 
 import com.servinetcomputers.api.core.exception.AppException;
+import com.servinetcomputers.api.core.exception.NotFoundException;
 import com.servinetcomputers.api.domain.cashregister.application.usecase.UpdateCashRegisterUseCase;
 import com.servinetcomputers.api.domain.cashregister.domain.dto.CashRegisterResponse;
 import com.servinetcomputers.api.domain.cashregister.domain.dto.UpdateCashRegisterDto;
@@ -20,7 +21,13 @@ public class UpdateCashRegisterService implements UpdateCashRegisterUseCase {
     @Transactional(rollbackFor = AppException.class)
     @Secured(value = ADMIN_AUTHORITY)
     @Override
-    public CashRegisterResponse call(Integer id, UpdateCashRegisterDto param) {
-        return repository.update(param);
+    public CashRegisterResponse call(Integer id, UpdateCashRegisterDto updateCashRegisterDto) {
+        final var cashRegister = repository.get(id)
+                .orElseThrow(() -> new NotFoundException("Caja registradora no encontrada: #" + id));
+
+        cashRegister.setDescription(updateCashRegisterDto.description() != null ? updateCashRegisterDto.description() : cashRegister.getDescription());
+        cashRegister.setStatus(updateCashRegisterDto.status() != null ? updateCashRegisterDto.status() : cashRegister.getStatus());
+
+        return repository.save(cashRegister);
     }
 }

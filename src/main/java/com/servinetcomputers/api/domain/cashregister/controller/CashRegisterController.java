@@ -43,6 +43,7 @@ public class CashRegisterController {
 
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<Boolean> delete(@PathVariable("id") int cashRegisterId) {
-        return ResponseEntity.ok(deleteCashRegisterUseCase.call(cashRegisterId));
+        deleteCashRegisterUseCase.call(cashRegisterId);
+        return ResponseEntity.ok().build();
     }
 }

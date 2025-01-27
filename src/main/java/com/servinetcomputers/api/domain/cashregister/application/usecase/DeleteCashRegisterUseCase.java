@@ -1,6 +1,6 @@
 package com.servinetcomputers.api.domain.cashregister.application.usecase;
 
-import com.servinetcomputers.api.core.usecase.UseCase;
+import com.servinetcomputers.api.core.usecase.UseCaseWithoutReturn;
 
-public interface DeleteCashRegisterUseCase extends UseCase<Boolean, Integer> {
+public interface DeleteCashRegisterUseCase extends UseCaseWithoutReturn<Integer> {
 }
