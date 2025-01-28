@@ -19,7 +19,6 @@ public interface UserMapper {
 
     @Mapping(target = "modifiedBy", ignore = true)
     @Mapping(target = "createdBy", ignore = true)
-    @Mapping(target = "code", ignore = true)
     @Mapping(target = "modifiedDate", ignore = true)
     @Mapping(target = "enabled", ignore = true)
     @Mapping(target = "id", ignore = true)
