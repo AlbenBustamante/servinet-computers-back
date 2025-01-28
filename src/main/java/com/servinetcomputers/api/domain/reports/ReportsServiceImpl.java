@@ -11,14 +11,12 @@ import com.servinetcomputers.api.domain.platform.persistence.JpaPlatformTransfer
 import com.servinetcomputers.api.domain.platform.persistence.mapper.PlatformBalanceMapper;
 import com.servinetcomputers.api.domain.reports.abs.IReportsService;
 import com.servinetcomputers.api.domain.reports.abs.ReportsMapper;
-import com.servinetcomputers.api.domain.reports.dto.DashboardResponse;
 import com.servinetcomputers.api.domain.reports.dto.Reports;
 import com.servinetcomputers.api.domain.reports.dto.ReportsResponse;
 import com.servinetcomputers.api.domain.safes.persistence.JpaSafeRepository;
 import com.servinetcomputers.api.domain.safes.persistence.mapper.SafeMapper;
 import com.servinetcomputers.api.domain.transaction.persistence.JpaTransactionDetailRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,8 +25,6 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.servinetcomputers.api.core.security.util.SecurityConstants.ADMIN_AUTHORITY;
 
 /**
  * The Admin Dashboard Reports service implementation.
@@ -48,51 +44,6 @@ public class ReportsServiceImpl implements IReportsService {
     private final PlatformBalanceMapper platformBalanceMapper;
     private final ReportsMapper reportsMapper;
     private final SafeMapper safeMapper;
-
-    @Transactional(readOnly = true)
-    @Secured(value = ADMIN_AUTHORITY)
-    @Override
-    public DashboardResponse getDashboard() {
-        final var startDate = LocalDateTime.of(LocalDate.now(), LocalTime.MIN);
-        final var endDate = LocalDateTime.of(LocalDate.now(), LocalTime.now());
-
-        final var platformBalances = jpaPlatformBalanceRepository.findAllByEnabledTrueAndCreatedDateBetween(startDate, endDate);
-        final var totalPlatformBalances = jpaPlatformBalanceRepository.calculateTotalByFinalBalanceAndCreatedDateBetween(startDate, endDate);
-
-        final var platformBalancesTotal = totalPlatformBalances != null ? totalPlatformBalances : 0;
-
-        final var platformsStats = getPlatformsStats(platformBalanceMapper.toResponses(platformBalances), startDate, endDate);
-
-        final var cashRegisterDetails = jpaCashRegisterDetailRepository.findAllByEnabledTrueAndCreatedDateBetween(startDate, endDate);
-
-        var cashRegistersTotal = 0;
-
-        for (final var cashRegisterDetail : cashRegisterDetails) {
-            final var response = baseMapper.toDto(cashRegisterDetail.getFinalBase());
-            final var base = response != null ? response.calculate() : 0;
-            cashRegistersTotal += base;
-        }
-
-        final var safes = jpaSafeRepository.findAllByEnabledTrue();
-        final var safesTotal = 0;
-
-        /* for (final var safe : safes) {
-            final var finalBase = baseMapper.toDto(safe.getFinalBase());
-            safesTotal += finalBase.calculateSafeBase();
-        } */
-
-        final var totalBalance = platformBalancesTotal + cashRegistersTotal + safesTotal;
-
-        return new DashboardResponse(
-                totalBalance,
-                platformsStats,
-                platformBalancesTotal,
-                cashRegisterDetailMapper.toResponses(cashRegisterDetails),
-                cashRegistersTotal,
-                safeMapper.toResponses(safes),
-                safesTotal
-        );
-    }
 
     @Transactional(readOnly = true)
     @Override

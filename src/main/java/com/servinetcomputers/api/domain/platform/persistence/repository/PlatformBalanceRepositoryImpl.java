@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -30,6 +31,18 @@ public class PlatformBalanceRepositoryImpl implements PlatformBalanceRepository 
     public Optional<PlatformBalanceResponse> get(int balanceId) {
         final var balance = repository.findByIdAndEnabledTrue(balanceId);
         return balance.map(mapper::toResponse);
+    }
+
+    @Override
+    public List<PlatformBalanceResponse> getAllBetween(LocalDateTime startDate, LocalDateTime endDate) {
+        final var balances = repository.findAllByEnabledTrueAndCreatedDateBetween(startDate, endDate);
+        return mapper.toResponses(balances);
+    }
+
+    @Override
+    public Integer calculateFinalBalanceBetween(LocalDateTime startDate, LocalDateTime endDate) {
+        final var total = repository.calculateTotalByFinalBalanceAndCreatedDateBetween(startDate, endDate);
+        return total != null ? total : 0;
     }
 
     @Override
