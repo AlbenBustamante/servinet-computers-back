@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.servinetcomputers.api.core.security.util.SecurityConstants.ADMIN_AUTHORITY;
+import static com.servinetcomputers.api.core.util.constants.SecurityConstants.ADMIN_AUTHORITY;
 
 @RequiredArgsConstructor
 @Service

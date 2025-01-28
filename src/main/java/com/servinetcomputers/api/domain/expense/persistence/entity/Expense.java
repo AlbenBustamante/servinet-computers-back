@@ -9,7 +9,7 @@ import lombok.Setter;
 import org.hibernate.type.TrueFalseConverter;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import static com.servinetcomputers.api.domain.expense.util.ExpenseConstants.DESCRIPTION_LENGTH;
+import static com.servinetcomputers.api.core.util.constants.ExpenseConstants.DESCRIPTION_LENGTH;
 
 @Entity
 @Table(name = "expenses")

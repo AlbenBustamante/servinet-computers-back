@@ -1,4 +1,4 @@
-package com.servinetcomputers.api.domain.cashregister.util;
+package com.servinetcomputers.api.core.util.constants;
 
 public final class CashRegisterDetailConstants {
     public static final int BASE_LENGTH = 65;

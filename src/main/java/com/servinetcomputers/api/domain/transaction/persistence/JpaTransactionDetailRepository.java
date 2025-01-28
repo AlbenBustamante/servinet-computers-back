@@ -1,7 +1,7 @@
 package com.servinetcomputers.api.domain.transaction.persistence;
 
+import com.servinetcomputers.api.core.util.enums.TransactionDetailType;
 import com.servinetcomputers.api.domain.transaction.persistence.entity.TransactionDetail;
-import com.servinetcomputers.api.domain.transaction.util.TransactionDetailType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

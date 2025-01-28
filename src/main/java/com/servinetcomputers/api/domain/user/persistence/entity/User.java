@@ -3,14 +3,14 @@ package com.servinetcomputers.api.domain.user.persistence.entity;
 import com.servinetcomputers.api.core.audit.AuditAuditable;
 import com.servinetcomputers.api.core.audit.AuditRole;
 import com.servinetcomputers.api.core.audit.Auditable;
-import com.servinetcomputers.api.core.security.util.Role;
-import com.servinetcomputers.api.domain.user.util.RoleConverter;
+import com.servinetcomputers.api.core.converter.RoleConverter;
+import com.servinetcomputers.api.core.util.enums.Role;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import static com.servinetcomputers.api.domain.user.util.UserConstants.*;
+import static com.servinetcomputers.api.core.util.constants.UserConstants.*;
 
 /**
  * The user's model entity.

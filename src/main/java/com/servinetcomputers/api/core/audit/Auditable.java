@@ -9,7 +9,7 @@ import org.springframework.data.annotation.LastModifiedBy;
 
 import java.time.LocalDateTime;
 
-import static com.servinetcomputers.api.domain.user.util.UserConstants.CODE_LENGTH;
+import static com.servinetcomputers.api.core.util.constants.UserConstants.CODE_LENGTH;
 
 @MappedSuperclass
 @Getter

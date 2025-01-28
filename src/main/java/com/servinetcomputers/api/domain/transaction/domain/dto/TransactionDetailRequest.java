@@ -1,7 +1,7 @@
 package com.servinetcomputers.api.domain.transaction.domain.dto;
 
+import com.servinetcomputers.api.core.util.enums.TransactionDetailType;
 import com.servinetcomputers.api.domain.cashregister.domain.dto.CashRegisterDetailResponse;
-import com.servinetcomputers.api.domain.transaction.util.TransactionDetailType;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;

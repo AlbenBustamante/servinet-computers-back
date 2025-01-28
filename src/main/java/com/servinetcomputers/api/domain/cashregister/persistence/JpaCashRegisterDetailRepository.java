@@ -1,7 +1,7 @@
 package com.servinetcomputers.api.domain.cashregister.persistence;
 
+import com.servinetcomputers.api.core.util.enums.CashRegisterStatus;
 import com.servinetcomputers.api.domain.cashregister.persistence.entity.CashRegisterDetail;
-import com.servinetcomputers.api.domain.cashregister.util.CashRegisterStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

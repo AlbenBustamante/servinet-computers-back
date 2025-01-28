@@ -3,12 +3,12 @@ package com.servinetcomputers.api.domain.cashregister.application.service.detail
 import com.servinetcomputers.api.core.datetime.DateTimeService;
 import com.servinetcomputers.api.core.exception.AppException;
 import com.servinetcomputers.api.core.security.service.UserLoggedService;
+import com.servinetcomputers.api.core.util.enums.CashRegisterStatus;
 import com.servinetcomputers.api.domain.cashregister.application.usecase.detail.CashRegisterDetailAlreadyExistsUseCase;
 import com.servinetcomputers.api.domain.cashregister.domain.dto.AlreadyExistsCashRegisterDetailDto;
 import com.servinetcomputers.api.domain.cashregister.domain.dto.CashRegisterResponse;
 import com.servinetcomputers.api.domain.cashregister.domain.repository.CashRegisterDetailRepository;
 import com.servinetcomputers.api.domain.cashregister.domain.repository.CashRegisterRepository;
-import com.servinetcomputers.api.domain.cashregister.util.CashRegisterStatus;
 import com.servinetcomputers.api.domain.user.application.usecase.GetUserCashRegisterReportsUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
@@ -17,8 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static com.servinetcomputers.api.core.security.util.SecurityConstants.CASHIER_AUTHORITY;
-import static com.servinetcomputers.api.core.security.util.SecurityConstants.SUPERVISOR_AUTHORITY;
+import static com.servinetcomputers.api.core.util.constants.SecurityConstants.CASHIER_AUTHORITY;
+import static com.servinetcomputers.api.core.util.constants.SecurityConstants.SUPERVISOR_AUTHORITY;
 
 @RequiredArgsConstructor
 @Service

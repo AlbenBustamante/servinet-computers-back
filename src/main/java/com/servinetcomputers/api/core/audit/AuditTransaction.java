@@ -1,7 +1,7 @@
 package com.servinetcomputers.api.core.audit;
 
+import com.servinetcomputers.api.core.util.enums.TransactionType;
 import com.servinetcomputers.api.domain.transaction.persistence.entity.Transaction;
-import com.servinetcomputers.api.domain.transaction.util.TransactionType;
 import jakarta.persistence.PrePersist;
 
 public class AuditTransaction {

@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import static com.servinetcomputers.api.domain.platform.util.PlatformConstants.NAME_LENGTH;
+import static com.servinetcomputers.api.core.util.constants.PlatformConstants.NAME_LENGTH;
 
 /**
  * The platform's model entity.

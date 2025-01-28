@@ -1,4 +1,4 @@
-package com.servinetcomputers.api.domain.cashregister.util;
+package com.servinetcomputers.api.core.util.enums;
 
 public enum CashRegisterDetailStatus {
     WORKING('W'),

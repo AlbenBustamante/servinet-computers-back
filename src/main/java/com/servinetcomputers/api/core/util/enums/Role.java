@@ -1,4 +1,4 @@
-package com.servinetcomputers.api.core.security.util;
+package com.servinetcomputers.api.core.util.enums;
 
 import lombok.Getter;
 

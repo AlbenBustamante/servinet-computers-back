@@ -1,8 +1,8 @@
 package com.servinetcomputers.api.domain.cashregister.domain.repository;
 
+import com.servinetcomputers.api.core.util.enums.CashRegisterStatus;
 import com.servinetcomputers.api.domain.cashregister.domain.dto.CashRegisterDetailResponse;
 import com.servinetcomputers.api.domain.cashregister.domain.dto.CreateCashRegisterDetailDto;
-import com.servinetcomputers.api.domain.cashregister.util.CashRegisterStatus;
 
 import java.time.LocalDateTime;
 import java.util.List;

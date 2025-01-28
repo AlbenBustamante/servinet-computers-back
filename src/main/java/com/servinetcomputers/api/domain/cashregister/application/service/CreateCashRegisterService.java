@@ -11,7 +11,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.servinetcomputers.api.core.security.util.SecurityConstants.ADMIN_AUTHORITY;
+import static com.servinetcomputers.api.core.util.constants.SecurityConstants.ADMIN_AUTHORITY;
 
 @RequiredArgsConstructor
 @Service

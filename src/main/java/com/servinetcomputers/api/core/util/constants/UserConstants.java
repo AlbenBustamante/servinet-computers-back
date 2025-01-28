@@ -1,4 +1,4 @@
-package com.servinetcomputers.api.domain.user.util;
+package com.servinetcomputers.api.core.util.constants;
 
 /**
  * The user's constants.

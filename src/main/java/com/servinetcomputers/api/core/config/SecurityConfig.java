@@ -15,7 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import static com.servinetcomputers.api.core.security.util.SecurityConstants.WHITE_LIST;
+import static com.servinetcomputers.api.core.util.constants.SecurityConstants.WHITE_LIST;
 
 /**
  * The security configuration class.

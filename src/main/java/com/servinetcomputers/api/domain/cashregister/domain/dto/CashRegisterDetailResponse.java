@@ -1,8 +1,8 @@
 package com.servinetcomputers.api.domain.cashregister.domain.dto;
 
+import com.servinetcomputers.api.core.util.enums.CashRegisterDetailStatus;
 import com.servinetcomputers.api.domain.ModelResponse;
 import com.servinetcomputers.api.domain.base.BaseDto;
-import com.servinetcomputers.api.domain.cashregister.util.CashRegisterDetailStatus;
 import lombok.Getter;
 import lombok.Setter;
 

@@ -1,7 +1,7 @@
-package com.servinetcomputers.api.domain.user.util;
+package com.servinetcomputers.api.core.converter;
 
 import com.servinetcomputers.api.core.exception.NotFoundException;
-import com.servinetcomputers.api.core.security.util.Role;
+import com.servinetcomputers.api.core.util.enums.Role;
 import jakarta.persistence.AttributeConverter;
 
 import java.util.Arrays;

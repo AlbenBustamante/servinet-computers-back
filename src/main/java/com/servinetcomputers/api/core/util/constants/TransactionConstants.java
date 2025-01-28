@@ -1,4 +1,4 @@
-package com.servinetcomputers.api.domain.transaction.util;
+package com.servinetcomputers.api.core.util.constants;
 
 public final class TransactionConstants {
     private TransactionConstants() {

@@ -3,14 +3,14 @@ package com.servinetcomputers.api.domain.transaction.persistence.entity;
 import com.servinetcomputers.api.core.audit.AuditAuditable;
 import com.servinetcomputers.api.core.audit.AuditTransaction;
 import com.servinetcomputers.api.core.audit.Auditable;
-import com.servinetcomputers.api.domain.transaction.util.TransactionType;
-import com.servinetcomputers.api.domain.transaction.util.TransactionTypeConverter;
+import com.servinetcomputers.api.core.converter.TransactionTypeConverter;
+import com.servinetcomputers.api.core.util.enums.TransactionType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import static com.servinetcomputers.api.domain.transaction.util.TransactionConstants.DESCRIPTION_LENGTH;
+import static com.servinetcomputers.api.core.util.constants.TransactionConstants.DESCRIPTION_LENGTH;
 
 @Entity
 @Table(name = "transactions")

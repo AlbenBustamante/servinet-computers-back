@@ -1,6 +1,6 @@
 package com.servinetcomputers.api.domain.user.persistence;
 
-import com.servinetcomputers.api.core.security.util.Role;
+import com.servinetcomputers.api.core.util.enums.Role;
 import com.servinetcomputers.api.domain.user.persistence.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 

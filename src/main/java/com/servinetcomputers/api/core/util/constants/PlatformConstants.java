@@ -1,4 +1,4 @@
-package com.servinetcomputers.api.domain.platform.util;
+package com.servinetcomputers.api.core.util.constants;
 
 /**
  * The platform's constants.

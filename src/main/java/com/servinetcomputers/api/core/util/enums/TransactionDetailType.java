@@ -1,4 +1,4 @@
-package com.servinetcomputers.api.domain.transaction.util;
+package com.servinetcomputers.api.core.util.enums;
 
 public enum TransactionDetailType {
     DEPOSIT('D'),

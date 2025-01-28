@@ -1,6 +1,7 @@
-package com.servinetcomputers.api.domain.transaction.util;
+package com.servinetcomputers.api.core.converter;
 
 import com.servinetcomputers.api.core.exception.NotFoundException;
+import com.servinetcomputers.api.core.util.enums.TransactionDetailType;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 

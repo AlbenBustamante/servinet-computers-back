@@ -1,11 +1,11 @@
 package com.servinetcomputers.api.domain.transaction.persistence.repository;
 
+import com.servinetcomputers.api.core.util.enums.TransactionDetailType;
 import com.servinetcomputers.api.domain.transaction.domain.dto.TransactionDetailRequest;
 import com.servinetcomputers.api.domain.transaction.domain.dto.TransactionDetailResponse;
 import com.servinetcomputers.api.domain.transaction.domain.repository.TransactionDetailRepository;
 import com.servinetcomputers.api.domain.transaction.persistence.JpaTransactionDetailRepository;
 import com.servinetcomputers.api.domain.transaction.persistence.mapper.TransactionDetailMapper;
-import com.servinetcomputers.api.domain.transaction.util.TransactionDetailType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

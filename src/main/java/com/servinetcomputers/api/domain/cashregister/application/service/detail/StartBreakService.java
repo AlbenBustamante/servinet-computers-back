@@ -3,10 +3,10 @@ package com.servinetcomputers.api.domain.cashregister.application.service.detail
 import com.servinetcomputers.api.core.datetime.DateTimeService;
 import com.servinetcomputers.api.core.exception.AppException;
 import com.servinetcomputers.api.core.exception.NotFoundException;
+import com.servinetcomputers.api.core.util.enums.CashRegisterDetailStatus;
 import com.servinetcomputers.api.domain.cashregister.application.usecase.detail.StartBreakUseCase;
 import com.servinetcomputers.api.domain.cashregister.domain.dto.CashRegisterDetailResponse;
 import com.servinetcomputers.api.domain.cashregister.domain.repository.CashRegisterDetailRepository;
-import com.servinetcomputers.api.domain.cashregister.util.CashRegisterDetailStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

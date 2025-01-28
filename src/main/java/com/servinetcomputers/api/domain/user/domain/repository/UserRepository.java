@@ -1,6 +1,6 @@
 package com.servinetcomputers.api.domain.user.domain.repository;
 
-import com.servinetcomputers.api.core.security.util.Role;
+import com.servinetcomputers.api.core.util.enums.Role;
 import com.servinetcomputers.api.domain.user.domain.dto.UserRequest;
 import com.servinetcomputers.api.domain.user.domain.dto.UserResponse;
 

@@ -1,7 +1,7 @@
 package com.servinetcomputers.api.domain.transaction.domain.dto;
 
+import com.servinetcomputers.api.core.util.enums.TransactionType;
 import com.servinetcomputers.api.domain.ModelResponse;
-import com.servinetcomputers.api.domain.transaction.util.TransactionType;
 import lombok.Getter;
 
 import java.time.LocalDateTime;

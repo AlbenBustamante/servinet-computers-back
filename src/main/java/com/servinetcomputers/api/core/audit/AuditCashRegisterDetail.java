@@ -1,7 +1,7 @@
 package com.servinetcomputers.api.core.audit;
 
+import com.servinetcomputers.api.core.util.enums.CashRegisterDetailStatus;
 import com.servinetcomputers.api.domain.cashregister.persistence.entity.CashRegisterDetail;
-import com.servinetcomputers.api.domain.cashregister.util.CashRegisterDetailStatus;
 import jakarta.persistence.PrePersist;
 
 public class AuditCashRegisterDetail {

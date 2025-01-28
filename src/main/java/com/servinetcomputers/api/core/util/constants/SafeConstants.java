@@ -1,4 +1,4 @@
-package com.servinetcomputers.api.domain.safes.util;
+package com.servinetcomputers.api.core.util.constants;
 
 public final class SafeConstants {
     public static final int BASE_LENGTH = 52;

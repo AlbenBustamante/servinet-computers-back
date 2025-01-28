@@ -1,6 +1,7 @@
-package com.servinetcomputers.api.domain.cashregister.util;
+package com.servinetcomputers.api.core.converter;
 
 import com.servinetcomputers.api.core.exception.NotFoundException;
+import com.servinetcomputers.api.core.util.enums.CashRegisterDetailStatus;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 

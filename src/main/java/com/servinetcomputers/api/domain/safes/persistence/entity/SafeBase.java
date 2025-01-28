@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import static com.servinetcomputers.api.domain.safes.util.SafeConstants.BASE_LENGTH;
+import static com.servinetcomputers.api.core.util.constants.SafeConstants.BASE_LENGTH;
 
 @Entity
 @Table(name = "safe_bases")

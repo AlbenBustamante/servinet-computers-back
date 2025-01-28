@@ -2,15 +2,15 @@ package com.servinetcomputers.api.domain.cashregister.application.service;
 
 import com.servinetcomputers.api.core.exception.AppException;
 import com.servinetcomputers.api.core.exception.NotFoundException;
+import com.servinetcomputers.api.core.util.enums.CashRegisterStatus;
 import com.servinetcomputers.api.domain.cashregister.application.usecase.DeleteCashRegisterUseCase;
 import com.servinetcomputers.api.domain.cashregister.domain.repository.CashRegisterRepository;
-import com.servinetcomputers.api.domain.cashregister.util.CashRegisterStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.servinetcomputers.api.core.security.util.SecurityConstants.ADMIN_AUTHORITY;
+import static com.servinetcomputers.api.core.util.constants.SecurityConstants.ADMIN_AUTHORITY;
 
 @RequiredArgsConstructor
 @Service

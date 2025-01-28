@@ -3,14 +3,14 @@ package com.servinetcomputers.api.domain.cashregister.persistence.entity;
 import com.servinetcomputers.api.core.audit.AuditAuditable;
 import com.servinetcomputers.api.core.audit.AuditCashRegisterStatus;
 import com.servinetcomputers.api.core.audit.Auditable;
-import com.servinetcomputers.api.domain.cashregister.util.CashRegisterStatus;
-import com.servinetcomputers.api.domain.cashregister.util.CashRegisterStatusConverter;
+import com.servinetcomputers.api.core.converter.CashRegisterStatusConverter;
+import com.servinetcomputers.api.core.util.enums.CashRegisterStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import static com.servinetcomputers.api.domain.cashregister.util.CashRegisterConstants.DESCRIPTION_LENGTH;
+import static com.servinetcomputers.api.core.util.constants.CashRegisterConstants.DESCRIPTION_LENGTH;
 
 @Entity
 @Table(name = "cash_registers")
