@@ -1,6 +1,6 @@
 package com.servinetcomputers.api.core.security.service;
 
-import com.servinetcomputers.api.domain.user.domain.dto.UserResponse;
+import com.servinetcomputers.api.module.user.domain.dto.UserResponse;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 

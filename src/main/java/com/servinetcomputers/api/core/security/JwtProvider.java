@@ -4,7 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.servinetcomputers.api.core.exception.AuthenticationException;
 import com.servinetcomputers.api.core.util.enums.Role;
-import com.servinetcomputers.api.domain.user.domain.dto.UserResponse;
+import com.servinetcomputers.api.module.user.domain.dto.UserResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;

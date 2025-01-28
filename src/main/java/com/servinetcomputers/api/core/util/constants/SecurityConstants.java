@@ -1,6 +1,6 @@
 package com.servinetcomputers.api.core.util.constants;
 
-import com.servinetcomputers.api.domain.user.domain.dto.UserResponse;
+import com.servinetcomputers.api.module.user.domain.dto.UserResponse;
 
 /**
  * The security constants.
