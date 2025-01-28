@@ -11,6 +11,4 @@ public interface SafeRepository {
     boolean existsByNumeral(int numeral);
 
     List<SafeResponse> getAll();
-
-    List<Integer> getAllIds();
 }

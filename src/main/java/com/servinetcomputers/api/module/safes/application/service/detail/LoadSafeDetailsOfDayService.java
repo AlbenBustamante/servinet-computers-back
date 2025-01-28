@@ -45,17 +45,20 @@ public class LoadSafeDetailsOfDayService implements LoadSafesOfDayUseCase {
             return details;
         }
 
-        final var safeIds = safeRepository.getAllIds();
-        final List<SafeDetailResponse> newDetails = new ArrayList<>(safeIds.size());
+        final var safes = safeRepository.getAll();
+        final List<SafeDetailResponse> newDetails = new ArrayList<>(safes.size());
 
-        safeIds.forEach(safeId -> {
-            final var lastBase = safeBaseRepository.getLastBySafeId(safeId);
+        safes.forEach(safe -> {
+            final var lastBase = safeBaseRepository.getLastBySafeId(safe.getId());
             final var base = lastBase.isPresent() ? lastBase.get().getDetailBase() : BaseDto.zero();
 
-            final var newDetailRequest = new SafeDetailRequest(safeId, base, base);
+            final var newDetailRequest = new SafeDetailRequest(safe.getId(), base, base);
+            newDetailRequest.setSafe(safe);
+
             final var newDetailResponse = repository.save(newDetailRequest);
 
             final var safeBase = new SafeBaseRequest(newDetailResponse.getId(), base);
+
             safeBase.setSafeDetail(newDetailResponse);
             safeBaseRepository.save(safeBase);
 
