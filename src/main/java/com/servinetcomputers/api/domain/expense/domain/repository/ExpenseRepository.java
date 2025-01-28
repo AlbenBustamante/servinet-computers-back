@@ -11,6 +11,8 @@ public interface ExpenseRepository {
 
     List<ExpenseResponse> getByCashRegisterDetailId(int cashRegisterDetailId, LocalDateTime startDate, LocalDateTime endDate);
 
+    List<ExpenseResponse> getAllByDiscountAndCodeCodeBetween(boolean discount, String code, LocalDateTime startDate, LocalDateTime endDate);
+
     Integer sumExpenses(String code, LocalDateTime startDate, LocalDateTime endDate);
 
     Integer sumDiscounts(String code, LocalDateTime startDate, LocalDateTime endDate);

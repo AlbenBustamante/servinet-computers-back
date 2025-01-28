@@ -33,6 +33,12 @@ public class TransactionDetailRepositoryImpl implements TransactionDetailReposit
     }
 
     @Override
+    public List<TransactionDetailResponse> getAllByCodeBetween(String code, LocalDateTime startDate, LocalDateTime endDate) {
+        final var details = repository.findAllByCreatedByAndEnabledTrueAndCreatedDateBetween(code, startDate, endDate);
+        return mapper.toResponses(details);
+    }
+
+    @Override
     public Integer sumDeposits(String code, LocalDateTime startDate, LocalDateTime endDate) {
         final var deposits = repository.sumAllByCreatedByAndEnabledTrueAndCreatedDateBetween(code, startDate, endDate, TransactionDetailType.DEPOSIT);
         return deposits != null ? deposits : 0;

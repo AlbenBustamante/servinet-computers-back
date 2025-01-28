@@ -11,6 +11,8 @@ public interface TransactionDetailRepository {
 
     List<TransactionDetailResponse> getByCashRegisterDetailId(int cashRegisterDetailId, LocalDateTime startDate, LocalDateTime endDate);
 
+    List<TransactionDetailResponse> getAllByCodeBetween(String code, LocalDateTime startDate, LocalDateTime endDate);
+
     Integer sumDeposits(String code, LocalDateTime startDate, LocalDateTime endDate);
 
     Integer sumWithdrawals(String code, LocalDateTime startDate, LocalDateTime endDate);

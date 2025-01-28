@@ -1,7 +1,7 @@
 package com.servinetcomputers.api.domain.user.controller;
 
 import com.servinetcomputers.api.domain.cashregister.domain.dto.MyCashRegistersReports;
-import com.servinetcomputers.api.domain.reports.abs.IReportsService;
+import com.servinetcomputers.api.domain.reports.application.usecase.GetDetailedTransactionsUseCase;
 import com.servinetcomputers.api.domain.reports.dto.ReportsResponse;
 import com.servinetcomputers.api.domain.user.application.usecase.*;
 import com.servinetcomputers.api.domain.user.domain.dto.UpdateUserDto;
@@ -24,7 +24,7 @@ public class UserController {
     private final UpdateUserUseCase updateUserUseCase;
     private final DeleteUserUseCase deleteUserUseCase;
     private final GetUserCashRegisterReportsUseCase getReportsUseCase;
-    private final IReportsService reportsService;
+    private final GetDetailedTransactionsUseCase getDetailedTransactionsUseCase;
 
     @GetMapping
     public ResponseEntity<List<UserResponse>> getAll() {
@@ -41,9 +41,9 @@ public class UserController {
         return ResponseEntity.ok(getReportsUseCase.call(userId));
     }
 
-    @GetMapping(path = "/{code}/reports")
-    public ResponseEntity<ReportsResponse> getReports(@PathVariable("code") String code) {
-        return ResponseEntity.ok(reportsService.getReports(code));
+    @GetMapping(path = "/reports")
+    public ResponseEntity<ReportsResponse> getReports() {
+        return ResponseEntity.ok(getDetailedTransactionsUseCase.call());
     }
 
     @PatchMapping(path = "/{id}")

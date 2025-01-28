@@ -4,6 +4,7 @@ import com.servinetcomputers.api.domain.platform.domain.dto.PlatformTransferRequ
 import com.servinetcomputers.api.domain.platform.domain.dto.PlatformTransferResponse;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -16,7 +17,9 @@ public interface PlatformTransferRepository {
 
     Optional<PlatformTransferResponse> get(int id);
 
-    int getPlatformTransfersAmount(int platformId, LocalDateTime initialDate, LocalDateTime finalDate);
+    List<PlatformTransferResponse> getAllByCodeBetween(String code, LocalDateTime startDate, LocalDateTime endDate);
+
+    int getPlatformTransfersAmount(int platformId, LocalDateTime startDate, LocalDateTime endDate);
 
     int getPlatformTransfersTotal(int platformId, LocalDateTime startDate, LocalDateTime endDate);
 }

@@ -32,6 +32,12 @@ public class ExpenseRepositoryImpl implements ExpenseRepository {
     }
 
     @Override
+    public List<ExpenseResponse> getAllByDiscountAndCodeCodeBetween(boolean discount, String code, LocalDateTime startDate, LocalDateTime endDate) {
+        final var expenses = repository.findAllByCreatedByAndEnabledTrueAndCreatedDateBetweenAndDiscount(code, startDate, endDate, discount);
+        return mapper.toResponses(expenses);
+    }
+
+    @Override
     public Integer sumExpenses(String code, LocalDateTime startDate, LocalDateTime endDate) {
         final var expenses = repository.sumAllByCreatedByAndEnabledTrueAndCreatedDateBetweenAndDiscount(code, startDate, endDate, false);
         return expenses != null ? expenses : 0;

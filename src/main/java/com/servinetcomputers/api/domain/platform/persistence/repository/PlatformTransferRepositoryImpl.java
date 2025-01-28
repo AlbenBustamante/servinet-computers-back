@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -40,6 +41,12 @@ public class PlatformTransferRepositoryImpl implements PlatformTransferRepositor
     public Optional<PlatformTransferResponse> get(int transferId) {
         final var transfer = repository.findByIdAndEnabledTrue(transferId);
         return transfer.map(mapper::toResponse);
+    }
+
+    @Override
+    public List<PlatformTransferResponse> getAllByCodeBetween(String code, LocalDateTime startDate, LocalDateTime endDate) {
+        final var transfers = repository.findAllByCreatedByAndEnabledTrueAndCreatedDateBetween(code, startDate, endDate);
+        return mapper.toResponses(transfers);
     }
 
     @Override
