@@ -8,6 +8,7 @@ import com.servinetcomputers.api.domain.reports.application.usecase.GetCashRegis
 import com.servinetcomputers.api.domain.transaction.domain.repository.TransactionDetailRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
@@ -16,6 +17,7 @@ public class GetCashRegisterDetailReportsService implements GetCashRegisterDetai
     private final ExpenseRepository expenseRepository;
     private final DateTimeService dateTimeService;
 
+    @Transactional(readOnly = true)
     @Override
     public CashRegisterDetailReportsDto call(CashRegisterDetailResponse cashRegisterDetail) {
         final var startDate = cashRegisterDetail.getCreatedDate();
