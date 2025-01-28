@@ -11,12 +11,12 @@ import java.util.Optional;
  */
 public interface JpaUserRepository extends JpaRepository<User, Integer> {
     /**
-     * Find an existing user by the code.
+     * Find an existing enabled user by the code.
      *
      * @param code the code to be searched.
      * @return an {@link Optional} of the user found.
      */
-    Optional<User> findByCode(String code);
+    Optional<User> findByCodeAndEnabledTrue(String code);
 
     /**
      * Find the last user by the role and creation date.

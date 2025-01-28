@@ -1,9 +1,10 @@
 package com.servinetcomputers.api.domain.auth;
 
-import com.servinetcomputers.api.domain.auth.abs.IAuthService;
+import com.servinetcomputers.api.domain.auth.application.usecase.CreateUserUseCase;
+import com.servinetcomputers.api.domain.auth.application.usecase.LoginUseCase;
+import com.servinetcomputers.api.domain.auth.application.usecase.LogoutUseCase;
 import com.servinetcomputers.api.domain.auth.dto.AuthRequest;
 import com.servinetcomputers.api.domain.auth.dto.AuthResponse;
-import com.servinetcomputers.api.domain.user.application.usecase.CreateUserUseCase;
 import com.servinetcomputers.api.domain.user.domain.dto.UserRequest;
 import com.servinetcomputers.api.domain.user.domain.dto.UserResponse;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +21,8 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class AuthController {
     private final CreateUserUseCase createUserUseCase;
-    private final IAuthService authService;
+    private final LoginUseCase loginUseCase;
+    private final LogoutUseCase logoutUseCase;
 
     @PostMapping(path = "/register")
     public ResponseEntity<UserResponse> register(@RequestBody UserRequest request) {
@@ -29,12 +31,12 @@ public class AuthController {
 
     @PostMapping(path = "/sign-in")
     public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest request) {
-        return ResponseEntity.ok(authService.login(request));
+        return ResponseEntity.ok(loginUseCase.call(request));
     }
 
     @PostMapping(path = "/sign-out")
     public ResponseEntity<Boolean> logout(@RequestHeader(name = HttpHeaders.AUTHORIZATION) String token) {
-        return ResponseEntity.ok(authService.logout(token));
+        return ResponseEntity.ok(logoutUseCase.call(token));
     }
 }
 

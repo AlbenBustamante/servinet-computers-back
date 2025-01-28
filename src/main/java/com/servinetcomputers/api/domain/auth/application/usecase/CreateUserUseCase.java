@@ -1,4 +1,4 @@
-package com.servinetcomputers.api.domain.user.application.usecase;
+package com.servinetcomputers.api.domain.auth.application.usecase;
 
 import com.servinetcomputers.api.core.usecase.UseCase;
 import com.servinetcomputers.api.domain.user.domain.dto.UserRequest;

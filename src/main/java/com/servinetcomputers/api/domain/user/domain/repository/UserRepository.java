@@ -17,6 +17,8 @@ public interface UserRepository {
 
     Optional<UserResponse> getLastByRole(Role role);
 
+    Optional<UserResponse> getByCode(String code);
+
     List<UserResponse> getAll();
 
     /**

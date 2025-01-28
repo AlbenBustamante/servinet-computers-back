@@ -39,8 +39,14 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public Optional<UserResponse> getLastByRole(Role role) {
-        final var res = jpaUserRepository.findFirstByRoleOrderByCreatedDateDesc(role);
-        return res.map(userMapper::toResponse);
+        final var user = jpaUserRepository.findFirstByRoleOrderByCreatedDateDesc(role);
+        return user.map(userMapper::toResponse);
+    }
+
+    @Override
+    public Optional<UserResponse> getByCode(String code) {
+        final var user = jpaUserRepository.findByCodeAndEnabledTrue(code);
+        return user.map(userMapper::toResponse);
     }
 
     @Override

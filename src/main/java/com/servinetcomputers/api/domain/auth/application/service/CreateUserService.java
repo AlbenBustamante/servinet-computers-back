@@ -1,8 +1,8 @@
-package com.servinetcomputers.api.domain.user.application.service;
+package com.servinetcomputers.api.domain.auth.application.service;
 
 import com.servinetcomputers.api.core.exception.AppException;
 import com.servinetcomputers.api.core.exception.BadRequestException;
-import com.servinetcomputers.api.domain.user.application.usecase.CreateUserUseCase;
+import com.servinetcomputers.api.domain.auth.application.usecase.CreateUserUseCase;
 import com.servinetcomputers.api.domain.user.domain.dto.UserRequest;
 import com.servinetcomputers.api.domain.user.domain.dto.UserResponse;
 import com.servinetcomputers.api.domain.user.domain.repository.UserRepository;
