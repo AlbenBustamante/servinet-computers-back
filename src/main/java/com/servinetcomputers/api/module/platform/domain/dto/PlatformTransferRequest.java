@@ -15,4 +15,8 @@ public class PlatformTransferRequest {
     private final Integer value;
     private String[] voucherUrls;
     private PlatformResponse platform;
+
+    public static PlatformTransferRequest fromDto(PlatformTransferDto platformTransferDto) {
+        return new PlatformTransferRequest(platformTransferDto.platformId(), platformTransferDto.value());
+    }
 }

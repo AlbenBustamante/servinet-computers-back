@@ -6,6 +6,7 @@ import com.servinetcomputers.api.module.platform.application.usecase.transfer.Cr
 import com.servinetcomputers.api.module.platform.application.usecase.transfer.DeletePlatformTransferUseCase;
 import com.servinetcomputers.api.module.platform.application.usecase.transfer.GetPlatformTransferUseCase;
 import com.servinetcomputers.api.module.platform.application.usecase.transfer.UpdatePlatformTransferUseCase;
+import com.servinetcomputers.api.module.platform.domain.dto.PlatformTransferDto;
 import com.servinetcomputers.api.module.platform.domain.dto.PlatformTransferRequest;
 import com.servinetcomputers.api.module.platform.domain.dto.PlatformTransferResponse;
 import com.servinetcomputers.api.module.platform.domain.dto.UpdatePlatformTransferDto;
@@ -31,7 +32,8 @@ public class PlatformTransferController {
     @PostMapping
     public ResponseEntity<PlatformTransferResponse> register(@RequestParam(name = "request") String request, @RequestParam(name = "vouchers", required = false) MultipartFile[] vouchers) throws JsonProcessingException {
         final var mapper = new ObjectMapper();
-        final var platformTransferRequest = mapper.readValue(request, PlatformTransferRequest.class);
+        final var platformTransferDto = mapper.readValue(request, PlatformTransferDto.class);
+        final var platformTransferRequest = PlatformTransferRequest.fromDto(platformTransferDto);
 
         return ResponseEntity.status(CREATED).body(createPlatformTransferUseCase.call(platformTransferRequest, vouchers));
     }
