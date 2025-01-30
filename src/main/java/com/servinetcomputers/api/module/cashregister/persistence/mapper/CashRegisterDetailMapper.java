@@ -1,5 +1,6 @@
 package com.servinetcomputers.api.module.cashregister.persistence.mapper;
 
+import com.servinetcomputers.api.core.datetime.DateTimeService;
 import com.servinetcomputers.api.module.base.BaseMapper;
 import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDetailResponse;
 import com.servinetcomputers.api.module.cashregister.domain.dto.CreateCashRegisterDetailDto;
@@ -7,22 +8,26 @@ import com.servinetcomputers.api.module.cashregister.persistence.entity.CashRegi
 import com.servinetcomputers.api.module.user.persistence.mapper.UserMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalTime;
 import java.util.List;
 
 @Mapper(componentModel = "spring", uses = {CashRegisterMapper.class, UserMapper.class, BaseMapper.class}, imports = LocalTime.class)
-public interface CashRegisterDetailMapper {
-    @Mapping(target = "initialWorking", expression = "java(entity.getWorkingHours()[0])")
-    @Mapping(target = "initialBreak", expression = "java(entity.getWorkingHours()[1])")
-    @Mapping(target = "finalWorking", expression = "java(entity.getWorkingHours()[2])")
-    @Mapping(target = "finalBreak", expression = "java(entity.getWorkingHours()[3])")
+public abstract class CashRegisterDetailMapper {
+    @Autowired
+    protected DateTimeService dateTimeService;
+
+    @Mapping(target = "initialWorking", expression = "java(entity.getWorkingHours()[0] != null ? dateTimeService.currentOf(entity.getWorkingHours()[0]) : null)")
+    @Mapping(target = "initialBreak", expression = "java(entity.getWorkingHours()[1] != null ? dateTimeService.currentOf(entity.getWorkingHours()[1]) : null)")
+    @Mapping(target = "finalBreak", expression = "java(entity.getWorkingHours()[2] != null ? dateTimeService.currentOf(entity.getWorkingHours()[2]) : null)")
+    @Mapping(target = "finalWorking", expression = "java(entity.getWorkingHours()[3] != null ? dateTimeService.currentOf(entity.getWorkingHours()[3]) : null)")
     @Mapping(target = "userId", source = "user.id")
     @Mapping(target = "detailFinalBase", source = "finalBase")
     @Mapping(target = "detailInitialBase", source = "initialBase")
-    CashRegisterDetailResponse toResponse(CashRegisterDetail entity);
+    public abstract CashRegisterDetailResponse toResponse(CashRegisterDetail entity);
 
-    List<CashRegisterDetailResponse> toResponses(List<CashRegisterDetail> entities);
+    public abstract List<CashRegisterDetailResponse> toResponses(List<CashRegisterDetail> entities);
 
     @Mapping(target = "status", ignore = true)
     @Mapping(target = "workingHours", expression = "java(new LocalTime[]{request.getInitialWorking(), null, null, null})")
@@ -32,11 +37,10 @@ public interface CashRegisterDetailMapper {
     @Mapping(target = "enabled", ignore = true)
     @Mapping(target = "createdDate", ignore = true)
     @Mapping(target = "createdBy", ignore = true)
-    CashRegisterDetail toEntity(CreateCashRegisterDetailDto request);
+    public abstract CashRegisterDetail toEntity(CreateCashRegisterDetailDto request);
 
+    @Mapping(target = "workingHours", expression = "java(new LocalTime[]{dateTimeService.timeOf(response.getInitialWorking()), dateTimeService.timeOf(response.getInitialBreak()), dateTimeService.timeOf(response.getFinalBreak()), dateTimeService.timeOf(response.getFinalWorking())})")
     @Mapping(target = "initialBase", source = "detailInitialBase")
     @Mapping(target = "finalBase", source = "detailFinalBase")
-    @Mapping(target = "workingHours", ignore = true)
-    @Mapping(target = "user", ignore = true)
-    CashRegisterDetail toEntity(CashRegisterDetailResponse response);
+    public abstract CashRegisterDetail toEntity(CashRegisterDetailResponse response);
 }

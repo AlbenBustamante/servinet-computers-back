@@ -9,6 +9,7 @@ import com.servinetcomputers.api.module.base.BaseDto;
 import com.servinetcomputers.api.module.cashregister.application.usecase.detail.CloseUseCase;
 import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDetailReportsDto;
 import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterDetailRepository;
+import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterRepository;
 import com.servinetcomputers.api.module.reports.application.usecase.GetCashRegisterDetailReportsUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class CloseService implements CloseUseCase {
     private final CashRegisterDetailRepository repository;
+    private final CashRegisterRepository cashRegisterRepository;
     private final DateTimeService dateTimeService;
     private final GetCashRegisterDetailReportsUseCase getCashRegisterDetailReportsUseCase;
 
@@ -27,9 +29,14 @@ public class CloseService implements CloseUseCase {
         final var cashRegisterDetail = repository.get(id)
                 .orElseThrow(() -> new NotFoundException("No se encontró la caja en funcionamiento"));
 
-        cashRegisterDetail.getCashRegister().setStatus(CashRegisterStatus.AVAILABLE);
+        final var cashRegister = cashRegisterDetail.getCashRegister();
+        cashRegister.setStatus(CashRegisterStatus.AVAILABLE);
+
+        final var updatedCashRegister = cashRegisterRepository.save(cashRegister);
+
+        cashRegisterDetail.setCashRegister(updatedCashRegister);
         cashRegisterDetail.setStatus(CashRegisterDetailStatus.CLOSED);
-        cashRegisterDetail.setFinalWorking(dateTimeService.timeNow());
+        cashRegisterDetail.setFinalWorking(dateTimeService.now());
         cashRegisterDetail.setDetailFinalBase(baseDto);
 
         final var closedCashRegisterDetail = repository.save(cashRegisterDetail);

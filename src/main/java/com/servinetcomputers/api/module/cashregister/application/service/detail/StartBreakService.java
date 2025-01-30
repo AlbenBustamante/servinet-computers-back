@@ -23,7 +23,7 @@ public class StartBreakService implements StartBreakUseCase {
         final var cashRegisterDetail = repository.get(param)
                 .orElseThrow(() -> new NotFoundException("No se encontró la caja en funcionamiento: #" + param));
 
-        cashRegisterDetail.setInitialBreak(dateTimeService.timeNow());
+        cashRegisterDetail.setInitialBreak(dateTimeService.now());
         cashRegisterDetail.setStatus(CashRegisterDetailStatus.RESTING);
 
         return repository.save(cashRegisterDetail);

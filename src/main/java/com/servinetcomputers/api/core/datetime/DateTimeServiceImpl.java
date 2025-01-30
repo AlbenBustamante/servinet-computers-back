@@ -24,6 +24,14 @@ public class DateTimeServiceImpl implements DateTimeService {
     }
 
     @Override
+    public LocalTime timeOf(LocalDateTime date) {
+        if (date == null) {
+            return null;
+        }
+        return LocalTime.of(date.getHour(), date.getMinute(), date.getSecond());
+    }
+
+    @Override
     public LocalDateTime now() {
         return LocalDateTime.now(zoneId);
     }
@@ -36,5 +44,10 @@ public class DateTimeServiceImpl implements DateTimeService {
     @Override
     public LocalDateTime getMaxByDate(LocalDate date) {
         return LocalDateTime.of(date, timeNow());
+    }
+
+    @Override
+    public LocalDateTime currentOf(LocalTime time) {
+        return LocalDateTime.of(dateNow(), time);
     }
 }

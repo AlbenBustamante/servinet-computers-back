@@ -23,7 +23,7 @@ public class EndBreakService implements EndBreakUseCase {
         final var cashRegisterDetail = repository.get(param)
                 .orElseThrow(() -> new NotFoundException("No se encontró la caja en funcionamiento: #" + param));
 
-        cashRegisterDetail.setFinalBreak(dateTimeService.timeNow());
+        cashRegisterDetail.setFinalBreak(dateTimeService.now());
         cashRegisterDetail.setStatus(CashRegisterDetailStatus.WORKING);
 
         return repository.save(cashRegisterDetail);
