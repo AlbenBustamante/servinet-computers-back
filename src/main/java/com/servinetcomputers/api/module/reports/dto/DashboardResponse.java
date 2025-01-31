@@ -11,11 +11,11 @@ import java.util.List;
  */
 public record DashboardResponse(
         int totalBalance,
-        List<PlatformStatsDto> platformsStats,
         int platformBalancesTotal,
-        List<CashRegisterDetailResponse> cashRegisterDetails,
         int cashRegistersTotal,
-        List<SafeResponse> safes,
-        int safesTotal
+        int safesTotal,
+        List<PlatformStatsDto> platformsStats,
+        List<CashRegisterDetailResponse> cashRegisterDetails,
+        List<SafeResponse> safes
 ) {
 }

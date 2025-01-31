@@ -52,8 +52,11 @@ public class GetDashboardService implements GetDashboardUseCase {
         var cashRegistersTotal = 0;
 
         for (final var cashRegisterDetail : cashRegisterDetails) {
-            final var finalBase = cashRegisterDetail.getDetailFinalBase();
-            cashRegistersTotal += finalBase.calculate();
+            final var base = cashRegisterDetail.getDetailFinalBase() != null
+                    ? cashRegisterDetail.getDetailFinalBase()
+                    : cashRegisterDetail.getDetailInitialBase();
+
+            cashRegistersTotal += base.calculate();
         }
 
         final var safes = safeRepository.getAll();
@@ -68,12 +71,12 @@ public class GetDashboardService implements GetDashboardUseCase {
 
         return new DashboardResponse(
                 totalBalance,
-                platformsStats,
                 platformBalancesTotal,
-                cashRegisterDetails,
                 cashRegistersTotal,
-                safes,
-                safesTotal
+                safesTotal,
+                platformsStats,
+                cashRegisterDetails,
+                safes
         );
     }
 
