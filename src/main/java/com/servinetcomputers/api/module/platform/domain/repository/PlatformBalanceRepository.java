@@ -21,5 +21,5 @@ public interface PlatformBalanceRepository {
 
     List<PlatformBalanceResponse> getAllBetween(LocalDateTime startDate, LocalDateTime endDate);
 
-    Integer calculateFinalBalanceBetween(LocalDateTime startDate, LocalDateTime endDate);
+    //Integer calculateFinalBalanceBetween(LocalDateTime startDate, LocalDateTime endDate);
 }

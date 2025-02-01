@@ -39,11 +39,11 @@ public class PlatformBalanceRepositoryImpl implements PlatformBalanceRepository 
         return mapper.toResponses(balances);
     }
 
-    @Override
+    /*@Override
     public Integer calculateFinalBalanceBetween(LocalDateTime startDate, LocalDateTime endDate) {
         final var total = repository.calculateTotalByFinalBalanceAndCreatedDateBetween(startDate, endDate);
         return total != null ? total : 0;
-    }
+    }*/
 
     @Override
     public PlatformBalanceResponse save(PlatformBalanceRequest request) {
