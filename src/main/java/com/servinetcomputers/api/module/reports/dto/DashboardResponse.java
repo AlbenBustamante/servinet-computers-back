@@ -2,7 +2,7 @@ package com.servinetcomputers.api.module.reports.dto;
 
 import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDetailResponse;
 import com.servinetcomputers.api.module.platform.domain.dto.PlatformStatsDto;
-import com.servinetcomputers.api.module.safes.domain.dto.SafeResponse;
+import com.servinetcomputers.api.module.safes.domain.dto.SafeDetailResponse;
 
 import java.util.List;
 
@@ -16,6 +16,6 @@ public record DashboardResponse(
         int safesTotal,
         List<PlatformStatsDto> platformsStats,
         List<CashRegisterDetailResponse> cashRegisterDetails,
-        List<SafeResponse> safes
+        List<SafeDetailResponse> safeDetails
 ) {
 }

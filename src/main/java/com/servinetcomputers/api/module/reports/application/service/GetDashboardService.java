@@ -8,7 +8,7 @@ import com.servinetcomputers.api.module.platform.domain.repository.PlatformBalan
 import com.servinetcomputers.api.module.platform.domain.repository.PlatformTransferRepository;
 import com.servinetcomputers.api.module.reports.application.usecase.GetDashboardUseCase;
 import com.servinetcomputers.api.module.reports.dto.DashboardResponse;
-import com.servinetcomputers.api.module.safes.domain.repository.SafeRepository;
+import com.servinetcomputers.api.module.safes.domain.repository.SafeDetailRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
@@ -25,7 +25,7 @@ import static com.servinetcomputers.api.core.util.constants.SecurityConstants.AD
 public class GetDashboardService implements GetDashboardUseCase {
     private final PlatformBalanceRepository platformBalanceRepository;
     private final CashRegisterDetailRepository cashRegisterDetailRepository;
-    private final SafeRepository safeRepository;
+    private final SafeDetailRepository safeDetailRepository;
     private final PlatformTransferRepository platformTransferRepository;
     private final DateTimeService dateTimeService;
 
@@ -44,7 +44,6 @@ public class GetDashboardService implements GetDashboardUseCase {
 
         final var platformBalances = platformBalanceRepository.getAllBetween(startDate, endDate);
         final var platformBalancesTotal = platformBalanceRepository.calculateFinalBalanceBetween(startDate, endDate);
-
         final var platformsStats = getPlatformsStats(platformBalances, startDate, endDate);
 
         final var cashRegisterDetails = cashRegisterDetailRepository.getAllBetween(startDate, endDate);
@@ -59,13 +58,16 @@ public class GetDashboardService implements GetDashboardUseCase {
             cashRegistersTotal += base.calculate();
         }
 
-        final var safes = safeRepository.getAll();
-        final var safesTotal = 0;
+        final var safeDetails = safeDetailRepository.getAllByDateBetween(startDate, endDate);
+        var safesTotal = 0;
 
-        /* for (final var safe : safes) {
-            final var finalBase = baseMapper.toDto(safe.getFinalBase());
-            safesTotal += finalBase.calculateSafeBase();
-        } */
+        for (final var safe : safeDetails) {
+            final var base = safe.getDetailFinalBase() != null
+                    ? safe.getDetailFinalBase()
+                    : safe.getDetailInitialBase();
+
+            safesTotal += base.calculateSafeBase();
+        }
 
         final var totalBalance = platformBalancesTotal + cashRegistersTotal + safesTotal;
 
@@ -76,7 +78,7 @@ public class GetDashboardService implements GetDashboardUseCase {
                 safesTotal,
                 platformsStats,
                 cashRegisterDetails,
-                safes
+                safeDetails
         );
     }
 
