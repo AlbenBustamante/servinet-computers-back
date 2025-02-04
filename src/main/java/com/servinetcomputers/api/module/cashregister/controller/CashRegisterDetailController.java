@@ -38,7 +38,7 @@ public class CashRegisterDetailController {
     }
 
     @GetMapping(path = "/today")
-    public ResponseEntity<List<CashRegisterDetailResponse>> getAllOfToday() {
+    public ResponseEntity<AdmCashRegistersDto> getAllOfToday() {
         return ResponseEntity.ok(getAllOfTodayUseCase.call());
     }
 

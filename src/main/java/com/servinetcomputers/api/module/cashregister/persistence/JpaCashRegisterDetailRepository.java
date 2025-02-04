@@ -1,5 +1,6 @@
 package com.servinetcomputers.api.module.cashregister.persistence;
 
+import com.servinetcomputers.api.core.util.enums.CashRegisterDetailStatus;
 import com.servinetcomputers.api.core.util.enums.CashRegisterStatus;
 import com.servinetcomputers.api.module.cashregister.persistence.entity.CashRegisterDetail;
 import org.springframework.data.domain.Page;
@@ -24,6 +25,8 @@ public interface JpaCashRegisterDetailRepository extends JpaRepository<CashRegis
     List<CashRegisterDetail> findAllByUserIdAndCreatedDateBetweenAndEnabledTrue(int userId, LocalDateTime firstDate, LocalDateTime lastDate);
 
     List<CashRegisterDetail> findAllByEnabledTrueAndCreatedDateBetween(LocalDateTime startDate, LocalDateTime endDate);
+
+    List<CashRegisterDetail> findAllByStatusAndEnabledTrueAndCreatedDateBefore(CashRegisterDetailStatus status, LocalDateTime createdDate);
 
     @Query("SELECT crd.finalBase FROM CashRegisterDetail crd " +
             "WHERE crd.cashRegister.id = :cashRegisterId AND " +

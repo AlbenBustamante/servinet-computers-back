@@ -1,15 +1,14 @@
 package com.servinetcomputers.api.module.cashregister.application.service.detail;
 
 import com.servinetcomputers.api.core.datetime.DateTimeService;
+import com.servinetcomputers.api.core.util.enums.CashRegisterDetailStatus;
 import com.servinetcomputers.api.module.cashregister.application.usecase.detail.GetAllCashRegisterDetailsOfTodayUseCase;
-import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDetailResponse;
+import com.servinetcomputers.api.module.cashregister.domain.dto.AdmCashRegistersDto;
 import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterDetailRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 import static com.servinetcomputers.api.core.util.constants.SecurityConstants.ADMIN_AUTHORITY;
 
@@ -19,14 +18,22 @@ public class GetAllCashRegisterDetailsOfTodayService implements GetAllCashRegist
     private final CashRegisterDetailRepository repository;
     private final DateTimeService dateTimeService;
 
+    /**
+     * Get all the current cash register details of the day.
+     *
+     * <p>But, if a cash register is actually occupied, it will be loaded,</p>
+     */
     @Transactional(readOnly = true)
     @Secured(value = ADMIN_AUTHORITY)
     @Override
-    public List<CashRegisterDetailResponse> call() {
+    public AdmCashRegistersDto call() {
         final var today = dateTimeService.dateNow();
         final var startDate = dateTimeService.getMinByDate(today);
         final var endDate = dateTimeService.now();
 
-        return repository.getAllBetween(startDate, endDate);
+        final var currentCashRegisters = repository.getAllBetween(startDate, endDate);
+        final var pendingCashRegisters = repository.getAllByStatusAndBefore(CashRegisterDetailStatus.WORKING, startDate);
+
+        return new AdmCashRegistersDto(currentCashRegisters, pendingCashRegisters);
     }
 }

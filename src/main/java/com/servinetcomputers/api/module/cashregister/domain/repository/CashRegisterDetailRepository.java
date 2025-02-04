@@ -1,5 +1,6 @@
 package com.servinetcomputers.api.module.cashregister.domain.repository;
 
+import com.servinetcomputers.api.core.util.enums.CashRegisterDetailStatus;
 import com.servinetcomputers.api.core.util.enums.CashRegisterStatus;
 import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDetailResponse;
 import com.servinetcomputers.api.module.cashregister.domain.dto.CreateCashRegisterDetailDto;
@@ -31,6 +32,8 @@ public interface CashRegisterDetailRepository {
     List<CashRegisterDetailResponse> getAllByUserIdWhereStatusIsNotBetween(int userId, LocalDateTime startDate, LocalDateTime endDate, CashRegisterStatus status);
 
     List<CashRegisterDetailResponse> getAllBetween(LocalDateTime startDate, LocalDateTime endDate);
+
+    List<CashRegisterDetailResponse> getAllByStatusAndBefore(CashRegisterDetailStatus status, LocalDateTime createdDate);
 
     Optional<CashRegisterDetailResponse> get(int cashRegisterDetailId);
 }
