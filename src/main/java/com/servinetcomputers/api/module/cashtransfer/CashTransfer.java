@@ -9,13 +9,14 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import static com.servinetcomputers.api.core.util.constants.SafeConstants.BASE_LENGTH;
+
 @Entity
 @Table(name = "cash_transfers")
 @EntityListeners(value = {AuditAuditable.class, AuditingEntityListener.class})
 @Getter
 @Setter
 public class CashTransfer extends Auditable {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cash_transfer_id")
@@ -23,6 +24,9 @@ public class CashTransfer extends Auditable {
 
     @Column(nullable = false)
     private Integer value;
+
+    @Column(length = BASE_LENGTH)
+    private String safeBase;
 
     @ManyToOne
     @JoinColumn(name = "from_cash_register_detail_id")
@@ -39,5 +43,4 @@ public class CashTransfer extends Auditable {
     @ManyToOne
     @JoinColumn(name = "to_safe_detail_id")
     private SafeDetail toSafe;
-
 }
