@@ -5,9 +5,9 @@ import com.servinetcomputers.api.core.exception.AppException;
 import com.servinetcomputers.api.core.exception.NotFoundException;
 import com.servinetcomputers.api.core.util.enums.CashRegisterDetailStatus;
 import com.servinetcomputers.api.core.util.enums.CashRegisterStatus;
-import com.servinetcomputers.api.module.base.BaseDto;
 import com.servinetcomputers.api.module.cashregister.application.usecase.detail.CloseUseCase;
 import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDetailReportsDto;
+import com.servinetcomputers.api.module.cashregister.domain.dto.CloseCashRegisterDetailDto;
 import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterDetailRepository;
 import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterRepository;
 import com.servinetcomputers.api.module.reports.application.usecase.GetCashRegisterDetailReportsUseCase;
@@ -25,7 +25,7 @@ public class CloseService implements CloseUseCase {
 
     @Transactional(rollbackFor = AppException.class)
     @Override
-    public CashRegisterDetailReportsDto call(Integer id, BaseDto baseDto) {
+    public CashRegisterDetailReportsDto call(Integer id, CloseCashRegisterDetailDto dto) {
         final var cashRegisterDetail = repository.get(id)
                 .orElseThrow(() -> new NotFoundException("No se encontró la caja en funcionamiento"));
 
@@ -36,8 +36,8 @@ public class CloseService implements CloseUseCase {
 
         cashRegisterDetail.setCashRegister(updatedCashRegister);
         cashRegisterDetail.setStatus(CashRegisterDetailStatus.CLOSED);
-        cashRegisterDetail.setFinalWorking(dateTimeService.now());
-        cashRegisterDetail.setDetailFinalBase(baseDto);
+        cashRegisterDetail.setFinalWorking(dto.time() == null ? dateTimeService.now() : dateTimeService.setCurrentDayToTime(dto.time()));
+        cashRegisterDetail.setDetailFinalBase(dto.base());
 
         final var closedCashRegisterDetail = repository.save(cashRegisterDetail);
 

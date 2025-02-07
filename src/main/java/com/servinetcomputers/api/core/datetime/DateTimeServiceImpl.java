@@ -42,8 +42,8 @@ public class DateTimeServiceImpl implements DateTimeService {
     }
 
     @Override
-    public LocalDateTime getMaxByDate(LocalDate date) {
-        return LocalDateTime.of(date, timeNow());
+    public LocalDateTime setCurrentDayToTime(LocalTime time) {
+        return LocalDateTime.of(dateNow(), time);
     }
 
     @Override

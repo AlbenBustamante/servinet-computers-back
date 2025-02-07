@@ -1,6 +1,5 @@
 package com.servinetcomputers.api.module.cashregister.controller;
 
-import com.servinetcomputers.api.module.base.BaseDto;
 import com.servinetcomputers.api.module.cashregister.application.usecase.detail.*;
 import com.servinetcomputers.api.module.cashregister.domain.dto.*;
 import com.servinetcomputers.api.module.expense.domain.dto.ExpenseResponse;
@@ -73,8 +72,8 @@ public class CashRegisterDetailController {
     }
 
     @PutMapping(path = "/{id}/close")
-    public ResponseEntity<CashRegisterDetailReportsDto> close(@PathVariable("id") int id, @RequestBody BaseDto baseDto) {
-        return ResponseEntity.ok(closeUseCase.call(id, baseDto));
+    public ResponseEntity<CashRegisterDetailReportsDto> close(@PathVariable("id") int id, @RequestBody CloseCashRegisterDetailDto closeCashRegisterDetail) {
+        return ResponseEntity.ok(closeUseCase.call(id, closeCashRegisterDetail));
     }
 
     @DeleteMapping(path = "/{id}")

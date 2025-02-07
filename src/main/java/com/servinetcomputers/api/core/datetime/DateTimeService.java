@@ -15,7 +15,7 @@ public interface DateTimeService {
 
     LocalDateTime getMinByDate(LocalDate date);
 
-    LocalDateTime getMaxByDate(LocalDate date);
+    LocalDateTime setCurrentDayToTime(LocalTime time);
 
     LocalDateTime currentOf(LocalTime time);
 }
