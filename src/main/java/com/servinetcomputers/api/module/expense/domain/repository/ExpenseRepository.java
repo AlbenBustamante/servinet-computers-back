@@ -9,11 +9,9 @@ import java.util.List;
 public interface ExpenseRepository {
     ExpenseResponse save(ExpenseRequest request);
 
-    List<ExpenseResponse> getAllByCashRegisterDetailIdBetween(int cashRegisterDetailId, LocalDateTime startDate, LocalDateTime endDate);
+    List<ExpenseResponse> getAllByCashRegisterDetailId(int cashRegisterDetailId);
 
     List<ExpenseResponse> getAllByDiscountAndCodeCodeBetween(boolean discount, String code, LocalDateTime startDate, LocalDateTime endDate);
 
-    Integer sumExpenses(String code, LocalDateTime startDate, LocalDateTime endDate);
-
-    Integer sumDiscounts(String code, LocalDateTime startDate, LocalDateTime endDate);
+    Integer sumValuesByCashRegisterDetailIdAndDiscount(int cashRegisterDetailId, boolean discount);
 }

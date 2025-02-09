@@ -27,8 +27,8 @@ public class TransactionDetailRepositoryImpl implements TransactionDetailReposit
     }
 
     @Override
-    public List<TransactionDetailResponse> getAllByCashRegisterDetailIdBetween(int cashRegisterDetailId, LocalDateTime startDate, LocalDateTime endDate) {
-        final var details = repository.findAllByCashRegisterDetailIdAndEnabledTrueAndCreatedDateBetween(cashRegisterDetailId, startDate, endDate);
+    public List<TransactionDetailResponse> getAllByCashRegisterDetailId(int cashRegisterDetailId) {
+        final var details = repository.findAllByCashRegisterDetailIdAndEnabledTrue(cashRegisterDetailId);
         return mapper.toResponses(details);
     }
 
@@ -39,14 +39,8 @@ public class TransactionDetailRepositoryImpl implements TransactionDetailReposit
     }
 
     @Override
-    public Integer sumDeposits(String code, LocalDateTime startDate, LocalDateTime endDate) {
-        final var deposits = repository.sumAllByCreatedByAndEnabledTrueAndCreatedDateBetween(code, startDate, endDate, TransactionDetailType.DEPOSIT);
+    public Integer sumValuesByCashRegisterDetailIdAndType(int cashRegisterDetailId, TransactionDetailType type) {
+        final var deposits = repository.sumAllByCashRegisterDetailIdAndEnabledTrueAndType(cashRegisterDetailId, type);
         return deposits != null ? deposits : 0;
-    }
-
-    @Override
-    public Integer sumWithdrawals(String code, LocalDateTime startDate, LocalDateTime endDate) {
-        final var withdrawals = repository.sumAllByCreatedByAndEnabledTrueAndCreatedDateBetween(code, startDate, endDate, TransactionDetailType.WITHDRAWAL);
-        return withdrawals != null ? withdrawals : 0;
     }
 }

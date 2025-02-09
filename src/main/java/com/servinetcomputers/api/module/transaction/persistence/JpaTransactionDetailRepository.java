@@ -9,18 +9,13 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface JpaTransactionDetailRepository extends JpaRepository<TransactionDetail, Integer> {
-    List<TransactionDetail> findAllByCashRegisterDetailIdAndEnabledTrueAndCreatedDateBetween(int cashRegisterDetailId, LocalDateTime startDate, LocalDateTime endDate);
+    List<TransactionDetail> findAllByCashRegisterDetailIdAndEnabledTrue(int cashRegisterDetailId);
 
     List<TransactionDetail> findAllByCreatedByAndEnabledTrueAndCreatedDateBetween(String createdBy, LocalDateTime startDate, LocalDateTime endDate);
 
     @Query("SELECT SUM(td.value) FROM TransactionDetail td " +
             "WHERE td.enabled = true " +
-            "AND td.createdBy = :createdBy " +
-            "AND td.createdDate BETWEEN :startDate AND :endDate " +
+            "AND td.cashRegisterDetail.id = :cashRegisterDetailId " +
             "AND td.type = :type")
-    Integer sumAllByCreatedByAndEnabledTrueAndCreatedDateBetween(
-            String createdBy,
-            LocalDateTime startDate,
-            LocalDateTime endDate,
-            TransactionDetailType type);
+    Integer sumAllByCashRegisterDetailIdAndEnabledTrueAndType(int cashRegisterDetailId, TransactionDetailType type);
 }

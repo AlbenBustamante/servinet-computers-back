@@ -1,6 +1,6 @@
 package com.servinetcomputers.api.module.reports.application.service;
 
-import com.servinetcomputers.api.core.datetime.DateTimeService;
+import com.servinetcomputers.api.core.util.enums.TransactionDetailType;
 import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDetailReportsDto;
 import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDetailResponse;
 import com.servinetcomputers.api.module.expense.domain.repository.ExpenseRepository;
@@ -15,14 +15,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class GetCashRegisterDetailReportsService implements GetCashRegisterDetailReportsUseCase {
     private final TransactionDetailRepository transactionDetailRepository;
     private final ExpenseRepository expenseRepository;
-    private final DateTimeService dateTimeService;
 
     @Transactional(readOnly = true)
     @Override
     public CashRegisterDetailReportsDto call(CashRegisterDetailResponse cashRegisterDetail) {
-        final var startDate = cashRegisterDetail.getCreatedDate();
-        final var endDate = dateTimeService.now();
-        final var code = cashRegisterDetail.getCreatedBy();
+        final var cashRegisterDetailId = cashRegisterDetail.getId();
 
         final var finalBaseDto = cashRegisterDetail.getDetailFinalBase();
 
@@ -31,11 +28,11 @@ public class GetCashRegisterDetailReportsService implements GetCashRegisterDetai
         final var initialBase = cashRegisterDetail.getDetailInitialBase().calculate();
         final var finalBase = finalBaseDto != null ? finalBaseDto.calculate() : 0;
 
-        var deposits = transactionDetailRepository.sumDeposits(code, startDate, endDate);
-        var withdrawals = transactionDetailRepository.sumWithdrawals(code, startDate, endDate);
+        var deposits = transactionDetailRepository.sumValuesByCashRegisterDetailIdAndType(cashRegisterDetailId, TransactionDetailType.DEPOSIT);
+        var withdrawals = transactionDetailRepository.sumValuesByCashRegisterDetailIdAndType(cashRegisterDetailId, TransactionDetailType.WITHDRAWAL);
 
-        var expenses = expenseRepository.sumExpenses(code, startDate, endDate);
-        var discounts = expenseRepository.sumDiscounts(code, startDate, endDate);
+        var expenses = expenseRepository.sumValuesByCashRegisterDetailIdAndDiscount(cashRegisterDetailId, false);
+        var discounts = expenseRepository.sumValuesByCashRegisterDetailIdAndDiscount(cashRegisterDetailId, true);
 
         withdrawals += expenses + discounts;
 

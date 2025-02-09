@@ -1,6 +1,5 @@
 package com.servinetcomputers.api.module.cashregister.application.service.detail;
 
-import com.servinetcomputers.api.core.datetime.DateTimeService;
 import com.servinetcomputers.api.core.exception.NotFoundException;
 import com.servinetcomputers.api.module.cashregister.application.usecase.detail.GetDetailedReportsByIdUseCase;
 import com.servinetcomputers.api.module.cashregister.domain.dto.DetailedCashRegisterReportsDto;
@@ -22,7 +21,6 @@ public class GetDetailedReportsByIdService implements GetDetailedReportsByIdUseC
     private final CashRegisterDetailRepository repository;
     private final TransactionDetailRepository transactionDetailRepository;
     private final ExpenseRepository expenseRepository;
-    private final DateTimeService dateTimeService;
     private final GetCashRegisterDetailReportsUseCase getCashRegisterDetailReportsUseCase;
 
     /**
@@ -38,13 +36,9 @@ public class GetDetailedReportsByIdService implements GetDetailedReportsByIdUseC
         final var cashRegisterDetail = repository.get(id)
                 .orElseThrow(() -> new NotFoundException("No se encontró los movimientos con ID: #" + id));
 
-        final var today = dateTimeService.dateNow();
-        final var startDate = dateTimeService.getMinByDate(today);
-        final var endDate = dateTimeService.now();
-
         final var reports = getCashRegisterDetailReportsUseCase.call(cashRegisterDetail);
-        final var transactions = transactionDetailRepository.getAllByCashRegisterDetailIdBetween(id, startDate, endDate);
-        final var expenses = expenseRepository.getAllByCashRegisterDetailIdBetween(id, startDate, endDate);
+        final var transactions = transactionDetailRepository.getAllByCashRegisterDetailId(id);
+        final var expenses = expenseRepository.getAllByCashRegisterDetailId(id);
 
         final var detailedTransactions = new DetailedCashRegisterTransactionsDto(transactions, expenses);
 

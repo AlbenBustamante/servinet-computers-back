@@ -26,8 +26,8 @@ public class ExpenseRepositoryImpl implements ExpenseRepository {
     }
 
     @Override
-    public List<ExpenseResponse> getAllByCashRegisterDetailIdBetween(int cashRegisterDetailId, LocalDateTime startDate, LocalDateTime endDate) {
-        final var expenses = repository.findAllByCashRegisterDetailIdAndEnabledTrueAndCreatedDateBetween(cashRegisterDetailId, startDate, endDate);
+    public List<ExpenseResponse> getAllByCashRegisterDetailId(int cashRegisterDetailId) {
+        final var expenses = repository.findAllByCashRegisterDetailIdAndEnabledTrue(cashRegisterDetailId);
         return mapper.toResponses(expenses);
     }
 
@@ -38,14 +38,8 @@ public class ExpenseRepositoryImpl implements ExpenseRepository {
     }
 
     @Override
-    public Integer sumExpenses(String code, LocalDateTime startDate, LocalDateTime endDate) {
-        final var expenses = repository.sumAllByCreatedByAndEnabledTrueAndCreatedDateBetweenAndDiscount(code, startDate, endDate, false);
+    public Integer sumValuesByCashRegisterDetailIdAndDiscount(int cashRegisterDetailId, boolean discount) {
+        final var expenses = repository.sumAllByCashRegisterDetailIdAndDiscount(cashRegisterDetailId, discount);
         return expenses != null ? expenses : 0;
-    }
-
-    @Override
-    public Integer sumDiscounts(String code, LocalDateTime startDate, LocalDateTime endDate) {
-        final var discounts = repository.sumAllByCreatedByAndEnabledTrueAndCreatedDateBetweenAndDiscount(code, startDate, endDate, true);
-        return discounts != null ? discounts : 0;
     }
 }
