@@ -19,6 +19,7 @@ public class CashRegisterDetailController {
     private final GetAllCashRegisterDetailsOfTodayUseCase getAllOfTodayUseCase;
     private final GetCashRegisterDetailByIdUseCase getByIdUseCase;
     private final GetCashRegisterDetailReportsByIdUseCase getReportsUseCase;
+    private final GetDetailedReportsByIdUseCase getDetailedReportsByIdUseCase;
     private final StartBreakUseCase startBreakUseCase;
     private final EndBreakUseCase endBreakUseCase;
     private final CloseUseCase closeUseCase;
@@ -44,6 +45,11 @@ public class CashRegisterDetailController {
     @GetMapping(path = "/{id}")
     public ResponseEntity<CashRegisterDetailResponse> getById(@PathVariable("id") int cashRegisterDetailId) {
         return ResponseEntity.ok(getByIdUseCase.call(cashRegisterDetailId));
+    }
+
+    @GetMapping(path = "/{id}/detailed-reports")
+    public ResponseEntity<DetailedCashRegisterReportsDto> getDetailedReports(@PathVariable("id") int cashRegisterDetailId) {
+        return ResponseEntity.ok(getDetailedReportsByIdUseCase.call(cashRegisterDetailId));
     }
 
     @GetMapping(path = "/{id}/reports")

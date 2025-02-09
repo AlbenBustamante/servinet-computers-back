@@ -9,7 +9,7 @@ import java.util.List;
 public interface TransactionDetailRepository {
     TransactionDetailResponse save(TransactionDetailRequest request);
 
-    List<TransactionDetailResponse> getByCashRegisterDetailId(int cashRegisterDetailId, LocalDateTime startDate, LocalDateTime endDate);
+    List<TransactionDetailResponse> getAllByCashRegisterDetailIdBetween(int cashRegisterDetailId, LocalDateTime startDate, LocalDateTime endDate);
 
     List<TransactionDetailResponse> getAllByCodeBetween(String code, LocalDateTime startDate, LocalDateTime endDate);
 

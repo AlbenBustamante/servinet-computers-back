@@ -27,7 +27,7 @@ public class TransactionDetailRepositoryImpl implements TransactionDetailReposit
     }
 
     @Override
-    public List<TransactionDetailResponse> getByCashRegisterDetailId(int cashRegisterDetailId, LocalDateTime startDate, LocalDateTime endDate) {
+    public List<TransactionDetailResponse> getAllByCashRegisterDetailIdBetween(int cashRegisterDetailId, LocalDateTime startDate, LocalDateTime endDate) {
         final var details = repository.findAllByCashRegisterDetailIdAndEnabledTrueAndCreatedDateBetween(cashRegisterDetailId, startDate, endDate);
         return mapper.toResponses(details);
     }

@@ -23,6 +23,6 @@ public class GetExpensesService implements GetExpensesUseCase {
         final var startDate = dateTimeService.getMinByDate(today);
         final var endDate = dateTimeService.now();
 
-        return repository.getByCashRegisterDetailId(param, startDate, endDate);
+        return repository.getAllByCashRegisterDetailIdBetween(param, startDate, endDate);
     }
 }
