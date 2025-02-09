@@ -28,6 +28,8 @@ public interface JpaCashRegisterDetailRepository extends JpaRepository<CashRegis
 
     List<CashRegisterDetail> findAllByStatusAndEnabledTrueAndCreatedDateBefore(CashRegisterDetailStatus status, LocalDateTime createdDate);
 
+    List<CashRegisterDetail> findAllByCashRegisterIdAndEnabledTrue(int cashRegisterId);
+
     @Query("SELECT crd.finalBase FROM CashRegisterDetail crd " +
             "WHERE crd.cashRegister.id = :cashRegisterId AND " +
             "crd.enabled = true " +

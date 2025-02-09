@@ -2,6 +2,7 @@ package com.servinetcomputers.api.module.cashregister.controller;
 
 import com.servinetcomputers.api.module.base.BaseDto;
 import com.servinetcomputers.api.module.cashregister.application.usecase.*;
+import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDetailResponse;
 import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterRequest;
 import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterResponse;
 import com.servinetcomputers.api.module.cashregister.domain.dto.UpdateCashRegisterDto;
@@ -18,6 +19,7 @@ public class CashRegisterController {
     private final CreateCashRegisterUseCase createCashRegisterUseCase;
     private final GetAllCashRegistersUseCase getAllCashRegistersUseCase;
     private final GetLastBaseUseCase getLastBaseUseCase;
+    private final GetAllMovementsUseCase getAllMovementsUseCase;
     private final UpdateCashRegisterUseCase updateCashRegisterUseCase;
     private final DeleteCashRegisterUseCase deleteCashRegisterUseCase;
 
@@ -34,6 +36,11 @@ public class CashRegisterController {
     @GetMapping(path = "/{id}/lastBase")
     public ResponseEntity<BaseDto> getLastBase(@PathVariable("id") int cashRegisterId) {
         return ResponseEntity.ok(getLastBaseUseCase.call(cashRegisterId));
+    }
+
+    @GetMapping(path = "/{id}/movements")
+    public ResponseEntity<List<CashRegisterDetailResponse>> getMovements(@PathVariable("id") int cashRegisterId) {
+        return ResponseEntity.ok(getAllMovementsUseCase.call(cashRegisterId));
     }
 
     @PatchMapping(path = "/{id}")

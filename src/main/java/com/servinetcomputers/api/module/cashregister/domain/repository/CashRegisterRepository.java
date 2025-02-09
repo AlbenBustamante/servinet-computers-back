@@ -16,6 +16,8 @@ public interface CashRegisterRepository {
 
     List<CashRegisterResponse> getAll();
 
+    boolean existsById(int id);
+
     boolean existsByNumeral(int numeral);
 
     Page<String> getLastFinalBase(int cashRegisterId);

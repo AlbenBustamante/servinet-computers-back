@@ -35,5 +35,7 @@ public interface CashRegisterDetailRepository {
 
     List<CashRegisterDetailResponse> getAllByStatusAndBefore(CashRegisterDetailStatus status, LocalDateTime createdDate);
 
+    List<CashRegisterDetailResponse> getAllByCashRegisterId(int cashRegisterId);
+
     Optional<CashRegisterDetailResponse> get(int cashRegisterDetailId);
 }

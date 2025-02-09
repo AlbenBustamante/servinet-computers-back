@@ -69,6 +69,12 @@ public class CashRegisterDetailRepositoryImpl implements CashRegisterDetailRepos
     }
 
     @Override
+    public List<CashRegisterDetailResponse> getAllByCashRegisterId(int cashRegisterId) {
+        final var details = repository.findAllByCashRegisterIdAndEnabledTrue(cashRegisterId);
+        return mapper.toResponses(details);
+    }
+
+    @Override
     public Optional<CashRegisterDetailResponse> get(int cashRegisterDetailId) {
         final var detail = repository.findByIdAndEnabledTrue(cashRegisterDetailId);
         return detail.map(mapper::toResponse);

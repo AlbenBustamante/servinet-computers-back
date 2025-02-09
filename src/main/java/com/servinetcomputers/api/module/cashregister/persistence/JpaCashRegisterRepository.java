@@ -11,5 +11,7 @@ public interface JpaCashRegisterRepository extends JpaRepository<CashRegister, I
 
     List<CashRegister> findAllByEnabledTrue();
 
+    boolean existsByIdAndEnabledTrue(int id);
+
     boolean existsByNumeralAndEnabledTrue(int numeral);
 }
