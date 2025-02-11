@@ -30,7 +30,7 @@ public interface JpaCashRegisterDetailRepository extends JpaRepository<CashRegis
 
     List<CashRegisterDetail> findAllByCashRegisterIdAndEnabledTrue(int cashRegisterId);
 
-    List<CashRegisterDetail> findAllByUserIdNotAndEnabledTrueAndCreatedDateBetween(int userId, LocalDateTime startDate, LocalDateTime endDate);
+    List<CashRegisterDetail> findAllByUserIdNotAndEnabledTrueAndStatusAndCreatedDateBetween(int userId, CashRegisterDetailStatus status, LocalDateTime startDate, LocalDateTime endDate);
 
     @Query("SELECT crd.finalBase FROM CashRegisterDetail crd " +
             "WHERE crd.cashRegister.id = :cashRegisterId AND " +
