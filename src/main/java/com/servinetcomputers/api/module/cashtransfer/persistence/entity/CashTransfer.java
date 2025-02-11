@@ -1,4 +1,4 @@
-package com.servinetcomputers.api.module.cashtransfer;
+package com.servinetcomputers.api.module.cashtransfer.persistence.entity;
 
 import com.servinetcomputers.api.core.audit.AuditAuditable;
 import com.servinetcomputers.api.core.audit.Auditable;
@@ -8,8 +8,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
-import static com.servinetcomputers.api.core.util.constants.SafeConstants.BASE_LENGTH;
 
 @Entity
 @Table(name = "cash_transfers")
@@ -24,9 +22,6 @@ public class CashTransfer extends Auditable {
 
     @Column(nullable = false)
     private Integer value;
-
-    @Column(length = BASE_LENGTH)
-    private String safeBase;
 
     @ManyToOne
     @JoinColumn(name = "from_cash_register_detail_id")
