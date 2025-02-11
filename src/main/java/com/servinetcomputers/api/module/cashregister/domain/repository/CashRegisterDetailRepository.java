@@ -37,5 +37,7 @@ public interface CashRegisterDetailRepository {
 
     List<CashRegisterDetailResponse> getAllByCashRegisterId(int cashRegisterId);
 
+    List<CashRegisterDetailResponse> getAllWhereUserIdIsNotAndBetween(int userId, LocalDateTime startDate, LocalDateTime endDate);
+
     Optional<CashRegisterDetailResponse> get(int cashRegisterDetailId);
 }

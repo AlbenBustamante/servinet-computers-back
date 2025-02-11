@@ -75,6 +75,12 @@ public class CashRegisterDetailRepositoryImpl implements CashRegisterDetailRepos
     }
 
     @Override
+    public List<CashRegisterDetailResponse> getAllWhereUserIdIsNotAndBetween(int userId, LocalDateTime startDate, LocalDateTime endDate) {
+        final var details = repository.findAllByUserIdNotAndEnabledTrueAndCreatedDateBetween(userId, startDate, endDate);
+        return mapper.toResponses(details);
+    }
+
+    @Override
     public Optional<CashRegisterDetailResponse> get(int cashRegisterDetailId) {
         final var detail = repository.findByIdAndEnabledTrue(cashRegisterDetailId);
         return detail.map(mapper::toResponse);

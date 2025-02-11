@@ -21,7 +21,6 @@ import static com.servinetcomputers.api.core.util.constants.UserConstants.*;
 @Getter
 @Setter
 public class User extends Auditable {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
@@ -42,5 +41,4 @@ public class User extends Auditable {
     @Column(nullable = false, columnDefinition = "CHAR(1)")
     @Convert(converter = RoleConverter.class)
     private Role role;
-
 }
