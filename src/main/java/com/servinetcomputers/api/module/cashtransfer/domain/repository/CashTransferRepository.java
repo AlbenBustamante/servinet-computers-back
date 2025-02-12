@@ -9,5 +9,5 @@ import java.util.List;
 public interface CashTransferRepository {
     CashTransferDto save(CreateCashTransferDto createCashTransferDto);
 
-    List<CashTransferDto> getAllByUserId(int userId, LocalDateTime startDate, LocalDateTime endDate);
+    List<CashTransferDto> getAllBySenderIdOrReceiverIdBetween(int senderId, int receiverId, LocalDateTime startDate, LocalDateTime endDate);
 }

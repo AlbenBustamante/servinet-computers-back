@@ -2,6 +2,7 @@ package com.servinetcomputers.api.module.cashregister.controller;
 
 import com.servinetcomputers.api.module.cashregister.application.usecase.detail.*;
 import com.servinetcomputers.api.module.cashregister.domain.dto.*;
+import com.servinetcomputers.api.module.cashtransfer.domain.dto.CashTransferDto;
 import com.servinetcomputers.api.module.expense.domain.dto.ExpenseResponse;
 import com.servinetcomputers.api.module.transaction.domain.dto.TransactionDetailResponse;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,7 @@ public class CashRegisterDetailController {
     private final GetAllCashRegisterDetailsOfTodayUseCase getAllOfTodayUseCase;
     private final GetCashRegisterDetailByIdUseCase getByIdUseCase;
     private final GetCashRegisterDetailReportsByIdUseCase getReportsUseCase;
+    private final GetCashTransfersByIdUseCase getCashTransfersUseCase;
     private final GetDetailedReportsByIdUseCase getDetailedReportsByIdUseCase;
     private final StartBreakUseCase startBreakUseCase;
     private final EndBreakUseCase endBreakUseCase;
@@ -65,6 +67,11 @@ public class CashRegisterDetailController {
     @GetMapping(path = "/{id}/expenses")
     public ResponseEntity<List<ExpenseResponse>> getExpenses(@PathVariable("id") int cashRegisterDetailId) {
         return ResponseEntity.ok(getExpensesUseCase.call(cashRegisterDetailId));
+    }
+
+    @GetMapping(path = "/{id}/cash-transfers")
+    public ResponseEntity<List<CashTransferDto>> getCashTransfers(@PathVariable("id") int cashRegisterDetailId) {
+        return ResponseEntity.ok(getCashTransfersUseCase.call(cashRegisterDetailId));
     }
 
     @PutMapping(path = "/{id}/start-break")

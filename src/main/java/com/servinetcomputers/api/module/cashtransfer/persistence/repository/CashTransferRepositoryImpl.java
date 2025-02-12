@@ -26,8 +26,8 @@ public class CashTransferRepositoryImpl implements CashTransferRepository {
     }
 
     @Override
-    public List<CashTransferDto> getAllByUserId(int userId, LocalDateTime startDate, LocalDateTime endDate) {
-        final var transfers = repository.findAllBySenderIdOrReceiverIdAndEnabledTrueAndCreatedDateBetween(userId, userId, startDate, endDate);
+    public List<CashTransferDto> getAllBySenderIdOrReceiverIdBetween(int senderId, int receiverId, LocalDateTime startDate, LocalDateTime endDate) {
+        final var transfers = repository.findAllBySenderIdOrReceiverIdAndEnabledTrueAndCreatedDateBetween(senderId, receiverId, startDate, endDate);
         return mapper.toDto(transfers);
     }
 }
