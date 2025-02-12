@@ -2,8 +2,8 @@ package com.servinetcomputers.api.module.cashtransfer.persistence.entity;
 
 import com.servinetcomputers.api.core.audit.AuditAuditable;
 import com.servinetcomputers.api.core.audit.Auditable;
-import com.servinetcomputers.api.module.cashregister.persistence.entity.CashRegisterDetail;
-import com.servinetcomputers.api.module.safes.persistence.entity.SafeDetail;
+import com.servinetcomputers.api.core.converter.CashBoxTypeConverter;
+import com.servinetcomputers.api.core.util.enums.CashBoxType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,19 +23,17 @@ public class CashTransfer extends Auditable {
     @Column(nullable = false)
     private Integer value;
 
-    @ManyToOne
-    @JoinColumn(name = "from_cash_register_detail_id")
-    private CashRegisterDetail fromCashRegister;
+    @Column(nullable = false)
+    private Integer senderId;
 
-    @ManyToOne
-    @JoinColumn(name = "to_cash_register_detail_id")
-    private CashRegisterDetail toCashRegister;
+    @Column(nullable = false)
+    private Integer receiverId;
 
-    @ManyToOne
-    @JoinColumn(name = "from_safe_detail_id")
-    private SafeDetail fromSafe;
+    @Convert(converter = CashBoxTypeConverter.class)
+    @Column(nullable = false)
+    private CashBoxType senderType;
 
-    @ManyToOne
-    @JoinColumn(name = "to_safe_detail_id")
-    private SafeDetail toSafe;
+    @Convert(converter = CashBoxTypeConverter.class)
+    @Column(nullable = false)
+    private CashBoxType receiverType;
 }

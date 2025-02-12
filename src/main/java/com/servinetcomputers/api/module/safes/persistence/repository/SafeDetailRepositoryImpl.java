@@ -45,4 +45,9 @@ public class SafeDetailRepositoryImpl implements SafeDetailRepository {
         final var details = repository.findAllByEnabledTrueAndCreatedDateBetween(startDate, endDate);
         return mapper.toResponses(details);
     }
+
+    @Override
+    public Optional<Integer> getNumeralById(int id) {
+        return repository.findNumeralById(id);
+    }
 }

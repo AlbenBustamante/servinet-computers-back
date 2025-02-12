@@ -7,5 +7,5 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface JpaCashTransferRepository extends JpaRepository<CashTransfer, Integer> {
-    List<CashTransfer> findAllByFromCashRegisterIdOrToCashRegisterIdOrFromSafeIdOrToSafeIdAndEnabledTrueAndCreatedDateBetween(int fromCashRegisterId, int toCashRegisterId, int fromSafeId, int toSafeId, LocalDateTime startDate, LocalDateTime endDate);
+    List<CashTransfer> findAllBySenderIdOrReceiverIdAndEnabledTrueAndCreatedDateBetween(int senderId, int receiverId, LocalDateTime startDate, LocalDateTime endDate);
 }

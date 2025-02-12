@@ -3,6 +3,7 @@ package com.servinetcomputers.api.module.cashregister.persistence;
 import com.servinetcomputers.api.core.util.enums.CashRegisterDetailStatus;
 import com.servinetcomputers.api.core.util.enums.CashRegisterStatus;
 import com.servinetcomputers.api.module.cashregister.persistence.entity.CashRegisterDetail;
+import com.servinetcomputers.api.module.user.domain.dto.UserFullNameDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -37,4 +38,9 @@ public interface JpaCashRegisterDetailRepository extends JpaRepository<CashRegis
             "crd.enabled = true " +
             "ORDER BY crd.createdDate DESC")
     Page<String> findBaseByCashRegisterId(@Param("cashRegisterId") int cashRegisterId, Pageable pageable);
+
+    @Query("SELECT new com.servinetcomputers.api.module.user.domain.dto.UserFullNameDto(crd.user.name, crd.user.lastName) FROM CashRegisterDetail crd " +
+            "WHERE crd.cashRegister.id = :id AND " +
+            "crd.enabled = true")
+    Optional<UserFullNameDto> findUserFullNameById(int id);
 }

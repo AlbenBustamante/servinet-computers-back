@@ -7,6 +7,7 @@ import com.servinetcomputers.api.module.cashregister.domain.dto.CreateCashRegist
 import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterDetailRepository;
 import com.servinetcomputers.api.module.cashregister.persistence.JpaCashRegisterDetailRepository;
 import com.servinetcomputers.api.module.cashregister.persistence.mapper.CashRegisterDetailMapper;
+import com.servinetcomputers.api.module.user.domain.dto.UserFullNameDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -84,5 +85,10 @@ public class CashRegisterDetailRepositoryImpl implements CashRegisterDetailRepos
     public Optional<CashRegisterDetailResponse> get(int cashRegisterDetailId) {
         final var detail = repository.findByIdAndEnabledTrue(cashRegisterDetailId);
         return detail.map(mapper::toResponse);
+    }
+
+    @Override
+    public Optional<UserFullNameDto> getUserFullNameById(int cashRegisterDetailId) {
+        return repository.findUserFullNameById(cashRegisterDetailId);
     }
 }

@@ -15,4 +15,6 @@ public interface SafeDetailRepository {
     Optional<SafeDetailResponse> get(int id);
 
     List<SafeDetailResponse> getAllByDateBetween(LocalDateTime startDate, LocalDateTime endDate);
+
+    Optional<Integer> getNumeralById(int id);
 }

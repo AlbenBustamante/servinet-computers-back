@@ -4,6 +4,7 @@ import com.servinetcomputers.api.core.util.enums.CashRegisterDetailStatus;
 import com.servinetcomputers.api.core.util.enums.CashRegisterStatus;
 import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDetailResponse;
 import com.servinetcomputers.api.module.cashregister.domain.dto.CreateCashRegisterDetailDto;
+import com.servinetcomputers.api.module.user.domain.dto.UserFullNameDto;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -40,4 +41,6 @@ public interface CashRegisterDetailRepository {
     List<CashRegisterDetailResponse> getAllWhereUserIdIsNotAndStatusAndBetween(int userId, CashRegisterDetailStatus status, LocalDateTime startDate, LocalDateTime endDate);
 
     Optional<CashRegisterDetailResponse> get(int cashRegisterDetailId);
+
+    Optional<UserFullNameDto> getUserFullNameById(int cashRegisterDetailId);
 }
