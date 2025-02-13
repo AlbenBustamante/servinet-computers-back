@@ -22,9 +22,9 @@ public class GetCashTransferDetailsService implements GetCashTransferDetailsUseC
     @Override
     public CashTransferDto call(CashTransferDto dto) {
         final var userId = userLoggedService.id();
-        final var received = dto.receiverType() == CashBoxType.CASH_REGISTER && dto.receiverId() == userId;
-        final var sender = getNames(dto.senderType(), dto.senderId());
-        final var receiver = getNames(dto.receiverType(), dto.receiverId());
+        final var received = dto.getReceiverType() == CashBoxType.CASH_REGISTER && dto.getReceiverId() == userId;
+        final var sender = getNames(dto.getSenderType(), dto.getSenderId());
+        final var receiver = getNames(dto.getReceiverType(), dto.getReceiverId());
 
         return dto.copyWithDetails(received, receiver, sender);
     }

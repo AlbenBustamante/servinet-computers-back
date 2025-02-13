@@ -1,21 +1,43 @@
 package com.servinetcomputers.api.module.cashtransfer.domain.dto;
 
 import com.servinetcomputers.api.core.util.enums.CashBoxType;
+import com.servinetcomputers.api.module.ModelResponse;
+import lombok.Getter;
 
-public record CashTransferDto(
-        int id,
-        int value,
-        int receiverId,
-        int senderId,
-        boolean received,
-        String receiver,
-        String sender,
-        CashBoxType receiverType,
-        CashBoxType senderType
-) {
+import java.time.LocalDateTime;
+
+@Getter
+public class CashTransferDto extends ModelResponse {
+    private final int value;
+    private final int receiverId;
+    private final int senderId;
+    private final boolean received;
+    private final String receiver;
+    private final String sender;
+    private final CashBoxType receiverType;
+    private final CashBoxType senderType;
+
+    public CashTransferDto(int id, boolean enabled, LocalDateTime createdDate, LocalDateTime modifiedDate, String createdBy, String modifiedBy,
+                           int value, int receiverId, int senderId, boolean received, String receiver, String sender, CashBoxType receiverType, CashBoxType senderType) {
+        super(id, enabled, createdDate, modifiedDate, createdBy, modifiedBy);
+        this.value = value;
+        this.receiverId = receiverId;
+        this.senderId = senderId;
+        this.received = received;
+        this.receiver = receiver;
+        this.sender = sender;
+        this.receiverType = receiverType;
+        this.senderType = senderType;
+    }
+
     public CashTransferDto copyWithDetails(boolean received, String receiver, String sender) {
         return new CashTransferDto(
-                id,
+                super.getId(),
+                super.isEnabled(),
+                super.getCreatedDate(),
+                super.getModifiedDate(),
+                super.getCreatedBy(),
+                super.getModifiedBy(),
                 value,
                 receiverId,
                 senderId,
