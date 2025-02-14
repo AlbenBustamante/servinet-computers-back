@@ -1,7 +1,6 @@
 package com.servinetcomputers.api.module.cashtransfer.application.service;
 
 import com.servinetcomputers.api.core.exception.NotFoundException;
-import com.servinetcomputers.api.core.security.service.UserLoggedService;
 import com.servinetcomputers.api.core.util.enums.CashBoxType;
 import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterDetailRepository;
 import com.servinetcomputers.api.module.cashtransfer.application.usecase.GetCashTransferDetailsUseCase;
@@ -14,15 +13,13 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Component
 public class GetCashTransferDetailsService implements GetCashTransferDetailsUseCase {
-    private final UserLoggedService userLoggedService;
     private final CashRegisterDetailRepository cashRegisterDetailRepository;
     private final SafeDetailRepository safeDetailRepository;
 
     @Transactional(readOnly = true)
     @Override
-    public CashTransferDto call(CashTransferDto dto) {
-        final var userId = userLoggedService.id();
-        final var received = dto.getReceiverType() == CashBoxType.CASH_REGISTER && dto.getReceiverId() == userId;
+    public CashTransferDto call(CashTransferDto dto, Integer cashRegisterDetailId) {
+        final var received = dto.getReceiverType() == CashBoxType.CASH_REGISTER && dto.getReceiverId() == cashRegisterDetailId;
         final var sender = getNames(dto.getSenderType(), dto.getSenderId());
         final var receiver = getNames(dto.getReceiverType(), dto.getReceiverId());
 
@@ -32,14 +29,14 @@ public class GetCashTransferDetailsService implements GetCashTransferDetailsUseC
     private String getNames(CashBoxType type, int id) {
         if (type == CashBoxType.CASH_REGISTER) {
             return cashRegisterDetailRepository.getUserFullNameById(id)
-                    .orElseThrow(() -> new NotFoundException("No se encontró el usuario suministrado"))
+                    .orElseThrow(() -> new NotFoundException("No se encontró el usuario suministrado: #" + id))
                     .fullName();
         }
 
         if (type == CashBoxType.SAFE) {
             final var numeral = safeDetailRepository.getNumeralById(id)
-                    .orElseThrow(() -> new NotFoundException("No se encontró a caja suministrada"));
-            return "Caja N°".concat(String.valueOf(numeral));
+                    .orElseThrow(() -> new NotFoundException("No se encontró a caja suministrada: #" + id));
+            return "Caja Fuerte N°".concat(String.valueOf(numeral));
         }
 
         return "-";

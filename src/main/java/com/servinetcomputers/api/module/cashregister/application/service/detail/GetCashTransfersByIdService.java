@@ -20,12 +20,17 @@ public class GetCashTransfersByIdService implements GetCashTransfersByIdUseCase 
 
     @Transactional(readOnly = true)
     @Override
-    public List<CashTransferDto> call(Integer userId) {
+    public List<CashTransferDto> call(Integer cashRegisterDetailId) {
         final var today = dateTimeService.dateNow();
         final var startDate = dateTimeService.getMinByDate(today);
         final var endDate = dateTimeService.now();
 
-        final var cashTransfers = cashTransferRepository.getAllBySenderIdOrReceiverIdBetween(userId, userId, startDate, endDate);
-        return cashTransfers.stream().map(getDetailsUseCase::call).toList();
+        final var cashTransfers = cashTransferRepository
+                .getAllBySenderIdOrReceiverIdBetween(cashRegisterDetailId, cashRegisterDetailId, startDate, endDate);
+
+        return cashTransfers
+                .stream()
+                .map(cashTransfer -> getDetailsUseCase.call(cashTransfer, cashRegisterDetailId))
+                .toList();
     }
 }

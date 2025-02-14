@@ -38,10 +38,10 @@ public record BaseDto(
                 tenThousand * 100 * 10000 +
                 fiveThousand * 100 * 5000 +
                 twoThousand * 100 * 2000 +
-                thousand * 1000 +
-                fiveHundred * 500 +
-                twoHundred * 200 +
-                hundred * 100 +
-                fifty * 50;
+                thousand * 100 * 1000 +
+                fiveHundred * 100 * 500 +
+                twoHundred * 100 * 200 +
+                hundred * 100 * 100 +
+                fifty * 100 * 50;
     }
 }

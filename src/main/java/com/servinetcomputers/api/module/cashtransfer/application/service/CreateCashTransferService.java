@@ -7,6 +7,7 @@ import com.servinetcomputers.api.module.cashtransfer.application.usecase.GetCash
 import com.servinetcomputers.api.module.cashtransfer.domain.dto.CashTransferDto;
 import com.servinetcomputers.api.module.cashtransfer.domain.dto.CreateCashTransferDto;
 import com.servinetcomputers.api.module.cashtransfer.domain.repository.CashTransferRepository;
+import com.servinetcomputers.api.module.safes.application.usecase.detail.UpdateSafeDetailBaseUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class CreateCashTransferService implements CreateCashTransferUseCase {
     private final CashTransferRepository repository;
     private final GetCashTransferDetailsUseCase getDetailsUseCase;
+    private final UpdateSafeDetailBaseUseCase updateSafeDetailBaseUseCase;
 
     @Transactional(rollbackFor = AppException.class)
     @Override
@@ -24,8 +26,11 @@ public class CreateCashTransferService implements CreateCashTransferUseCase {
             throw new BadRequestException("No puedes transferir a la misma caja");
         }
 
-        final var newCashTransfer = repository.save(dto);
+        if (dto.safeBase() != null || dto.safeDetailId() != null) {
+            updateSafeDetailBaseUseCase.call(dto.safeDetailId(), dto.safeBase());
+        }
 
-        return getDetailsUseCase.call(newCashTransfer);
+        final var newCashTransfer = repository.save(dto);
+        return getDetailsUseCase.call(newCashTransfer, dto.currentCashRegisterDetailId());
     }
 }

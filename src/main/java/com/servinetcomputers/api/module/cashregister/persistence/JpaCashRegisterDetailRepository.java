@@ -40,7 +40,7 @@ public interface JpaCashRegisterDetailRepository extends JpaRepository<CashRegis
     Page<String> findBaseByCashRegisterId(@Param("cashRegisterId") int cashRegisterId, Pageable pageable);
 
     @Query("SELECT new com.servinetcomputers.api.module.user.domain.dto.UserFullNameDto(crd.user.name, crd.user.lastName) FROM CashRegisterDetail crd " +
-            "WHERE crd.cashRegister.id = :id AND " +
+            "WHERE crd.id = :id AND " +
             "crd.enabled = true")
     Optional<UserFullNameDto> findUserFullNameById(int id);
 }
