@@ -25,8 +25,6 @@ public class GetCashRegisterDetailReportsService implements GetCashRegisterDetai
 
         final var finalBaseDto = cashRegisterDetail.getDetailFinalBase();
 
-        final var transactionsAmount = 0; // temporal
-
         final var initialBase = cashRegisterDetail.getDetailInitialBase().calculate();
         final var finalBase = finalBaseDto != null ? finalBaseDto.calculate() : 0;
 
@@ -45,6 +43,8 @@ public class GetCashRegisterDetailReportsService implements GetCashRegisterDetai
         final var balance = initialBase + deposits - withdrawals - expenses - discounts;
 
         final var discrepancy = finalBase - balance;
+
+        final var transactionsAmount = transactionDetailRepository.countById(cashRegisterDetailId);
 
         return CashRegisterDetailReportsDto.builder()
                 .cashRegisterDetail(cashRegisterDetail)

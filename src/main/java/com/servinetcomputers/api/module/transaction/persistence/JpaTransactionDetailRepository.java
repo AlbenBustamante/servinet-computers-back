@@ -18,4 +18,6 @@ public interface JpaTransactionDetailRepository extends JpaRepository<Transactio
             "AND td.cashRegisterDetail.id = :cashRegisterDetailId " +
             "AND td.type = :type")
     Integer sumAllByCashRegisterDetailIdAndEnabledTrueAndType(int cashRegisterDetailId, TransactionDetailType type);
+
+    Integer countByIdAndEnabledTrue(int cashRegisterDetailId);
 }

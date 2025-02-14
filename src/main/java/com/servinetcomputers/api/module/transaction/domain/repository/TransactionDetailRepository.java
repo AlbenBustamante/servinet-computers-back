@@ -15,4 +15,6 @@ public interface TransactionDetailRepository {
     List<TransactionDetailResponse> getAllByCodeBetween(String code, LocalDateTime startDate, LocalDateTime endDate);
 
     Integer sumValuesByCashRegisterDetailIdAndType(int cashRegisterDetailId, TransactionDetailType type);
+
+    int countById(int cashRegisterDetailId);
 }

@@ -43,4 +43,10 @@ public class TransactionDetailRepositoryImpl implements TransactionDetailReposit
         final var deposits = repository.sumAllByCashRegisterDetailIdAndEnabledTrueAndType(cashRegisterDetailId, type);
         return deposits != null ? deposits : 0;
     }
+
+    @Override
+    public int countById(int cashRegisterDetailId) {
+        final var transactions = repository.countByIdAndEnabledTrue(cashRegisterDetailId);
+        return transactions == null ? 0 : transactions;
+    }
 }
