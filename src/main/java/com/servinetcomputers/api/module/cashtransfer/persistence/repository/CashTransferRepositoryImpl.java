@@ -8,7 +8,6 @@ import com.servinetcomputers.api.module.cashtransfer.persistence.mapper.CashTran
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -26,8 +25,20 @@ public class CashTransferRepositoryImpl implements CashTransferRepository {
     }
 
     @Override
-    public List<CashTransferDto> getAllBySenderIdOrReceiverIdBetween(int senderId, int receiverId, LocalDateTime startDate, LocalDateTime endDate) {
-        final var transfers = repository.findAllBySenderIdOrReceiverIdAndEnabledTrueAndCreatedDateBetween(senderId, receiverId, startDate, endDate);
+    public List<CashTransferDto> getAllBySenderIdOrReceiverId(int senderId, int receiverId) {
+        final var transfers = repository.findAllBySenderIdOrReceiverIdAndEnabledTrue(senderId, receiverId);
         return mapper.toDto(transfers);
+    }
+
+    @Override
+    public int sumAllBySenderId(int senderId) {
+        final var sum = repository.sumAllBySenderId(senderId);
+        return sum == null ? 0 : sum;
+    }
+
+    @Override
+    public int sumAllByReceiverId(int receiverId) {
+        final var sum = repository.sumAllByReceiverId(receiverId);
+        return sum != null ? sum : 0;
     }
 }

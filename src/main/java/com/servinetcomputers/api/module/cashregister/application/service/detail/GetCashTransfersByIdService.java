@@ -1,6 +1,5 @@
 package com.servinetcomputers.api.module.cashregister.application.service.detail;
 
-import com.servinetcomputers.api.core.datetime.DateTimeService;
 import com.servinetcomputers.api.module.cashregister.application.usecase.detail.GetCashTransfersByIdUseCase;
 import com.servinetcomputers.api.module.cashtransfer.application.usecase.GetCashTransferDetailsUseCase;
 import com.servinetcomputers.api.module.cashtransfer.domain.dto.CashTransferDto;
@@ -15,18 +14,13 @@ import java.util.List;
 @Service
 public class GetCashTransfersByIdService implements GetCashTransfersByIdUseCase {
     private final CashTransferRepository cashTransferRepository;
-    private final DateTimeService dateTimeService;
     private final GetCashTransferDetailsUseCase getDetailsUseCase;
 
     @Transactional(readOnly = true)
     @Override
     public List<CashTransferDto> call(Integer cashRegisterDetailId) {
-        final var today = dateTimeService.dateNow();
-        final var startDate = dateTimeService.getMinByDate(today);
-        final var endDate = dateTimeService.now();
-
         final var cashTransfers = cashTransferRepository
-                .getAllBySenderIdOrReceiverIdBetween(cashRegisterDetailId, cashRegisterDetailId, startDate, endDate);
+                .getAllBySenderIdOrReceiverId(cashRegisterDetailId, cashRegisterDetailId);
 
         return cashTransfers
                 .stream()
