@@ -3,14 +3,19 @@ package com.servinetcomputers.api.module.reports.dto;
 import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDetailResponse;
 import com.servinetcomputers.api.module.platform.domain.dto.PlatformStatsDto;
 import com.servinetcomputers.api.module.safes.domain.dto.SafeDetailResponse;
+import lombok.Builder;
 
 import java.util.List;
 
 /**
  * The Admin Dashboard Reports dto model for responses.
  */
+@Builder
 public record DashboardResponse(
         int totalBalance,
+        int transactionsAmount,
+        int earnings,
+        int expenses,
         int platformBalancesTotal,
         int cashRegistersTotal,
         int safesTotal,

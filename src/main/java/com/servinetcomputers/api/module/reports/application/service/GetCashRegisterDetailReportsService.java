@@ -44,7 +44,7 @@ public class GetCashRegisterDetailReportsService implements GetCashRegisterDetai
 
         final var discrepancy = finalBase - balance;
 
-        final var transactionsAmount = transactionDetailRepository.countById(cashRegisterDetailId);
+        final var transactionsAmount = transactionDetailRepository.countByCashRegisterDetailId(cashRegisterDetailId);
 
         return CashRegisterDetailReportsDto.builder()
                 .cashRegisterDetail(cashRegisterDetail)

@@ -2,6 +2,7 @@ package com.servinetcomputers.api.module.reports.application.service;
 
 import com.servinetcomputers.api.core.datetime.DateTimeService;
 import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterDetailRepository;
+import com.servinetcomputers.api.module.expense.domain.repository.ExpenseRepository;
 import com.servinetcomputers.api.module.platform.domain.dto.PlatformBalanceResponse;
 import com.servinetcomputers.api.module.platform.domain.dto.PlatformStatsDto;
 import com.servinetcomputers.api.module.platform.domain.repository.PlatformBalanceRepository;
@@ -9,6 +10,7 @@ import com.servinetcomputers.api.module.platform.domain.repository.PlatformTrans
 import com.servinetcomputers.api.module.reports.application.usecase.GetDashboardUseCase;
 import com.servinetcomputers.api.module.reports.dto.DashboardResponse;
 import com.servinetcomputers.api.module.safes.domain.repository.SafeDetailRepository;
+import com.servinetcomputers.api.module.transaction.domain.repository.TransactionDetailRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
@@ -23,10 +25,12 @@ import static com.servinetcomputers.api.core.util.constants.SecurityConstants.AD
 @RequiredArgsConstructor
 @Service
 public class GetDashboardService implements GetDashboardUseCase {
-    private final PlatformBalanceRepository platformBalanceRepository;
     private final CashRegisterDetailRepository cashRegisterDetailRepository;
-    private final SafeDetailRepository safeDetailRepository;
+    private final ExpenseRepository expenseRepository;
+    private final PlatformBalanceRepository platformBalanceRepository;
     private final PlatformTransferRepository platformTransferRepository;
+    private final SafeDetailRepository safeDetailRepository;
+    private final TransactionDetailRepository transactionDetailRepository;
     private final DateTimeService dateTimeService;
 
     /**
@@ -80,15 +84,22 @@ public class GetDashboardService implements GetDashboardUseCase {
 
         final var totalBalance = platformBalancesTotal + cashRegistersTotal + safesTotal;
 
-        return new DashboardResponse(
-                totalBalance,
-                platformBalancesTotal,
-                cashRegistersTotal,
-                safesTotal,
-                platformsStats,
-                cashRegisterDetails,
-                safeDetails
-        );
+        final var earnings = transactionDetailRepository.sumCommissionBetween(startDate, endDate);
+        final var transactionsAmount = transactionDetailRepository.countBetween(startDate, endDate);
+        final var expenses = expenseRepository.sumValuesBetween(startDate, endDate);
+
+        return DashboardResponse.builder()
+                .totalBalance(totalBalance)
+                .earnings(earnings)
+                .transactionsAmount(transactionsAmount)
+                .expenses(expenses)
+                .platformBalancesTotal(platformBalancesTotal)
+                .cashRegistersTotal(cashRegistersTotal)
+                .safesTotal(safesTotal)
+                .platformsStats(platformsStats)
+                .cashRegisterDetails(cashRegisterDetails)
+                .safeDetails(safeDetails)
+                .build();
     }
 
     private PlatformStatsDto getPlatformStats(PlatformBalanceResponse balance, LocalDateTime startDate, LocalDateTime endDate) {

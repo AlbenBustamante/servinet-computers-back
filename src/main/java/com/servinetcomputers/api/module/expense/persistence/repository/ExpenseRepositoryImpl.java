@@ -42,4 +42,10 @@ public class ExpenseRepositoryImpl implements ExpenseRepository {
         final var expenses = repository.sumAllByCashRegisterDetailIdAndDiscount(cashRegisterDetailId, discount);
         return expenses != null ? expenses : 0;
     }
+
+    @Override
+    public int sumValuesBetween(LocalDateTime startDate, LocalDateTime endDate) {
+        final var values = repository.sumAllValuesByEnabledTrueAndCreatedDateBetween(startDate, endDate);
+        return values != null ? values : 0;
+    }
 }
