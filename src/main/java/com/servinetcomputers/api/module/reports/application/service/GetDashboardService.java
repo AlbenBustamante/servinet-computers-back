@@ -16,6 +16,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,10 +42,10 @@ public class GetDashboardService implements GetDashboardUseCase {
     @Transactional(readOnly = true)
     @Secured(value = ADMIN_AUTHORITY)
     @Override
-    public DashboardResponse call() {
-        final var today = dateTimeService.dateNow();
+    public DashboardResponse call(LocalDate date) {
+        final var today = date != null ? date : dateTimeService.dateNow();
         final var startDate = dateTimeService.getMinByDate(today);
-        final var endDate = dateTimeService.now();
+        final var endDate = dateTimeService.getMaxByDate(today);
 
         final var platformBalances = platformBalanceRepository.getAllBetween(startDate, endDate);
         //final var platformBalancesTotal = platformBalanceRepository.calculateFinalBalanceBetween(startDate, endDate);
