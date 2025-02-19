@@ -20,5 +20,7 @@ public interface TransactionDetailRepository {
 
     int sumCommissionBetween(LocalDateTime startDate, LocalDateTime endDate);
 
+    int sumCommissionByCashRegisterDetailId(int cashRegisterDetailId);
+
     int countBetween(LocalDateTime startDate, LocalDateTime endDate);
 }

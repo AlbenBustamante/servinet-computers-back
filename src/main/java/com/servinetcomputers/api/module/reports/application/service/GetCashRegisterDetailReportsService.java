@@ -37,7 +37,9 @@ public class GetCashRegisterDetailReportsService implements GetCashRegisterDetai
         final var transfersSent = cashTransferRepository.sumAllBySenderId(cashRegisterDetailId);
         final var transfersReceived = cashTransferRepository.sumAllByReceiverId(cashRegisterDetailId);
 
-        deposits += transfersReceived;
+        final var earnings = transactionDetailRepository.sumCommissionByCashRegisterDetailId(cashRegisterDetailId);
+
+        deposits += transfersReceived + earnings;
         withdrawals += expenses + discounts + transfersSent;
 
         final var balance = initialBase + deposits - withdrawals - expenses - discounts;
@@ -57,6 +59,7 @@ public class GetCashRegisterDetailReportsService implements GetCashRegisterDetai
                 .discounts(discounts)
                 .transfersSent(transfersSent)
                 .transfersReceived(transfersReceived)
+                .earnings(earnings)
                 .balance(balance)
                 .discrepancy(discrepancy)
                 .build();

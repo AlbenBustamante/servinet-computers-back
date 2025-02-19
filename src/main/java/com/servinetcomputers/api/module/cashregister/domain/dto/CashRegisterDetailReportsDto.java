@@ -14,11 +14,12 @@ public record CashRegisterDetailReportsDto(
         int discounts,
         int transfersSent,
         int transfersReceived,
+        int earnings,
         int balance,
         int discrepancy
 ) {
     public static CashRegisterDetailReportsDto empty(CashRegisterDetailResponse cashRegisterDetail) {
-        return new CashRegisterDetailReportsDto(cashRegisterDetail, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+        return new CashRegisterDetailReportsDto(cashRegisterDetail, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
     }
 
     public CashRegisterDetailReportsDto sum(CashRegisterDetailReportsDto reports) {
@@ -33,6 +34,7 @@ public record CashRegisterDetailReportsDto(
                 discounts + reports.discounts,
                 transfersSent + reports.transfersSent,
                 transfersReceived + reports.transfersReceived,
+                earnings + reports.earnings,
                 balance + reports.balance,
                 discrepancy + reports.discrepancy
         );

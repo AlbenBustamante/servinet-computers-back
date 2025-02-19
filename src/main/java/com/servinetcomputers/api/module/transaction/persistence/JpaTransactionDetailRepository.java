@@ -27,4 +27,9 @@ public interface JpaTransactionDetailRepository extends JpaRepository<Transactio
             "WHERE td.enabled = true " +
             "AND td.createdDate BETWEEN :startDate AND :endDate")
     Integer sumAllCommissionByEnabledTrueAndCreatedDateBetween(LocalDateTime startDate, LocalDateTime endDate);
+
+    @Query("SELECT SUM(td.commission) FROM TransactionDetail td " +
+            "WHERE td.enabled = true " +
+            "AND td.cashRegisterDetail.id = :cashRegisterDetailId")
+    Integer sumAllCommissionByEnabledTrueAndCashRegisterDetailId(int cashRegisterDetailId);
 }

@@ -57,6 +57,12 @@ public class TransactionDetailRepositoryImpl implements TransactionDetailReposit
     }
 
     @Override
+    public int sumCommissionByCashRegisterDetailId(int cashRegisterDetailId) {
+        final var commission = repository.sumAllCommissionByEnabledTrueAndCashRegisterDetailId(cashRegisterDetailId);
+        return commission != null ? commission : 0;
+    }
+
+    @Override
     public int countBetween(LocalDateTime startDate, LocalDateTime endDate) {
         final var transactions = repository.countByEnabledTrueAndCreatedDateBetween(startDate, endDate);
         return transactions != null ? transactions : 0;
