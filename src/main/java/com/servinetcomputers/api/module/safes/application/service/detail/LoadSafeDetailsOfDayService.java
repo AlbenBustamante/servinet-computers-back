@@ -3,7 +3,7 @@ package com.servinetcomputers.api.module.safes.application.service.detail;
 import com.servinetcomputers.api.core.datetime.DateTimeService;
 import com.servinetcomputers.api.core.exception.AppException;
 import com.servinetcomputers.api.module.base.BaseDto;
-import com.servinetcomputers.api.module.safes.application.usecase.detail.LoadSafesOfDayUseCase;
+import com.servinetcomputers.api.module.safes.application.usecase.detail.LoadSafeDetailsOfDayUseCase;
 import com.servinetcomputers.api.module.safes.domain.dto.SafeBaseRequest;
 import com.servinetcomputers.api.module.safes.domain.dto.SafeDetailRequest;
 import com.servinetcomputers.api.module.safes.domain.dto.SafeDetailResponse;
@@ -19,7 +19,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Service
-public class LoadSafeDetailsOfDayService implements LoadSafesOfDayUseCase {
+public class LoadSafeDetailsOfDayService implements LoadSafeDetailsOfDayUseCase {
     private final SafeDetailRepository repository;
     private final SafeRepository safeRepository;
     private final SafeBaseRepository safeBaseRepository;

@@ -1,7 +1,7 @@
 package com.servinetcomputers.api.module.safes.controller;
 
 import com.servinetcomputers.api.module.base.BaseDto;
-import com.servinetcomputers.api.module.safes.application.usecase.detail.LoadSafesOfDayUseCase;
+import com.servinetcomputers.api.module.safes.application.usecase.detail.LoadSafeDetailsOfDayUseCase;
 import com.servinetcomputers.api.module.safes.application.usecase.detail.UpdateSafeDetailBaseUseCase;
 import com.servinetcomputers.api.module.safes.domain.dto.SafeDetailResponse;
 import lombok.RequiredArgsConstructor;
@@ -15,11 +15,11 @@ import java.util.List;
 @RestController
 public class SafeDetailController {
     private final UpdateSafeDetailBaseUseCase updateSafeDetailBaseUseCase;
-    private final LoadSafesOfDayUseCase loadSafesOfDayUseCase;
+    private final LoadSafeDetailsOfDayUseCase loadSafeDetailsOfDayUseCase;
 
     @GetMapping(path = "/load")
     public ResponseEntity<List<SafeDetailResponse>> load() {
-        return ResponseEntity.ok(loadSafesOfDayUseCase.call());
+        return ResponseEntity.ok(loadSafeDetailsOfDayUseCase.call());
     }
 
     @PutMapping(path = "/{id}/base")
