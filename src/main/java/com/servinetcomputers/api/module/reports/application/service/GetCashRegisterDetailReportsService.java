@@ -1,5 +1,6 @@
 package com.servinetcomputers.api.module.reports.application.service;
 
+import com.servinetcomputers.api.core.util.enums.CashBoxType;
 import com.servinetcomputers.api.core.util.enums.TransactionDetailType;
 import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDetailReportsDto;
 import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDetailResponse;
@@ -34,8 +35,8 @@ public class GetCashRegisterDetailReportsService implements GetCashRegisterDetai
         var expenses = expenseRepository.sumValuesByCashRegisterDetailIdAndDiscount(cashRegisterDetailId, false);
         var discounts = expenseRepository.sumValuesByCashRegisterDetailIdAndDiscount(cashRegisterDetailId, true);
 
-        final var transfersSent = cashTransferRepository.sumAllBySenderId(cashRegisterDetailId);
-        final var transfersReceived = cashTransferRepository.sumAllByReceiverId(cashRegisterDetailId);
+        final var transfersSent = cashTransferRepository.sumAllBySenderIdAndType(cashRegisterDetailId, CashBoxType.CASH_REGISTER);
+        final var transfersReceived = cashTransferRepository.sumAllByReceiverIdAndType(cashRegisterDetailId, CashBoxType.CASH_REGISTER);
 
         final var earnings = transactionDetailRepository.sumCommissionByCashRegisterDetailId(cashRegisterDetailId);
 

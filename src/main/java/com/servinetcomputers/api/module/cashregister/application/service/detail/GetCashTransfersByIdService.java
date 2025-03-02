@@ -1,5 +1,6 @@
 package com.servinetcomputers.api.module.cashregister.application.service.detail;
 
+import com.servinetcomputers.api.core.util.enums.CashBoxType;
 import com.servinetcomputers.api.module.cashregister.application.usecase.detail.GetCashTransfersByIdUseCase;
 import com.servinetcomputers.api.module.cashtransfer.application.usecase.GetCashTransferDetailsUseCase;
 import com.servinetcomputers.api.module.cashtransfer.domain.dto.CashTransferDto;
@@ -20,7 +21,7 @@ public class GetCashTransfersByIdService implements GetCashTransfersByIdUseCase 
     @Override
     public List<CashTransferDto> call(Integer cashRegisterDetailId) {
         final var cashTransfers = cashTransferRepository
-                .getAllBySenderIdOrReceiverId(cashRegisterDetailId, cashRegisterDetailId);
+                .getAllByCashBoxIdAndType(cashRegisterDetailId, CashBoxType.CASH_REGISTER);
 
         return cashTransfers
                 .stream()

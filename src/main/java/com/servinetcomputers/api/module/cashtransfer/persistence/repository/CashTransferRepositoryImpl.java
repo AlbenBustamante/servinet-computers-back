@@ -1,5 +1,6 @@
 package com.servinetcomputers.api.module.cashtransfer.persistence.repository;
 
+import com.servinetcomputers.api.core.util.enums.CashBoxType;
 import com.servinetcomputers.api.module.cashtransfer.domain.dto.CashTransferDto;
 import com.servinetcomputers.api.module.cashtransfer.domain.dto.CreateCashTransferDto;
 import com.servinetcomputers.api.module.cashtransfer.domain.repository.CashTransferRepository;
@@ -25,20 +26,20 @@ public class CashTransferRepositoryImpl implements CashTransferRepository {
     }
 
     @Override
-    public List<CashTransferDto> getAllBySenderIdOrReceiverId(int senderId, int receiverId) {
-        final var transfers = repository.findAllBySenderIdOrReceiverIdAndEnabledTrue(senderId, receiverId);
+    public List<CashTransferDto> getAllByCashBoxIdAndType(int id, CashBoxType type) {
+        final var transfers = repository.findAllByCashBoxIdAndTypeAndEnabledTrue(id, type);
         return mapper.toDto(transfers);
     }
 
     @Override
-    public int sumAllBySenderId(int senderId) {
-        final var sum = repository.sumAllBySenderId(senderId);
+    public int sumAllBySenderIdAndType(int senderId, CashBoxType senderType) {
+        final var sum = repository.sumAllBySenderIdAndType(senderId, senderType);
         return sum == null ? 0 : sum;
     }
 
     @Override
-    public int sumAllByReceiverId(int receiverId) {
-        final var sum = repository.sumAllByReceiverId(receiverId);
+    public int sumAllByReceiverIdAndType(int receiverId, CashBoxType receiverType) {
+        final var sum = repository.sumAllByReceiverIdAndType(receiverId, receiverType);
         return sum != null ? sum : 0;
     }
 }
