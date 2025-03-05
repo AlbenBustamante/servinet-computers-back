@@ -1,10 +1,12 @@
 package com.servinetcomputers.api.module.cashregister.application.service.detail;
 
 import com.servinetcomputers.api.core.exception.NotFoundException;
+import com.servinetcomputers.api.core.util.enums.CashBoxType;
 import com.servinetcomputers.api.module.cashregister.application.usecase.detail.GetDetailedReportsByIdUseCase;
 import com.servinetcomputers.api.module.cashregister.domain.dto.DetailedCashRegisterReportsDto;
 import com.servinetcomputers.api.module.cashregister.domain.dto.DetailedCashRegisterTransactionsDto;
 import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterDetailRepository;
+import com.servinetcomputers.api.module.cashtransfer.domain.repository.CashTransferRepository;
 import com.servinetcomputers.api.module.expense.domain.repository.ExpenseRepository;
 import com.servinetcomputers.api.module.reports.application.usecase.GetCashRegisterDetailReportsUseCase;
 import com.servinetcomputers.api.module.transaction.domain.repository.TransactionDetailRepository;
@@ -21,6 +23,7 @@ public class GetDetailedReportsByIdService implements GetDetailedReportsByIdUseC
     private final CashRegisterDetailRepository repository;
     private final TransactionDetailRepository transactionDetailRepository;
     private final ExpenseRepository expenseRepository;
+    private final CashTransferRepository cashTransferRepository;
     private final GetCashRegisterDetailReportsUseCase getCashRegisterDetailReportsUseCase;
 
     /**
@@ -38,9 +41,11 @@ public class GetDetailedReportsByIdService implements GetDetailedReportsByIdUseC
 
         final var reports = getCashRegisterDetailReportsUseCase.call(cashRegisterDetail);
         final var transactions = transactionDetailRepository.getAllByCashRegisterDetailId(id);
-        final var expenses = expenseRepository.getAllByCashRegisterDetailId(id);
+        final var expenses = expenseRepository.getAllByCashRegisterDetailIdAndDiscount(id, false);
+        final var discounts = expenseRepository.getAllByCashRegisterDetailIdAndDiscount(id, true);
+        final var transfers = cashTransferRepository.getAllByCashBoxIdAndType(id, CashBoxType.CASH_REGISTER);
 
-        final var detailedTransactions = new DetailedCashRegisterTransactionsDto(transactions, expenses);
+        final var detailedTransactions = new DetailedCashRegisterTransactionsDto(transactions, expenses, discounts, transfers);
 
         return new DetailedCashRegisterReportsDto(reports, detailedTransactions);
     }
