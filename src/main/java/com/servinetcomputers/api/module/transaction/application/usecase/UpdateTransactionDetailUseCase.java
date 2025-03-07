@@ -6,7 +6,7 @@ import com.servinetcomputers.api.module.transaction.domain.dto.UpdateTransaction
 
 /**
  * Update all or some properties of an existing and enabled transaction detail.
- * <p>Receives the Cash Register Detail ID.</p>
+ * <p>Receives the {@code Transaction Detail ID}.</p>
  * <p>Receives an {@link UpdateTransactionDetailDto}.</p>
  * <p>Returns a {@link TransactionDetailResponse}</p>
  */
