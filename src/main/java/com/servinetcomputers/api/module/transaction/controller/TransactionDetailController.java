@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RequestMapping(path = "/transaction-details")
+@RestController
 public class TransactionDetailController {
     private final CreateTransactionDetailUseCase createTransactionDetailUseCase;
     private final UpdateTransactionDetailUseCase updateTransactionDetailUseCase;
@@ -20,7 +21,7 @@ public class TransactionDetailController {
         return ResponseEntity.ok(createTransactionDetailUseCase.call(request));
     }
 
-    @PatchMapping(value = "/{id}")
+    @PatchMapping(path = "/{id}")
     public ResponseEntity<TransactionDetailResponse> update(@PathVariable("id") Integer transactionDetailId, @RequestBody UpdateTransactionDetailDto updateTransactionDetailDto) {
         return ResponseEntity.ok(updateTransactionDetailUseCase.call(transactionDetailId, updateTransactionDetailDto));
     }
