@@ -19,6 +19,8 @@ public interface JpaExpenseRepository extends JpaRepository<Expense, Integer> {
             "AND e.createdDate BETWEEN :startDate AND :endDate")
     Integer sumAllValuesByEnabledTrueAndCreatedDateBetween(LocalDateTime startDate, LocalDateTime endDate);
 
+    List<Expense> findAllByCashRegisterDetailIdAndDiscountAndEnabledTrue(int cashRegisterDetailId, boolean discount);
+
     List<Expense> findAllByCreatedByAndEnabledTrueAndCreatedDateBetweenAndDiscount(String createdBy, LocalDateTime startDate, LocalDateTime endDate, boolean discount);
 
     List<Expense> findAllByCashRegisterDetailIdAndEnabledTrue(int cashRegisterDetailId);
