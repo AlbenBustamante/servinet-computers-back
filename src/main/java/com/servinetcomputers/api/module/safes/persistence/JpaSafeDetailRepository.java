@@ -11,6 +11,8 @@ import java.util.Optional;
 public interface JpaSafeDetailRepository extends JpaRepository<SafeDetail, Integer> {
     Optional<SafeDetail> findByIdAndEnabledTrue(int id);
 
+    List<SafeDetail> findAllByEnabledTrueAndSafeId(int safeId);
+
     List<SafeDetail> findAllByEnabledTrueAndCreatedDateBetween(LocalDateTime startDate, LocalDateTime endDate);
 
     @Query("SELECT sd.safe.numeral FROM SafeDetail sd " +

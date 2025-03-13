@@ -8,6 +8,7 @@ import com.servinetcomputers.api.module.safes.persistence.mapper.SafeBaseMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -28,5 +29,11 @@ public class SafeBaseRepositoryImpl implements SafeBaseRepository {
     public Optional<SafeBaseResponse> getLastBySafeId(int safeId) {
         final var base = repository.findFirstBySafeDetailSafeIdAndEnabledTrueOrderByCreatedDateDesc(safeId);
         return base.map(mapper::toResponse);
+    }
+
+    @Override
+    public List<SafeBaseResponse> getAllBySafeDetailId(int safeDetailId) {
+        final var bases = repository.findAllByEnabledTrueAndSafeDetailId(safeDetailId);
+        return mapper.toResponses(bases);
     }
 }
