@@ -15,6 +15,8 @@ public interface JpaPlatformBalanceRepository extends JpaRepository<PlatformBala
 
     Optional<PlatformBalance> findByPlatformIdAndEnabledTrueAndCreatedDateBetween(int platformId, LocalDateTime startDate, LocalDateTime endDate);
 
+    Optional<PlatformBalance> findFirstByPlatformIdAndEnabledTrueOrderByCreatedDateDesc(int platformId);
+
     List<PlatformBalance> findAllByEnabledTrueAndCreatedDateBetween(LocalDateTime startDate, LocalDateTime endDate);
 
     /*@Query("SELECT SUM(pb.finalBalance) FROM PlatformBalance pb " +

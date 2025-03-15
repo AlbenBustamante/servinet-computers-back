@@ -22,7 +22,7 @@ public class PlatformBalanceRepositoryImpl implements PlatformBalanceRepository 
     private final PlatformBalanceMapper mapper;
 
     @Override
-    public Optional<PlatformBalanceResponse> get(int platformId, LocalDateTime startDate, LocalDateTime endDate) {
+    public Optional<PlatformBalanceResponse> getByPlatformIdBetween(int platformId, LocalDateTime startDate, LocalDateTime endDate) {
         final var platformBalance = repository.findByPlatformIdAndEnabledTrueAndCreatedDateBetween(platformId, startDate, endDate);
         return platformBalance.map(mapper::toResponse);
     }
@@ -30,6 +30,12 @@ public class PlatformBalanceRepositoryImpl implements PlatformBalanceRepository 
     @Override
     public Optional<PlatformBalanceResponse> get(int balanceId) {
         final var balance = repository.findByIdAndEnabledTrue(balanceId);
+        return balance.map(mapper::toResponse);
+    }
+
+    @Override
+    public Optional<PlatformBalanceResponse> getLastByPlatformId(int platformId) {
+        final var balance = repository.findFirstByPlatformIdAndEnabledTrueOrderByCreatedDateDesc(platformId);
         return balance.map(mapper::toResponse);
     }
 

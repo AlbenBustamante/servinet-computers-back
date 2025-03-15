@@ -67,13 +67,16 @@ public class LoadPortalPlatformsService implements LoadPortalPlatformsUseCase {
     }
 
     private PlatformBalanceResponse getPlatformBalance(int platformId, LocalDateTime startDate, LocalDateTime endDate) {
-        final var balance = balanceRepository.get(platformId, startDate, endDate);
+        final var balance = balanceRepository.getByPlatformIdBetween(platformId, startDate, endDate);
 
         if (balance.isPresent()) {
             return balance.get();
         }
 
-        final var request = new PlatformBalanceRequest(platformId, 0, 0);
+        final var lastBalance = balanceRepository.getLastByPlatformId(platformId);
+        final var newBalance = lastBalance.isPresent() ? lastBalance.get().getFinalBalance() : 0;
+
+        final var request = new PlatformBalanceRequest(platformId, newBalance, newBalance);
         return balanceRepository.save(request);
     }
 }

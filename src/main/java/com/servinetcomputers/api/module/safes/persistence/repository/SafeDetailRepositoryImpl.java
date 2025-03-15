@@ -41,6 +41,12 @@ public class SafeDetailRepositoryImpl implements SafeDetailRepository {
     }
 
     @Override
+    public List<SafeDetailResponse> getAllBySafeId(int safeId) {
+        final var details = repository.findAllByEnabledTrueAndSafeId(safeId);
+        return mapper.toResponses(details);
+    }
+
+    @Override
     public List<SafeDetailResponse> getAllByDateBetween(LocalDateTime startDate, LocalDateTime endDate) {
         final var details = repository.findAllByEnabledTrueAndCreatedDateBetween(startDate, endDate);
         return mapper.toResponses(details);
