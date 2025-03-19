@@ -46,7 +46,7 @@ public class GetAllCashRegisterDetailsOfTodayService implements GetAllCashRegist
             combinedIds.add(0);
         }
 
-        final var remainingCashRegisters = repository.getAllWhereCashRegisterIdIsNot(combinedIds);
+        final var remainingCashRegisters = repository.getLatestWhereCashRegisterIdIsNotIn(combinedIds);
 
         return new AdmCashRegistersDto(currentCashRegisters, pendingCashRegisters, remainingCashRegisters);
     }

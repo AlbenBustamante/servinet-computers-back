@@ -1,7 +1,9 @@
 package com.servinetcomputers.api.module.reports.application.service;
 
 import com.servinetcomputers.api.core.datetime.DateTimeService;
+import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDetailResponse;
 import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterDetailRepository;
+import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterRepository;
 import com.servinetcomputers.api.module.expense.domain.repository.ExpenseRepository;
 import com.servinetcomputers.api.module.platform.domain.dto.PlatformBalanceResponse;
 import com.servinetcomputers.api.module.platform.domain.dto.PlatformStatsDto;
@@ -9,6 +11,7 @@ import com.servinetcomputers.api.module.platform.domain.repository.PlatformBalan
 import com.servinetcomputers.api.module.platform.domain.repository.PlatformTransferRepository;
 import com.servinetcomputers.api.module.reports.application.usecase.GetDashboardUseCase;
 import com.servinetcomputers.api.module.reports.dto.DashboardResponse;
+import com.servinetcomputers.api.module.safes.domain.dto.SafeDetailResponse;
 import com.servinetcomputers.api.module.safes.domain.repository.SafeDetailRepository;
 import com.servinetcomputers.api.module.transaction.domain.repository.TransactionDetailRepository;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +30,7 @@ import static com.servinetcomputers.api.core.util.constants.SecurityConstants.AD
 @Service
 public class GetDashboardService implements GetDashboardUseCase {
     private final CashRegisterDetailRepository cashRegisterDetailRepository;
+    private final CashRegisterRepository cashRegisterRepository;
     private final ExpenseRepository expenseRepository;
     private final PlatformBalanceRepository platformBalanceRepository;
     private final PlatformTransferRepository platformTransferRepository;
@@ -47,41 +51,17 @@ public class GetDashboardService implements GetDashboardUseCase {
         final var startDate = dateTimeService.getMinByDate(today);
         final var endDate = dateTimeService.getMaxByDate(today);
 
-        final var platformBalances = platformBalanceRepository.getAllBetween(startDate, endDate);
         //final var platformBalancesTotal = platformBalanceRepository.calculateFinalBalanceBetween(startDate, endDate);
+        final var platformBalances = platformBalanceRepository.getAllBetween(startDate, endDate);
         final List<PlatformStatsDto> platformsStats = new ArrayList<>(platformBalances.size());
-        var platformBalancesTotal = 0;
+        final var platformBalancesTotal = calculatePlatformBalancesTotal(platformBalances, platformsStats, startDate, endDate);
 
-        for (final var platform : platformBalances) {
-            final var balance = platform.getFinalBalance() > 0
-                    ? platform.getFinalBalance()
-                    : platform.getInitialBalance();
-
-            platformBalancesTotal += balance;
-            platformsStats.add(getPlatformStats(platform, startDate, endDate));
-        }
-
-        final var cashRegisterDetails = cashRegisterDetailRepository.getAllBetween(startDate, endDate);
-        var cashRegistersTotal = 0;
-
-        for (final var cashRegisterDetail : cashRegisterDetails) {
-            final var base = cashRegisterDetail.getDetailFinalBase() != null
-                    ? cashRegisterDetail.getDetailFinalBase()
-                    : cashRegisterDetail.getDetailInitialBase();
-
-            cashRegistersTotal += base.calculate();
-        }
+        final var cashRegisterIds = cashRegisterRepository.getAllIds();
+        final var cashRegisterDetails = cashRegisterDetailRepository.getLatestWhereCashRegisterIdIsIn(cashRegisterIds);
+        final var cashRegistersTotal = calculateCashRegistersTotal(cashRegisterDetails);
 
         final var safeDetails = safeDetailRepository.getAllByDateBetween(startDate, endDate);
-        var safesTotal = 0;
-
-        for (final var safe : safeDetails) {
-            final var base = safe.getDetailFinalBase() != null
-                    ? safe.getDetailFinalBase()
-                    : safe.getDetailInitialBase();
-
-            safesTotal += base.calculateSafeBase();
-        }
+        final var safesTotal = calculateSafesTotal(safeDetails);
 
         final var totalBalance = platformBalancesTotal + cashRegistersTotal + safesTotal;
 
@@ -103,6 +83,25 @@ public class GetDashboardService implements GetDashboardUseCase {
                 .build();
     }
 
+    private int calculatePlatformBalancesTotal(List<PlatformBalanceResponse> platformBalances, List<PlatformStatsDto> platformsStats, LocalDateTime startDate, LocalDateTime endDate) {
+        if (platformBalances.isEmpty()) {
+            return 0;
+        }
+
+        var platformBalancesTotal = 0;
+
+        for (final var platform : platformBalances) {
+            final var balance = platform.getFinalBalance() != null
+                    ? platform.getFinalBalance()
+                    : platform.getInitialBalance();
+
+            platformBalancesTotal += balance;
+            platformsStats.add(getPlatformStats(platform, startDate, endDate));
+        }
+
+        return platformBalancesTotal;
+    }
+
     private PlatformStatsDto getPlatformStats(PlatformBalanceResponse balance, LocalDateTime startDate, LocalDateTime endDate) {
         final var platformId = balance.getPlatformId();
         final var platformName = balance.getPlatformName();
@@ -114,5 +113,41 @@ public class GetDashboardService implements GetDashboardUseCase {
         final var total = initialBalance + transfersTotal - finalBalance;
 
         return new PlatformStatsDto(platformId, platformName, initialBalance, finalBalance, transfersAmount, transfersTotal, total);
+    }
+
+    private int calculateCashRegistersTotal(List<CashRegisterDetailResponse> cashRegisterDetails) {
+        if (cashRegisterDetails.isEmpty()) {
+            return 0;
+        }
+
+        var cashRegistersTotal = 0;
+
+        for (final var detail : cashRegisterDetails) {
+            final var base = detail.getFinalBase() != null
+                    ? detail.getFinalBase()
+                    : detail.getInitialBase();
+
+            cashRegistersTotal += base;
+        }
+
+        return cashRegistersTotal;
+    }
+
+    private int calculateSafesTotal(List<SafeDetailResponse> safeDetails) {
+        if (safeDetails.isEmpty()) {
+            return 0;
+        }
+
+        var safesTotal = 0;
+
+        for (final var detail : safeDetails) {
+            final var base = detail.getFinalBase() != null
+                    ? detail.getFinalBase()
+                    : detail.getInitialBase() != null ? detail.getInitialBase() : 0;
+
+            safesTotal += base;
+        }
+
+        return safesTotal;
     }
 }

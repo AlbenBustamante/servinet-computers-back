@@ -34,6 +34,12 @@ public interface JpaCashRegisterDetailRepository extends JpaRepository<CashRegis
     List<CashRegisterDetail> findAllByUserIdNotAndEnabledTrueAndStatusAndCreatedDateBetween(int userId, CashRegisterDetailStatus status, LocalDateTime startDate, LocalDateTime endDate);
 
     @Query("SELECT crd FROM CashRegisterDetail crd " +
+            "WHERE crd.cashRegister.id IN :cashRegisterIds " +
+            "AND crd.enabled = true " +
+            "AND crd.createdDate = (SELECT MAX(crd1.createdDate) FROM CashRegisterDetail crd1 WHERE crd1.cashRegister.id = crd.cashRegister.id)")
+    List<CashRegisterDetail> findLatestByCashRegisterIdInAndEnabledTrue(List<Integer> cashRegisterIds);
+
+    @Query("SELECT crd FROM CashRegisterDetail crd " +
             "WHERE crd.cashRegister.id NOT IN :cashRegisterIds " +
             "AND crd.enabled = true " +
             "AND crd.createdDate = (SELECT MAX(crd1.createdDate) FROM CashRegisterDetail crd1 WHERE crd1.cashRegister.id = crd.cashRegister.id)")

@@ -40,7 +40,9 @@ public interface CashRegisterDetailRepository {
 
     List<CashRegisterDetailResponse> getAllWhereUserIdIsNotAndStatusAndBetween(int userId, CashRegisterDetailStatus status, LocalDateTime startDate, LocalDateTime endDate);
 
-    List<CashRegisterDetailResponse> getAllWhereCashRegisterIdIsNot(List<Integer> cashRegisterIds);
+    List<CashRegisterDetailResponse> getLatestWhereCashRegisterIdIsIn(List<Integer> cashRegisterIds);
+
+    List<CashRegisterDetailResponse> getLatestWhereCashRegisterIdIsNotIn(List<Integer> cashRegisterIds);
 
     Optional<CashRegisterDetailResponse> get(int cashRegisterDetailId);
 

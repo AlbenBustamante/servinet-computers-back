@@ -16,6 +16,8 @@ public interface CashRegisterRepository {
 
     List<CashRegisterResponse> getAll();
 
+    List<Integer> getAllIds();
+
     boolean existsById(int id);
 
     boolean existsByNumeral(int numeral);

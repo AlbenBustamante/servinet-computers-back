@@ -11,7 +11,8 @@ import java.time.LocalDateTime;
 @Getter
 public class SafeDetailResponse extends ModelResponse {
     private BaseDto detailInitialBase, detailFinalBase;
-    private final int safeId, initialBase, finalBase, calculatedBase;
+    private final int safeId, calculatedBase;
+    private final Integer initialBase, finalBase;
     private final SafeResponse safe;
 
     public SafeDetailResponse(int id, boolean enabled, LocalDateTime createdDate, LocalDateTime modifiedDate, String createdBy, String modifiedBy,
@@ -19,8 +20,8 @@ public class SafeDetailResponse extends ModelResponse {
         super(id, enabled, createdDate, modifiedDate, createdBy, modifiedBy);
         this.detailInitialBase = detailInitialBase;
         this.detailFinalBase = detailFinalBase;
-        this.initialBase = this.detailInitialBase != null ? this.detailInitialBase.calculateSafeBase() : 0;
-        this.finalBase = this.detailFinalBase != null ? this.detailFinalBase.calculateSafeBase() : 0;
+        this.initialBase = this.detailInitialBase != null ? this.detailInitialBase.calculateSafeBase() : null;
+        this.finalBase = this.detailFinalBase != null ? this.detailFinalBase.calculateSafeBase() : null;
         this.calculatedBase = calculatedBase;
         this.safeId = safeId;
         this.safe = safe;

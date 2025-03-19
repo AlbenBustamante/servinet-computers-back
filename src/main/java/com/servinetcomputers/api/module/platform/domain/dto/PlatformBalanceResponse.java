@@ -14,10 +14,10 @@ import java.time.LocalDateTime;
 public class PlatformBalanceResponse extends ModelResponse {
     private final String platformName;
     private final int platformId;
-    private int initialBalance, finalBalance;
+    private Integer initialBalance, finalBalance;
 
     public PlatformBalanceResponse(int id, boolean enabled, LocalDateTime createdDate, LocalDateTime modifiedDate, String createdBy,
-                                   String modifiedBy, String platformName, int platformId, int initialBalance, int finalBalance) {
+                                   String modifiedBy, String platformName, int platformId, Integer initialBalance, Integer finalBalance) {
         super(id, enabled, createdDate, modifiedDate, createdBy, modifiedBy);
         this.platformName = platformName;
         this.platformId = platformId;

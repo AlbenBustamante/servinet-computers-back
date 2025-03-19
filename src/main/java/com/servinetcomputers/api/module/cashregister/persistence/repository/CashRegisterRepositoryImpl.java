@@ -50,6 +50,11 @@ public class CashRegisterRepositoryImpl implements CashRegisterRepository {
     }
 
     @Override
+    public List<Integer> getAllIds() {
+        return repository.findAllIdsAndEnabledTrue();
+    }
+
+    @Override
     public boolean existsById(int id) {
         return repository.existsByIdAndEnabledTrue(id);
     }

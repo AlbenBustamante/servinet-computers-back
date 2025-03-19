@@ -12,7 +12,8 @@ import java.time.LocalDateTime;
 @Setter
 @Getter
 public class CashRegisterDetailResponse extends ModelResponse {
-    private final int userId, initialBase, finalBase;
+    private final int userId;
+    private final Integer initialBase, finalBase;
     private final String baseObservation;
     private final BaseDto detailInitialBase;
     private CashRegisterResponse cashRegister;
@@ -32,7 +33,7 @@ public class CashRegisterDetailResponse extends ModelResponse {
         this.cashRegister = cashRegister;
 
         this.initialBase = this.detailInitialBase.calculate();
-        this.finalBase = this.detailFinalBase != null ? this.detailFinalBase.calculate() : 0;
+        this.finalBase = this.detailFinalBase != null ? this.detailFinalBase.calculate() : null;
 
         this.status = status;
     }
