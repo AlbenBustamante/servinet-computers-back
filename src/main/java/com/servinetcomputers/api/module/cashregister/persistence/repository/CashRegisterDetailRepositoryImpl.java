@@ -82,6 +82,12 @@ public class CashRegisterDetailRepositoryImpl implements CashRegisterDetailRepos
     }
 
     @Override
+    public List<CashRegisterDetailResponse> getAllWhereCashRegisterIdIsNot(List<Integer> cashRegisterIds) {
+        final var details = repository.findLatestByCashRegisterIdNotInAndEnabledTrue(cashRegisterIds);
+        return mapper.toResponses(details);
+    }
+
+    @Override
     public Optional<CashRegisterDetailResponse> get(int cashRegisterDetailId) {
         final var detail = repository.findByIdAndEnabledTrue(cashRegisterDetailId);
         return detail.map(mapper::toResponse);

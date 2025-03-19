@@ -4,6 +4,7 @@ import java.util.List;
 
 public record AdmCashRegistersDto(
         List<CashRegisterDetailResponse> currentCashRegisters,
-        List<CashRegisterDetailResponse> pendingCashRegisters
+        List<CashRegisterDetailResponse> pendingCashRegisters,
+        List<CashRegisterDetailResponse> remainingCashRegisters
 ) {
 }
