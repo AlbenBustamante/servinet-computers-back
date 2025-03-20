@@ -46,7 +46,7 @@ public class TransactionDetailRepositoryImpl implements TransactionDetailReposit
 
     @Override
     public int countByCashRegisterDetailId(int cashRegisterDetailId) {
-        final var transactions = repository.countByIdAndEnabledTrue(cashRegisterDetailId);
+        final var transactions = repository.countByCashRegisterDetailIdAndEnabledTrue(cashRegisterDetailId);
         return transactions == null ? 0 : transactions;
     }
 

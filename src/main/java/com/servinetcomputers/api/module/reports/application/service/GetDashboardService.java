@@ -46,18 +46,25 @@ public class GetDashboardService implements GetDashboardUseCase {
     @Transactional(readOnly = true)
     @Secured(value = ADMIN_AUTHORITY)
     @Override
-    public DashboardResponse call(LocalDate date) {
-        final var today = date != null ? date : dateTimeService.dateNow();
-        final var startDate = dateTimeService.getMinByDate(today);
-        final var endDate = dateTimeService.getMaxByDate(today);
+    public DashboardResponse call(final LocalDate date) {
+        final var newDate = date != null ? date : dateTimeService.dateNow();
+        final var startDate = dateTimeService.getMinByDate(newDate);
+        final var endDate = dateTimeService.getMaxByDate(newDate);
 
         //final var platformBalancesTotal = platformBalanceRepository.calculateFinalBalanceBetween(startDate, endDate);
         final var platformBalances = platformBalanceRepository.getAllBetween(startDate, endDate);
         final List<PlatformStatsDto> platformsStats = new ArrayList<>(platformBalances.size());
         final var platformBalancesTotal = calculatePlatformBalancesTotal(platformBalances, platformsStats, startDate, endDate);
 
-        final var cashRegisterIds = cashRegisterRepository.getAllIds();
-        final var cashRegisterDetails = cashRegisterDetailRepository.getLatestWhereCashRegisterIdIsIn(cashRegisterIds);
+        final List<CashRegisterDetailResponse> cashRegisterDetails;
+
+        if (date == null) {
+            final var cashRegisterIds = cashRegisterRepository.getAllIds();
+            cashRegisterDetails = cashRegisterDetailRepository.getLatestWhereCashRegisterIdIsIn(cashRegisterIds);
+        } else {
+            cashRegisterDetails = cashRegisterDetailRepository.getAllBetween(startDate, endDate);
+        }
+
         final var cashRegistersTotal = calculateCashRegistersTotal(cashRegisterDetails);
 
         final var safeDetails = safeDetailRepository.getAllByDateBetween(startDate, endDate);
