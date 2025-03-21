@@ -36,7 +36,7 @@ public class CreateTransactionDetailService implements CreateTransactionDetailUs
     }
 
     private TransactionResponse getTransaction(String description) {
-        final var transaction = transactionRepository.getByDescription(description);
+        final var transaction = transactionRepository.getByDescription(description.toUpperCase());
 
         if (transaction.isPresent()) {
             transaction.get().addUse();

@@ -23,7 +23,7 @@ public class Transaction extends Auditable {
     @Column(name = "transaction_id")
     private Integer id;
 
-    @Column(nullable = false, length = DESCRIPTION_LENGTH)
+    @Column(nullable = false, length = DESCRIPTION_LENGTH, unique = true)
     private String description;
 
     @Column(nullable = false)
