@@ -64,8 +64,8 @@ public class CashRegisterDetailRepositoryImpl implements CashRegisterDetailRepos
     }
 
     @Override
-    public List<CashRegisterDetailResponse> getAllByStatusAndBefore(CashRegisterDetailStatus status, LocalDateTime createdDate) {
-        final var details = repository.findAllByStatusAndEnabledTrueAndCreatedDateBefore(status, createdDate);
+    public List<CashRegisterDetailResponse> getAllByStatusNotAndBefore(CashRegisterDetailStatus status, LocalDateTime createdDate) {
+        final var details = repository.findAllByStatusNotAndEnabledTrueAndCreatedDateBefore(status, createdDate);
         return mapper.toResponses(details);
     }
 

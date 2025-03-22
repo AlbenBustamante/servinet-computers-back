@@ -34,7 +34,7 @@ public interface CashRegisterDetailRepository {
 
     List<CashRegisterDetailResponse> getAllBetween(LocalDateTime startDate, LocalDateTime endDate);
 
-    List<CashRegisterDetailResponse> getAllByStatusAndBefore(CashRegisterDetailStatus status, LocalDateTime createdDate);
+    List<CashRegisterDetailResponse> getAllByStatusNotAndBefore(CashRegisterDetailStatus status, LocalDateTime createdDate);
 
     List<CashRegisterDetailResponse> getAllByCashRegisterId(int cashRegisterId);
 

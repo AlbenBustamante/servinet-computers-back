@@ -35,7 +35,7 @@ public class GetAdmCashRegisterDetailsService implements GetAdmCashRegisterDetai
         final var endDate = dateTimeService.now();
 
         final var currentCashRegisters = repository.getAllBetween(startDate, endDate);
-        final var pendingCashRegisters = repository.getAllByStatusAndBefore(CashRegisterDetailStatus.WORKING, startDate);
+        final var pendingCashRegisters = repository.getAllByStatusNotAndBefore(CashRegisterDetailStatus.CLOSED, startDate);
 
         final List<Integer> combinedIds = new ArrayList<>();
 
