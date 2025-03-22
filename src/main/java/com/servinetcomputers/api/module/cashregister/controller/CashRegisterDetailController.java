@@ -17,7 +17,7 @@ import java.util.List;
 public class CashRegisterDetailController {
     private final CreateCashRegisterDetailUseCase createCashRegisterDetailUseCase;
     private final CashRegisterDetailAlreadyExistsUseCase alreadyExistsUseCase;
-    private final GetAllCashRegisterDetailsOfTodayUseCase getAllOfTodayUseCase;
+    private final GetAdmCashRegisterDetailsUseCase getAdmCashRegisterDetailsUseCase;
     private final GetCashRegisterDetailByIdUseCase getByIdUseCase;
     private final GetCashRegisterDetailReportsByIdUseCase getReportsUseCase;
     private final GetCashTransfersByIdUseCase getCashTransfersUseCase;
@@ -39,9 +39,9 @@ public class CashRegisterDetailController {
         return ResponseEntity.ok(alreadyExistsUseCase.call());
     }
 
-    @GetMapping(path = "/today")
-    public ResponseEntity<AdmCashRegistersDto> getAllOfToday() {
-        return ResponseEntity.ok(getAllOfTodayUseCase.call());
+    @GetMapping(path = "/adm")
+    public ResponseEntity<AdmCashRegistersDto> getAdmCashRegisterDetails() {
+        return ResponseEntity.ok(getAdmCashRegisterDetailsUseCase.call());
     }
 
     @GetMapping(path = "/{id}")

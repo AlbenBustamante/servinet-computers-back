@@ -2,7 +2,7 @@ package com.servinetcomputers.api.module.cashregister.application.service.detail
 
 import com.servinetcomputers.api.core.datetime.DateTimeService;
 import com.servinetcomputers.api.core.util.enums.CashRegisterDetailStatus;
-import com.servinetcomputers.api.module.cashregister.application.usecase.detail.GetAllCashRegisterDetailsOfTodayUseCase;
+import com.servinetcomputers.api.module.cashregister.application.usecase.detail.GetAdmCashRegisterDetailsUseCase;
 import com.servinetcomputers.api.module.cashregister.domain.dto.AdmCashRegistersDto;
 import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterDetailRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +17,7 @@ import static com.servinetcomputers.api.core.util.constants.SecurityConstants.AD
 
 @RequiredArgsConstructor
 @Service
-public class GetAllCashRegisterDetailsOfTodayService implements GetAllCashRegisterDetailsOfTodayUseCase {
+public class GetAdmCashRegisterDetailsService implements GetAdmCashRegisterDetailsUseCase {
     private final CashRegisterDetailRepository repository;
     private final DateTimeService dateTimeService;
 
