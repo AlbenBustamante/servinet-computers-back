@@ -15,9 +15,8 @@ public class CashRegisterDetailResponse extends ModelResponse {
     private final int userId;
     private final Integer initialBase, finalBase;
     private final String baseObservation;
-    private final BaseDto detailInitialBase;
+    private BaseDto detailInitialBase, detailFinalBase;
     private CashRegisterResponse cashRegister;
-    private BaseDto detailFinalBase;
     private LocalDateTime initialWorking, initialBreak, finalBreak, finalWorking;
     private CashRegisterDetailStatus status;
     private UserResponse user;

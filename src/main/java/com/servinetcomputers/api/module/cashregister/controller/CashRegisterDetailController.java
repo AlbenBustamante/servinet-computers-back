@@ -28,6 +28,7 @@ public class CashRegisterDetailController {
     private final DeleteCashRegisterDetailUseCase deleteUseCase;
     private final GetExpensesUseCase getExpensesUseCase;
     private final GetTransactionsUseCase getTransactionsUseCase;
+    private final UpdateCashRegisterDetailBaseUseCase updateCashRegisterDetailBaseUseCase;
 
     @PostMapping
     public ResponseEntity<MyCashRegistersReports> register(@RequestBody CreateCashRegisterDetailDto request) {
@@ -87,6 +88,11 @@ public class CashRegisterDetailController {
     @PutMapping(path = "/{id}/close")
     public ResponseEntity<CashRegisterDetailReportsDto> close(@PathVariable("id") int id, @RequestBody CloseCashRegisterDetailDto closeCashRegisterDetail) {
         return ResponseEntity.ok(closeUseCase.call(id, closeCashRegisterDetail));
+    }
+
+    @PutMapping(path = "/{id}/update-base")
+    public ResponseEntity<CashRegisterDetailResponse> updateBase(@PathVariable("id") int id, @RequestBody UpdateCashRegisterDetailBaseDto dto) {
+        return ResponseEntity.ok(updateCashRegisterDetailBaseUseCase.call(id, dto));
     }
 
     @DeleteMapping(path = "/{id}")
