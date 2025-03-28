@@ -10,7 +10,7 @@ import java.util.Optional;
  * The {@link Platform} repository.
  */
 public interface JpaPlatformRepository extends JpaRepository<Platform, Integer> {
-    boolean existsByName(String name);
+    boolean existsByNameAndEnabledTrue(String name);
 
     List<Platform> findAllByEnabledTrue();
 

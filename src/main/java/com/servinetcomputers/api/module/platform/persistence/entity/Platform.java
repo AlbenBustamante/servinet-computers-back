@@ -18,13 +18,11 @@ import static com.servinetcomputers.api.core.util.constants.PlatformConstants.NA
 @Getter
 @Setter
 public class Platform extends Auditable {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "platform_id")
     private Integer id;
 
-    @Column(nullable = false, length = NAME_LENGTH, unique = true)
+    @Column(nullable = false, length = NAME_LENGTH)
     private String name;
-
 }
