@@ -18,13 +18,12 @@ import static com.servinetcomputers.api.core.util.constants.CashRegisterConstant
 @Getter
 @Setter
 public class CashRegister extends Auditable {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cash_register_id")
     private Integer id;
 
-    @Column(nullable = false, unique = true, columnDefinition = "SMALLINT")
+    @Column(nullable = false, columnDefinition = "SMALLINT")
     private Integer numeral;
 
     @Column(nullable = false, length = DESCRIPTION_LENGTH)
@@ -33,5 +32,4 @@ public class CashRegister extends Auditable {
     @Convert(converter = CashRegisterStatusConverter.class)
     @Column(nullable = false, columnDefinition = "CHAR(1)")
     private CashRegisterStatus status;
-
 }

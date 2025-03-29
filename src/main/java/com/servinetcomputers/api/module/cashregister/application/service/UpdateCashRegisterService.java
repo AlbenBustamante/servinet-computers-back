@@ -2,6 +2,7 @@ package com.servinetcomputers.api.module.cashregister.application.service;
 
 import com.servinetcomputers.api.core.exception.AppException;
 import com.servinetcomputers.api.core.exception.NotFoundException;
+import com.servinetcomputers.api.core.util.enums.CashRegisterStatus;
 import com.servinetcomputers.api.module.cashregister.application.usecase.UpdateCashRegisterUseCase;
 import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterResponse;
 import com.servinetcomputers.api.module.cashregister.domain.dto.UpdateCashRegisterDto;
@@ -26,7 +27,7 @@ public class UpdateCashRegisterService implements UpdateCashRegisterUseCase {
                 .orElseThrow(() -> new NotFoundException("Caja registradora no encontrada: #" + id));
 
         cashRegister.setDescription(updateCashRegisterDto.description() != null ? updateCashRegisterDto.description() : cashRegister.getDescription());
-        cashRegister.setStatus(updateCashRegisterDto.status() != null ? updateCashRegisterDto.status() : cashRegister.getStatus());
+        cashRegister.setStatus(updateCashRegisterDto.disabled() ? CashRegisterStatus.DISABLED : CashRegisterStatus.AVAILABLE);
 
         return repository.save(cashRegister);
     }
