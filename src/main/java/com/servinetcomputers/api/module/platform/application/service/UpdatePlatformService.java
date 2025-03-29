@@ -1,5 +1,6 @@
 package com.servinetcomputers.api.module.platform.application.service;
 
+import com.servinetcomputers.api.core.exception.AlreadyExistsException;
 import com.servinetcomputers.api.core.exception.AppException;
 import com.servinetcomputers.api.core.exception.NotFoundException;
 import com.servinetcomputers.api.module.platform.application.usecase.UpdatePlatformUseCase;
@@ -31,6 +32,10 @@ public class UpdatePlatformService implements UpdatePlatformUseCase {
         final var platform = repository.get(id)
                 .orElseThrow(() -> new NotFoundException("Plataforma no encontrada: " + id));
 
+        if (dto.name() != null && repository.existsByName(dto.name())) {
+            throw new AlreadyExistsException("Ya existe una plataforma con ese nombre: " + dto.name());
+        }
+        
         platform.setName(dto.name() != null ? dto.name() : platform.getName());
 
         return repository.save(platform);
