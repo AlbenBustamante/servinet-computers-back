@@ -3,6 +3,7 @@ package com.servinetcomputers.api.module.safes.controller;
 import com.servinetcomputers.api.module.safes.application.usecase.CreateSafeUseCase;
 import com.servinetcomputers.api.module.safes.application.usecase.GetAllSafeDetailsByIdUseCase;
 import com.servinetcomputers.api.module.safes.application.usecase.GetAllSafesUseCase;
+import com.servinetcomputers.api.module.safes.application.usecase.detail.DeleteSafeUseCase;
 import com.servinetcomputers.api.module.safes.domain.dto.SafeDetailResponse;
 import com.servinetcomputers.api.module.safes.domain.dto.SafeRequest;
 import com.servinetcomputers.api.module.safes.domain.dto.SafeResponse;
@@ -19,6 +20,7 @@ public class SafeController {
     private final CreateSafeUseCase createSafeUseCase;
     private final GetAllSafesUseCase getAllSafesUseCase;
     private final GetAllSafeDetailsByIdUseCase getDetailsUseCase;
+    private final DeleteSafeUseCase deleteSafeUseCase;
 
     @PostMapping
     public ResponseEntity<SafeResponse> register(@RequestBody SafeRequest request) {
@@ -33,5 +35,11 @@ public class SafeController {
     @GetMapping(path = "/{id}/details")
     public ResponseEntity<List<SafeDetailResponse>> getDetails(@PathVariable("id") int safeId) {
         return ResponseEntity.ok(getDetailsUseCase.call(safeId));
+    }
+
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity<?> delete(@PathVariable("id") int safeId) {
+        deleteSafeUseCase.call(safeId);
+        return ResponseEntity.noContent().build();
     }
 }

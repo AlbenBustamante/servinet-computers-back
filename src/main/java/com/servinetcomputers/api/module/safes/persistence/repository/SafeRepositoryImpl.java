@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Repository
@@ -25,8 +26,22 @@ public class SafeRepositoryImpl implements SafeRepository {
     }
 
     @Override
+    public SafeResponse save(SafeResponse response) {
+        final var entity = mapper.toEntity(response);
+        final var newSafe = repository.save(entity);
+
+        return mapper.toResponse(newSafe);
+    }
+
+    @Override
     public boolean existsByNumeral(int numeral) {
         return repository.existsByNumeralAndEnabledTrue(numeral);
+    }
+
+    @Override
+    public Optional<SafeResponse> get(int safeId) {
+        final var safe = repository.findByIdAndEnabledTrue(safeId);
+        return safe.map(mapper::toResponse);
     }
 
     @Override
