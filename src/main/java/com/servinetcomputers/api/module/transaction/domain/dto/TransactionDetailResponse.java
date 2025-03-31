@@ -2,16 +2,22 @@ package com.servinetcomputers.api.module.transaction.domain.dto;
 
 import com.servinetcomputers.api.core.util.enums.TransactionDetailType;
 import com.servinetcomputers.api.module.ModelResponse;
+import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDetailResponse;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
+@Setter
 @Getter
 public class TransactionDetailResponse extends ModelResponse {
-    private final int cashRegisterDetailId, value, commission;
-    private final String description;
-    private final TransactionDetailType type;
-    private final LocalDateTime date;
+    private final int cashRegisterDetailId;
+    private int value, commission;
+    private String description;
+    private TransactionDetailType type;
+    private LocalDateTime date;
+    private TransactionResponse transaction;
+    private CashRegisterDetailResponse cashRegisterDetail;
 
     public TransactionDetailResponse(int id, boolean enabled, LocalDateTime createdDate, LocalDateTime modifiedDate, String createdBy, String modifiedBy,
                                      int cashRegisterDetailId, String description, int value, int commission, TransactionDetailType type, LocalDateTime date) {

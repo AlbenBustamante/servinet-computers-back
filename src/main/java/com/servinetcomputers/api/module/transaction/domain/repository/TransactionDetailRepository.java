@@ -6,9 +6,14 @@ import com.servinetcomputers.api.module.transaction.domain.dto.TransactionDetail
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 public interface TransactionDetailRepository {
     TransactionDetailResponse save(TransactionDetailRequest request);
+
+    TransactionDetailResponse save(TransactionDetailResponse response);
+
+    Optional<TransactionDetailResponse> get(int transactionDetailId);
 
     List<TransactionDetailResponse> getAllByCashRegisterDetailId(int cashRegisterDetailId);
 

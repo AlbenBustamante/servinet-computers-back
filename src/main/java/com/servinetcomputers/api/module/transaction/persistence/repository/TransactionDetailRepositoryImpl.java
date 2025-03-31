@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Repository
@@ -24,6 +25,20 @@ public class TransactionDetailRepositoryImpl implements TransactionDetailReposit
         final var newDetail = repository.save(entity);
 
         return mapper.toResponse(newDetail);
+    }
+
+    @Override
+    public TransactionDetailResponse save(TransactionDetailResponse response) {
+        final var entity = mapper.toEntity(response);
+        final var newDetail = repository.save(entity);
+
+        return mapper.toResponse(newDetail);
+    }
+
+    @Override
+    public Optional<TransactionDetailResponse> get(int transactionDetailId) {
+        final var detail = repository.findByIdAndEnabledTrue(transactionDetailId);
+        return detail.map(mapper::toResponse);
     }
 
     @Override

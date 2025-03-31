@@ -24,4 +24,6 @@ public interface TransactionDetailMapper {
     @Mapping(target = "createdDate", ignore = true)
     @Mapping(target = "createdBy", ignore = true)
     TransactionDetail toEntity(TransactionDetailRequest request);
+
+    TransactionDetail toEntity(TransactionDetailResponse response);
 }

@@ -7,8 +7,11 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 public interface JpaTransactionDetailRepository extends JpaRepository<TransactionDetail, Integer> {
+    Optional<TransactionDetail> findByIdAndEnabledTrue(int id);
+
     List<TransactionDetail> findAllByCashRegisterDetailIdAndEnabledTrue(int cashRegisterDetailId);
 
     List<TransactionDetail> findAllByCreatedByAndEnabledTrueAndCreatedDateBetween(String createdBy, LocalDateTime startDate, LocalDateTime endDate);
