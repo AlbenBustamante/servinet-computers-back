@@ -2,9 +2,11 @@ package com.servinetcomputers.api.module.tempcode.domain.dto;
 
 import com.servinetcomputers.api.module.ModelResponse;
 import lombok.Getter;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 
+@ToString
 @Getter
 public class TempCodeResponse extends ModelResponse {
     private final Integer code, usedBy;

@@ -1,6 +1,5 @@
 package com.servinetcomputers.api.module.tempcode.application.service;
 
-import com.servinetcomputers.api.core.datetime.DateTimeService;
 import com.servinetcomputers.api.core.exception.AppException;
 import com.servinetcomputers.api.module.tempcode.application.usecase.LoadTempCodeUseCase;
 import com.servinetcomputers.api.module.tempcode.domain.dto.TempCodeRequest;
@@ -21,7 +20,6 @@ public class LoadTempCodeService implements LoadTempCodeUseCase {
     private static final int MIN = 1000;
     private static final int MAX = 10000;
     private final TempCodeRepository repository;
-    private final DateTimeService dateTimeService;
 
     @Secured(value = ADMIN_AUTHORITY)
     @Transactional(rollbackFor = AppException.class)
@@ -29,7 +27,7 @@ public class LoadTempCodeService implements LoadTempCodeUseCase {
     public TempCodeResponse call() {
         final var lastCode = repository.getLast();
 
-        if (lastCode.isEmpty() || lastCode.get().getUsedBy() != null) {
+        if (lastCode.isEmpty() || lastCode.get().getUsedBy() > 0) {
             final var code = generateCode();
             final var request = new TempCodeRequest(code);
             return repository.save(request);
