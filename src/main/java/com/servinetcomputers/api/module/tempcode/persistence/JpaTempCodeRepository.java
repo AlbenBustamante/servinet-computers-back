@@ -4,4 +4,5 @@ import com.servinetcomputers.api.module.tempcode.persistence.entity.TempCode;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface JpaTempCodeRepository extends JpaRepository<TempCode, Integer> {
+    boolean existsByCodeAndEnabledTrue(Integer code);
 }
