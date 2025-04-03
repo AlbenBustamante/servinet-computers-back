@@ -27,7 +27,10 @@ public class UpdateCashRegisterService implements UpdateCashRegisterUseCase {
                 .orElseThrow(() -> new NotFoundException("Caja registradora no encontrada: #" + id));
 
         cashRegister.setDescription(updateCashRegisterDto.description() != null ? updateCashRegisterDto.description() : cashRegister.getDescription());
-        cashRegister.setStatus(updateCashRegisterDto.disabled() ? CashRegisterStatus.DISABLED : CashRegisterStatus.AVAILABLE);
+
+        if (cashRegister.getStatus() != CashRegisterStatus.OCCUPIED) {
+            cashRegister.setStatus(updateCashRegisterDto.disabled() ? CashRegisterStatus.DISABLED : CashRegisterStatus.AVAILABLE);
+        }
 
         return repository.save(cashRegister);
     }
