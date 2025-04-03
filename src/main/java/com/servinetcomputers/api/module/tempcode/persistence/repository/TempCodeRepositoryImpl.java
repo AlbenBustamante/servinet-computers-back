@@ -8,6 +8,8 @@ import com.servinetcomputers.api.module.tempcode.persistence.mapper.TempCodeMapp
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @RequiredArgsConstructor
 @Repository
 public class TempCodeRepositoryImpl implements TempCodeRepository {
@@ -23,7 +25,8 @@ public class TempCodeRepositoryImpl implements TempCodeRepository {
     }
 
     @Override
-    public boolean existsByCode(int code) {
-        return jpaTempCodeRepository.existsByCodeAndEnabledTrue(code);
+    public Optional<TempCodeResponse> getLast() {
+        final var tempCode = jpaTempCodeRepository.findFirstByOrderByCreatedDateDesc();
+        return tempCode.map(tempCodeMapper::toResponse);
     }
 }
