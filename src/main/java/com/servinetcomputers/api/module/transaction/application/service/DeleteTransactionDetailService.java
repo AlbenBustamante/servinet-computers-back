@@ -1,12 +1,15 @@
 package com.servinetcomputers.api.module.transaction.application.service;
 
+import com.servinetcomputers.api.core.exception.AppException;
 import com.servinetcomputers.api.core.exception.BadRequestException;
+import com.servinetcomputers.api.core.exception.InvalidTempCodeException;
 import com.servinetcomputers.api.core.exception.NotFoundException;
 import com.servinetcomputers.api.module.tempcode.domain.repository.TempCodeRepository;
 import com.servinetcomputers.api.module.transaction.application.usecase.DeleteTransactionDetailUseCase;
 import com.servinetcomputers.api.module.transaction.domain.repository.TransactionDetailRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
@@ -14,8 +17,9 @@ public class DeleteTransactionDetailService implements DeleteTransactionDetailUs
     private final TransactionDetailRepository transactionDetailRepository;
     private final TempCodeRepository tempCodeRepository;
 
+    @Transactional(rollbackFor = AppException.class)
     @Override
-    public Boolean call(Integer transactionDetailId, Integer tempCode) {
+    public void call(Integer transactionDetailId, Integer tempCode) {
         if (tempCode == null) {
             throw new BadRequestException("El código es requerido");
         }
@@ -23,7 +27,7 @@ public class DeleteTransactionDetailService implements DeleteTransactionDetailUs
         final var lastTempCode = tempCodeRepository.getLast();
 
         if (lastTempCode.isEmpty() || !lastTempCode.get().getCode().equals(tempCode)) {
-            return false;
+            throw new InvalidTempCodeException();
         }
 
         final var transactionDetail = transactionDetailRepository.get(transactionDetailId)
@@ -31,7 +35,5 @@ public class DeleteTransactionDetailService implements DeleteTransactionDetailUs
 
         transactionDetail.setEnabled(false);
         transactionDetailRepository.save(transactionDetail);
-
-        return true;
     }
 }

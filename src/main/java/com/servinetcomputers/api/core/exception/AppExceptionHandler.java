@@ -1,5 +1,6 @@
 package com.servinetcomputers.api.core.exception;
 
+import com.servinetcomputers.api.core.datetime.DateTimeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
@@ -11,8 +12,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -24,7 +23,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 @RestControllerAdvice
 public class AppExceptionHandler extends ResponseEntityExceptionHandler {
-    private final ZoneId zoneId;
+    private final DateTimeService dateTimeService;
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
@@ -40,7 +39,14 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.badRequest().body(body);
     }
 
-    @ExceptionHandler(value = {AlreadyExistsException.class, BadRequestException.class, NotFoundException.class, AppException.class})
+    @ExceptionHandler(value = {
+            AuthenticationException.class,
+            InvalidTempCodeException.class,
+            AlreadyExistsException.class,
+            BadRequestException.class,
+            NotFoundException.class,
+            AppException.class}
+    )
     public ProblemDetail handleAppException(AppException ex) {
         return createProblemDetail(ex);
     }
@@ -66,7 +72,6 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
      * @return the formatted timestamp.
      */
     private String timestamp() {
-        return LocalDateTime.now(zoneId).format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
+        return dateTimeService.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
     }
-
 }
