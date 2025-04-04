@@ -38,9 +38,7 @@ public class DeleteTransactionDetailService implements DeleteTransactionDetailUs
         transactionDetail.setEnabled(false);
         transactionDetailRepository.save(transactionDetail);
 
-        final var userId = transactionDetail.getCashRegisterDetail().getUserId();
-        final var user = userRepository.get(userId)
-                .orElseThrow(() -> new NotFoundException("No se encontró al usuario: #" + userId));
+        final var user = transactionDetail.getCashRegisterDetail().getUser();
 
         lastTempCode.get().setUsedBy(user);
         tempCodeRepository.save(lastTempCode.get());

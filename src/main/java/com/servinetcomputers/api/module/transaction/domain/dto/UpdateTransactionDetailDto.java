@@ -9,6 +9,7 @@ public record UpdateTransactionDetailDto(
         TransactionDetailType type,
         Integer value,
         Integer commission,
-        LocalDateTime date
+        LocalDateTime date,
+        Integer tempCode
 ) {
 }
