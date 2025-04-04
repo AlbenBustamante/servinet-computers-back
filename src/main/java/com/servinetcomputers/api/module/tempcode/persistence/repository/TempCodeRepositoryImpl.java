@@ -25,6 +25,12 @@ public class TempCodeRepositoryImpl implements TempCodeRepository {
     }
 
     @Override
+    public void save(TempCodeResponse response) {
+        final var entity = tempCodeMapper.toEntity(response);
+        jpaTempCodeRepository.save(entity);
+    }
+
+    @Override
     public Optional<TempCodeResponse> getLast() {
         final var tempCode = jpaTempCodeRepository.findFirstByOrderByCreatedDateDesc();
         return tempCode.map(tempCodeMapper::toResponse);

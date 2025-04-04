@@ -27,7 +27,7 @@ public class LoadTempCodeService implements LoadTempCodeUseCase {
     public TempCodeResponse call() {
         final var lastCode = repository.getLast();
 
-        if (lastCode.isEmpty() || lastCode.get().getUsedBy() > 0) {
+        if (lastCode.isEmpty() || lastCode.get().getUsedBy() != null) {
             final var code = generateCode();
             final var request = new TempCodeRequest(code);
             return repository.save(request);
