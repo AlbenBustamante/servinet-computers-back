@@ -1,25 +1,25 @@
-package com.servinetcomputers.api.module.transaction.application.service;
+package com.servinetcomputers.api.module.expense.application.service;
 
 import com.servinetcomputers.api.core.exception.AppException;
 import com.servinetcomputers.api.core.exception.InvalidTempCodeException;
 import com.servinetcomputers.api.core.exception.NotFoundException;
 import com.servinetcomputers.api.core.exception.RequiredTempCodeException;
+import com.servinetcomputers.api.module.expense.application.usecase.DeleteExpenseUseCase;
+import com.servinetcomputers.api.module.expense.domain.repository.ExpenseRepository;
 import com.servinetcomputers.api.module.tempcode.domain.repository.TempCodeRepository;
-import com.servinetcomputers.api.module.transaction.application.usecase.DeleteTransactionDetailUseCase;
-import com.servinetcomputers.api.module.transaction.domain.repository.TransactionDetailRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
-public class DeleteTransactionDetailService implements DeleteTransactionDetailUseCase {
-    private final TransactionDetailRepository transactionDetailRepository;
+public class DeleteExpenseService implements DeleteExpenseUseCase {
+    private final ExpenseRepository expenseRepository;
     private final TempCodeRepository tempCodeRepository;
 
     @Transactional(rollbackFor = AppException.class)
     @Override
-    public void call(Integer transactionDetailId, Integer tempCode) {
+    public void call(Integer expenseId, Integer tempCode) {
         if (tempCode == null) {
             throw new RequiredTempCodeException();
         }
@@ -30,15 +30,13 @@ public class DeleteTransactionDetailService implements DeleteTransactionDetailUs
             throw new InvalidTempCodeException();
         }
 
-        final var transactionDetail = transactionDetailRepository.get(transactionDetailId)
-                .orElseThrow(() -> new NotFoundException("No se encontró la jornada #" + transactionDetailId));
+        final var expense = expenseRepository.get(expenseId)
+                .orElseThrow(() -> new NotFoundException("No se encontró el gasto: " + expenseId));
 
-        transactionDetail.setEnabled(false);
-        transactionDetailRepository.save(transactionDetail);
+        expense.setEnabled(false);
+        expenseRepository.save(expense);
 
-        final var user = transactionDetail.getCashRegisterDetail().getUser();
-
-        lastTempCode.get().setUsedBy(user);
+        lastTempCode.get().setUsedBy(expense.getCashRegisterDetail().getUser());
         tempCodeRepository.save(lastTempCode.get());
     }
 }

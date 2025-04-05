@@ -1,15 +1,19 @@
 package com.servinetcomputers.api.module.expense.domain.dto;
 
 import com.servinetcomputers.api.module.ModelResponse;
+import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDetailResponse;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Getter
+@Setter
 public class ExpenseResponse extends ModelResponse {
     private final int cashRegisterDetailId, value;
     private final String description;
     private final boolean discount;
+    private CashRegisterDetailResponse cashRegisterDetail;
 
     public ExpenseResponse(int id, boolean enabled, LocalDateTime createdDate, LocalDateTime modifiedDate, String createdBy, String modifiedBy,
                            int cashRegisterDetailId, int value, String description, boolean discount) {

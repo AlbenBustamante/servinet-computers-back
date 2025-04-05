@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Repository
@@ -23,6 +24,18 @@ public class ExpenseRepositoryImpl implements ExpenseRepository {
         final var newExpense = repository.save(entity);
 
         return mapper.toResponse(newExpense);
+    }
+
+    @Override
+    public void save(ExpenseResponse response) {
+        final var entity = mapper.toEntity(response);
+        repository.save(entity);
+    }
+
+    @Override
+    public Optional<ExpenseResponse> get(int expenseId) {
+        final var expense = repository.findByIdAndEnabledTrue(expenseId);
+        return expense.map(mapper::toResponse);
     }
 
     @Override

@@ -5,9 +5,14 @@ import com.servinetcomputers.api.module.expense.domain.dto.ExpenseResponse;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 public interface ExpenseRepository {
     ExpenseResponse save(ExpenseRequest request);
+
+    void save(ExpenseResponse response);
+
+    Optional<ExpenseResponse> get(int expenseId);
 
     List<ExpenseResponse> getAllByCashRegisterDetailId(int cashRegisterDetailId);
 

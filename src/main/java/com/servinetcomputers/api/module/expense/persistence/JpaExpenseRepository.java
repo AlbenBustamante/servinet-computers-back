@@ -6,8 +6,11 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 public interface JpaExpenseRepository extends JpaRepository<Expense, Integer> {
+    Optional<Expense> findByIdAndEnabledTrue(int id);
+
     @Query("SELECT SUM(e.value) FROM Expense e WHERE " +
             "e.enabled = true AND " +
             "e.cashRegisterDetail.id = :cashRegisterDetailId AND " +

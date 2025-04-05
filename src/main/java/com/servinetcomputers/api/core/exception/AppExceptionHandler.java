@@ -41,6 +41,7 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = {
             AuthenticationException.class,
+            RequiredTempCodeException.class,
             InvalidTempCodeException.class,
             AlreadyExistsException.class,
             BadRequestException.class,

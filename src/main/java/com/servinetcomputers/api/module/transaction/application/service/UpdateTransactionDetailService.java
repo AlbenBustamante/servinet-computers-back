@@ -1,9 +1,9 @@
 package com.servinetcomputers.api.module.transaction.application.service;
 
 import com.servinetcomputers.api.core.exception.AppException;
-import com.servinetcomputers.api.core.exception.BadRequestException;
 import com.servinetcomputers.api.core.exception.InvalidTempCodeException;
 import com.servinetcomputers.api.core.exception.NotFoundException;
+import com.servinetcomputers.api.core.exception.RequiredTempCodeException;
 import com.servinetcomputers.api.module.tempcode.domain.repository.TempCodeRepository;
 import com.servinetcomputers.api.module.transaction.application.usecase.UpdateTransactionDetailUseCase;
 import com.servinetcomputers.api.module.transaction.domain.dto.TransactionDetailResponse;
@@ -27,7 +27,7 @@ public class UpdateTransactionDetailService implements UpdateTransactionDetailUs
     @Override
     public TransactionDetailResponse call(Integer transactionDetailId, UpdateTransactionDetailDto dto) {
         if (dto.tempCode() == null) {
-            throw new BadRequestException("El código es requerido");
+            throw new RequiredTempCodeException();
         }
 
         final var lastCode = tempCodeRepository.getLast();

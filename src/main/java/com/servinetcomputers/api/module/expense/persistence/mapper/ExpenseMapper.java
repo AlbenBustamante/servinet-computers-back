@@ -1,16 +1,16 @@
 package com.servinetcomputers.api.module.expense.persistence.mapper;
 
-import com.servinetcomputers.api.module.expense.persistence.entity.Expense;
+import com.servinetcomputers.api.module.cashregister.persistence.mapper.CashRegisterDetailMapper;
 import com.servinetcomputers.api.module.expense.domain.dto.ExpenseRequest;
 import com.servinetcomputers.api.module.expense.domain.dto.ExpenseResponse;
+import com.servinetcomputers.api.module.expense.persistence.entity.Expense;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = CashRegisterDetailMapper.class)
 public interface ExpenseMapper {
-
     ExpenseResponse toResponse(Expense entity);
 
     List<ExpenseResponse> toResponses(List<Expense> entities);
@@ -24,4 +24,5 @@ public interface ExpenseMapper {
     @Mapping(target = "cashRegisterDetail", ignore = true)
     Expense toEntity(ExpenseRequest request);
 
+    Expense toEntity(ExpenseResponse response);
 }
