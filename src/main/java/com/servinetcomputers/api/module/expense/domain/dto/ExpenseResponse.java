@@ -10,9 +10,10 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class ExpenseResponse extends ModelResponse {
-    private final int cashRegisterDetailId, value;
-    private final String description;
-    private final boolean discount;
+    private final int cashRegisterDetailId;
+    private int value;
+    private String description;
+    private boolean discount;
     private CashRegisterDetailResponse cashRegisterDetail;
 
     public ExpenseResponse(int id, boolean enabled, LocalDateTime createdDate, LocalDateTime modifiedDate, String createdBy, String modifiedBy,

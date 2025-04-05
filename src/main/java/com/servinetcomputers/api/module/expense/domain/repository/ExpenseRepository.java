@@ -10,7 +10,7 @@ import java.util.Optional;
 public interface ExpenseRepository {
     ExpenseResponse save(ExpenseRequest request);
 
-    void save(ExpenseResponse response);
+    ExpenseResponse save(ExpenseResponse response);
 
     Optional<ExpenseResponse> get(int expenseId);
 

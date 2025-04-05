@@ -27,9 +27,11 @@ public class ExpenseRepositoryImpl implements ExpenseRepository {
     }
 
     @Override
-    public void save(ExpenseResponse response) {
+    public ExpenseResponse save(ExpenseResponse response) {
         final var entity = mapper.toEntity(response);
-        repository.save(entity);
+        final var newExpense = repository.save(entity);
+        
+        return mapper.toResponse(newExpense);
     }
 
     @Override
