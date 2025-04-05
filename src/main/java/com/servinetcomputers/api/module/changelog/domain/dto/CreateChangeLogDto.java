@@ -12,10 +12,10 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CreateChangeLogDto {
-    private final String previousData, newData;
     private final ChangeLogAction action;
     private final ChangeLogType type;
     private final Integer cashRegisterDetailId;
     private final CashRegisterDetailStatus currentStatus;
+    private final Object previousData, newData;
     private CashRegisterDetailResponse cashRegisterDetail;
 }

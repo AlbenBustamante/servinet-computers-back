@@ -1,9 +1,14 @@
 package com.servinetcomputers.api.module.transaction.application.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.servinetcomputers.api.core.exception.AppException;
 import com.servinetcomputers.api.core.exception.InvalidTempCodeException;
 import com.servinetcomputers.api.core.exception.NotFoundException;
 import com.servinetcomputers.api.core.exception.RequiredTempCodeException;
+import com.servinetcomputers.api.core.util.enums.ChangeLogAction;
+import com.servinetcomputers.api.core.util.enums.ChangeLogType;
+import com.servinetcomputers.api.module.changelog.application.usecase.CreateChangeLogUseCase;
+import com.servinetcomputers.api.module.changelog.domain.dto.CreateChangeLogDto;
 import com.servinetcomputers.api.module.tempcode.domain.repository.TempCodeRepository;
 import com.servinetcomputers.api.module.transaction.application.usecase.UpdateTransactionDetailUseCase;
 import com.servinetcomputers.api.module.transaction.domain.dto.TransactionDetailResponse;
@@ -22,6 +27,8 @@ public class UpdateTransactionDetailService implements UpdateTransactionDetailUs
     private final TransactionDetailRepository repository;
     private final TransactionRepository transactionRepository;
     private final TempCodeRepository tempCodeRepository;
+    private final ObjectMapper objectMapper;
+    private final CreateChangeLogUseCase createChangeLogUseCase;
 
     @Transactional(rollbackFor = AppException.class)
     @Override
@@ -39,6 +46,10 @@ public class UpdateTransactionDetailService implements UpdateTransactionDetailUs
         final var transactionDetail = repository.get(transactionDetailId)
                 .orElseThrow(() -> new NotFoundException("No se encontró la transacción: " + transactionDetailId));
 
+        System.out.println(transactionDetail);
+
+        final var previousData = TransactionDetailResponse.copyWith(transactionDetail);
+
         if (dto.description() != null) {
             final var transaction = getTransaction(dto.description());
             transactionDetail.setTransaction(transaction);
@@ -50,12 +61,28 @@ public class UpdateTransactionDetailService implements UpdateTransactionDetailUs
         transactionDetail.setDate(dto.date() != null ? dto.date() : transactionDetail.getDate());
 
         final var transactionDetailUpdated = repository.save(transactionDetail);
+
+        createChangeLog(previousData, transactionDetailUpdated);
+
         final var user = transactionDetailUpdated.getCashRegisterDetail().getUser();
         lastCode.get().setUsedBy(user);
 
         tempCodeRepository.save(lastCode.get());
 
         return transactionDetailUpdated;
+    }
+
+    private void createChangeLog(TransactionDetailResponse previousData, TransactionDetailResponse newData) {
+        final var dto = new CreateChangeLogDto(
+                ChangeLogAction.UPDATE,
+                ChangeLogType.TRANSACTION_DETAIL,
+                previousData.getCashRegisterDetailId(),
+                previousData.getCashRegisterDetail().getStatus(),
+                previousData,
+                newData
+        );
+
+        createChangeLogUseCase.call(dto);
     }
 
     private TransactionResponse getTransaction(String description) {

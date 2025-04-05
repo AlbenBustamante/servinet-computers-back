@@ -6,9 +6,11 @@ import com.servinetcomputers.api.module.base.BaseDto;
 import com.servinetcomputers.api.module.user.domain.dto.UserResponse;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 
+@ToString
 @Setter
 @Getter
 public class CashRegisterDetailResponse extends ModelResponse {

@@ -5,9 +5,11 @@ import com.servinetcomputers.api.module.ModelResponse;
 import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDetailResponse;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 
+@ToString
 @Setter
 @Getter
 public class TransactionDetailResponse extends ModelResponse {
@@ -28,5 +30,27 @@ public class TransactionDetailResponse extends ModelResponse {
         this.commission = commission;
         this.type = type;
         this.date = date;
+    }
+
+    public static TransactionDetailResponse copyWith(TransactionDetailResponse response) {
+        final var copy = new TransactionDetailResponse(
+                response.getId(),
+                response.isEnabled(),
+                response.getCreatedDate(),
+                response.getModifiedDate(),
+                response.getCreatedBy(),
+                response.getModifiedBy(),
+                response.getCashRegisterDetailId(),
+                response.getDescription(),
+                response.getValue(),
+                response.getCommission(),
+                response.getType(),
+                response.getDate()
+        );
+
+        copy.setTransaction(response.getTransaction());
+        copy.setCashRegisterDetail(response.getCashRegisterDetail());
+
+        return copy;
     }
 }
