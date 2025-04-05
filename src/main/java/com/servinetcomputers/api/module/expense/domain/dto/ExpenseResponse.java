@@ -23,4 +23,19 @@ public class ExpenseResponse extends ModelResponse {
         this.description = description;
         this.discount = discount;
     }
+    
+    public ExpenseResponse copy() {
+        return new ExpenseResponse(
+                super.getId(),
+                super.isEnabled(),
+                super.getCreatedDate(),
+                super.getModifiedDate(),
+                super.getCreatedBy(),
+                super.getModifiedBy(),
+                cashRegisterDetailId,
+                value,
+                description,
+                discount
+        );
+    }
 }
