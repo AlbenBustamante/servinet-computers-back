@@ -23,9 +23,9 @@ public class ExpenseResponse extends ModelResponse {
         this.description = description;
         this.discount = discount;
     }
-    
+
     public ExpenseResponse copy() {
-        return new ExpenseResponse(
+        final var response = new ExpenseResponse(
                 super.getId(),
                 super.isEnabled(),
                 super.getCreatedDate(),
@@ -37,5 +37,9 @@ public class ExpenseResponse extends ModelResponse {
                 description,
                 discount
         );
+
+        response.setCashRegisterDetail(cashRegisterDetail);
+
+        return response;
     }
 }
