@@ -7,7 +7,6 @@ import com.servinetcomputers.api.core.exception.NotFoundException;
 import com.servinetcomputers.api.module.tempcode.domain.repository.TempCodeRepository;
 import com.servinetcomputers.api.module.transaction.application.usecase.DeleteTransactionDetailUseCase;
 import com.servinetcomputers.api.module.transaction.domain.repository.TransactionDetailRepository;
-import com.servinetcomputers.api.module.user.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class DeleteTransactionDetailService implements DeleteTransactionDetailUseCase {
     private final TransactionDetailRepository transactionDetailRepository;
     private final TempCodeRepository tempCodeRepository;
-    private final UserRepository userRepository;
 
     @Transactional(rollbackFor = AppException.class)
     @Override
