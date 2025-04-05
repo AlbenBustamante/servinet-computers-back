@@ -24,6 +24,7 @@ import static org.springframework.http.HttpStatus.CREATED;
 @RequestMapping(path = "/platform-transfers")
 @RestController
 public class PlatformTransferController {
+    private final ObjectMapper mapper;
     private final CreatePlatformTransferUseCase createPlatformTransferUseCase;
     private final GetPlatformTransferUseCase getPlatformTransferUseCase;
     private final UpdatePlatformTransferUseCase updatePlatformTransferUseCase;
@@ -31,7 +32,6 @@ public class PlatformTransferController {
 
     @PostMapping
     public ResponseEntity<PlatformTransferResponse> register(@RequestParam(name = "request") String request, @RequestParam(name = "vouchers", required = false) MultipartFile[] vouchers) throws JsonProcessingException {
-        final var mapper = new ObjectMapper();
         final var platformTransferDto = mapper.readValue(request, PlatformTransferDto.class);
         final var platformTransferRequest = PlatformTransferRequest.fromDto(platformTransferDto);
 

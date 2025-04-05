@@ -12,6 +12,7 @@ public interface ChangeLogMapper {
     @Mapping(target = "cashRegisterDetailId", source = "cashRegisterDetail.id")
     ChangeLogResponse toResponse(ChangeLog entity);
 
+    @Mapping(target = "cashRegisterDetail", ignore = true)
     @Mapping(target = "modifiedDate", ignore = true)
     @Mapping(target = "modifiedBy", ignore = true)
     @Mapping(target = "id", ignore = true)
