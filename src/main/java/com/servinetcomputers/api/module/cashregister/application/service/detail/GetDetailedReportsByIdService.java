@@ -7,6 +7,7 @@ import com.servinetcomputers.api.module.cashregister.domain.dto.DetailedCashRegi
 import com.servinetcomputers.api.module.cashregister.domain.dto.DetailedCashRegisterTransactionsDto;
 import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterDetailRepository;
 import com.servinetcomputers.api.module.cashtransfer.domain.repository.CashTransferRepository;
+import com.servinetcomputers.api.module.changelog.domain.repository.ChangeLogRepository;
 import com.servinetcomputers.api.module.expense.domain.repository.ExpenseRepository;
 import com.servinetcomputers.api.module.reports.application.usecase.GetCashRegisterDetailReportsUseCase;
 import com.servinetcomputers.api.module.transaction.domain.repository.TransactionDetailRepository;
@@ -24,29 +25,32 @@ public class GetDetailedReportsByIdService implements GetDetailedReportsByIdUseC
     private final TransactionDetailRepository transactionDetailRepository;
     private final ExpenseRepository expenseRepository;
     private final CashTransferRepository cashTransferRepository;
+    private final ChangeLogRepository changeLogRepository;
     private final GetCashRegisterDetailReportsUseCase getCashRegisterDetailReportsUseCase;
 
     /**
      * Get all detailed movements made by a cash register detail by its ID.
      *
-     * @param id the cash register detail ID.
+     * @param cashRegisterDetailId the cash register detail ID.
      * @return the detailed movements.
      */
     @Secured(value = ADMIN_AUTHORITY)
     @Transactional(readOnly = true)
     @Override
-    public DetailedCashRegisterReportsDto call(Integer id) {
-        final var cashRegisterDetail = repository.get(id)
-                .orElseThrow(() -> new NotFoundException("No se encontró los movimientos con ID: #" + id));
+    public DetailedCashRegisterReportsDto call(Integer cashRegisterDetailId) {
+        final var cashRegisterDetail = repository.get(cashRegisterDetailId)
+                .orElseThrow(() -> new NotFoundException("No se encontró los movimientos con ID: #" + cashRegisterDetailId));
 
         final var reports = getCashRegisterDetailReportsUseCase.call(cashRegisterDetail);
-        final var transactions = transactionDetailRepository.getAllByCashRegisterDetailId(id);
-        final var expenses = expenseRepository.getAllByCashRegisterDetailIdAndDiscount(id, false);
-        final var discounts = expenseRepository.getAllByCashRegisterDetailIdAndDiscount(id, true);
-        final var transfers = cashTransferRepository.getAllByCashBoxIdAndType(id, CashBoxType.CASH_REGISTER);
+        final var transactions = transactionDetailRepository.getAllByCashRegisterDetailId(cashRegisterDetailId);
+        final var expenses = expenseRepository.getAllByCashRegisterDetailIdAndDiscount(cashRegisterDetailId, false);
+        final var discounts = expenseRepository.getAllByCashRegisterDetailIdAndDiscount(cashRegisterDetailId, true);
+        final var transfers = cashTransferRepository.getAllByCashBoxIdAndType(cashRegisterDetailId, CashBoxType.CASH_REGISTER);
 
         final var detailedTransactions = new DetailedCashRegisterTransactionsDto(transactions, expenses, discounts, transfers);
 
-        return new DetailedCashRegisterReportsDto(reports, detailedTransactions);
+        final var changeLogs = changeLogRepository.getAllByCashRegisterDetailId(cashRegisterDetailId);
+
+        return new DetailedCashRegisterReportsDto(reports, detailedTransactions, changeLogs);
     }
 }

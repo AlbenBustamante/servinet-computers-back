@@ -10,6 +10,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring", uses = CashRegisterDetailMapper.class)
 public abstract class ChangeLogMapper {
     @Autowired
@@ -17,6 +19,8 @@ public abstract class ChangeLogMapper {
 
     @Mapping(target = "cashRegisterDetailId", source = "cashRegisterDetail.id")
     public abstract ChangeLogResponse toResponse(ChangeLog entity);
+
+    public abstract List<ChangeLogResponse> toResponses(List<ChangeLog> entities);
 
     @Mapping(target = "previousData", expression = "java(objectMapper.writeValueAsString(dto.getPreviousData()))")
     @Mapping(target = "newData", expression = "java(objectMapper.writeValueAsString(dto.getNewData()))")

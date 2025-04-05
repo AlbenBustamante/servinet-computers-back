@@ -9,6 +9,8 @@ import com.servinetcomputers.api.module.changelog.persistence.mapper.ChangeLogMa
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Repository
 public class ChangeLogRepositoryImpl implements ChangeLogRepository {
@@ -21,5 +23,11 @@ public class ChangeLogRepositoryImpl implements ChangeLogRepository {
         final var newChangeLog = jpaChangeLogRepository.save(entity);
 
         return changeLogMapper.toResponse(newChangeLog);
+    }
+
+    @Override
+    public List<ChangeLogResponse> getAllByCashRegisterDetailId(int cashRegisterDetailId) {
+        final var entities = jpaChangeLogRepository.findAllByCashRegisterDetailIdAndEnabledTrue(cashRegisterDetailId);
+        return changeLogMapper.toResponses(entities);
     }
 }
