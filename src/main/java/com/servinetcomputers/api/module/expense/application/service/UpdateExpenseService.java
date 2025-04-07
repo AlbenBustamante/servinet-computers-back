@@ -48,8 +48,10 @@ public class UpdateExpenseService implements UpdateExpenseUseCase {
         expense.setDiscount(dto.discount() != null ? dto.discount() : expense.isDiscount());
 
         final var newData = repository.save(expense);
+        
         createChangeLog(previousData, newData);
         lastTempCode.setUsedBy(newData.getCashRegisterDetail().getUser());
+        tempCodeRepository.save(lastTempCode);
 
         return newData;
     }
