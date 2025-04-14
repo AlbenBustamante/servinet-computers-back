@@ -1,25 +1,23 @@
 package com.servinetcomputers.api.core.audit;
 
+import com.servinetcomputers.api.core.datetime.DateTimeService;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import lombok.RequiredArgsConstructor;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-
 @RequiredArgsConstructor
 public class AuditAuditable {
-    private final ZoneId zoneId;
+    private final DateTimeService dateTimeService;
 
     @PrePersist
     public void onPrePersist(Auditable auditable) {
         auditable.setEnabled(true);
-        auditable.setCreatedDate(LocalDateTime.now(zoneId));
-        auditable.setModifiedDate(LocalDateTime.now(zoneId));
+        auditable.setCreatedDate(dateTimeService.now());
+        auditable.setModifiedDate(dateTimeService.now());
     }
 
     @PreUpdate
     public void onPreUpdate(Auditable auditable) {
-        auditable.setModifiedDate(LocalDateTime.now(zoneId));
+        auditable.setModifiedDate(dateTimeService.now());
     }
 }

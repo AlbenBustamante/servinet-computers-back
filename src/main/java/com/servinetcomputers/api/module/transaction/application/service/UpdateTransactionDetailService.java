@@ -1,6 +1,5 @@
 package com.servinetcomputers.api.module.transaction.application.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.servinetcomputers.api.core.exception.AppException;
 import com.servinetcomputers.api.core.exception.InvalidTempCodeException;
 import com.servinetcomputers.api.core.exception.NotFoundException;
@@ -27,7 +26,6 @@ public class UpdateTransactionDetailService implements UpdateTransactionDetailUs
     private final TransactionDetailRepository repository;
     private final TransactionRepository transactionRepository;
     private final TempCodeRepository tempCodeRepository;
-    private final ObjectMapper objectMapper;
     private final CreateChangeLogUseCase createChangeLogUseCase;
 
     @Transactional(rollbackFor = AppException.class)
@@ -60,13 +58,15 @@ public class UpdateTransactionDetailService implements UpdateTransactionDetailUs
         transactionDetail.setCommission(dto.commission() != null ? dto.commission() : transactionDetail.getCommission());
         transactionDetail.setDate(dto.date() != null ? dto.date() : transactionDetail.getDate());
 
-        final var transactionDetailUpdated = repository.save(transactionDetail);
+        repository.save(transactionDetail);
+
+        final var transactionDetailUpdated = repository.get(transactionDetailId)
+                .orElseThrow(() -> new NotFoundException("No se encontró la transacción: " + transactionDetailId));
 
         createChangeLog(previousData, transactionDetailUpdated);
 
         final var user = transactionDetailUpdated.getCashRegisterDetail().getUser();
         lastCode.get().setUsedBy(user);
-
         tempCodeRepository.save(lastCode.get());
 
         return transactionDetailUpdated;

@@ -47,8 +47,11 @@ public class UpdateExpenseService implements UpdateExpenseUseCase {
         expense.setValue(dto.value() != null ? dto.value() : expense.getValue());
         expense.setDiscount(dto.discount() != null ? dto.discount() : expense.isDiscount());
 
-        final var newData = repository.save(expense);
-        
+        repository.save(expense);
+
+        final var newData = repository.get(expenseId)
+                .orElseThrow(() -> new NotFoundException("No se encontró el gasto: " + expenseId));
+
         createChangeLog(previousData, newData);
         lastTempCode.setUsedBy(newData.getCashRegisterDetail().getUser());
         tempCodeRepository.save(lastTempCode);
