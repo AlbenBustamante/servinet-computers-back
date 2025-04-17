@@ -48,4 +48,8 @@ public class CashTransferDto extends ModelResponse {
                 senderType
         );
     }
+
+    public CashTransferDto copy() {
+        return copyWithDetails(received, receiver, sender);
+    }
 }

@@ -6,8 +6,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface JpaCashTransferRepository extends JpaRepository<CashTransfer, Integer> {
+    Optional<CashTransfer> findByIdAndEnabledTrue(Integer id);
+
     @Query("SELECT ct FROM CashTransfer ct " +
             "WHERE (ct.senderId = :id AND ct.senderType = :type) " +
             "OR (ct.receiverId = :id AND ct.receiverType = :type) " +

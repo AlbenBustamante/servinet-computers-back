@@ -24,4 +24,6 @@ public interface CashTransferMapper {
     @Mapping(target = "createdDate", ignore = true)
     @Mapping(target = "createdBy", ignore = true)
     CashTransfer toEntity(CreateCashTransferDto dto);
+
+    CashTransfer toEntity(CashTransferDto dto);
 }

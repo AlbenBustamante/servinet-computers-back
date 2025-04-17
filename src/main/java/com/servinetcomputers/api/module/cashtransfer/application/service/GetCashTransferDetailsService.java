@@ -35,7 +35,7 @@ public class GetCashTransferDetailsService implements GetCashTransferDetailsUseC
 
         if (type == CashBoxType.SAFE) {
             final var numeral = safeDetailRepository.getNumeralById(id)
-                    .orElseThrow(() -> new NotFoundException("No se encontró a caja suministrada: #" + id));
+                    .orElseThrow(() -> new NotFoundException("No se encontró la caja suministrada: #" + id));
             return "Caja Fuerte N°".concat(String.valueOf(numeral));
         }
 

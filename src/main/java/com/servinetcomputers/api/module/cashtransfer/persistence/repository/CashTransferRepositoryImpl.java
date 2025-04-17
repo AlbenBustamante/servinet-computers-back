@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Repository
@@ -23,6 +24,20 @@ public class CashTransferRepositoryImpl implements CashTransferRepository {
         final var newCashTransfer = repository.save(entity);
 
         return mapper.toDto(newCashTransfer);
+    }
+
+    @Override
+    public CashTransferDto save(CashTransferDto dto) {
+        final var entity = mapper.toEntity(dto);
+        final var newCashTransfer = repository.save(entity);
+
+        return mapper.toDto(newCashTransfer);
+    }
+
+    @Override
+    public Optional<CashTransferDto> get(int cashTransferId) {
+        final var cashTransfer = repository.findByIdAndEnabledTrue(cashTransferId);
+        return cashTransfer.map(mapper::toDto);
     }
 
     @Override
