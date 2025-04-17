@@ -20,10 +20,11 @@ public class DeleteCashRegisterService implements DeleteCashRegisterUseCase {
     @Transactional(rollbackFor = AppException.class)
     @Secured(value = ADMIN_AUTHORITY)
     @Override
-    public void call(Integer param) {
-        final var cashRegister = repository.get(param)
-                .orElseThrow(() -> new NotFoundException("No se encontró la caja: #" + param));
+    public void call(Integer cashRegisterId) {
+        final var cashRegister = repository.get(cashRegisterId)
+                .orElseThrow(() -> new NotFoundException("No se encontró la caja: #" + cashRegisterId));
 
+        cashRegister.setDescription("ELIMINADO: " + cashRegister.getDescription() + " #" + cashRegisterId);
         cashRegister.setStatus(CashRegisterStatus.DISABLED);
         cashRegister.setEnabled(false);
 

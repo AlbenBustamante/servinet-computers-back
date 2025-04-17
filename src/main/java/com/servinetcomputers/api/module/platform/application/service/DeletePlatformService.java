@@ -19,15 +19,16 @@ public class DeletePlatformService implements DeletePlatformUseCase {
     /**
      * Disable an existing and available platform.
      *
-     * @param param the ID to be searched.
+     * @param platformId the ID to be searched.
      */
     @Transactional(rollbackFor = AppException.class)
     @Secured(value = ADMIN_AUTHORITY)
     @Override
-    public void call(Integer param) {
-        final var platform = repository.get(param)
-                .orElseThrow(() -> new NotFoundException("Plataforma no encontrada: " + param));
+    public void call(Integer platformId) {
+        final var platform = repository.get(platformId)
+                .orElseThrow(() -> new NotFoundException("Plataforma no encontrada: " + platformId));
 
+        platform.setName("ELIMINADO: " + platform.getName() + " #" + platformId);
         platform.setEnabled(false);
         repository.save(platform);
     }

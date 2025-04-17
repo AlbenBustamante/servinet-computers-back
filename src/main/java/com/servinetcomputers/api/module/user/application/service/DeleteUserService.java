@@ -20,8 +20,11 @@ public class DeleteUserService implements DeleteUserUseCase {
     @Transactional(rollbackFor = AppException.class)
     @Secured(value = ADMIN_AUTHORITY)
     @Override
-    public void call(Integer param) {
-        final var user = getUserUseCase.call(param);
+    public void call(Integer userId) {
+        final var user = getUserUseCase.call(userId);
+
+        user.setName("ELIMINADO: " + user.getName());
+        user.setLastName(user.getLastName() + " #" + user.getId());
         user.setEnabled(false);
 
         repository.save(user);
