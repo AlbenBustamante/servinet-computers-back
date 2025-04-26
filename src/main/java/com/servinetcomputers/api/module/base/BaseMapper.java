@@ -33,17 +33,17 @@ public class BaseMapper {
             return "";
         }
 
-        return base.hundredThousand() + separator +
-                base.fiftyThousand() + separator +
-                base.twentyThousand() + separator +
-                base.tenThousand() + separator +
-                base.fiveThousand() + separator +
-                base.twoThousand() + separator +
-                base.thousand() + separator +
-                base.fiveHundred() + separator +
-                base.twoHundred() + separator +
-                base.hundred() + separator +
-                base.fifty();
+        return base.getHundredThousand() + separator +
+                base.getFiftyThousand() + separator +
+                base.getTwentyThousand() + separator +
+                base.getTenThousand() + separator +
+                base.getFiveThousand() + separator +
+                base.getTwoThousand() + separator +
+                base.getThousand() + separator +
+                base.getFiveHundred() + separator +
+                base.getTwoHundred() + separator +
+                base.getHundred() + separator +
+                base.getFifty();
     }
 
 }

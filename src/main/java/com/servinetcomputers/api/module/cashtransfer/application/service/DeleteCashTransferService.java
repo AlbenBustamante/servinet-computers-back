@@ -4,6 +4,7 @@ import com.servinetcomputers.api.core.exception.AppException;
 import com.servinetcomputers.api.core.exception.InvalidTempCodeException;
 import com.servinetcomputers.api.core.exception.NotFoundException;
 import com.servinetcomputers.api.core.exception.RequiredTempCodeException;
+import com.servinetcomputers.api.core.util.enums.CashBoxType;
 import com.servinetcomputers.api.core.util.enums.ChangeLogAction;
 import com.servinetcomputers.api.core.util.enums.ChangeLogType;
 import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDetailResponse;
@@ -12,6 +13,9 @@ import com.servinetcomputers.api.module.cashtransfer.application.usecase.DeleteC
 import com.servinetcomputers.api.module.cashtransfer.domain.repository.CashTransferRepository;
 import com.servinetcomputers.api.module.changelog.application.usecase.CreateChangeLogUseCase;
 import com.servinetcomputers.api.module.changelog.domain.dto.CreateChangeLogDto;
+import com.servinetcomputers.api.module.safes.domain.dto.SafeBaseRequest;
+import com.servinetcomputers.api.module.safes.domain.repository.SafeBaseRepository;
+import com.servinetcomputers.api.module.safes.domain.repository.SafeDetailRepository;
 import com.servinetcomputers.api.module.tempcode.domain.repository.TempCodeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,6 +26,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class DeleteCashTransferService implements DeleteCashTransferUseCase {
     private final CashTransferRepository repository;
     private final CashRegisterDetailRepository cashRegisterDetailRepository;
+    private final SafeDetailRepository safeDetailRepository;
+    private final SafeBaseRepository safeBaseRepository;
     private final TempCodeRepository tempCodeRepository;
     private final CreateChangeLogUseCase createChangeLogUseCase;
 
@@ -45,6 +51,25 @@ public class DeleteCashTransferService implements DeleteCashTransferUseCase {
 
         cashTransfer.setEnabled(false);
         repository.save(cashTransfer);
+
+        final var receiverIsSafe = cashTransfer.getReceiverType() == CashBoxType.SAFE;
+        final var senderIsSafe = cashTransfer.getSenderType() == CashBoxType.SAFE;
+
+        if (receiverIsSafe || senderIsSafe) {
+            var safeDetail = safeDetailRepository.get(receiverIsSafe ? cashTransfer.getReceiverId() : cashTransfer.getSenderId())
+                    .orElseThrow(() -> new NotFoundException("No se encontró el movimiento de caja fuerte"));
+
+            final var amount = cashTransfer.getValue() / 100;
+            final var base = safeDetail.getDetailFinalBase();
+            final var newBase = base.addOrSubtract(amount, senderIsSafe);
+
+            safeDetail.setDetailFinalBase(newBase);
+            safeDetail = safeDetailRepository.save(safeDetail);
+
+            final var safeBase = new SafeBaseRequest(safeDetail.getId(), newBase);
+            safeBase.setSafeDetail(safeDetail);
+            safeBaseRepository.save(safeBase);
+        }
 
         final var cashRegisterDetail = cashRegisterDetailRepository.get(cashRegisterDetailId)
                 .orElseThrow(() -> new NotFoundException("No se encontró la jornada: " + cashRegisterDetailId));

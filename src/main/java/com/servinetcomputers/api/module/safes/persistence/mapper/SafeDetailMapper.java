@@ -18,8 +18,8 @@ public interface SafeDetailMapper {
 
     List<SafeDetailResponse> toResponses(List<SafeDetail> entities);
 
-    @Mapping(target = "initialBase", expression = "java(baseMapper.toStr(request.getInitialBase()))")
-    @Mapping(target = "finalBase", expression = "java(baseMapper.toStr(request.getFinalBase()))")
+    @Mapping(target = "initialBase", source = "initialBase")
+    @Mapping(target = "finalBase", source = "finalBase")
     @Mapping(target = "modifiedDate", ignore = true)
     @Mapping(target = "modifiedBy", ignore = true)
     @Mapping(target = "id", ignore = true)
@@ -29,7 +29,7 @@ public interface SafeDetailMapper {
     @Mapping(target = "calculatedBase", ignore = true)
     SafeDetail toEntity(SafeDetailRequest request);
 
-    @Mapping(target = "initialBase", expression = "java(baseMapper.toStr(response.getDetailInitialBase()))")
-    @Mapping(target = "finalBase", expression = "java(baseMapper.toStr(response.getDetailFinalBase()))")
+    @Mapping(target = "initialBase", source = "detailInitialBase")
+    @Mapping(target = "finalBase", source = "detailFinalBase")
     SafeDetail toEntity(SafeDetailResponse response);
 }
