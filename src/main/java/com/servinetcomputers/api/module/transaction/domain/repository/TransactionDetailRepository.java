@@ -1,8 +1,10 @@
 package com.servinetcomputers.api.module.transaction.domain.repository;
 
+import com.servinetcomputers.api.core.page.PageResponse;
 import com.servinetcomputers.api.core.util.enums.TransactionDetailType;
 import com.servinetcomputers.api.module.transaction.domain.dto.TransactionDetailRequest;
 import com.servinetcomputers.api.module.transaction.domain.dto.TransactionDetailResponse;
+import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,6 +18,8 @@ public interface TransactionDetailRepository {
     Optional<TransactionDetailResponse> get(int transactionDetailId);
 
     List<TransactionDetailResponse> getAllByCashRegisterDetailId(int cashRegisterDetailId);
+
+    PageResponse<TransactionDetailResponse> getAllByCashRegisterDetailId(int cashRegisterDetailId, Pageable pageable);
 
     List<TransactionDetailResponse> getAllByCodeBetween(String code, LocalDateTime startDate, LocalDateTime endDate);
 

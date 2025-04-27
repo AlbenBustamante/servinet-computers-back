@@ -2,6 +2,8 @@ package com.servinetcomputers.api.module.transaction.persistence;
 
 import com.servinetcomputers.api.core.util.enums.TransactionDetailType;
 import com.servinetcomputers.api.module.transaction.persistence.entity.TransactionDetail;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -13,6 +15,8 @@ public interface JpaTransactionDetailRepository extends JpaRepository<Transactio
     Optional<TransactionDetail> findByIdAndEnabledTrue(int id);
 
     List<TransactionDetail> findAllByCashRegisterDetailIdAndEnabledTrue(int cashRegisterDetailId);
+
+    Page<TransactionDetail> findAllByCashRegisterDetailIdAndEnabledTrue(int cashRegisterDetailId, Pageable pageable);
 
     List<TransactionDetail> findAllByCreatedByAndEnabledTrueAndCreatedDateBetween(String createdBy, LocalDateTime startDate, LocalDateTime endDate);
 

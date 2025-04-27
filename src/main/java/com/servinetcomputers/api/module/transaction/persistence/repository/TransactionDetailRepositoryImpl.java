@@ -1,5 +1,7 @@
 package com.servinetcomputers.api.module.transaction.persistence.repository;
 
+import com.servinetcomputers.api.core.page.PageResponse;
+import com.servinetcomputers.api.core.page.PaginationMapper;
 import com.servinetcomputers.api.core.util.enums.TransactionDetailType;
 import com.servinetcomputers.api.module.transaction.domain.dto.TransactionDetailRequest;
 import com.servinetcomputers.api.module.transaction.domain.dto.TransactionDetailResponse;
@@ -7,6 +9,7 @@ import com.servinetcomputers.api.module.transaction.domain.repository.Transactio
 import com.servinetcomputers.api.module.transaction.persistence.JpaTransactionDetailRepository;
 import com.servinetcomputers.api.module.transaction.persistence.mapper.TransactionDetailMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
@@ -18,6 +21,7 @@ import java.util.Optional;
 public class TransactionDetailRepositoryImpl implements TransactionDetailRepository {
     private final JpaTransactionDetailRepository repository;
     private final TransactionDetailMapper mapper;
+    private final PaginationMapper paginationMapper;
 
     @Override
     public TransactionDetailResponse save(TransactionDetailRequest request) {
@@ -45,6 +49,14 @@ public class TransactionDetailRepositoryImpl implements TransactionDetailReposit
     public List<TransactionDetailResponse> getAllByCashRegisterDetailId(int cashRegisterDetailId) {
         final var details = repository.findAllByCashRegisterDetailIdAndEnabledTrue(cashRegisterDetailId);
         return mapper.toResponses(details);
+    }
+
+    @Override
+    public PageResponse<TransactionDetailResponse> getAllByCashRegisterDetailId(int cashRegisterDetailId, Pageable pageable) {
+        final var page = repository.findAllByCashRegisterDetailIdAndEnabledTrue(cashRegisterDetailId, pageable);
+        final var details = mapper.toResponses(page.getContent());
+
+        return new PageResponse<>(paginationMapper.toPagination(page), details);
     }
 
     @Override
