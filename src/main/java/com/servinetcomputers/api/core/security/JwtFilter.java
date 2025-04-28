@@ -1,5 +1,6 @@
 package com.servinetcomputers.api.core.security;
 
+import com.servinetcomputers.api.core.exception.AuthenticationException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,7 +23,6 @@ import static com.servinetcomputers.api.core.util.constants.SecurityConstants.WH
 @Component
 @RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
-
     private final JwtProvider jwtProvider;
 
     @Override
@@ -35,8 +35,7 @@ public class JwtFilter extends OncePerRequestFilter {
         final var header = request.getHeader(HttpHeaders.AUTHORIZATION);
 
         if (header == null || !header.startsWith("Bearer ")) {
-            filterChain.doFilter(request, response);
-            return;
+            throw new AuthenticationException("Parece que no estás autenticado");
         }
 
         try {
@@ -50,5 +49,4 @@ public class JwtFilter extends OncePerRequestFilter {
 
         filterChain.doFilter(request, response);
     }
-
 }

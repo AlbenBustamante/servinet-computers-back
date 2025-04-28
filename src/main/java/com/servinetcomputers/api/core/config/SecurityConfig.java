@@ -1,5 +1,6 @@
 package com.servinetcomputers.api.core.config;
 
+import com.servinetcomputers.api.core.exception.AppExceptionFilter;
 import com.servinetcomputers.api.core.security.JwtFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -25,7 +26,7 @@ import static com.servinetcomputers.api.core.util.constants.SecurityConstants.WH
 @EnableWebSecurity
 @EnableMethodSecurity(securedEnabled = true)
 public class SecurityConfig {
-
+    private final AppExceptionFilter appExceptionFilter;
     private final JwtFilter jwtFilter;
 
     @Bean
@@ -37,13 +38,11 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
-                .authorizeHttpRequests(req -> req
-                        .requestMatchers(WHITE_LIST).permitAll()
-                        .anyRequest().authenticated()
-                )
+                .authorizeHttpRequests(req -> req.requestMatchers(WHITE_LIST).permitAll())
+                .authorizeHttpRequests(req -> req.anyRequest().authenticated())
+                .addFilterBefore(appExceptionFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .build();
     }
-
 }
