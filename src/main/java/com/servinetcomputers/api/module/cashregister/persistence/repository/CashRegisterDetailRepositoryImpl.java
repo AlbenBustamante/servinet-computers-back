@@ -41,11 +41,6 @@ public class CashRegisterDetailRepositoryImpl implements CashRegisterDetailRepos
     }
 
     @Override
-    public boolean existsById(int id) {
-        return repository.existsByIdAndEnabledTrue(id);
-    }
-
-    @Override
     public List<CashRegisterDetailResponse> getAllByUserIdBetween(int userId, LocalDateTime startDate, LocalDateTime endDate) {
         final var details = repository.findAllByUserIdAndCreatedDateBetweenAndEnabledTrue(userId, startDate, endDate);
         return mapper.toResponses(details);

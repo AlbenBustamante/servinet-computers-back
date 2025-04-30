@@ -1,11 +1,14 @@
 package com.servinetcomputers.api.module.expense.persistence.repository;
 
+import com.servinetcomputers.api.core.page.PageResponse;
+import com.servinetcomputers.api.core.page.PaginationMapper;
 import com.servinetcomputers.api.module.expense.domain.dto.ExpenseRequest;
 import com.servinetcomputers.api.module.expense.domain.dto.ExpenseResponse;
 import com.servinetcomputers.api.module.expense.domain.repository.ExpenseRepository;
 import com.servinetcomputers.api.module.expense.persistence.JpaExpenseRepository;
 import com.servinetcomputers.api.module.expense.persistence.mapper.ExpenseMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
@@ -17,6 +20,7 @@ import java.util.Optional;
 public class ExpenseRepositoryImpl implements ExpenseRepository {
     private final JpaExpenseRepository repository;
     private final ExpenseMapper mapper;
+    private final PaginationMapper paginationMapper;
 
     @Override
     public ExpenseResponse save(ExpenseRequest request) {
@@ -30,7 +34,7 @@ public class ExpenseRepositoryImpl implements ExpenseRepository {
     public ExpenseResponse save(ExpenseResponse response) {
         final var entity = mapper.toEntity(response);
         final var newExpense = repository.save(entity);
-        
+
         return mapper.toResponse(newExpense);
     }
 
@@ -38,6 +42,14 @@ public class ExpenseRepositoryImpl implements ExpenseRepository {
     public Optional<ExpenseResponse> get(int expenseId) {
         final var expense = repository.findByIdAndEnabledTrue(expenseId);
         return expense.map(mapper::toResponse);
+    }
+
+    @Override
+    public PageResponse<ExpenseResponse> getAllByCashRegisterDetailId(int cashRegisterDetailId, Pageable pageable) {
+        final var page = repository.findAllByCashRegisterDetailIdAndEnabledTrue(cashRegisterDetailId, pageable);
+        final var expenses = mapper.toResponses(page.getContent());
+
+        return new PageResponse<>(paginationMapper.toPagination(page), expenses);
     }
 
     @Override

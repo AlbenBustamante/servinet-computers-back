@@ -1,13 +1,13 @@
 package com.servinetcomputers.api.module.cashregister.application.service.detail;
 
+import com.servinetcomputers.api.core.page.PageResponse;
 import com.servinetcomputers.api.module.cashregister.application.usecase.detail.GetExpensesUseCase;
 import com.servinetcomputers.api.module.expense.domain.dto.ExpenseResponse;
 import com.servinetcomputers.api.module.expense.domain.repository.ExpenseRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -16,7 +16,7 @@ public class GetExpensesService implements GetExpensesUseCase {
 
     @Transactional(readOnly = true)
     @Override
-    public List<ExpenseResponse> call(Integer cashRegisterDetailId) {
-        return repository.getAllByCashRegisterDetailId(cashRegisterDetailId);
+    public PageResponse<ExpenseResponse> call(Integer cashRegisterDetailId, Pageable pageable) {
+        return repository.getAllByCashRegisterDetailId(cashRegisterDetailId, pageable);
     }
 }

@@ -11,6 +11,7 @@ import java.util.List;
 
 @Mapper(componentModel = "spring", uses = CashRegisterDetailMapper.class)
 public interface ExpenseMapper {
+    @Mapping(target = "cashRegisterDetailId", source = "cashRegisterDetail.id")
     ExpenseResponse toResponse(Expense entity);
 
     List<ExpenseResponse> toResponses(List<Expense> entities);
@@ -21,7 +22,6 @@ public interface ExpenseMapper {
     @Mapping(target = "enabled", ignore = true)
     @Mapping(target = "createdDate", ignore = true)
     @Mapping(target = "createdBy", ignore = true)
-    @Mapping(target = "cashRegisterDetail", ignore = true)
     Expense toEntity(ExpenseRequest request);
 
     Expense toEntity(ExpenseResponse response);

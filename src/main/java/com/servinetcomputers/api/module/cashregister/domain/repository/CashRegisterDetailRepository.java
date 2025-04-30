@@ -15,8 +15,6 @@ public interface CashRegisterDetailRepository {
 
     CashRegisterDetailResponse save(CashRegisterDetailResponse response);
 
-    boolean existsById(int id);
-
     /**
      * Verify if a user already has a cash register detail that its status is not the specified.
      *

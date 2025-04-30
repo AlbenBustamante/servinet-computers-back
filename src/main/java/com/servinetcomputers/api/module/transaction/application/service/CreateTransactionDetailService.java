@@ -2,6 +2,7 @@ package com.servinetcomputers.api.module.transaction.application.service;
 
 import com.servinetcomputers.api.core.exception.AppException;
 import com.servinetcomputers.api.core.exception.NotFoundException;
+import com.servinetcomputers.api.core.page.PageResponse;
 import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterDetailRepository;
 import com.servinetcomputers.api.module.transaction.application.usecase.CreateTransactionDetailUseCase;
 import com.servinetcomputers.api.module.transaction.domain.dto.TransactionDetailRequest;
@@ -11,6 +12,7 @@ import com.servinetcomputers.api.module.transaction.domain.dto.TransactionRespon
 import com.servinetcomputers.api.module.transaction.domain.repository.TransactionDetailRepository;
 import com.servinetcomputers.api.module.transaction.domain.repository.TransactionRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,16 +25,18 @@ public class CreateTransactionDetailService implements CreateTransactionDetailUs
 
     @Transactional(rollbackFor = AppException.class)
     @Override
-    public TransactionDetailResponse call(TransactionDetailRequest param) {
-        final var transaction = getTransaction(param.getDescription());
-        param.setTransaction(transaction);
+    public PageResponse<TransactionDetailResponse> call(TransactionDetailRequest request, Pageable pageable) {
+        final var transaction = getTransaction(request.getDescription());
+        request.setTransaction(transaction);
 
-        final var cashRegisterDetail = cashRegisterDetailRepository.get(param.getCashRegisterDetailId())
-                .orElseThrow(() -> new NotFoundException("No se encontró la caja en funcionamiento: #" + param.getCashRegisterDetailId()));
+        final var cashRegisterDetail = cashRegisterDetailRepository.get(request.getCashRegisterDetailId())
+                .orElseThrow(() -> new NotFoundException("No se encontró la caja en funcionamiento: #" + request.getCashRegisterDetailId()));
 
-        param.setCashRegisterDetail(cashRegisterDetail);
+        request.setCashRegisterDetail(cashRegisterDetail);
 
-        return repository.save(param);
+        repository.save(request);
+
+        return repository.getAllByCashRegisterDetailId(cashRegisterDetail.getId(), pageable);
     }
 
     private TransactionResponse getTransaction(String description) {

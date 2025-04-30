@@ -1,6 +1,8 @@
 package com.servinetcomputers.api.module.expense.persistence;
 
 import com.servinetcomputers.api.module.expense.persistence.entity.Expense;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -21,6 +23,8 @@ public interface JpaExpenseRepository extends JpaRepository<Expense, Integer> {
             "WHERE e.enabled = true " +
             "AND e.createdDate BETWEEN :startDate AND :endDate")
     Integer sumAllValuesByEnabledTrueAndCreatedDateBetween(LocalDateTime startDate, LocalDateTime endDate);
+
+    Page<Expense> findAllByCashRegisterDetailIdAndEnabledTrue(int cashRegisterDetailId, Pageable pageable);
 
     List<Expense> findAllByCashRegisterDetailIdAndDiscountAndEnabledTrue(int cashRegisterDetailId, boolean discount);
 

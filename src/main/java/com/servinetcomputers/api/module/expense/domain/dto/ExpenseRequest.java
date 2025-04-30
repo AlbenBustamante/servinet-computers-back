@@ -1,9 +1,17 @@
 package com.servinetcomputers.api.module.expense.domain.dto;
 
-public record ExpenseRequest(
-        int cashRegisterDetailId,
-        String description,
-        int value,
-        boolean discount
-) {
+import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDetailResponse;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+
+@RequiredArgsConstructor
+@Getter
+@Setter
+public class ExpenseRequest {
+    private final int cashRegisterDetailId;
+    private final String description;
+    private final int value;
+    private final boolean discount;
+    private CashRegisterDetailResponse cashRegisterDetail;
 }

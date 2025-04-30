@@ -17,14 +17,10 @@ import static com.servinetcomputers.api.core.util.constants.ExpenseConstants.DES
 @Getter
 @Setter
 public class Expense extends Auditable {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "expense_id")
     private Integer id;
-
-    @Column(name = "cash_register_detail_id", nullable = false)
-    private Integer cashRegisterDetailId;
 
     @Column(nullable = false, length = DESCRIPTION_LENGTH)
     private String description;
@@ -37,7 +33,6 @@ public class Expense extends Auditable {
     private Boolean discount;
 
     @ManyToOne
-    @JoinColumn(name = "cash_register_detail_id", insertable = false, updatable = false)
+    @JoinColumn(name = "cash_register_detail_id", nullable = false)
     private CashRegisterDetail cashRegisterDetail;
-
 }

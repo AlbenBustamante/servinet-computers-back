@@ -1,7 +1,9 @@
 package com.servinetcomputers.api.module.expense.domain.repository;
 
+import com.servinetcomputers.api.core.page.PageResponse;
 import com.servinetcomputers.api.module.expense.domain.dto.ExpenseRequest;
 import com.servinetcomputers.api.module.expense.domain.dto.ExpenseResponse;
+import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -13,6 +15,8 @@ public interface ExpenseRepository {
     ExpenseResponse save(ExpenseResponse response);
 
     Optional<ExpenseResponse> get(int expenseId);
+
+    PageResponse<ExpenseResponse> getAllByCashRegisterDetailId(int cashRegisterDetailId, Pageable pageable);
 
     List<ExpenseResponse> getAllByCashRegisterDetailId(int cashRegisterDetailId);
 

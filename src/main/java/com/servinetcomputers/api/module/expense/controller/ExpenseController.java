@@ -1,5 +1,6 @@
 package com.servinetcomputers.api.module.expense.controller;
 
+import com.servinetcomputers.api.core.page.PageResponse;
 import com.servinetcomputers.api.module.expense.application.usecase.CreateExpenseUseCase;
 import com.servinetcomputers.api.module.expense.application.usecase.DeleteExpenseUseCase;
 import com.servinetcomputers.api.module.expense.application.usecase.UpdateExpenseUseCase;
@@ -7,6 +8,8 @@ import com.servinetcomputers.api.module.expense.domain.dto.ExpenseRequest;
 import com.servinetcomputers.api.module.expense.domain.dto.ExpenseResponse;
 import com.servinetcomputers.api.module.expense.domain.dto.UpdateExpenseDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,8 +22,15 @@ public class ExpenseController {
     private final DeleteExpenseUseCase deleteExpenseUseCase;
 
     @PostMapping
-    public ResponseEntity<ExpenseResponse> register(@RequestBody ExpenseRequest request) {
-        return ResponseEntity.ok(createExpenseUseCase.call(request));
+    public ResponseEntity<PageResponse<ExpenseResponse>> register(
+            @RequestBody ExpenseRequest request,
+            @RequestParam(value = "pageNumber", defaultValue = "0") int pageNumber,
+            @RequestParam(value = "pageSize", defaultValue = "5") int pageSize,
+            @RequestParam(value = "direction", defaultValue = "DESC") Sort.Direction direction,
+            @RequestParam(value = "property", defaultValue = "createdDate") String property
+    ) {
+        final var pageable = PageRequest.of(pageNumber, pageSize, direction, property);
+        return ResponseEntity.ok(createExpenseUseCase.call(request, pageable));
     }
 
     @PatchMapping(path = "/{id}")

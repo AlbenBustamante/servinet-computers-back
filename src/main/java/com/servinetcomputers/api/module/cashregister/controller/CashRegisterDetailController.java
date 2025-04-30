@@ -1,29 +1,8 @@
 package com.servinetcomputers.api.module.cashregister.controller;
 
 import com.servinetcomputers.api.core.page.PageResponse;
-import com.servinetcomputers.api.module.cashregister.application.usecase.detail.CashRegisterDetailAlreadyExistsUseCase;
-import com.servinetcomputers.api.module.cashregister.application.usecase.detail.CloseUseCase;
-import com.servinetcomputers.api.module.cashregister.application.usecase.detail.CreateCashRegisterDetailUseCase;
-import com.servinetcomputers.api.module.cashregister.application.usecase.detail.DeleteCashRegisterDetailUseCase;
-import com.servinetcomputers.api.module.cashregister.application.usecase.detail.EndBreakUseCase;
-import com.servinetcomputers.api.module.cashregister.application.usecase.detail.GetAdmCashRegisterDetailsUseCase;
-import com.servinetcomputers.api.module.cashregister.application.usecase.detail.GetCashRegisterDetailByIdUseCase;
-import com.servinetcomputers.api.module.cashregister.application.usecase.detail.GetCashRegisterDetailReportsByIdUseCase;
-import com.servinetcomputers.api.module.cashregister.application.usecase.detail.GetCashTransfersByIdUseCase;
-import com.servinetcomputers.api.module.cashregister.application.usecase.detail.GetDetailedReportsByIdUseCase;
-import com.servinetcomputers.api.module.cashregister.application.usecase.detail.GetExpensesUseCase;
-import com.servinetcomputers.api.module.cashregister.application.usecase.detail.GetTransactionsUseCase;
-import com.servinetcomputers.api.module.cashregister.application.usecase.detail.StartBreakUseCase;
-import com.servinetcomputers.api.module.cashregister.application.usecase.detail.UpdateCashRegisterDetailBaseUseCase;
-import com.servinetcomputers.api.module.cashregister.domain.dto.AdmCashRegistersDto;
-import com.servinetcomputers.api.module.cashregister.domain.dto.AlreadyExistsCashRegisterDetailDto;
-import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDetailReportsDto;
-import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDetailResponse;
-import com.servinetcomputers.api.module.cashregister.domain.dto.CloseCashRegisterDetailDto;
-import com.servinetcomputers.api.module.cashregister.domain.dto.CreateCashRegisterDetailDto;
-import com.servinetcomputers.api.module.cashregister.domain.dto.DetailedCashRegisterReportsDto;
-import com.servinetcomputers.api.module.cashregister.domain.dto.MyCashRegistersReports;
-import com.servinetcomputers.api.module.cashregister.domain.dto.UpdateCashRegisterDetailBaseDto;
+import com.servinetcomputers.api.module.cashregister.application.usecase.detail.*;
+import com.servinetcomputers.api.module.cashregister.domain.dto.*;
 import com.servinetcomputers.api.module.cashtransfer.domain.dto.CashTransferDto;
 import com.servinetcomputers.api.module.expense.domain.dto.ExpenseResponse;
 import com.servinetcomputers.api.module.transaction.domain.dto.TransactionDetailResponse;
@@ -31,17 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RequestMapping(path = "/cash-register-details")
@@ -105,13 +74,27 @@ public class CashRegisterDetailController {
     }
 
     @GetMapping(path = "/{id}/expenses")
-    public ResponseEntity<List<ExpenseResponse>> getExpenses(@PathVariable("id") int cashRegisterDetailId) {
-        return ResponseEntity.ok(getExpensesUseCase.call(cashRegisterDetailId));
+    public ResponseEntity<PageResponse<ExpenseResponse>> getExpenses(
+            @PathVariable("id") int cashRegisterDetailId,
+            @RequestParam(value = "pageNumber", defaultValue = "0") int pageNumber,
+            @RequestParam(value = "pageSize", defaultValue = "5") int pageSize,
+            @RequestParam(value = "direction", defaultValue = "DESC") Sort.Direction direction,
+            @RequestParam(value = "property", defaultValue = "createdDate") String property
+    ) {
+        final var pageable = PageRequest.of(pageNumber, pageSize, direction, property);
+        return ResponseEntity.ok(getExpensesUseCase.call(cashRegisterDetailId, pageable));
     }
 
     @GetMapping(path = "/{id}/cash-transfers")
-    public ResponseEntity<List<CashTransferDto>> getCashTransfers(@PathVariable("id") int cashRegisterDetailId) {
-        return ResponseEntity.ok(getCashTransfersUseCase.call(cashRegisterDetailId));
+    public ResponseEntity<PageResponse<CashTransferDto>> getCashTransfers(
+            @PathVariable("id") int cashRegisterDetailId,
+            @RequestParam(value = "pageNumber", defaultValue = "0") int pageNumber,
+            @RequestParam(value = "pageSize", defaultValue = "5") int pageSize,
+            @RequestParam(value = "direction", defaultValue = "DESC") Sort.Direction direction,
+            @RequestParam(value = "property", defaultValue = "createdDate") String property
+    ) {
+        final var pageable = PageRequest.of(pageNumber, pageSize, direction, property);
+        return ResponseEntity.ok(getCashTransfersUseCase.call(cashRegisterDetailId, pageable));
     }
 
     @PutMapping(path = "/{id}/start-break")
