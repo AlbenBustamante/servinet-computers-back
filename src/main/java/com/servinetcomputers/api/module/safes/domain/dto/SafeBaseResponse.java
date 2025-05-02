@@ -16,6 +16,6 @@ public class SafeBaseResponse extends ModelResponse {
         super(id, enabled, createdDate, modifiedDate, createdBy, modifiedBy);
         this.safeDetailId = safeDetailId;
         this.detailBase = detailBase;
-        this.base = this.detailBase.calculateSafeBase();
+        this.base = this.detailBase.calculate();
     }
 }

@@ -20,8 +20,8 @@ public class SafeDetailResponse extends ModelResponse {
         super(id, enabled, createdDate, modifiedDate, createdBy, modifiedBy);
         this.detailInitialBase = detailInitialBase;
         this.detailFinalBase = detailFinalBase;
-        this.initialBase = this.detailInitialBase != null ? this.detailInitialBase.calculateSafeBase() : null;
-        this.finalBase = this.detailFinalBase != null ? this.detailFinalBase.calculateSafeBase() : null;
+        this.initialBase = this.detailInitialBase != null ? this.detailInitialBase.calculate() : null;
+        this.finalBase = this.detailFinalBase != null ? this.detailFinalBase.calculate() : null;
         this.calculatedBase = calculatedBase;
         this.safeId = safeId;
         this.safe = safe;

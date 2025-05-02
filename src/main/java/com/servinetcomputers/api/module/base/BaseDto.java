@@ -38,20 +38,6 @@ public class BaseDto {
                 fifty * 50;
     }
 
-    public int calculateSafeBase() {
-        return hundredThousand * 100 * 100000 +
-                fiftyThousand * 100 * 50000 +
-                twentyThousand * 100 * 20000 +
-                tenThousand * 100 * 10000 +
-                fiveThousand * 100 * 5000 +
-                twoThousand * 100 * 2000 +
-                thousand * 100 * 1000 +
-                fiveHundred * 100 * 500 +
-                twoHundred * 100 * 200 +
-                hundred * 100 * 100 +
-                fifty * 100 * 50;
-    }
-
     public BaseDto addOrSubtract(int amount, boolean add) {
         if (amount == 100000) {
             final var value = hundredThousand;
