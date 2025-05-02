@@ -13,7 +13,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import static com.servinetcomputers.api.core.util.constants.BankDepositConstants.COLLECTOR_LENGTH;
 
 @Entity
-@Table
+@Table(name = "bank_deposits")
 @EntityListeners(value = {AuditAuditable.class, AuditingEntityListener.class})
 @Getter
 @Setter
