@@ -5,7 +5,7 @@ import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDeta
 import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterDetailRepository;
 import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterRepository;
 import com.servinetcomputers.api.module.expense.domain.repository.ExpenseRepository;
-import com.servinetcomputers.api.module.platform.domain.dto.PlatformBalanceResponse;
+import com.servinetcomputers.api.module.platform.domain.dto.PlatformBalanceDto;
 import com.servinetcomputers.api.module.platform.domain.dto.PlatformStatsDto;
 import com.servinetcomputers.api.module.platform.domain.repository.PlatformBalanceRepository;
 import com.servinetcomputers.api.module.platform.domain.repository.PlatformTransferRepository;
@@ -90,7 +90,7 @@ public class GetDashboardService implements GetDashboardUseCase {
                 .build();
     }
 
-    private int calculatePlatformBalancesTotal(List<PlatformBalanceResponse> platformBalances, List<PlatformStatsDto> platformsStats, LocalDateTime startDate, LocalDateTime endDate) {
+    private int calculatePlatformBalancesTotal(List<PlatformBalanceDto> platformBalances, List<PlatformStatsDto> platformsStats, LocalDateTime startDate, LocalDateTime endDate) {
         if (platformBalances.isEmpty()) {
             return 0;
         }
@@ -109,9 +109,10 @@ public class GetDashboardService implements GetDashboardUseCase {
         return platformBalancesTotal;
     }
 
-    private PlatformStatsDto getPlatformStats(PlatformBalanceResponse balance, LocalDateTime startDate, LocalDateTime endDate) {
-        final var platformId = balance.getPlatformId();
-        final var platformName = balance.getPlatformName();
+    private PlatformStatsDto getPlatformStats(PlatformBalanceDto balance, LocalDateTime startDate, LocalDateTime endDate) {
+        final var platform = balance.getPlatform();
+        final var platformId = platform.getId();
+        final var platformName = platform.getName();
         final var initialBalance = balance.getInitialBalance();
         final var finalBalance = balance.getFinalBalance();
         final var transfersAmount = platformTransferRepository.getPlatformTransfersAmount(platformId, startDate, endDate);

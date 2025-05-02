@@ -2,9 +2,10 @@ package com.servinetcomputers.api.module.platform.application.service;
 
 import com.servinetcomputers.api.core.datetime.DateTimeService;
 import com.servinetcomputers.api.core.exception.AppException;
+import com.servinetcomputers.api.core.exception.NotFoundException;
 import com.servinetcomputers.api.module.platform.application.usecase.LoadPortalPlatformsUseCase;
-import com.servinetcomputers.api.module.platform.domain.dto.PlatformBalanceRequest;
-import com.servinetcomputers.api.module.platform.domain.dto.PlatformBalanceResponse;
+import com.servinetcomputers.api.module.platform.domain.dto.CreatePlatformBalanceDto;
+import com.servinetcomputers.api.module.platform.domain.dto.PlatformBalanceDto;
 import com.servinetcomputers.api.module.platform.domain.dto.PortalPlatformDto;
 import com.servinetcomputers.api.module.platform.domain.repository.PlatformBalanceRepository;
 import com.servinetcomputers.api.module.platform.domain.repository.PlatformRepository;
@@ -66,7 +67,7 @@ public class LoadPortalPlatformsService implements LoadPortalPlatformsUseCase {
         return platformReports;
     }
 
-    private PlatformBalanceResponse getPlatformBalance(int platformId, LocalDateTime startDate, LocalDateTime endDate) {
+    private PlatformBalanceDto getPlatformBalance(int platformId, LocalDateTime startDate, LocalDateTime endDate) {
         final var balance = balanceRepository.getByPlatformIdBetween(platformId, startDate, endDate);
 
         if (balance.isPresent()) {
@@ -75,8 +76,9 @@ public class LoadPortalPlatformsService implements LoadPortalPlatformsUseCase {
 
         final var lastBalance = balanceRepository.getLastByPlatformId(platformId);
         final var newBalance = lastBalance.isPresent() ? lastBalance.get().getFinalBalance() : 0;
+        final var platform = repository.get(platformId).orElseThrow(() -> new NotFoundException("No se encontró la plataforma: " + platformId));
 
-        final var request = new PlatformBalanceRequest(platformId, newBalance, newBalance);
+        final var request = new CreatePlatformBalanceDto(newBalance, newBalance, platform);
         return balanceRepository.save(request);
     }
 }

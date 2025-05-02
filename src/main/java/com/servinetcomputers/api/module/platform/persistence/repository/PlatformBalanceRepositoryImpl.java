@@ -1,7 +1,7 @@
 package com.servinetcomputers.api.module.platform.persistence.repository;
 
-import com.servinetcomputers.api.module.platform.domain.dto.PlatformBalanceRequest;
-import com.servinetcomputers.api.module.platform.domain.dto.PlatformBalanceResponse;
+import com.servinetcomputers.api.module.platform.domain.dto.CreatePlatformBalanceDto;
+import com.servinetcomputers.api.module.platform.domain.dto.PlatformBalanceDto;
 import com.servinetcomputers.api.module.platform.domain.repository.PlatformBalanceRepository;
 import com.servinetcomputers.api.module.platform.persistence.JpaPlatformBalanceRepository;
 import com.servinetcomputers.api.module.platform.persistence.mapper.PlatformBalanceMapper;
@@ -22,25 +22,25 @@ public class PlatformBalanceRepositoryImpl implements PlatformBalanceRepository 
     private final PlatformBalanceMapper mapper;
 
     @Override
-    public Optional<PlatformBalanceResponse> getByPlatformIdBetween(int platformId, LocalDateTime startDate, LocalDateTime endDate) {
+    public Optional<PlatformBalanceDto> getByPlatformIdBetween(int platformId, LocalDateTime startDate, LocalDateTime endDate) {
         final var platformBalance = repository.findByPlatformIdAndEnabledTrueAndCreatedDateBetween(platformId, startDate, endDate);
         return platformBalance.map(mapper::toResponse);
     }
 
     @Override
-    public Optional<PlatformBalanceResponse> get(int balanceId) {
+    public Optional<PlatformBalanceDto> get(int balanceId) {
         final var balance = repository.findByIdAndEnabledTrue(balanceId);
         return balance.map(mapper::toResponse);
     }
 
     @Override
-    public Optional<PlatformBalanceResponse> getLastByPlatformId(int platformId) {
+    public Optional<PlatformBalanceDto> getLastByPlatformId(int platformId) {
         final var balance = repository.findFirstByPlatformIdAndEnabledTrueOrderByCreatedDateDesc(platformId);
         return balance.map(mapper::toResponse);
     }
 
     @Override
-    public List<PlatformBalanceResponse> getAllBetween(LocalDateTime startDate, LocalDateTime endDate) {
+    public List<PlatformBalanceDto> getAllBetween(LocalDateTime startDate, LocalDateTime endDate) {
         final var balances = repository.findAllByEnabledTrueAndCreatedDateBetween(startDate, endDate);
         return mapper.toResponses(balances);
     }
@@ -52,7 +52,7 @@ public class PlatformBalanceRepositoryImpl implements PlatformBalanceRepository 
     }*/
 
     @Override
-    public PlatformBalanceResponse save(PlatformBalanceRequest request) {
+    public PlatformBalanceDto save(CreatePlatformBalanceDto request) {
         final var entity = mapper.toEntity(request);
         final var newBalance = repository.save(entity);
 
@@ -60,7 +60,7 @@ public class PlatformBalanceRepositoryImpl implements PlatformBalanceRepository 
     }
 
     @Override
-    public PlatformBalanceResponse save(PlatformBalanceResponse response) {
+    public PlatformBalanceDto save(PlatformBalanceDto response) {
         final var entity = mapper.toEntity(response);
         final var newBalance = repository.save(entity);
 

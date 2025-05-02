@@ -3,7 +3,7 @@ package com.servinetcomputers.api.module.platform.application.service.balance;
 import com.servinetcomputers.api.core.exception.AppException;
 import com.servinetcomputers.api.core.exception.NotFoundException;
 import com.servinetcomputers.api.module.platform.application.usecase.balance.UpdatePlatformBalanceUseCase;
-import com.servinetcomputers.api.module.platform.domain.dto.PlatformBalanceResponse;
+import com.servinetcomputers.api.module.platform.domain.dto.PlatformBalanceDto;
 import com.servinetcomputers.api.module.platform.domain.dto.UpdatePlatformBalanceDto;
 import com.servinetcomputers.api.module.platform.domain.repository.PlatformBalanceRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +22,7 @@ public class UpdatePlatformBalanceService implements UpdatePlatformBalanceUseCas
     @Transactional(rollbackFor = AppException.class)
     @Secured(value = {SUPERVISOR_AUTHORITY, ADMIN_AUTHORITY})
     @Override
-    public PlatformBalanceResponse call(Integer balanceId, UpdatePlatformBalanceDto dto) {
+    public PlatformBalanceDto call(Integer balanceId, UpdatePlatformBalanceDto dto) {
         final var balance = repository.get(balanceId)
                 .orElseThrow(() -> new NotFoundException("Saldo no encontrado: #" + balanceId));
 

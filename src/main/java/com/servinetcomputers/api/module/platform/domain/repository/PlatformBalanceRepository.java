@@ -1,7 +1,7 @@
 package com.servinetcomputers.api.module.platform.domain.repository;
 
-import com.servinetcomputers.api.module.platform.domain.dto.PlatformBalanceRequest;
-import com.servinetcomputers.api.module.platform.domain.dto.PlatformBalanceResponse;
+import com.servinetcomputers.api.module.platform.domain.dto.CreatePlatformBalanceDto;
+import com.servinetcomputers.api.module.platform.domain.dto.PlatformBalanceDto;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -11,17 +11,17 @@ import java.util.Optional;
  * The balance's repository.
  */
 public interface PlatformBalanceRepository {
-    PlatformBalanceResponse save(PlatformBalanceRequest request);
+    PlatformBalanceDto save(CreatePlatformBalanceDto request);
 
-    PlatformBalanceResponse save(PlatformBalanceResponse response);
+    PlatformBalanceDto save(PlatformBalanceDto response);
 
-    Optional<PlatformBalanceResponse> getByPlatformIdBetween(int platformId, LocalDateTime startDate, LocalDateTime endDate);
+    Optional<PlatformBalanceDto> getByPlatformIdBetween(int platformId, LocalDateTime startDate, LocalDateTime endDate);
 
-    Optional<PlatformBalanceResponse> get(int balanceId);
+    Optional<PlatformBalanceDto> get(int balanceId);
 
-    Optional<PlatformBalanceResponse> getLastByPlatformId(int platformId);
+    Optional<PlatformBalanceDto> getLastByPlatformId(int platformId);
 
-    List<PlatformBalanceResponse> getAllBetween(LocalDateTime startDate, LocalDateTime endDate);
+    List<PlatformBalanceDto> getAllBetween(LocalDateTime startDate, LocalDateTime endDate);
 
     //Integer calculateFinalBalanceBetween(LocalDateTime startDate, LocalDateTime endDate);
 }
