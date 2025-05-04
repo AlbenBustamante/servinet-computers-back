@@ -17,6 +17,8 @@ public interface TransactionDetailRepository {
 
     Optional<TransactionDetailDto> get(int transactionDetailId);
 
+    Optional<TransactionDetailDto> getDeleted(int transactionDetailId);
+
     List<TransactionDetailDto> getAllByCashRegisterDetailId(int cashRegisterDetailId);
 
     PageResponse<TransactionDetailDto> getAllByCashRegisterDetailId(int cashRegisterDetailId, Pageable pageable);

@@ -16,6 +16,8 @@ public interface ExpenseRepository {
 
     Optional<ExpenseDto> get(int expenseId);
 
+    Optional<ExpenseDto> getDeleted(int expenseId);
+
     PageResponse<ExpenseDto> getAllByCashRegisterDetailId(int cashRegisterDetailId, Pageable pageable);
 
     List<ExpenseDto> getAllByCashRegisterDetailId(int cashRegisterDetailId);

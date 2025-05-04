@@ -45,6 +45,12 @@ public class CashTransferRepositoryImpl implements CashTransferRepository {
     }
 
     @Override
+    public Optional<CashTransferDto> getDeleted(int cashTransferId) {
+        final var cashTransfer = repository.findById(cashTransferId);
+        return cashTransfer.map(mapper::toDto);
+    }
+
+    @Override
     public PageResponse<CashTransferDto> getAllByCashBoxIdAndType(int id, CashBoxType type, Pageable pageable) {
         final var page = repository.findAllByCashBoxIdAndTypeAndEnabledTrue(id, type, pageable);
         final var transfers = mapper.toDto(page.getContent());

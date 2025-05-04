@@ -16,6 +16,8 @@ public interface CashTransferRepository {
 
     Optional<CashTransferDto> get(int cashTransferId);
 
+    Optional<CashTransferDto> getDeleted(int cashTransferId);
+
     PageResponse<CashTransferDto> getAllByCashBoxIdAndType(int id, CashBoxType type, Pageable pageable);
 
     List<CashTransferDto> getAllByCashBoxIdAndType(int id, CashBoxType type);

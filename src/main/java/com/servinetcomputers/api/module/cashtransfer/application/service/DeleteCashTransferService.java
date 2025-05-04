@@ -74,20 +74,23 @@ public class DeleteCashTransferService implements DeleteCashTransferUseCase {
         final var cashRegisterDetail = cashRegisterDetailRepository.get(cashRegisterDetailId)
                 .orElseThrow(() -> new NotFoundException("No se encontró la jornada: " + cashRegisterDetailId));
 
-        createChangeLog(previousData, cashRegisterDetail);
+        final var newData = repository.getDeleted(cashTransferId)
+                .orElseThrow(() -> new NotFoundException("No se encontró la transferencia: " + cashTransferId));
+
+        createChangeLog(previousData, cashRegisterDetail, newData);
 
         lastTempCode.setUsedBy(cashRegisterDetail.getUser());
         tempCodeRepository.save(lastTempCode);
     }
 
-    private void createChangeLog(Object previousData, CashRegisterDetailDto cashRegisterDetail) {
+    private void createChangeLog(Object previousData, CashRegisterDetailDto cashRegisterDetail, Object newData) {
         final var dto = new CreateChangeLogDto(
                 ChangeLogAction.DELETE,
                 ChangeLogType.CASH_TRANSFER,
                 cashRegisterDetail.getId(),
                 cashRegisterDetail.getStatus(),
                 previousData,
-                null
+                newData
         );
 
         createChangeLogUseCase.call(dto);

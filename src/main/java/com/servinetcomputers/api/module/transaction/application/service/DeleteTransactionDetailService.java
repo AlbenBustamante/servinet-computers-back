@@ -44,7 +44,10 @@ public class DeleteTransactionDetailService implements DeleteTransactionDetailUs
         transactionDetail.setEnabled(false);
         transactionDetailRepository.save(transactionDetail);
 
-        createChangeLog(previousData);
+        final var newData = transactionDetailRepository.getDeleted(transactionDetailId)
+                .orElseThrow(() -> new NotFoundException("No se encontró la transacción: " + transactionDetailId));
+
+        createChangeLog(previousData, newData);
 
         final var user = transactionDetail.getCashRegisterDetail().getUser();
 
@@ -52,14 +55,14 @@ public class DeleteTransactionDetailService implements DeleteTransactionDetailUs
         tempCodeRepository.save(lastTempCode.get());
     }
 
-    private void createChangeLog(TransactionDetailDto previousData) {
+    private void createChangeLog(TransactionDetailDto previousData, Object newData) {
         final var dto = new CreateChangeLogDto(
                 ChangeLogAction.DELETE,
                 ChangeLogType.TRANSACTION_DETAIL,
                 previousData.getCashRegisterDetailId(),
                 previousData.getCashRegisterDetail().getStatus(),
                 previousData,
-                null
+                newData
         );
 
         createChangeLogUseCase.call(dto);

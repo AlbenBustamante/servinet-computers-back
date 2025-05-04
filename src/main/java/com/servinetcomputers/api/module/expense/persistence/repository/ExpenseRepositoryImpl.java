@@ -45,6 +45,12 @@ public class ExpenseRepositoryImpl implements ExpenseRepository {
     }
 
     @Override
+    public Optional<ExpenseDto> getDeleted(int expenseId) {
+        final var expense = repository.findById(expenseId);
+        return expense.map(mapper::toDto);
+    }
+
+    @Override
     public PageResponse<ExpenseDto> getAllByCashRegisterDetailId(int cashRegisterDetailId, Pageable pageable) {
         final var page = repository.findAllByCashRegisterDetailIdAndEnabledTrue(cashRegisterDetailId, pageable);
         final var expenses = mapper.toDto(page.getContent());

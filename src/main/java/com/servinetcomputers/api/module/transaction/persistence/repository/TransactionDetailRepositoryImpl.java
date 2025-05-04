@@ -46,6 +46,12 @@ public class TransactionDetailRepositoryImpl implements TransactionDetailReposit
     }
 
     @Override
+    public Optional<TransactionDetailDto> getDeleted(int transactionDetailId) {
+        final var detail = repository.findById(transactionDetailId);
+        return detail.map(mapper::toDto);
+    }
+
+    @Override
     public List<TransactionDetailDto> getAllByCashRegisterDetailId(int cashRegisterDetailId) {
         final var details = repository.findAllByCashRegisterDetailIdAndEnabledTrue(cashRegisterDetailId);
         return mapper.toDto(details);

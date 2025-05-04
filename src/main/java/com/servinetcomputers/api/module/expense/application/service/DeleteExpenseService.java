@@ -44,20 +44,23 @@ public class DeleteExpenseService implements DeleteExpenseUseCase {
         expense.setEnabled(false);
         expenseRepository.save(expense);
 
-        createChangeLog(previousData);
+        final var newData = expenseRepository.getDeleted(expenseId)
+                .orElseThrow(() -> new NotFoundException("No se encontró el gasto: " + expenseId));
+
+        createChangeLog(previousData, newData);
 
         lastTempCode.get().setUsedBy(expense.getCashRegisterDetail().getUser());
         tempCodeRepository.save(lastTempCode.get());
     }
 
-    private void createChangeLog(ExpenseDto previousData) {
+    private void createChangeLog(ExpenseDto previousData, Object newData) {
         final var dto = new CreateChangeLogDto(
                 ChangeLogAction.DELETE,
                 ChangeLogType.EXPENSE,
                 previousData.getCashRegisterDetailId(),
                 previousData.getCashRegisterDetail().getStatus(),
                 previousData,
-                null
+                newData
         );
 
         createChangeLogUseCase.call(dto);
