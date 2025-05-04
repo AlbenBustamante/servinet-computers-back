@@ -59,9 +59,10 @@ public class DeleteCashTransferService implements DeleteCashTransferUseCase {
             var safeDetail = safeDetailRepository.get(receiverIsSafe ? cashTransfer.getReceiverId() : cashTransfer.getSenderId())
                     .orElseThrow(() -> new NotFoundException("No se encontró el movimiento de caja fuerte"));
 
-            final var amount = cashTransfer.getValue() / 100;
+            final var amount = cashTransfer.getSafeAmount();
+            final var denomination = cashTransfer.getSafeDenomination();
             final var base = safeDetail.getDetailFinalBase();
-            final var newBase = base.addOrSubtract(amount, senderIsSafe);
+            final var newBase = base.addOrSubtract(amount, denomination, senderIsSafe);
 
             safeDetail.setDetailFinalBase(newBase);
             safeDetail = safeDetailRepository.save(safeDetail);

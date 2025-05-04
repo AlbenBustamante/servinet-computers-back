@@ -14,14 +14,14 @@ public interface JpaCashTransferRepository extends JpaRepository<CashTransfer, I
     Optional<CashTransfer> findByIdAndEnabledTrue(Integer id);
 
     @Query("SELECT ct FROM CashTransfer ct " +
-            "WHERE (ct.senderId = :id AND ct.senderType = :type) " +
-            "OR (ct.receiverId = :id AND ct.receiverType = :type) " +
+            "WHERE ((ct.senderId = :id AND ct.senderType = :type) " +
+            "OR (ct.receiverId = :id AND ct.receiverType = :type)) " +
             "AND ct.enabled = true")
     Page<CashTransfer> findAllByCashBoxIdAndTypeAndEnabledTrue(int id, CashBoxType type, Pageable pageable);
 
     @Query("SELECT ct FROM CashTransfer ct " +
-            "WHERE (ct.senderId = :id AND ct.senderType = :type) " +
-            "OR (ct.receiverId = :id AND ct.receiverType = :type) " +
+            "WHERE ((ct.senderId = :id AND ct.senderType = :type) " +
+            "OR (ct.receiverId = :id AND ct.receiverType = :type)) " +
             "AND ct.enabled = true")
     List<CashTransfer> findAllByCashBoxIdAndTypeAndEnabledTrue(int id, CashBoxType type);
 

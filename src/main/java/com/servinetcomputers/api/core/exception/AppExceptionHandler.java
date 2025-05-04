@@ -54,7 +54,7 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
             AppException.class
     })
     public ProblemDetail handleAppException(AppException ex) {
-        log.error(ex.getMessage());
+        log.error("Http Status Code: {} - ERROR: {}", ex.getStatus().name(), ex.getMessage());
         return createProblemDetail(ex);
     }
 

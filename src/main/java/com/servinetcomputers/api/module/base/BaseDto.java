@@ -38,60 +38,60 @@ public class BaseDto {
                 fifty * 50;
     }
 
-    public BaseDto addOrSubtract(int amount, boolean add) {
-        if (amount == 100000) {
+    public BaseDto addOrSubtract(int amount, int denomination, boolean add) {
+        if (denomination == 100000) {
             final var value = hundredThousand;
-            hundredThousand = add ? value + 1 : value - 1;
+            hundredThousand = add ? value + amount : value - amount;
         }
 
-        if (amount == 50000) {
+        if (denomination == 50000) {
             final var value = fiftyThousand;
-            fiftyThousand = add ? value + 1 : value - 1;
+            fiftyThousand = add ? value + amount : value - amount;
         }
 
-        if (amount == 20000) {
+        if (denomination == 20000) {
             final var value = twentyThousand;
-            twentyThousand = add ? value + 1 : value - 1;
+            twentyThousand = add ? value + amount : value - amount;
         }
 
-        if (amount == 10000) {
+        if (denomination == 10000) {
             final var value = tenThousand;
-            tenThousand = add ? value + 1 : value - 1;
+            tenThousand = add ? value + amount : value - amount;
         }
 
-        if (amount == 5000) {
+        if (denomination == 5000) {
             final var value = fiveThousand;
-            fiveThousand = add ? value + 1 : value - 1;
+            fiveThousand = add ? value + amount : value - amount;
         }
 
-        if (amount == 2000) {
+        if (denomination == 2000) {
             final var value = twoThousand;
-            twoThousand = add ? value + 1 : value - 1;
+            twoThousand = add ? value + amount : value - amount;
         }
 
-        if (amount == 1000) {
+        if (denomination == 1000) {
             final var value = thousand;
-            thousand = add ? value + 1 : value - 1;
+            thousand = add ? value + amount : value - amount;
         }
 
-        if (amount == 500) {
+        if (denomination == 500) {
             final var value = fiveHundred;
-            fiveHundred = add ? value + 1 : value - 1;
+            fiveHundred = add ? value + amount : value - amount;
         }
 
-        if (amount == 200) {
+        if (denomination == 200) {
             final var value = twoHundred;
-            twoHundred = add ? value + 1 : value - 1;
+            twoHundred = add ? value + amount : value - amount;
         }
 
-        if (amount == 100) {
+        if (denomination == 100) {
             final var value = hundred;
-            hundred = add ? value + 1 : value - 1;
+            hundred = add ? value + amount : value - amount;
         }
 
-        if (amount == 50) {
+        if (denomination == 50) {
             final var value = fifty;
-            fifty = add ? value + 1 : value - 1;
+            fifty = add ? value + amount : value - amount;
         }
 
         return this;
