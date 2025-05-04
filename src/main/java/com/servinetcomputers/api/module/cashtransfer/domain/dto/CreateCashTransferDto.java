@@ -11,6 +11,8 @@ public record CreateCashTransferDto(
         CashBoxType receiverType,
         Integer safeDetailId,
         BaseDto safeBase,
+        Integer safeDenomination,
+        Integer safeAmount,
         Integer currentCashRegisterDetailId
 ) {
 }

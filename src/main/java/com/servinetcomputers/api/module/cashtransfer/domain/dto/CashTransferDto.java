@@ -2,7 +2,6 @@ package com.servinetcomputers.api.module.cashtransfer.domain.dto;
 
 import com.servinetcomputers.api.core.audit.AuditableDto;
 import com.servinetcomputers.api.core.util.enums.CashBoxType;
-import com.servinetcomputers.api.module.base.BaseDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,23 +12,23 @@ import lombok.Setter;
 @Setter
 @Getter
 public class CashTransferDto extends AuditableDto<Integer> {
-    private Integer value, receiverId, senderId;
+    private Integer value, receiverId, senderId, safeDenomination, safeAmount;
     private Boolean received;
     private String receiver, sender;
     private CashBoxType receiverType, senderType;
-    private BaseDto safeBase;
 
     public CashTransferDto copy() {
         final var dto = new CashTransferDto(
                 value,
                 receiverId,
                 senderId,
+                safeDenomination,
+                safeAmount,
                 received,
                 receiver,
                 sender,
                 receiverType,
-                senderType,
-                safeBase
+                senderType
         );
 
         dto.setId(super.getId());
@@ -47,12 +46,13 @@ public class CashTransferDto extends AuditableDto<Integer> {
                 value,
                 receiverId,
                 senderId,
+                safeDenomination,
+                safeAmount,
                 received,
                 receiver,
                 sender,
                 receiverType,
-                senderType,
-                safeBase
+                senderType
         );
 
         dto.setId(super.getId());

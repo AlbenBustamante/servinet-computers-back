@@ -16,8 +16,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import static com.servinetcomputers.api.core.util.constants.SafeConstants.BASE_LENGTH;
-
 @Entity
 @Table(name = "cash_transfers")
 @EntityListeners(value = {AuditAuditable.class, AuditingEntityListener.class})
@@ -32,8 +30,9 @@ public class CashTransfer extends Auditable {
     @Column(nullable = false)
     private Integer value;
 
-    @Column(length = BASE_LENGTH)
-    private String safeBase;
+    private Integer safeDenomination;
+
+    private Integer safeAmount;
 
     @Column(nullable = false)
     private Integer senderId;
