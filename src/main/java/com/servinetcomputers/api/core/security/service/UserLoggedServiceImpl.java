@@ -1,6 +1,6 @@
 package com.servinetcomputers.api.core.security.service;
 
-import com.servinetcomputers.api.module.user.domain.dto.UserResponse;
+import com.servinetcomputers.api.module.user.domain.dto.UserDto;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
@@ -16,10 +16,10 @@ public class UserLoggedServiceImpl implements UserLoggedService {
         return principal().getCode();
     }
 
-    private UserResponse principal() {
+    private UserDto principal() {
         final var auth = SecurityContextHolder.getContext().getAuthentication();
         final var principal = auth.getPrincipal();
 
-        return (UserResponse) principal;
+        return (UserDto) principal;
     }
 }

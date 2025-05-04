@@ -1,6 +1,6 @@
 package com.servinetcomputers.api.module.expense.domain.dto;
 
-import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDetailResponse;
+import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDetailDto;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -8,10 +8,10 @@ import lombok.Setter;
 @RequiredArgsConstructor
 @Getter
 @Setter
-public class ExpenseRequest {
+public class CreateExpenseDto {
     private final int cashRegisterDetailId;
     private final String description;
     private final int value;
     private final boolean discount;
-    private CashRegisterDetailResponse cashRegisterDetail;
+    private CashRegisterDetailDto cashRegisterDetail;
 }

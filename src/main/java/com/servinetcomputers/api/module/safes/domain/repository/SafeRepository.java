@@ -1,19 +1,19 @@
 package com.servinetcomputers.api.module.safes.domain.repository;
 
-import com.servinetcomputers.api.module.safes.domain.dto.SafeRequest;
-import com.servinetcomputers.api.module.safes.domain.dto.SafeResponse;
+import com.servinetcomputers.api.module.safes.domain.dto.CreateSafeDto;
+import com.servinetcomputers.api.module.safes.domain.dto.SafeDto;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface SafeRepository {
-    SafeResponse save(SafeRequest request);
+    SafeDto save(CreateSafeDto request);
 
-    SafeResponse save(SafeResponse response);
+    SafeDto save(SafeDto response);
 
     boolean existsByNumeral(int numeral);
 
-    Optional<SafeResponse> get(int safeId);
+    Optional<SafeDto> get(int safeId);
 
-    List<SafeResponse> getAll();
+    List<SafeDto> getAll();
 }

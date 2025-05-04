@@ -19,7 +19,7 @@ public class GetCashTransferDetailsService implements GetCashTransferDetailsUseC
     @Transactional(readOnly = true)
     @Override
     public CashTransferDto call(CashTransferDto dto, Integer cashRegisterDetailId) {
-        final var received = dto.getReceiverType() == CashBoxType.CASH_REGISTER && dto.getReceiverId() == cashRegisterDetailId;
+        final var received = dto.getReceiverType() == CashBoxType.CASH_REGISTER && dto.getReceiverId().equals(cashRegisterDetailId);
         final var sender = getNames(dto.getSenderType(), dto.getSenderId());
         final var receiver = getNames(dto.getReceiverType(), dto.getReceiverId());
 

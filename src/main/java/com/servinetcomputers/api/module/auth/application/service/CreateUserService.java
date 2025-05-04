@@ -3,8 +3,8 @@ package com.servinetcomputers.api.module.auth.application.service;
 import com.servinetcomputers.api.core.exception.AppException;
 import com.servinetcomputers.api.core.exception.BadRequestException;
 import com.servinetcomputers.api.module.auth.application.usecase.CreateUserUseCase;
-import com.servinetcomputers.api.module.user.domain.dto.UserRequest;
-import com.servinetcomputers.api.module.user.domain.dto.UserResponse;
+import com.servinetcomputers.api.module.user.domain.dto.CreateUserDto;
+import com.servinetcomputers.api.module.user.domain.dto.UserDto;
 import com.servinetcomputers.api.module.user.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,7 +19,7 @@ public class CreateUserService implements CreateUserUseCase {
 
     @Transactional(rollbackFor = AppException.class)
     @Override
-    public UserResponse call(UserRequest param) {
+    public UserDto call(CreateUserDto param) {
         if (!param.passwordsMatch()) {
             throw new BadRequestException("Las contraseñas no coinciden");
         }

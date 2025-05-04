@@ -1,7 +1,7 @@
 package com.servinetcomputers.api.module.user.persistence.mapper;
 
-import com.servinetcomputers.api.module.user.domain.dto.UserRequest;
-import com.servinetcomputers.api.module.user.domain.dto.UserResponse;
+import com.servinetcomputers.api.module.user.domain.dto.CreateUserDto;
+import com.servinetcomputers.api.module.user.domain.dto.UserDto;
 import com.servinetcomputers.api.module.user.persistence.entity.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -13,9 +13,9 @@ import java.util.List;
  */
 @Mapper(componentModel = "spring")
 public interface UserMapper {
-    UserResponse toResponse(User entity);
+    UserDto toDto(User entity);
 
-    List<UserResponse> toResponses(List<User> entities);
+    List<UserDto> toDto(List<User> entities);
 
     @Mapping(target = "modifiedBy", ignore = true)
     @Mapping(target = "createdBy", ignore = true)
@@ -23,8 +23,8 @@ public interface UserMapper {
     @Mapping(target = "enabled", ignore = true)
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "createdDate", ignore = true)
-    User toEntity(UserRequest req);
+    User toEntity(CreateUserDto dto);
 
     @Mapping(target = "password", ignore = true)
-    User toEntity(UserResponse res);
+    User toEntity(UserDto dto);
 }

@@ -24,25 +24,25 @@ public class PlatformBalanceRepositoryImpl implements PlatformBalanceRepository 
     @Override
     public Optional<PlatformBalanceDto> getByPlatformIdBetween(int platformId, LocalDateTime startDate, LocalDateTime endDate) {
         final var platformBalance = repository.findByPlatformIdAndEnabledTrueAndCreatedDateBetween(platformId, startDate, endDate);
-        return platformBalance.map(mapper::toResponse);
+        return platformBalance.map(mapper::toDto);
     }
 
     @Override
     public Optional<PlatformBalanceDto> get(int balanceId) {
         final var balance = repository.findByIdAndEnabledTrue(balanceId);
-        return balance.map(mapper::toResponse);
+        return balance.map(mapper::toDto);
     }
 
     @Override
     public Optional<PlatformBalanceDto> getLastByPlatformId(int platformId) {
         final var balance = repository.findFirstByPlatformIdAndEnabledTrueOrderByCreatedDateDesc(platformId);
-        return balance.map(mapper::toResponse);
+        return balance.map(mapper::toDto);
     }
 
     @Override
     public List<PlatformBalanceDto> getAllBetween(LocalDateTime startDate, LocalDateTime endDate) {
         final var balances = repository.findAllByEnabledTrueAndCreatedDateBetween(startDate, endDate);
-        return mapper.toResponses(balances);
+        return mapper.toDto(balances);
     }
 
     /*@Override
@@ -56,7 +56,7 @@ public class PlatformBalanceRepositoryImpl implements PlatformBalanceRepository 
         final var entity = mapper.toEntity(request);
         final var newBalance = repository.save(entity);
 
-        return mapper.toResponse(newBalance);
+        return mapper.toDto(newBalance);
     }
 
     @Override
@@ -64,6 +64,6 @@ public class PlatformBalanceRepositoryImpl implements PlatformBalanceRepository 
         final var entity = mapper.toEntity(response);
         final var newBalance = repository.save(entity);
 
-        return mapper.toResponse(newBalance);
+        return mapper.toDto(newBalance);
     }
 }

@@ -1,7 +1,7 @@
 package com.servinetcomputers.api.module.reports.application.service;
 
 import com.servinetcomputers.api.core.datetime.DateTimeService;
-import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDetailResponse;
+import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDetailDto;
 import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterDetailRepository;
 import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterRepository;
 import com.servinetcomputers.api.module.expense.domain.repository.ExpenseRepository;
@@ -11,7 +11,7 @@ import com.servinetcomputers.api.module.platform.domain.repository.PlatformBalan
 import com.servinetcomputers.api.module.platform.domain.repository.PlatformTransferRepository;
 import com.servinetcomputers.api.module.reports.application.usecase.GetDashboardUseCase;
 import com.servinetcomputers.api.module.reports.dto.DashboardResponse;
-import com.servinetcomputers.api.module.safes.domain.dto.SafeDetailResponse;
+import com.servinetcomputers.api.module.safes.domain.dto.SafeDetailDto;
 import com.servinetcomputers.api.module.safes.domain.repository.SafeDetailRepository;
 import com.servinetcomputers.api.module.transaction.domain.repository.TransactionDetailRepository;
 import lombok.RequiredArgsConstructor;
@@ -56,7 +56,7 @@ public class GetDashboardService implements GetDashboardUseCase {
         final List<PlatformStatsDto> platformsStats = new ArrayList<>(platformBalances.size());
         final var platformBalancesTotal = calculatePlatformBalancesTotal(platformBalances, platformsStats, startDate, endDate);
 
-        final List<CashRegisterDetailResponse> cashRegisterDetails;
+        final List<CashRegisterDetailDto> cashRegisterDetails;
 
         if (date == null) {
             final var cashRegisterIds = cashRegisterRepository.getAllIds();
@@ -123,7 +123,7 @@ public class GetDashboardService implements GetDashboardUseCase {
         return new PlatformStatsDto(platformId, platformName, initialBalance, finalBalance, transfersAmount, transfersTotal, total);
     }
 
-    private int calculateCashRegistersTotal(List<CashRegisterDetailResponse> cashRegisterDetails) {
+    private int calculateCashRegistersTotal(List<CashRegisterDetailDto> cashRegisterDetails) {
         if (cashRegisterDetails.isEmpty()) {
             return 0;
         }
@@ -141,7 +141,7 @@ public class GetDashboardService implements GetDashboardUseCase {
         return cashRegistersTotal;
     }
 
-    private int calculateSafesTotal(List<SafeDetailResponse> safeDetails) {
+    private int calculateSafesTotal(List<SafeDetailDto> safeDetails) {
         if (safeDetails.isEmpty()) {
             return 0;
         }

@@ -7,13 +7,13 @@ import com.servinetcomputers.api.core.exception.RequiredTempCodeException;
 import com.servinetcomputers.api.core.util.enums.CashBoxType;
 import com.servinetcomputers.api.core.util.enums.ChangeLogAction;
 import com.servinetcomputers.api.core.util.enums.ChangeLogType;
-import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDetailResponse;
+import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDetailDto;
 import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterDetailRepository;
 import com.servinetcomputers.api.module.cashtransfer.application.usecase.DeleteCashTransferUseCase;
 import com.servinetcomputers.api.module.cashtransfer.domain.repository.CashTransferRepository;
 import com.servinetcomputers.api.module.changelog.application.usecase.CreateChangeLogUseCase;
 import com.servinetcomputers.api.module.changelog.domain.dto.CreateChangeLogDto;
-import com.servinetcomputers.api.module.safes.domain.dto.SafeBaseRequest;
+import com.servinetcomputers.api.module.safes.domain.dto.CreateSafeBaseDto;
 import com.servinetcomputers.api.module.safes.domain.repository.SafeBaseRepository;
 import com.servinetcomputers.api.module.safes.domain.repository.SafeDetailRepository;
 import com.servinetcomputers.api.module.tempcode.domain.repository.TempCodeRepository;
@@ -66,8 +66,7 @@ public class DeleteCashTransferService implements DeleteCashTransferUseCase {
             safeDetail.setDetailFinalBase(newBase);
             safeDetail = safeDetailRepository.save(safeDetail);
 
-            final var safeBase = new SafeBaseRequest(safeDetail.getId(), newBase);
-            safeBase.setSafeDetail(safeDetail);
+            final var safeBase = new CreateSafeBaseDto(safeDetail.getId(), newBase, safeDetail);
             safeBaseRepository.save(safeBase);
         }
 
@@ -80,7 +79,7 @@ public class DeleteCashTransferService implements DeleteCashTransferUseCase {
         tempCodeRepository.save(lastTempCode);
     }
 
-    private void createChangeLog(Object previousData, CashRegisterDetailResponse cashRegisterDetail) {
+    private void createChangeLog(Object previousData, CashRegisterDetailDto cashRegisterDetail) {
         final var dto = new CreateChangeLogDto(
                 ChangeLogAction.DELETE,
                 ChangeLogType.CASH_TRANSFER,

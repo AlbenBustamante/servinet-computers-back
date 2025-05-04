@@ -10,9 +10,9 @@ import java.util.List;
 
 @Mapper(componentModel = "spring", uses = PlatformMapper.class)
 public interface PlatformBalanceMapper {
-    PlatformBalanceDto toResponse(PlatformBalance entity);
+    PlatformBalanceDto toDto(PlatformBalance entity);
 
-    List<PlatformBalanceDto> toResponses(List<PlatformBalance> entities);
+    List<PlatformBalanceDto> toDto(List<PlatformBalance> entities);
 
     @Mapping(target = "modifiedDate", ignore = true)
     @Mapping(target = "modifiedBy", ignore = true)
@@ -22,5 +22,5 @@ public interface PlatformBalanceMapper {
     @Mapping(target = "createdBy", ignore = true)
     PlatformBalance toEntity(CreatePlatformBalanceDto dto);
 
-    PlatformBalance toEntity(PlatformBalanceDto response);
+    PlatformBalance toEntity(PlatformBalanceDto dto);
 }

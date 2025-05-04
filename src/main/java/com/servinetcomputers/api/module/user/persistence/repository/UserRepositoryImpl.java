@@ -1,8 +1,8 @@
 package com.servinetcomputers.api.module.user.persistence.repository;
 
 import com.servinetcomputers.api.core.util.enums.Role;
-import com.servinetcomputers.api.module.user.domain.dto.UserRequest;
-import com.servinetcomputers.api.module.user.domain.dto.UserResponse;
+import com.servinetcomputers.api.module.user.domain.dto.CreateUserDto;
+import com.servinetcomputers.api.module.user.domain.dto.UserDto;
 import com.servinetcomputers.api.module.user.domain.repository.UserRepository;
 import com.servinetcomputers.api.module.user.persistence.JpaUserRepository;
 import com.servinetcomputers.api.module.user.persistence.mapper.UserMapper;
@@ -22,41 +22,41 @@ public class UserRepositoryImpl implements UserRepository {
     private final UserMapper userMapper;
 
     @Override
-    public UserResponse save(UserRequest request) {
+    public UserDto save(CreateUserDto request) {
         final var entity = userMapper.toEntity(request);
         final var newUser = jpaUserRepository.save(entity);
 
-        return userMapper.toResponse(newUser);
+        return userMapper.toDto(newUser);
     }
 
     @Override
-    public UserResponse save(UserResponse response) {
+    public UserDto save(UserDto response) {
         final var entity = userMapper.toEntity(response);
         final var newUser = jpaUserRepository.save(entity);
 
-        return userMapper.toResponse(newUser);
+        return userMapper.toDto(newUser);
     }
 
     @Override
-    public Optional<UserResponse> getLastByRole(Role role) {
+    public Optional<UserDto> getLastByRole(Role role) {
         final var user = jpaUserRepository.findFirstByRoleOrderByCreatedDateDesc(role);
-        return user.map(userMapper::toResponse);
+        return user.map(userMapper::toDto);
     }
 
     @Override
-    public Optional<UserResponse> getByCode(String code) {
+    public Optional<UserDto> getByCode(String code) {
         final var user = jpaUserRepository.findByCodeAndEnabledTrue(code);
-        return user.map(userMapper::toResponse);
+        return user.map(userMapper::toDto);
     }
 
     @Override
-    public List<UserResponse> getAll() {
-        return userMapper.toResponses(jpaUserRepository.findAll());
+    public List<UserDto> getAll() {
+        return userMapper.toDto(jpaUserRepository.findAll());
     }
 
     @Override
-    public Optional<UserResponse> get(int userId) {
+    public Optional<UserDto> get(int userId) {
         final var user = jpaUserRepository.findByIdAndEnabledTrue(userId);
-        return user.map(userMapper::toResponse);
+        return user.map(userMapper::toDto);
     }
 }

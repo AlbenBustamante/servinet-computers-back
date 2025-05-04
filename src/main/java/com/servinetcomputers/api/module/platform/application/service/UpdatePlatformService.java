@@ -4,7 +4,7 @@ import com.servinetcomputers.api.core.exception.AlreadyExistsException;
 import com.servinetcomputers.api.core.exception.AppException;
 import com.servinetcomputers.api.core.exception.NotFoundException;
 import com.servinetcomputers.api.module.platform.application.usecase.UpdatePlatformUseCase;
-import com.servinetcomputers.api.module.platform.domain.dto.PlatformResponse;
+import com.servinetcomputers.api.module.platform.domain.dto.PlatformDto;
 import com.servinetcomputers.api.module.platform.domain.dto.UpdatePlatformDto;
 import com.servinetcomputers.api.module.platform.domain.repository.PlatformRepository;
 import lombok.RequiredArgsConstructor;
@@ -28,14 +28,14 @@ public class UpdatePlatformService implements UpdatePlatformUseCase {
     @Transactional(rollbackFor = AppException.class)
     @Secured(value = ADMIN_AUTHORITY)
     @Override
-    public PlatformResponse call(Integer id, UpdatePlatformDto dto) {
+    public PlatformDto call(Integer id, UpdatePlatformDto dto) {
         final var platform = repository.get(id)
                 .orElseThrow(() -> new NotFoundException("Plataforma no encontrada: " + id));
 
         if (dto.name() != null && repository.existsByName(dto.name())) {
             throw new AlreadyExistsException("Ya existe una plataforma con ese nombre: " + dto.name());
         }
-        
+
         platform.setName(dto.name() != null ? dto.name() : platform.getName());
 
         return repository.save(platform);

@@ -1,7 +1,7 @@
 package com.servinetcomputers.api.module.user.application.service;
 
 import com.servinetcomputers.api.module.user.application.usecase.GetAllUsersUseCase;
-import com.servinetcomputers.api.module.user.domain.dto.UserResponse;
+import com.servinetcomputers.api.module.user.domain.dto.UserDto;
 import com.servinetcomputers.api.module.user.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
@@ -20,7 +20,7 @@ public class GetAllUsersService implements GetAllUsersUseCase {
     @Transactional(readOnly = true)
     @Secured(value = ADMIN_AUTHORITY)
     @Override
-    public List<UserResponse> call() {
+    public List<UserDto> call() {
         return repository.getAll();
     }
 }

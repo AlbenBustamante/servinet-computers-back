@@ -2,7 +2,7 @@ package com.servinetcomputers.api.module.cashregister.domain.repository;
 
 import com.servinetcomputers.api.core.util.enums.CashRegisterDetailStatus;
 import com.servinetcomputers.api.core.util.enums.CashRegisterStatus;
-import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDetailResponse;
+import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDetailDto;
 import com.servinetcomputers.api.module.cashregister.domain.dto.CreateCashRegisterDetailDto;
 import com.servinetcomputers.api.module.user.domain.dto.UserFullNameDto;
 
@@ -13,7 +13,7 @@ import java.util.Optional;
 public interface CashRegisterDetailRepository {
     void save(CreateCashRegisterDetailDto request);
 
-    CashRegisterDetailResponse save(CashRegisterDetailResponse response);
+    CashRegisterDetailDto save(CashRegisterDetailDto response);
 
     /**
      * Verify if a user already has a cash register detail that its status is not the specified.
@@ -26,23 +26,23 @@ public interface CashRegisterDetailRepository {
      */
     boolean existsByUserIdAndStatusNot(int userId, LocalDateTime startDate, LocalDateTime endDate, CashRegisterStatus status);
 
-    List<CashRegisterDetailResponse> getAllByUserIdBetween(int userId, LocalDateTime startDate, LocalDateTime endDate);
+    List<CashRegisterDetailDto> getAllByUserIdBetween(int userId, LocalDateTime startDate, LocalDateTime endDate);
 
-    List<CashRegisterDetailResponse> getAllByUserIdWhereStatusIsNotBetween(int userId, LocalDateTime startDate, LocalDateTime endDate, CashRegisterStatus status);
+    List<CashRegisterDetailDto> getAllByUserIdWhereStatusIsNotBetween(int userId, LocalDateTime startDate, LocalDateTime endDate, CashRegisterStatus status);
 
-    List<CashRegisterDetailResponse> getAllBetween(LocalDateTime startDate, LocalDateTime endDate);
+    List<CashRegisterDetailDto> getAllBetween(LocalDateTime startDate, LocalDateTime endDate);
 
-    List<CashRegisterDetailResponse> getAllByStatusNotAndBefore(CashRegisterDetailStatus status, LocalDateTime createdDate);
+    List<CashRegisterDetailDto> getAllByStatusNotAndBefore(CashRegisterDetailStatus status, LocalDateTime createdDate);
 
-    List<CashRegisterDetailResponse> getAllByCashRegisterId(int cashRegisterId);
+    List<CashRegisterDetailDto> getAllByCashRegisterId(int cashRegisterId);
 
-    List<CashRegisterDetailResponse> getAllWhereUserIdIsNotAndStatusAndBetween(int userId, CashRegisterDetailStatus status, LocalDateTime startDate, LocalDateTime endDate);
+    List<CashRegisterDetailDto> getAllWhereUserIdIsNotAndStatusAndBetween(int userId, CashRegisterDetailStatus status, LocalDateTime startDate, LocalDateTime endDate);
 
-    List<CashRegisterDetailResponse> getLatestWhereCashRegisterIdIsIn(List<Integer> cashRegisterIds);
+    List<CashRegisterDetailDto> getLatestWhereCashRegisterIdIsIn(List<Integer> cashRegisterIds);
 
-    List<CashRegisterDetailResponse> getLatestWhereCashRegisterIdIsNotIn(List<Integer> cashRegisterIds);
+    List<CashRegisterDetailDto> getLatestWhereCashRegisterIdIsNotIn(List<Integer> cashRegisterIds);
 
-    Optional<CashRegisterDetailResponse> get(int cashRegisterDetailId);
+    Optional<CashRegisterDetailDto> get(int cashRegisterDetailId);
 
     Optional<UserFullNameDto> getUserFullNameById(int cashRegisterDetailId);
 }

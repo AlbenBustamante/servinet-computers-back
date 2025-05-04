@@ -1,7 +1,7 @@
 package com.servinetcomputers.api.module.cashregister.application.service;
 
 import com.servinetcomputers.api.module.cashregister.application.usecase.GetAllCashRegistersUseCase;
-import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterResponse;
+import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDto;
 import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,7 +16,7 @@ public class GetAllCashRegistersService implements GetAllCashRegistersUseCase {
 
     @Transactional(readOnly = true)
     @Override
-    public List<CashRegisterResponse> call() {
+    public List<CashRegisterDto> call() {
         return repository.getAll();
     }
 }

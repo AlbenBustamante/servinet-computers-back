@@ -4,7 +4,7 @@ import com.servinetcomputers.api.core.exception.AppException;
 import com.servinetcomputers.api.module.user.application.usecase.GetUserUseCase;
 import com.servinetcomputers.api.module.user.application.usecase.UpdateUserUseCase;
 import com.servinetcomputers.api.module.user.domain.dto.UpdateUserDto;
-import com.servinetcomputers.api.module.user.domain.dto.UserResponse;
+import com.servinetcomputers.api.module.user.domain.dto.UserDto;
 import com.servinetcomputers.api.module.user.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,7 +18,7 @@ public class UpdateUserService implements UpdateUserUseCase {
 
     @Transactional(rollbackFor = AppException.class)
     @Override
-    public UserResponse call(Integer id, UpdateUserDto dto) {
+    public UserDto call(Integer id, UpdateUserDto dto) {
         final var user = getUserUseCase.call(id);
 
         user.setName(dto.name() == null ? user.getName() : dto.name());

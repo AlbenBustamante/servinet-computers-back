@@ -1,6 +1,6 @@
 package com.servinetcomputers.api.core.util.constants;
 
-import com.servinetcomputers.api.module.user.domain.dto.UserResponse;
+import com.servinetcomputers.api.module.user.domain.dto.UserDto;
 
 /**
  * The security constants.
@@ -11,7 +11,7 @@ public final class SecurityConstants {
     public static final String SUPERVISOR_AUTHORITY = "ROLE_SUPERVISOR";
     public static final String ADMIN_AUTHORITY = "ROLE_ADMIN";
 
-    public static String getAuthority(final UserResponse user) {
+    public static String getAuthority(final UserDto user) {
         return "ROLE_" + user.getRole();
     }
 

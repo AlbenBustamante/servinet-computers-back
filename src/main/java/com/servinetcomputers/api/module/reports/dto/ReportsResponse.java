@@ -1,17 +1,17 @@
 package com.servinetcomputers.api.module.reports.dto;
 
-import com.servinetcomputers.api.module.expense.domain.dto.ExpenseResponse;
-import com.servinetcomputers.api.module.platform.domain.dto.PlatformTransferResponse;
-import com.servinetcomputers.api.module.transaction.domain.dto.TransactionDetailResponse;
+import com.servinetcomputers.api.module.expense.domain.dto.ExpenseDto;
+import com.servinetcomputers.api.module.platform.domain.dto.PlatformTransferDto;
+import com.servinetcomputers.api.module.transaction.domain.dto.TransactionDetailDto;
 import lombok.Builder;
 
 import java.util.List;
 
 @Builder
 public record ReportsResponse(
-        List<PlatformTransferResponse> platformTransfers,
-        List<ExpenseResponse> expenses,
-        List<ExpenseResponse> discounts,
-        List<TransactionDetailResponse> transactions
+        List<PlatformTransferDto> platformTransfers,
+        List<ExpenseDto> expenses,
+        List<ExpenseDto> discounts,
+        List<TransactionDetailDto> transactions
 ) {
 }

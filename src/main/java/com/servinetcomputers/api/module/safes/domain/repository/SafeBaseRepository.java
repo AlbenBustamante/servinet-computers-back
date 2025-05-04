@@ -1,15 +1,15 @@
 package com.servinetcomputers.api.module.safes.domain.repository;
 
-import com.servinetcomputers.api.module.safes.domain.dto.SafeBaseRequest;
-import com.servinetcomputers.api.module.safes.domain.dto.SafeBaseResponse;
+import com.servinetcomputers.api.module.safes.domain.dto.CreateSafeBaseDto;
+import com.servinetcomputers.api.module.safes.domain.dto.SafeBaseDto;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface SafeBaseRepository {
-    SafeBaseResponse save(SafeBaseRequest request);
+    SafeBaseDto save(CreateSafeBaseDto request);
 
-    Optional<SafeBaseResponse> getLastBySafeId(int safeId);
+    Optional<SafeBaseDto> getLastBySafeId(int safeId);
 
-    List<SafeBaseResponse> getAllBySafeDetailId(int safeDetailId);
+    List<SafeBaseDto> getAllBySafeDetailId(int safeDetailId);
 }

@@ -4,8 +4,8 @@ import com.servinetcomputers.api.core.exception.AppException;
 import com.servinetcomputers.api.core.exception.NotFoundException;
 import com.servinetcomputers.api.core.storage.StorageService;
 import com.servinetcomputers.api.module.platform.application.usecase.transfer.CreatePlatformTransferUseCase;
-import com.servinetcomputers.api.module.platform.domain.dto.PlatformTransferRequest;
-import com.servinetcomputers.api.module.platform.domain.dto.PlatformTransferResponse;
+import com.servinetcomputers.api.module.platform.domain.dto.CreatePlatformTransferWithVouchersDto;
+import com.servinetcomputers.api.module.platform.domain.dto.PlatformTransferDto;
 import com.servinetcomputers.api.module.platform.domain.repository.PlatformRepository;
 import com.servinetcomputers.api.module.platform.domain.repository.PlatformTransferRepository;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +29,7 @@ public class CreatePlatformTransferService implements CreatePlatformTransferUseC
      */
     @Transactional(rollbackFor = AppException.class)
     @Override
-    public PlatformTransferResponse call(PlatformTransferRequest request, MultipartFile[] vouchers) {
+    public PlatformTransferDto call(CreatePlatformTransferWithVouchersDto request, MultipartFile[] vouchers) {
         final var platform = platformRepository.get(request.getPlatformId())
                 .orElseThrow(() -> new NotFoundException("Plataforma no encontrada: #" + request.getPlatformId()));
 

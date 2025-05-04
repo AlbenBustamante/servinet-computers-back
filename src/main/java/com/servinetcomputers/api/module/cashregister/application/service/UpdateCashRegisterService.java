@@ -4,7 +4,7 @@ import com.servinetcomputers.api.core.exception.AppException;
 import com.servinetcomputers.api.core.exception.NotFoundException;
 import com.servinetcomputers.api.core.util.enums.CashRegisterStatus;
 import com.servinetcomputers.api.module.cashregister.application.usecase.UpdateCashRegisterUseCase;
-import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterResponse;
+import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDto;
 import com.servinetcomputers.api.module.cashregister.domain.dto.UpdateCashRegisterDto;
 import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +22,7 @@ public class UpdateCashRegisterService implements UpdateCashRegisterUseCase {
     @Transactional(rollbackFor = AppException.class)
     @Secured(value = ADMIN_AUTHORITY)
     @Override
-    public CashRegisterResponse call(Integer id, UpdateCashRegisterDto updateCashRegisterDto) {
+    public CashRegisterDto call(Integer id, UpdateCashRegisterDto updateCashRegisterDto) {
         final var cashRegister = repository.get(id)
                 .orElseThrow(() -> new NotFoundException("Caja registradora no encontrada: #" + id));
 

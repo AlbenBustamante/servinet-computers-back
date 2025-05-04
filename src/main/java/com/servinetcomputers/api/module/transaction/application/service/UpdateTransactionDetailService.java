@@ -10,9 +10,9 @@ import com.servinetcomputers.api.module.changelog.application.usecase.CreateChan
 import com.servinetcomputers.api.module.changelog.domain.dto.CreateChangeLogDto;
 import com.servinetcomputers.api.module.tempcode.domain.repository.TempCodeRepository;
 import com.servinetcomputers.api.module.transaction.application.usecase.UpdateTransactionDetailUseCase;
-import com.servinetcomputers.api.module.transaction.domain.dto.TransactionDetailResponse;
-import com.servinetcomputers.api.module.transaction.domain.dto.TransactionRequest;
-import com.servinetcomputers.api.module.transaction.domain.dto.TransactionResponse;
+import com.servinetcomputers.api.module.transaction.domain.dto.CreateTransactionDto;
+import com.servinetcomputers.api.module.transaction.domain.dto.TransactionDetailDto;
+import com.servinetcomputers.api.module.transaction.domain.dto.TransactionDto;
 import com.servinetcomputers.api.module.transaction.domain.dto.UpdateTransactionDetailDto;
 import com.servinetcomputers.api.module.transaction.domain.repository.TransactionDetailRepository;
 import com.servinetcomputers.api.module.transaction.domain.repository.TransactionRepository;
@@ -30,7 +30,7 @@ public class UpdateTransactionDetailService implements UpdateTransactionDetailUs
 
     @Transactional(rollbackFor = AppException.class)
     @Override
-    public TransactionDetailResponse call(Integer transactionDetailId, UpdateTransactionDetailDto dto) {
+    public TransactionDetailDto call(Integer transactionDetailId, UpdateTransactionDetailDto dto) {
         if (dto.tempCode() == null) {
             throw new RequiredTempCodeException();
         }
@@ -44,9 +44,7 @@ public class UpdateTransactionDetailService implements UpdateTransactionDetailUs
         final var transactionDetail = repository.get(transactionDetailId)
                 .orElseThrow(() -> new NotFoundException("No se encontró la transacción: " + transactionDetailId));
 
-        System.out.println(transactionDetail);
-
-        final var previousData = TransactionDetailResponse.copyWith(transactionDetail);
+        final var previousData = transactionDetail.copy();
 
         if (dto.description() != null) {
             final var transaction = getTransaction(dto.description());
@@ -72,7 +70,7 @@ public class UpdateTransactionDetailService implements UpdateTransactionDetailUs
         return transactionDetailUpdated;
     }
 
-    private void createChangeLog(TransactionDetailResponse previousData, TransactionDetailResponse newData) {
+    private void createChangeLog(TransactionDetailDto previousData, TransactionDetailDto newData) {
         final var dto = new CreateChangeLogDto(
                 ChangeLogAction.UPDATE,
                 ChangeLogType.TRANSACTION_DETAIL,
@@ -85,14 +83,14 @@ public class UpdateTransactionDetailService implements UpdateTransactionDetailUs
         createChangeLogUseCase.call(dto);
     }
 
-    private TransactionResponse getTransaction(String description) {
+    private TransactionDto getTransaction(String description) {
         final var transaction = transactionRepository.getByDescription(description.toUpperCase());
 
         if (transaction.isPresent()) {
             return transaction.get();
         }
 
-        final var request = new TransactionRequest(description, null);
+        final var request = new CreateTransactionDto(description, null);
         return transactionRepository.save(request);
     }
 }

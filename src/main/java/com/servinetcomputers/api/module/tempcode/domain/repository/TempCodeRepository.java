@@ -1,14 +1,14 @@
 package com.servinetcomputers.api.module.tempcode.domain.repository;
 
-import com.servinetcomputers.api.module.tempcode.domain.dto.TempCodeRequest;
-import com.servinetcomputers.api.module.tempcode.domain.dto.TempCodeResponse;
+import com.servinetcomputers.api.module.tempcode.domain.dto.CreateTempCodeDto;
+import com.servinetcomputers.api.module.tempcode.domain.dto.TempCodeDto;
 
 import java.util.Optional;
 
 public interface TempCodeRepository {
-    TempCodeResponse save(TempCodeRequest request);
+    TempCodeDto save(CreateTempCodeDto request);
 
-    void save(TempCodeResponse response);
+    void save(TempCodeDto response);
 
-    Optional<TempCodeResponse> getLast();
+    Optional<TempCodeDto> getLast();
 }

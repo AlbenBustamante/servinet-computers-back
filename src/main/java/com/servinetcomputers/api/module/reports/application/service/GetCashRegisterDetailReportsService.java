@@ -2,8 +2,8 @@ package com.servinetcomputers.api.module.reports.application.service;
 
 import com.servinetcomputers.api.core.util.enums.CashBoxType;
 import com.servinetcomputers.api.core.util.enums.TransactionDetailType;
+import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDetailDto;
 import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDetailReportsDto;
-import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDetailResponse;
 import com.servinetcomputers.api.module.cashtransfer.domain.repository.CashTransferRepository;
 import com.servinetcomputers.api.module.expense.domain.repository.ExpenseRepository;
 import com.servinetcomputers.api.module.reports.application.usecase.GetCashRegisterDetailReportsUseCase;
@@ -21,7 +21,7 @@ public class GetCashRegisterDetailReportsService implements GetCashRegisterDetai
 
     @Transactional(readOnly = true)
     @Override
-    public CashRegisterDetailReportsDto call(CashRegisterDetailResponse cashRegisterDetail) {
+    public CashRegisterDetailReportsDto call(CashRegisterDetailDto cashRegisterDetail) {
         final var cashRegisterDetailId = cashRegisterDetail.getId();
 
         final var finalBaseDto = cashRegisterDetail.getDetailFinalBase();

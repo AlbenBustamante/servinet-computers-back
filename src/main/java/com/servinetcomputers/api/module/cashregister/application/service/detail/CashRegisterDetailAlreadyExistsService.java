@@ -6,7 +6,7 @@ import com.servinetcomputers.api.core.security.service.UserLoggedService;
 import com.servinetcomputers.api.core.util.enums.CashRegisterStatus;
 import com.servinetcomputers.api.module.cashregister.application.usecase.detail.CashRegisterDetailAlreadyExistsUseCase;
 import com.servinetcomputers.api.module.cashregister.domain.dto.AlreadyExistsCashRegisterDetailDto;
-import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterResponse;
+import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDto;
 import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterDetailRepository;
 import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterRepository;
 import com.servinetcomputers.api.module.user.application.usecase.GetUserCashRegisterReportsUseCase;
@@ -42,7 +42,7 @@ public class CashRegisterDetailAlreadyExistsService implements CashRegisterDetai
         final var alreadyExists = !details.isEmpty();
 
         final var myCashRegisters = alreadyExists ? getUserCashRegisterReportsUseCase.call(userId) : null;
-        final List<CashRegisterResponse> cashRegisters = !alreadyExists ? cashRegisterRepository.getAll() : List.of();
+        final List<CashRegisterDto> cashRegisters = !alreadyExists ? cashRegisterRepository.getAll() : List.of();
 
         return new AlreadyExistsCashRegisterDetailDto(alreadyExists, myCashRegisters, cashRegisters);
     }

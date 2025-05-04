@@ -5,6 +5,6 @@ import java.util.List;
 public record AlreadyExistsCashRegisterDetailDto(
         boolean alreadyExists,
         MyCashRegistersReports myCashRegisters,
-        List<CashRegisterResponse> availableCashRegisters
+        List<CashRegisterDto> availableCashRegisters
 ) {
 }

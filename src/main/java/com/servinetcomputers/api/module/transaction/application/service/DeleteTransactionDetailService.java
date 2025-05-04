@@ -10,7 +10,7 @@ import com.servinetcomputers.api.module.changelog.application.usecase.CreateChan
 import com.servinetcomputers.api.module.changelog.domain.dto.CreateChangeLogDto;
 import com.servinetcomputers.api.module.tempcode.domain.repository.TempCodeRepository;
 import com.servinetcomputers.api.module.transaction.application.usecase.DeleteTransactionDetailUseCase;
-import com.servinetcomputers.api.module.transaction.domain.dto.TransactionDetailResponse;
+import com.servinetcomputers.api.module.transaction.domain.dto.TransactionDetailDto;
 import com.servinetcomputers.api.module.transaction.domain.repository.TransactionDetailRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -39,7 +39,7 @@ public class DeleteTransactionDetailService implements DeleteTransactionDetailUs
         final var transactionDetail = transactionDetailRepository.get(transactionDetailId)
                 .orElseThrow(() -> new NotFoundException("No se encontró la jornada #" + transactionDetailId));
 
-        final var previousData = TransactionDetailResponse.copyWith(transactionDetail);
+        final var previousData = transactionDetail.copy();
 
         transactionDetail.setEnabled(false);
         transactionDetailRepository.save(transactionDetail);
@@ -52,7 +52,7 @@ public class DeleteTransactionDetailService implements DeleteTransactionDetailUs
         tempCodeRepository.save(lastTempCode.get());
     }
 
-    private void createChangeLog(TransactionDetailResponse previousData) {
+    private void createChangeLog(TransactionDetailDto previousData) {
         final var dto = new CreateChangeLogDto(
                 ChangeLogAction.DELETE,
                 ChangeLogType.TRANSACTION_DETAIL,

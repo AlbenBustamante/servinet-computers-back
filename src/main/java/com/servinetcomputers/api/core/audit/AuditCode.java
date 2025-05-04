@@ -1,6 +1,6 @@
 package com.servinetcomputers.api.core.audit;
 
-import com.servinetcomputers.api.module.user.domain.dto.UserResponse;
+import com.servinetcomputers.api.module.user.domain.dto.UserDto;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -23,7 +23,7 @@ public class AuditCode implements AuditorAware<String> {
             return Optional.of("-");
         }
 
-        final var user = (UserResponse) principal;
+        final var user = (UserDto) principal;
         final var code = user.getCode();
 
         return Optional.of(code);

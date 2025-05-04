@@ -1,20 +1,20 @@
 package com.servinetcomputers.api.module.cashregister.domain.repository;
 
-import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterRequest;
-import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterResponse;
+import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDto;
+import com.servinetcomputers.api.module.cashregister.domain.dto.CreateCashRegisterDto;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface CashRegisterRepository {
-    CashRegisterResponse save(CashRegisterRequest request);
+    CashRegisterDto save(CreateCashRegisterDto request);
 
-    CashRegisterResponse save(CashRegisterResponse response);
+    CashRegisterDto save(CashRegisterDto response);
 
-    Optional<CashRegisterResponse> get(int id);
+    Optional<CashRegisterDto> get(int id);
 
-    List<CashRegisterResponse> getAll();
+    List<CashRegisterDto> getAll();
 
     List<Integer> getAllIds();
 

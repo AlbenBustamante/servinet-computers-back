@@ -5,8 +5,8 @@ import com.servinetcomputers.api.core.exception.NotFoundException;
 import com.servinetcomputers.api.module.base.BaseDto;
 import com.servinetcomputers.api.module.base.BaseMapper;
 import com.servinetcomputers.api.module.safes.application.usecase.detail.UpdateSafeDetailBaseUseCase;
-import com.servinetcomputers.api.module.safes.domain.dto.SafeBaseRequest;
-import com.servinetcomputers.api.module.safes.domain.dto.SafeDetailResponse;
+import com.servinetcomputers.api.module.safes.domain.dto.CreateSafeBaseDto;
+import com.servinetcomputers.api.module.safes.domain.dto.SafeDetailDto;
 import com.servinetcomputers.api.module.safes.domain.repository.SafeBaseRepository;
 import com.servinetcomputers.api.module.safes.domain.repository.SafeDetailRepository;
 import com.servinetcomputers.api.module.safes.persistence.entity.SafeBase;
@@ -29,11 +29,11 @@ public class UpdateSafeDetailBaseService implements UpdateSafeDetailBaseUseCase 
      * <p>Also, create a new {@link SafeBase} record.</p>
      *
      * @param baseDto a {@link BaseDto} model dto.
-     * @return a {@link SafeDetailResponse} model dto.
+     * @return a {@link SafeDetailDto} model dto.
      */
     @Transactional(rollbackFor = AppException.class)
     @Override
-    public SafeDetailResponse call(Integer safeDetailId, BaseDto baseDto) {
+    public SafeDetailDto call(Integer safeDetailId, BaseDto baseDto) {
         final var safeDetail = repository.get(safeDetailId)
                 .orElseThrow(() -> new NotFoundException("Caja del día no encontrada: #" + safeDetailId));
 
@@ -44,12 +44,11 @@ public class UpdateSafeDetailBaseService implements UpdateSafeDetailBaseUseCase 
         }
 
         safeDetail.setDetailFinalBase(baseDto);
-        final var newSafeDetail = repository.save(safeDetail);
 
-        final var safeBase = new SafeBaseRequest(safeDetailId, baseDto);
-        safeBase.setSafeDetail(newSafeDetail);
-        safeBaseRepository.save(safeBase);
+        final var newSafeDetailDto = repository.save(safeDetail);
+        final var createSafeBaseDto = new CreateSafeBaseDto(safeDetailId, baseDto, newSafeDetailDto);
+        safeBaseRepository.save(createSafeBaseDto);
 
-        return newSafeDetail;
+        return newSafeDetailDto;
     }
 }

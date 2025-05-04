@@ -3,7 +3,7 @@ package com.servinetcomputers.api.module.changelog.persistence.mapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.servinetcomputers.api.module.cashregister.persistence.mapper.CashRegisterDetailMapper;
-import com.servinetcomputers.api.module.changelog.domain.dto.ChangeLogResponse;
+import com.servinetcomputers.api.module.changelog.domain.dto.ChangeLogDto;
 import com.servinetcomputers.api.module.changelog.domain.dto.CreateChangeLogDto;
 import com.servinetcomputers.api.module.changelog.persistence.entity.ChangeLog;
 import org.mapstruct.Mapper;
@@ -18,9 +18,9 @@ public abstract class ChangeLogMapper {
     protected ObjectMapper objectMapper;
 
     @Mapping(target = "cashRegisterDetailId", source = "cashRegisterDetail.id")
-    public abstract ChangeLogResponse toResponse(ChangeLog entity);
+    public abstract ChangeLogDto toDto(ChangeLog entity);
 
-    public abstract List<ChangeLogResponse> toResponses(List<ChangeLog> entities);
+    public abstract List<ChangeLogDto> toDto(List<ChangeLog> entities);
 
     @Mapping(target = "previousData", expression = "java(objectMapper.writeValueAsString(dto.getPreviousData()))")
     @Mapping(target = "newData", expression = "java(objectMapper.writeValueAsString(dto.getNewData()))")

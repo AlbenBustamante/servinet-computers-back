@@ -40,7 +40,7 @@ public class LoginService implements LoginUseCase {
             throw new BadRequestException(BAD_LOGIN_MESSAGE);
         }
 
-        final var response = userMapper.toResponse(user);
+        final var response = userMapper.toDto(user);
         final var jwt = jwtProvider.create(response);
 
         return new AuthResponse(jwt);

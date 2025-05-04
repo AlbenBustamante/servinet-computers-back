@@ -1,7 +1,7 @@
 package com.servinetcomputers.api.module.transaction.persistence.repository;
 
-import com.servinetcomputers.api.module.transaction.domain.dto.TransactionRequest;
-import com.servinetcomputers.api.module.transaction.domain.dto.TransactionResponse;
+import com.servinetcomputers.api.module.transaction.domain.dto.CreateTransactionDto;
+import com.servinetcomputers.api.module.transaction.domain.dto.TransactionDto;
 import com.servinetcomputers.api.module.transaction.domain.repository.TransactionRepository;
 import com.servinetcomputers.api.module.transaction.persistence.JpaTransactionRepository;
 import com.servinetcomputers.api.module.transaction.persistence.mapper.TransactionMapper;
@@ -18,29 +18,29 @@ public class TransactionRepositoryImpl implements TransactionRepository {
     private final TransactionMapper mapper;
 
     @Override
-    public TransactionResponse save(TransactionRequest request) {
+    public TransactionDto save(CreateTransactionDto request) {
         final var entity = mapper.toEntity(request);
         final var newTransaction = repository.save(entity);
 
-        return mapper.toResponse(newTransaction);
+        return mapper.toDto(newTransaction);
     }
 
     @Override
-    public TransactionResponse save(TransactionResponse response) {
+    public TransactionDto save(TransactionDto response) {
         final var entity = mapper.toEntity(response);
         final var newTransaction = repository.save(entity);
-        
-        return mapper.toResponse(newTransaction);
+
+        return mapper.toDto(newTransaction);
     }
 
     @Override
-    public List<TransactionResponse> getAll() {
-        return mapper.toResponses(repository.findAllByEnabledTrueOrderByUsesAsc());
+    public List<TransactionDto> getAll() {
+        return mapper.toDto(repository.findAllByEnabledTrueOrderByUsesAsc());
     }
 
     @Override
-    public Optional<TransactionResponse> getByDescription(String description) {
+    public Optional<TransactionDto> getByDescription(String description) {
         final var transaction = repository.findByDescriptionAndEnabledTrue(description);
-        return transaction.map(mapper::toResponse);
+        return transaction.map(mapper::toDto);
     }
 }

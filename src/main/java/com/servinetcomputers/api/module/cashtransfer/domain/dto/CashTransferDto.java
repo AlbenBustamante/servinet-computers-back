@@ -1,46 +1,26 @@
 package com.servinetcomputers.api.module.cashtransfer.domain.dto;
 
+import com.servinetcomputers.api.core.audit.AuditableDto;
 import com.servinetcomputers.api.core.util.enums.CashBoxType;
-import com.servinetcomputers.api.module.ModelResponse;
 import com.servinetcomputers.api.module.base.BaseDto;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import java.time.LocalDateTime;
-
+@NoArgsConstructor
+@AllArgsConstructor
+@Setter
 @Getter
-public class CashTransferDto extends ModelResponse {
-    private final int value;
-    private final int receiverId;
-    private final int senderId;
-    private final boolean received;
-    private final String receiver;
-    private final String sender;
-    private final CashBoxType receiverType;
-    private final CashBoxType senderType;
-    private final BaseDto safeBase;
+public class CashTransferDto extends AuditableDto<Integer> {
+    private Integer value, receiverId, senderId;
+    private Boolean received;
+    private String receiver, sender;
+    private CashBoxType receiverType, senderType;
+    private BaseDto safeBase;
 
-    public CashTransferDto(int id, boolean enabled, LocalDateTime createdDate, LocalDateTime modifiedDate, String createdBy, String modifiedBy,
-                           int value, int receiverId, int senderId, boolean received, String receiver, String sender, CashBoxType receiverType, CashBoxType senderType, BaseDto safeBase) {
-        super(id, enabled, createdDate, modifiedDate, createdBy, modifiedBy);
-        this.value = value;
-        this.receiverId = receiverId;
-        this.senderId = senderId;
-        this.received = received;
-        this.receiver = receiver;
-        this.sender = sender;
-        this.receiverType = receiverType;
-        this.senderType = senderType;
-        this.safeBase = safeBase;
-    }
-
-    public CashTransferDto copyWithDetails(boolean received, String receiver, String sender) {
-        return new CashTransferDto(
-                super.getId(),
-                super.isEnabled(),
-                super.getCreatedDate(),
-                super.getModifiedDate(),
-                super.getCreatedBy(),
-                super.getModifiedBy(),
+    public CashTransferDto copy() {
+        final var dto = new CashTransferDto(
                 value,
                 receiverId,
                 senderId,
@@ -51,9 +31,37 @@ public class CashTransferDto extends ModelResponse {
                 senderType,
                 safeBase
         );
+
+        dto.setId(super.getId());
+        dto.setEnabled(super.getEnabled());
+        dto.setCreatedBy(super.getCreatedBy());
+        dto.setCreatedDate(super.getCreatedDate());
+        dto.setModifiedBy(super.getModifiedBy());
+        dto.setModifiedDate(super.getModifiedDate());
+
+        return dto;
     }
 
-    public CashTransferDto copy() {
-        return copyWithDetails(received, receiver, sender);
+    public CashTransferDto copyWithDetails(Boolean received, String receiver, String sender) {
+        final var dto = new CashTransferDto(
+                value,
+                receiverId,
+                senderId,
+                received,
+                receiver,
+                sender,
+                receiverType,
+                senderType,
+                safeBase
+        );
+
+        dto.setId(super.getId());
+        dto.setEnabled(super.getEnabled());
+        dto.setCreatedBy(super.getCreatedBy());
+        dto.setCreatedDate(super.getCreatedDate());
+        dto.setModifiedBy(super.getModifiedBy());
+        dto.setModifiedDate(super.getModifiedDate());
+
+        return dto;
     }
 }

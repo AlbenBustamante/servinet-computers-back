@@ -13,7 +13,7 @@ import java.io.IOException;
 
 @RequiredArgsConstructor
 @Component
-public class AppExceptionFilter extends OncePerRequestFilter {
+public class AppExceptionHandlerFilter extends OncePerRequestFilter {
     private final HandlerExceptionResolver handlerExceptionResolver;
 
     @Override

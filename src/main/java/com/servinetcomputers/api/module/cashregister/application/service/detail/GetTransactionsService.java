@@ -2,7 +2,7 @@ package com.servinetcomputers.api.module.cashregister.application.service.detail
 
 import com.servinetcomputers.api.core.page.PageResponse;
 import com.servinetcomputers.api.module.cashregister.application.usecase.detail.GetTransactionsUseCase;
-import com.servinetcomputers.api.module.transaction.domain.dto.TransactionDetailResponse;
+import com.servinetcomputers.api.module.transaction.domain.dto.TransactionDetailDto;
 import com.servinetcomputers.api.module.transaction.domain.repository.TransactionDetailRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -16,7 +16,7 @@ public class GetTransactionsService implements GetTransactionsUseCase {
 
     @Transactional(readOnly = true)
     @Override
-    public PageResponse<TransactionDetailResponse> call(Integer cashRegisterDetailId, Pageable pageable) {
+    public PageResponse<TransactionDetailDto> call(Integer cashRegisterDetailId, Pageable pageable) {
         return repository.getAllByCashRegisterDetailId(cashRegisterDetailId, pageable);
     }
 }

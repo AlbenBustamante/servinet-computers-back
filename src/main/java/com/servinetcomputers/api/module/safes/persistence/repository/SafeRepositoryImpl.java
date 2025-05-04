@@ -1,7 +1,7 @@
 package com.servinetcomputers.api.module.safes.persistence.repository;
 
-import com.servinetcomputers.api.module.safes.domain.dto.SafeRequest;
-import com.servinetcomputers.api.module.safes.domain.dto.SafeResponse;
+import com.servinetcomputers.api.module.safes.domain.dto.CreateSafeDto;
+import com.servinetcomputers.api.module.safes.domain.dto.SafeDto;
 import com.servinetcomputers.api.module.safes.domain.repository.SafeRepository;
 import com.servinetcomputers.api.module.safes.persistence.JpaSafeRepository;
 import com.servinetcomputers.api.module.safes.persistence.mapper.SafeMapper;
@@ -18,19 +18,19 @@ public class SafeRepositoryImpl implements SafeRepository {
     private final SafeMapper mapper;
 
     @Override
-    public SafeResponse save(SafeRequest request) {
+    public SafeDto save(CreateSafeDto request) {
         final var entity = mapper.toEntity(request);
         final var newSafe = repository.save(entity);
 
-        return mapper.toResponse(newSafe);
+        return mapper.toDto(newSafe);
     }
 
     @Override
-    public SafeResponse save(SafeResponse response) {
+    public SafeDto save(SafeDto response) {
         final var entity = mapper.toEntity(response);
         final var newSafe = repository.save(entity);
 
-        return mapper.toResponse(newSafe);
+        return mapper.toDto(newSafe);
     }
 
     @Override
@@ -39,13 +39,13 @@ public class SafeRepositoryImpl implements SafeRepository {
     }
 
     @Override
-    public Optional<SafeResponse> get(int safeId) {
+    public Optional<SafeDto> get(int safeId) {
         final var safe = repository.findByIdAndEnabledTrue(safeId);
-        return safe.map(mapper::toResponse);
+        return safe.map(mapper::toDto);
     }
 
     @Override
-    public List<SafeResponse> getAll() {
-        return mapper.toResponses(repository.findAllByEnabledTrue());
+    public List<SafeDto> getAll() {
+        return mapper.toDto(repository.findAllByEnabledTrue());
     }
 }

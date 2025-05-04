@@ -2,8 +2,8 @@ package com.servinetcomputers.api.module.expense.persistence.repository;
 
 import com.servinetcomputers.api.core.page.PageResponse;
 import com.servinetcomputers.api.core.page.PaginationMapper;
-import com.servinetcomputers.api.module.expense.domain.dto.ExpenseRequest;
-import com.servinetcomputers.api.module.expense.domain.dto.ExpenseResponse;
+import com.servinetcomputers.api.module.expense.domain.dto.CreateExpenseDto;
+import com.servinetcomputers.api.module.expense.domain.dto.ExpenseDto;
 import com.servinetcomputers.api.module.expense.domain.repository.ExpenseRepository;
 import com.servinetcomputers.api.module.expense.persistence.JpaExpenseRepository;
 import com.servinetcomputers.api.module.expense.persistence.mapper.ExpenseMapper;
@@ -23,51 +23,51 @@ public class ExpenseRepositoryImpl implements ExpenseRepository {
     private final PaginationMapper paginationMapper;
 
     @Override
-    public ExpenseResponse save(ExpenseRequest request) {
+    public ExpenseDto save(CreateExpenseDto request) {
         final var entity = mapper.toEntity(request);
         final var newExpense = repository.save(entity);
 
-        return mapper.toResponse(newExpense);
+        return mapper.toDto(newExpense);
     }
 
     @Override
-    public ExpenseResponse save(ExpenseResponse response) {
+    public ExpenseDto save(ExpenseDto response) {
         final var entity = mapper.toEntity(response);
         final var newExpense = repository.save(entity);
 
-        return mapper.toResponse(newExpense);
+        return mapper.toDto(newExpense);
     }
 
     @Override
-    public Optional<ExpenseResponse> get(int expenseId) {
+    public Optional<ExpenseDto> get(int expenseId) {
         final var expense = repository.findByIdAndEnabledTrue(expenseId);
-        return expense.map(mapper::toResponse);
+        return expense.map(mapper::toDto);
     }
 
     @Override
-    public PageResponse<ExpenseResponse> getAllByCashRegisterDetailId(int cashRegisterDetailId, Pageable pageable) {
+    public PageResponse<ExpenseDto> getAllByCashRegisterDetailId(int cashRegisterDetailId, Pageable pageable) {
         final var page = repository.findAllByCashRegisterDetailIdAndEnabledTrue(cashRegisterDetailId, pageable);
-        final var expenses = mapper.toResponses(page.getContent());
+        final var expenses = mapper.toDto(page.getContent());
 
         return new PageResponse<>(paginationMapper.toPagination(page), expenses);
     }
 
     @Override
-    public List<ExpenseResponse> getAllByCashRegisterDetailId(int cashRegisterDetailId) {
+    public List<ExpenseDto> getAllByCashRegisterDetailId(int cashRegisterDetailId) {
         final var expenses = repository.findAllByCashRegisterDetailIdAndEnabledTrue(cashRegisterDetailId);
-        return mapper.toResponses(expenses);
+        return mapper.toDto(expenses);
     }
 
     @Override
-    public List<ExpenseResponse> getAllByCashRegisterDetailIdAndDiscount(int cashRegisterDetailId, boolean discount) {
+    public List<ExpenseDto> getAllByCashRegisterDetailIdAndDiscount(int cashRegisterDetailId, boolean discount) {
         final var expenses = repository.findAllByCashRegisterDetailIdAndDiscountAndEnabledTrue(cashRegisterDetailId, discount);
-        return mapper.toResponses(expenses);
+        return mapper.toDto(expenses);
     }
 
     @Override
-    public List<ExpenseResponse> getAllByDiscountAndCodeCodeBetween(boolean discount, String code, LocalDateTime startDate, LocalDateTime endDate) {
+    public List<ExpenseDto> getAllByDiscountAndCodeCodeBetween(boolean discount, String code, LocalDateTime startDate, LocalDateTime endDate) {
         final var expenses = repository.findAllByCreatedByAndEnabledTrueAndCreatedDateBetweenAndDiscount(code, startDate, endDate, discount);
-        return mapper.toResponses(expenses);
+        return mapper.toDto(expenses);
     }
 
     @Override

@@ -5,10 +5,10 @@ import com.servinetcomputers.api.core.exception.NotFoundException;
 import com.servinetcomputers.api.core.page.PageResponse;
 import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterDetailRepository;
 import com.servinetcomputers.api.module.transaction.application.usecase.CreateTransactionDetailUseCase;
-import com.servinetcomputers.api.module.transaction.domain.dto.TransactionDetailRequest;
-import com.servinetcomputers.api.module.transaction.domain.dto.TransactionDetailResponse;
-import com.servinetcomputers.api.module.transaction.domain.dto.TransactionRequest;
-import com.servinetcomputers.api.module.transaction.domain.dto.TransactionResponse;
+import com.servinetcomputers.api.module.transaction.domain.dto.CreateTransactionDetailDto;
+import com.servinetcomputers.api.module.transaction.domain.dto.CreateTransactionDto;
+import com.servinetcomputers.api.module.transaction.domain.dto.TransactionDetailDto;
+import com.servinetcomputers.api.module.transaction.domain.dto.TransactionDto;
 import com.servinetcomputers.api.module.transaction.domain.repository.TransactionDetailRepository;
 import com.servinetcomputers.api.module.transaction.domain.repository.TransactionRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +25,7 @@ public class CreateTransactionDetailService implements CreateTransactionDetailUs
 
     @Transactional(rollbackFor = AppException.class)
     @Override
-    public PageResponse<TransactionDetailResponse> call(TransactionDetailRequest request, Pageable pageable) {
+    public PageResponse<TransactionDetailDto> call(CreateTransactionDetailDto request, Pageable pageable) {
         final var transaction = getTransaction(request.getDescription());
         request.setTransaction(transaction);
 
@@ -39,7 +39,7 @@ public class CreateTransactionDetailService implements CreateTransactionDetailUs
         return repository.getAllByCashRegisterDetailId(cashRegisterDetail.getId(), pageable);
     }
 
-    private TransactionResponse getTransaction(String description) {
+    private TransactionDto getTransaction(String description) {
         final var transaction = transactionRepository.getByDescription(description.toUpperCase());
 
         if (transaction.isPresent()) {
@@ -47,7 +47,7 @@ public class CreateTransactionDetailService implements CreateTransactionDetailUs
             return transactionRepository.save(transaction.get());
         }
 
-        final var request = new TransactionRequest(description, null);
+        final var request = new CreateTransactionDto(description, null);
         return transactionRepository.save(request);
     }
 }

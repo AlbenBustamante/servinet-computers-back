@@ -2,7 +2,7 @@ package com.servinetcomputers.api.module.safes.application.service;
 
 import com.servinetcomputers.api.core.util.constants.SecurityConstants;
 import com.servinetcomputers.api.module.safes.application.usecase.GetAllSafeDetailsByIdUseCase;
-import com.servinetcomputers.api.module.safes.domain.dto.SafeDetailResponse;
+import com.servinetcomputers.api.module.safes.domain.dto.SafeDetailDto;
 import com.servinetcomputers.api.module.safes.domain.repository.SafeDetailRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
@@ -19,7 +19,7 @@ public class GetAllSafeDetailsByIdService implements GetAllSafeDetailsByIdUseCas
     @Secured(value = SecurityConstants.ADMIN_AUTHORITY)
     @Transactional(readOnly = true)
     @Override
-    public List<SafeDetailResponse> call(Integer safeId) {
+    public List<SafeDetailDto> call(Integer safeId) {
         return safeDetailRepository.getAllBySafeId(safeId);
     }
 }

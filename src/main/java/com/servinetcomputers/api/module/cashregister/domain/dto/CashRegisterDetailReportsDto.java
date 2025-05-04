@@ -4,7 +4,7 @@ import lombok.Builder;
 
 @Builder
 public record CashRegisterDetailReportsDto(
-        CashRegisterDetailResponse cashRegisterDetail,
+        CashRegisterDetailDto cashRegisterDetail,
         int transactionsAmount,
         int initialBase,
         int finalBase,
@@ -18,7 +18,7 @@ public record CashRegisterDetailReportsDto(
         int balance,
         int discrepancy
 ) {
-    public static CashRegisterDetailReportsDto empty(CashRegisterDetailResponse cashRegisterDetail) {
+    public static CashRegisterDetailReportsDto empty(CashRegisterDetailDto cashRegisterDetail) {
         return new CashRegisterDetailReportsDto(cashRegisterDetail, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
     }
 

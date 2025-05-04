@@ -1,7 +1,7 @@
 package com.servinetcomputers.api.module.platform.persistence.repository;
 
-import com.servinetcomputers.api.module.platform.domain.dto.PlatformTransferRequest;
-import com.servinetcomputers.api.module.platform.domain.dto.PlatformTransferResponse;
+import com.servinetcomputers.api.module.platform.domain.dto.CreatePlatformTransferWithVouchersDto;
+import com.servinetcomputers.api.module.platform.domain.dto.PlatformTransferDto;
 import com.servinetcomputers.api.module.platform.domain.repository.PlatformTransferRepository;
 import com.servinetcomputers.api.module.platform.persistence.JpaPlatformTransferRepository;
 import com.servinetcomputers.api.module.platform.persistence.mapper.PlatformTransferMapper;
@@ -22,31 +22,31 @@ public class PlatformTransferRepositoryImpl implements PlatformTransferRepositor
     private final PlatformTransferMapper mapper;
 
     @Override
-    public PlatformTransferResponse save(PlatformTransferRequest request) {
+    public PlatformTransferDto save(CreatePlatformTransferWithVouchersDto request) {
         final var entity = mapper.toEntity(request);
         final var newTransfer = repository.save(entity);
 
-        return mapper.toResponse(newTransfer);
+        return mapper.toDto(newTransfer);
     }
 
     @Override
-    public PlatformTransferResponse save(PlatformTransferResponse response) {
+    public PlatformTransferDto save(PlatformTransferDto response) {
         final var entity = mapper.toEntity(response);
         final var newTransfer = repository.save(entity);
 
-        return mapper.toResponse(newTransfer);
+        return mapper.toDto(newTransfer);
     }
 
     @Override
-    public Optional<PlatformTransferResponse> get(int transferId) {
+    public Optional<PlatformTransferDto> get(int transferId) {
         final var transfer = repository.findByIdAndEnabledTrue(transferId);
-        return transfer.map(mapper::toResponse);
+        return transfer.map(mapper::toDto);
     }
 
     @Override
-    public List<PlatformTransferResponse> getAllByCodeBetween(String code, LocalDateTime startDate, LocalDateTime endDate) {
+    public List<PlatformTransferDto> getAllByCodeBetween(String code, LocalDateTime startDate, LocalDateTime endDate) {
         final var transfers = repository.findAllByCreatedByAndEnabledTrueAndCreatedDateBetween(code, startDate, endDate);
-        return mapper.toResponses(transfers);
+        return mapper.toDto(transfers);
     }
 
     @Override

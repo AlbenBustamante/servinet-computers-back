@@ -3,8 +3,8 @@ package com.servinetcomputers.api.module.transaction.persistence.repository;
 import com.servinetcomputers.api.core.page.PageResponse;
 import com.servinetcomputers.api.core.page.PaginationMapper;
 import com.servinetcomputers.api.core.util.enums.TransactionDetailType;
-import com.servinetcomputers.api.module.transaction.domain.dto.TransactionDetailRequest;
-import com.servinetcomputers.api.module.transaction.domain.dto.TransactionDetailResponse;
+import com.servinetcomputers.api.module.transaction.domain.dto.CreateTransactionDetailDto;
+import com.servinetcomputers.api.module.transaction.domain.dto.TransactionDetailDto;
 import com.servinetcomputers.api.module.transaction.domain.repository.TransactionDetailRepository;
 import com.servinetcomputers.api.module.transaction.persistence.JpaTransactionDetailRepository;
 import com.servinetcomputers.api.module.transaction.persistence.mapper.TransactionDetailMapper;
@@ -24,45 +24,45 @@ public class TransactionDetailRepositoryImpl implements TransactionDetailReposit
     private final PaginationMapper paginationMapper;
 
     @Override
-    public TransactionDetailResponse save(TransactionDetailRequest request) {
+    public TransactionDetailDto save(CreateTransactionDetailDto request) {
         final var entity = mapper.toEntity(request);
         final var newDetail = repository.save(entity);
 
-        return mapper.toResponse(newDetail);
+        return mapper.toDto(newDetail);
     }
 
     @Override
-    public TransactionDetailResponse save(TransactionDetailResponse response) {
+    public TransactionDetailDto save(TransactionDetailDto response) {
         final var entity = mapper.toEntity(response);
         final var newDetail = repository.save(entity);
 
-        return mapper.toResponse(newDetail);
+        return mapper.toDto(newDetail);
     }
 
     @Override
-    public Optional<TransactionDetailResponse> get(int transactionDetailId) {
+    public Optional<TransactionDetailDto> get(int transactionDetailId) {
         final var detail = repository.findByIdAndEnabledTrue(transactionDetailId);
-        return detail.map(mapper::toResponse);
+        return detail.map(mapper::toDto);
     }
 
     @Override
-    public List<TransactionDetailResponse> getAllByCashRegisterDetailId(int cashRegisterDetailId) {
+    public List<TransactionDetailDto> getAllByCashRegisterDetailId(int cashRegisterDetailId) {
         final var details = repository.findAllByCashRegisterDetailIdAndEnabledTrue(cashRegisterDetailId);
-        return mapper.toResponses(details);
+        return mapper.toDto(details);
     }
 
     @Override
-    public PageResponse<TransactionDetailResponse> getAllByCashRegisterDetailId(int cashRegisterDetailId, Pageable pageable) {
+    public PageResponse<TransactionDetailDto> getAllByCashRegisterDetailId(int cashRegisterDetailId, Pageable pageable) {
         final var page = repository.findAllByCashRegisterDetailIdAndEnabledTrue(cashRegisterDetailId, pageable);
-        final var details = mapper.toResponses(page.getContent());
+        final var details = mapper.toDto(page.getContent());
 
         return new PageResponse<>(paginationMapper.toPagination(page), details);
     }
 
     @Override
-    public List<TransactionDetailResponse> getAllByCodeBetween(String code, LocalDateTime startDate, LocalDateTime endDate) {
+    public List<TransactionDetailDto> getAllByCodeBetween(String code, LocalDateTime startDate, LocalDateTime endDate) {
         final var details = repository.findAllByCreatedByAndEnabledTrueAndCreatedDateBetween(code, startDate, endDate);
-        return mapper.toResponses(details);
+        return mapper.toDto(details);
     }
 
     @Override

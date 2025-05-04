@@ -1,7 +1,7 @@
 package com.servinetcomputers.api.module.changelog.persistence.repository;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.servinetcomputers.api.module.changelog.domain.dto.ChangeLogResponse;
+import com.servinetcomputers.api.module.changelog.domain.dto.ChangeLogDto;
 import com.servinetcomputers.api.module.changelog.domain.dto.CreateChangeLogDto;
 import com.servinetcomputers.api.module.changelog.domain.repository.ChangeLogRepository;
 import com.servinetcomputers.api.module.changelog.persistence.JpaChangeLogRepository;
@@ -18,16 +18,16 @@ public class ChangeLogRepositoryImpl implements ChangeLogRepository {
     private final ChangeLogMapper changeLogMapper;
 
     @Override
-    public ChangeLogResponse save(CreateChangeLogDto dto) throws JsonProcessingException {
+    public ChangeLogDto save(CreateChangeLogDto dto) throws JsonProcessingException {
         final var entity = changeLogMapper.toEntity(dto);
         final var newChangeLog = jpaChangeLogRepository.save(entity);
 
-        return changeLogMapper.toResponse(newChangeLog);
+        return changeLogMapper.toDto(newChangeLog);
     }
 
     @Override
-    public List<ChangeLogResponse> getAllByCashRegisterDetailId(int cashRegisterDetailId) {
+    public List<ChangeLogDto> getAllByCashRegisterDetailId(int cashRegisterDetailId) {
         final var entities = jpaChangeLogRepository.findAllByCashRegisterDetailIdAndEnabledTrue(cashRegisterDetailId);
-        return changeLogMapper.toResponses(entities);
+        return changeLogMapper.toDto(entities);
     }
 }

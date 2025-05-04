@@ -9,7 +9,7 @@ import com.servinetcomputers.api.core.util.enums.ChangeLogType;
 import com.servinetcomputers.api.module.changelog.application.usecase.CreateChangeLogUseCase;
 import com.servinetcomputers.api.module.changelog.domain.dto.CreateChangeLogDto;
 import com.servinetcomputers.api.module.expense.application.usecase.UpdateExpenseUseCase;
-import com.servinetcomputers.api.module.expense.domain.dto.ExpenseResponse;
+import com.servinetcomputers.api.module.expense.domain.dto.ExpenseDto;
 import com.servinetcomputers.api.module.expense.domain.dto.UpdateExpenseDto;
 import com.servinetcomputers.api.module.expense.domain.repository.ExpenseRepository;
 import com.servinetcomputers.api.module.tempcode.domain.repository.TempCodeRepository;
@@ -26,7 +26,7 @@ public class UpdateExpenseService implements UpdateExpenseUseCase {
 
     @Transactional(rollbackFor = AppException.class)
     @Override
-    public ExpenseResponse call(Integer expenseId, UpdateExpenseDto dto) {
+    public ExpenseDto call(Integer expenseId, UpdateExpenseDto dto) {
         if (dto.tempCode() == null) {
             throw new RequiredTempCodeException();
         }
@@ -45,7 +45,7 @@ public class UpdateExpenseService implements UpdateExpenseUseCase {
 
         expense.setDescription(dto.description() != null ? dto.description() : expense.getDescription());
         expense.setValue(dto.value() != null ? dto.value() : expense.getValue());
-        expense.setDiscount(dto.discount() != null ? dto.discount() : expense.isDiscount());
+        expense.setDiscount(dto.discount() != null ? dto.discount() : expense.getDiscount());
 
         repository.save(expense);
 
@@ -59,7 +59,7 @@ public class UpdateExpenseService implements UpdateExpenseUseCase {
         return newData;
     }
 
-    private void createChangeLog(ExpenseResponse previousData, ExpenseResponse newData) {
+    private void createChangeLog(ExpenseDto previousData, ExpenseDto newData) {
         final var dto = new CreateChangeLogDto(
                 ChangeLogAction.UPDATE,
                 ChangeLogType.EXPENSE,

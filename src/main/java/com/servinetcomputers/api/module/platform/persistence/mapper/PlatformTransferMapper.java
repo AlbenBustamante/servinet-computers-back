@@ -1,7 +1,7 @@
 package com.servinetcomputers.api.module.platform.persistence.mapper;
 
-import com.servinetcomputers.api.module.platform.domain.dto.PlatformTransferRequest;
-import com.servinetcomputers.api.module.platform.domain.dto.PlatformTransferResponse;
+import com.servinetcomputers.api.module.platform.domain.dto.CreatePlatformTransferWithVouchersDto;
+import com.servinetcomputers.api.module.platform.domain.dto.PlatformTransferDto;
 import com.servinetcomputers.api.module.platform.persistence.entity.PlatformTransfer;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -13,11 +13,9 @@ import java.util.List;
  */
 @Mapper(componentModel = "spring", uses = {PlatformMapper.class})
 public interface PlatformTransferMapper {
-    @Mapping(target = "platformId", source = "platform.id")
-    @Mapping(target = "platformName", source = "platform.name")
-    PlatformTransferResponse toResponse(PlatformTransfer entity);
+    PlatformTransferDto toDto(PlatformTransfer entity);
 
-    List<PlatformTransferResponse> toResponses(List<PlatformTransfer> entities);
+    List<PlatformTransferDto> toDto(List<PlatformTransfer> entities);
 
     @Mapping(target = "modifiedDate", ignore = true)
     @Mapping(target = "modifiedBy", ignore = true)
@@ -25,7 +23,7 @@ public interface PlatformTransferMapper {
     @Mapping(target = "enabled", ignore = true)
     @Mapping(target = "createdDate", ignore = true)
     @Mapping(target = "createdBy", ignore = true)
-    PlatformTransfer toEntity(PlatformTransferRequest request);
+    PlatformTransfer toEntity(CreatePlatformTransferWithVouchersDto dto);
 
-    PlatformTransfer toEntity(PlatformTransferResponse response);
+    PlatformTransfer toEntity(PlatformTransferDto dto);
 }

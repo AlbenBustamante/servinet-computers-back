@@ -1,8 +1,8 @@
 package com.servinetcomputers.api.module.platform.controller;
 
 import com.servinetcomputers.api.module.platform.application.usecase.*;
-import com.servinetcomputers.api.module.platform.domain.dto.PlatformRequest;
-import com.servinetcomputers.api.module.platform.domain.dto.PlatformResponse;
+import com.servinetcomputers.api.module.platform.domain.dto.CreatePlatformDto;
+import com.servinetcomputers.api.module.platform.domain.dto.PlatformDto;
 import com.servinetcomputers.api.module.platform.domain.dto.PortalPlatformDto;
 import com.servinetcomputers.api.module.platform.domain.dto.UpdatePlatformDto;
 import lombok.RequiredArgsConstructor;
@@ -26,12 +26,12 @@ public class PlatformController {
     private final DeletePlatformUseCase deletePlatformUseCase;
 
     @PostMapping
-    public ResponseEntity<PlatformResponse> register(@RequestBody PlatformRequest request) {
+    public ResponseEntity<PlatformDto> register(@RequestBody CreatePlatformDto request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(createPlatformUseCase.call(request));
     }
 
     @GetMapping
-    public ResponseEntity<List<PlatformResponse>> getAll() {
+    public ResponseEntity<List<PlatformDto>> getAll() {
         return ResponseEntity.ok(getAllPlatformsUseCase.call());
     }
 
@@ -41,7 +41,7 @@ public class PlatformController {
     }
 
     @PatchMapping(path = "/{id}")
-    public ResponseEntity<PlatformResponse> update(@PathVariable("id") int id, @RequestBody UpdatePlatformDto updatePlatformDto) {
+    public ResponseEntity<PlatformDto> update(@PathVariable("id") int id, @RequestBody UpdatePlatformDto updatePlatformDto) {
         return ResponseEntity.ok(updatePlatformUseCase.call(id, updatePlatformDto));
     }
 

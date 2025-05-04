@@ -1,7 +1,7 @@
 package com.servinetcomputers.api.module.platform.persistence.repository;
 
-import com.servinetcomputers.api.module.platform.domain.dto.PlatformRequest;
-import com.servinetcomputers.api.module.platform.domain.dto.PlatformResponse;
+import com.servinetcomputers.api.module.platform.domain.dto.CreatePlatformDto;
+import com.servinetcomputers.api.module.platform.domain.dto.PlatformDto;
 import com.servinetcomputers.api.module.platform.domain.repository.PlatformRepository;
 import com.servinetcomputers.api.module.platform.persistence.JpaPlatformRepository;
 import com.servinetcomputers.api.module.platform.persistence.mapper.PlatformMapper;
@@ -26,29 +26,29 @@ public class PlatformRepositoryImpl implements PlatformRepository {
     }
 
     @Override
-    public PlatformResponse save(PlatformRequest request) {
+    public PlatformDto save(CreatePlatformDto request) {
         final var entity = mapper.toEntity(request);
         final var newPlatform = repository.save(entity);
 
-        return mapper.toResponse(newPlatform);
+        return mapper.toDto(newPlatform);
     }
 
     @Override
-    public PlatformResponse save(PlatformResponse response) {
+    public PlatformDto save(PlatformDto response) {
         final var entity = mapper.toEntity(response);
         final var newPlatform = repository.save(entity);
 
-        return mapper.toResponse(newPlatform);
+        return mapper.toDto(newPlatform);
     }
 
     @Override
-    public List<PlatformResponse> getAll() {
-        return mapper.toResponses(repository.findAllByEnabledTrue());
+    public List<PlatformDto> getAll() {
+        return mapper.toDto(repository.findAllByEnabledTrue());
     }
 
     @Override
-    public Optional<PlatformResponse> get(int id) {
+    public Optional<PlatformDto> get(int id) {
         final var platform = repository.findByIdAndEnabledTrue(id);
-        return platform.map(mapper::toResponse);
+        return platform.map(mapper::toDto);
     }
 }

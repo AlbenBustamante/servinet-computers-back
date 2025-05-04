@@ -1,7 +1,7 @@
 package com.servinetcomputers.api.module.transaction.application.service;
 
 import com.servinetcomputers.api.module.transaction.application.usecase.GetAllTransactionsUseCase;
-import com.servinetcomputers.api.module.transaction.domain.dto.TransactionResponse;
+import com.servinetcomputers.api.module.transaction.domain.dto.TransactionDto;
 import com.servinetcomputers.api.module.transaction.domain.repository.TransactionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,7 +16,7 @@ public class GetAllTransactionsService implements GetAllTransactionsUseCase {
 
     @Transactional(readOnly = true)
     @Override
-    public List<TransactionResponse> call() {
+    public List<TransactionDto> call() {
         return repository.getAll();
     }
 }

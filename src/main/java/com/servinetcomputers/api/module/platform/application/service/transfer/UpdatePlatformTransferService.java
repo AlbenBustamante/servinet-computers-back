@@ -4,7 +4,7 @@ import com.servinetcomputers.api.core.exception.AppException;
 import com.servinetcomputers.api.core.exception.NotFoundException;
 import com.servinetcomputers.api.module.platform.application.usecase.transfer.GetPlatformTransferUseCase;
 import com.servinetcomputers.api.module.platform.application.usecase.transfer.UpdatePlatformTransferUseCase;
-import com.servinetcomputers.api.module.platform.domain.dto.PlatformTransferResponse;
+import com.servinetcomputers.api.module.platform.domain.dto.PlatformTransferDto;
 import com.servinetcomputers.api.module.platform.domain.dto.UpdatePlatformTransferDto;
 import com.servinetcomputers.api.module.platform.domain.repository.PlatformRepository;
 import com.servinetcomputers.api.module.platform.domain.repository.PlatformTransferRepository;
@@ -30,7 +30,7 @@ public class UpdatePlatformTransferService implements UpdatePlatformTransferUseC
      */
     @Transactional(rollbackFor = AppException.class)
     @Override
-    public PlatformTransferResponse call(Integer transferId, UpdatePlatformTransferDto updatePlatformTransferDto) {
+    public PlatformTransferDto call(Integer transferId, UpdatePlatformTransferDto updatePlatformTransferDto) {
         final var transfer = getPlatformTransferUseCase.call(transferId);
 
         if (updatePlatformTransferDto.platformId() != null) {

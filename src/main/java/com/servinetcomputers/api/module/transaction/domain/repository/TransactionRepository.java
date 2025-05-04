@@ -1,17 +1,17 @@
 package com.servinetcomputers.api.module.transaction.domain.repository;
 
-import com.servinetcomputers.api.module.transaction.domain.dto.TransactionRequest;
-import com.servinetcomputers.api.module.transaction.domain.dto.TransactionResponse;
+import com.servinetcomputers.api.module.transaction.domain.dto.CreateTransactionDto;
+import com.servinetcomputers.api.module.transaction.domain.dto.TransactionDto;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface TransactionRepository {
-    TransactionResponse save(TransactionRequest request);
+    TransactionDto save(CreateTransactionDto request);
 
-    TransactionResponse save(TransactionResponse response);
+    TransactionDto save(TransactionDto response);
 
-    List<TransactionResponse> getAll();
+    List<TransactionDto> getAll();
 
-    Optional<TransactionResponse> getByDescription(String description);
+    Optional<TransactionDto> getByDescription(String description);
 }

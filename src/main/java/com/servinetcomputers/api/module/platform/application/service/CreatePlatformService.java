@@ -3,8 +3,8 @@ package com.servinetcomputers.api.module.platform.application.service;
 import com.servinetcomputers.api.core.exception.AppException;
 import com.servinetcomputers.api.core.exception.BadRequestException;
 import com.servinetcomputers.api.module.platform.application.usecase.CreatePlatformUseCase;
-import com.servinetcomputers.api.module.platform.domain.dto.PlatformRequest;
-import com.servinetcomputers.api.module.platform.domain.dto.PlatformResponse;
+import com.servinetcomputers.api.module.platform.domain.dto.CreatePlatformDto;
+import com.servinetcomputers.api.module.platform.domain.dto.PlatformDto;
 import com.servinetcomputers.api.module.platform.domain.repository.PlatformRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
@@ -27,7 +27,7 @@ public class CreatePlatformService implements CreatePlatformUseCase {
     @Transactional(rollbackFor = AppException.class)
     @Secured(value = ADMIN_AUTHORITY)
     @Override
-    public PlatformResponse call(PlatformRequest param) {
+    public PlatformDto call(CreatePlatformDto param) {
         if (repository.existsByName(param.name())) {
             throw new BadRequestException("Ya existe la plataforma: " + param.name());
         }

@@ -1,7 +1,7 @@
 package com.servinetcomputers.api.module.transaction.controller;
 
 import com.servinetcomputers.api.module.transaction.application.usecase.GetAllTransactionsUseCase;
-import com.servinetcomputers.api.module.transaction.domain.dto.TransactionResponse;
+import com.servinetcomputers.api.module.transaction.domain.dto.TransactionDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +17,7 @@ public class TransactionController {
     private final GetAllTransactionsUseCase getAllTransactionsUseCase;
 
     @GetMapping
-    public ResponseEntity<List<TransactionResponse>> getAll() {
+    public ResponseEntity<List<TransactionDto>> getAll() {
         return ResponseEntity.ok(getAllTransactionsUseCase.call());
     }
 }

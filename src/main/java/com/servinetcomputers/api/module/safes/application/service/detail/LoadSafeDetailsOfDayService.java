@@ -4,9 +4,9 @@ import com.servinetcomputers.api.core.datetime.DateTimeService;
 import com.servinetcomputers.api.core.exception.AppException;
 import com.servinetcomputers.api.module.base.BaseDto;
 import com.servinetcomputers.api.module.safes.application.usecase.detail.LoadSafeDetailsOfDayUseCase;
-import com.servinetcomputers.api.module.safes.domain.dto.SafeBaseRequest;
-import com.servinetcomputers.api.module.safes.domain.dto.SafeDetailRequest;
-import com.servinetcomputers.api.module.safes.domain.dto.SafeDetailResponse;
+import com.servinetcomputers.api.module.safes.domain.dto.CreateSafeBaseDto;
+import com.servinetcomputers.api.module.safes.domain.dto.CreateSafeDetailDto;
+import com.servinetcomputers.api.module.safes.domain.dto.SafeDetailDto;
 import com.servinetcomputers.api.module.safes.domain.repository.SafeBaseRepository;
 import com.servinetcomputers.api.module.safes.domain.repository.SafeDetailRepository;
 import com.servinetcomputers.api.module.safes.domain.repository.SafeRepository;
@@ -34,7 +34,7 @@ public class LoadSafeDetailsOfDayService implements LoadSafeDetailsOfDayUseCase 
      */
     @Transactional(rollbackFor = AppException.class)
     @Override
-    public List<SafeDetailResponse> call() {
+    public List<SafeDetailDto> call() {
         final var today = dateTimeService.dateNow();
         final var startDate = dateTimeService.getMinByDate(today);
         final var endDate = dateTimeService.now();
@@ -46,23 +46,19 @@ public class LoadSafeDetailsOfDayService implements LoadSafeDetailsOfDayUseCase 
         }
 
         final var safes = safeRepository.getAll();
-        final List<SafeDetailResponse> newDetails = new ArrayList<>(safes.size());
+        final List<SafeDetailDto> newDetails = new ArrayList<>(safes.size());
 
         safes.forEach(safe -> {
             final var lastBase = safeBaseRepository.getLastBySafeId(safe.getId());
             final var base = lastBase.isPresent() ? lastBase.get().getDetailBase() : BaseDto.zero();
 
-            final var newDetailRequest = new SafeDetailRequest(safe.getId(), base, base);
-            newDetailRequest.setSafe(safe);
+            final var createSafeDetailDto = new CreateSafeDetailDto(safe.getId(), base, base, safe);
+            final var newSafeDetailDto = repository.save(createSafeDetailDto);
+            final var createSafeBaseDto = new CreateSafeBaseDto(newSafeDetailDto.getId(), base, newSafeDetailDto);
 
-            final var newDetailResponse = repository.save(newDetailRequest);
+            safeBaseRepository.save(createSafeBaseDto);
 
-            final var safeBase = new SafeBaseRequest(newDetailResponse.getId(), base);
-
-            safeBase.setSafeDetail(newDetailResponse);
-            safeBaseRepository.save(safeBase);
-
-            newDetails.add(newDetailResponse);
+            newDetails.add(newSafeDetailDto);
         });
 
         return newDetails;

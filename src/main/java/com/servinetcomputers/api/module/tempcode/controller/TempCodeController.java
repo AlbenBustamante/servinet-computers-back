@@ -1,7 +1,7 @@
 package com.servinetcomputers.api.module.tempcode.controller;
 
 import com.servinetcomputers.api.module.tempcode.application.usecase.LoadTempCodeUseCase;
-import com.servinetcomputers.api.module.tempcode.domain.dto.TempCodeResponse;
+import com.servinetcomputers.api.module.tempcode.domain.dto.TempCodeDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +15,7 @@ public class TempCodeController {
     private final LoadTempCodeUseCase loadTempCodeUseCase;
 
     @GetMapping(path = "/load")
-    public ResponseEntity<TempCodeResponse> loadTempCode() {
+    public ResponseEntity<TempCodeDto> loadTempCode() {
         return ResponseEntity.ok(loadTempCodeUseCase.call());
     }
 }

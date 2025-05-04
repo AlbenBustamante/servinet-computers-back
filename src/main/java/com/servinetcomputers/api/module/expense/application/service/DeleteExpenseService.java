@@ -9,7 +9,7 @@ import com.servinetcomputers.api.core.util.enums.ChangeLogType;
 import com.servinetcomputers.api.module.changelog.application.usecase.CreateChangeLogUseCase;
 import com.servinetcomputers.api.module.changelog.domain.dto.CreateChangeLogDto;
 import com.servinetcomputers.api.module.expense.application.usecase.DeleteExpenseUseCase;
-import com.servinetcomputers.api.module.expense.domain.dto.ExpenseResponse;
+import com.servinetcomputers.api.module.expense.domain.dto.ExpenseDto;
 import com.servinetcomputers.api.module.expense.domain.repository.ExpenseRepository;
 import com.servinetcomputers.api.module.tempcode.domain.repository.TempCodeRepository;
 import lombok.RequiredArgsConstructor;
@@ -50,7 +50,7 @@ public class DeleteExpenseService implements DeleteExpenseUseCase {
         tempCodeRepository.save(lastTempCode.get());
     }
 
-    private void createChangeLog(ExpenseResponse previousData) {
+    private void createChangeLog(ExpenseDto previousData) {
         final var dto = new CreateChangeLogDto(
                 ChangeLogAction.DELETE,
                 ChangeLogType.EXPENSE,

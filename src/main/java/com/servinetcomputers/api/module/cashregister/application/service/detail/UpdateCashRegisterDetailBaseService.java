@@ -3,7 +3,7 @@ package com.servinetcomputers.api.module.cashregister.application.service.detail
 import com.servinetcomputers.api.core.exception.AppException;
 import com.servinetcomputers.api.core.exception.NotFoundException;
 import com.servinetcomputers.api.module.cashregister.application.usecase.detail.UpdateCashRegisterDetailBaseUseCase;
-import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDetailResponse;
+import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDetailDto;
 import com.servinetcomputers.api.module.cashregister.domain.dto.UpdateCashRegisterDetailBaseDto;
 import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterDetailRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +17,7 @@ public class UpdateCashRegisterDetailBaseService implements UpdateCashRegisterDe
 
     @Transactional(rollbackFor = AppException.class)
     @Override
-    public CashRegisterDetailResponse call(Integer cashRegisterDetailId, UpdateCashRegisterDetailBaseDto dto) {
+    public CashRegisterDetailDto call(Integer cashRegisterDetailId, UpdateCashRegisterDetailBaseDto dto) {
         final var cashRegisterDetail = repository.get(cashRegisterDetailId)
                 .orElseThrow(() -> new NotFoundException("No se encontró la jornada #" + cashRegisterDetailId));
 

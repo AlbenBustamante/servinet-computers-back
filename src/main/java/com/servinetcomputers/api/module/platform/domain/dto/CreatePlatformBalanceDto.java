@@ -6,6 +6,6 @@ package com.servinetcomputers.api.module.platform.domain.dto;
 public record CreatePlatformBalanceDto(
         Integer initialBalance,
         Integer finalBalance,
-        PlatformResponse platform
+        PlatformDto platform
 ) {
 }

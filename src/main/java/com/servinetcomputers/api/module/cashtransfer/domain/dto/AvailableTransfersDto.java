@@ -1,12 +1,12 @@
 package com.servinetcomputers.api.module.cashtransfer.domain.dto;
 
-import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDetailResponse;
-import com.servinetcomputers.api.module.safes.domain.dto.SafeDetailResponse;
+import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDetailDto;
+import com.servinetcomputers.api.module.safes.domain.dto.SafeDetailDto;
 
 import java.util.List;
 
 public record AvailableTransfersDto(
-        List<CashRegisterDetailResponse> cashRegisters,
-        List<SafeDetailResponse> safes
+        List<CashRegisterDetailDto> cashRegisters,
+        List<SafeDetailDto> safes
 ) {
 }

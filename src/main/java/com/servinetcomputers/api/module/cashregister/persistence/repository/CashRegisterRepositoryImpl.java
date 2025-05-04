@@ -1,7 +1,7 @@
 package com.servinetcomputers.api.module.cashregister.persistence.repository;
 
-import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterRequest;
-import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterResponse;
+import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDto;
+import com.servinetcomputers.api.module.cashregister.domain.dto.CreateCashRegisterDto;
 import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterRepository;
 import com.servinetcomputers.api.module.cashregister.persistence.JpaCashRegisterDetailRepository;
 import com.servinetcomputers.api.module.cashregister.persistence.JpaCashRegisterRepository;
@@ -22,31 +22,31 @@ public class CashRegisterRepositoryImpl implements CashRegisterRepository {
     private final CashRegisterMapper mapper;
 
     @Override
-    public CashRegisterResponse save(CashRegisterRequest request) {
+    public CashRegisterDto save(CreateCashRegisterDto request) {
         final var entity = mapper.toEntity(request);
         final var newCashRegister = repository.save(entity);
 
-        return mapper.toResponse(newCashRegister);
+        return mapper.toDto(newCashRegister);
     }
 
     @Override
-    public CashRegisterResponse save(CashRegisterResponse response) {
+    public CashRegisterDto save(CashRegisterDto response) {
         final var entity = mapper.toEntity(response);
         final var newCashRegister = repository.save(entity);
 
-        return mapper.toResponse(newCashRegister);
+        return mapper.toDto(newCashRegister);
     }
 
     @Override
-    public Optional<CashRegisterResponse> get(int id) {
+    public Optional<CashRegisterDto> get(int id) {
         final var cashRegister = repository.findByIdAndEnabledTrue(id);
-        return cashRegister.map(mapper::toResponse);
+        return cashRegister.map(mapper::toDto);
     }
 
     @Override
-    public List<CashRegisterResponse> getAll() {
+    public List<CashRegisterDto> getAll() {
         final var cashRegisters = repository.findAllByEnabledTrue();
-        return mapper.toResponses(cashRegisters);
+        return mapper.toDto(cashRegisters);
     }
 
     @Override

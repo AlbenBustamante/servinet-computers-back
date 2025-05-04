@@ -2,7 +2,7 @@ package com.servinetcomputers.api.module.user.application.service;
 
 import com.servinetcomputers.api.core.exception.NotFoundException;
 import com.servinetcomputers.api.module.user.application.usecase.GetUserUseCase;
-import com.servinetcomputers.api.module.user.domain.dto.UserResponse;
+import com.servinetcomputers.api.module.user.domain.dto.UserDto;
 import com.servinetcomputers.api.module.user.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,7 +15,7 @@ public class GetUserService implements GetUserUseCase {
 
     @Transactional(readOnly = true)
     @Override
-    public UserResponse call(Integer param) {
+    public UserDto call(Integer param) {
         return repository.get(param)
                 .orElseThrow(() -> new NotFoundException("Usuario no encontrado: " + param));
     }

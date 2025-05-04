@@ -4,7 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.servinetcomputers.api.core.exception.AuthenticationException;
 import com.servinetcomputers.api.core.util.enums.Role;
-import com.servinetcomputers.api.module.user.domain.dto.UserResponse;
+import com.servinetcomputers.api.module.user.domain.dto.UserDto;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -12,7 +12,11 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import static com.servinetcomputers.api.core.util.constants.SecurityConstants.getAuthority;
@@ -22,9 +26,8 @@ import static com.servinetcomputers.api.core.util.constants.SecurityConstants.ge
  */
 @Component
 public class JwtProvider {
-
     private static final long EXPIRATION_TIME = TimeUnit.DAYS.toMillis(1);
-    private final Map<String, UserResponse> userTokens;
+    private final Map<String, UserDto> userTokens;
 
     @Value("${jwt.secret-key}")
     private String secretKey;
@@ -39,7 +42,7 @@ public class JwtProvider {
      * @param user the user.
      * @return the JWT.
      */
-    public String create(final UserResponse user) {
+    public String create(final UserDto user) {
         final var token = create(user.getId(), user.getCode(), user.getRole());
         userTokens.put(token, user);
 
@@ -107,5 +110,4 @@ public class JwtProvider {
 
         return true;
     }
-
 }

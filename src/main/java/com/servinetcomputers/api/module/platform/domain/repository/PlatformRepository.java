@@ -1,7 +1,7 @@
 package com.servinetcomputers.api.module.platform.domain.repository;
 
-import com.servinetcomputers.api.module.platform.domain.dto.PlatformRequest;
-import com.servinetcomputers.api.module.platform.domain.dto.PlatformResponse;
+import com.servinetcomputers.api.module.platform.domain.dto.CreatePlatformDto;
+import com.servinetcomputers.api.module.platform.domain.dto.PlatformDto;
 
 import java.util.List;
 import java.util.Optional;
@@ -12,11 +12,11 @@ import java.util.Optional;
 public interface PlatformRepository {
     boolean existsByName(String name);
 
-    PlatformResponse save(PlatformRequest request);
+    PlatformDto save(CreatePlatformDto request);
 
-    PlatformResponse save(PlatformResponse response);
+    PlatformDto save(PlatformDto response);
 
-    List<PlatformResponse> getAll();
+    List<PlatformDto> getAll();
 
-    Optional<PlatformResponse> get(int id);
+    Optional<PlatformDto> get(int id);
 }

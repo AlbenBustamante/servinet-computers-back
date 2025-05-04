@@ -1,7 +1,7 @@
 package com.servinetcomputers.api.module.platform.domain.repository;
 
-import com.servinetcomputers.api.module.platform.domain.dto.PlatformTransferRequest;
-import com.servinetcomputers.api.module.platform.domain.dto.PlatformTransferResponse;
+import com.servinetcomputers.api.module.platform.domain.dto.CreatePlatformTransferWithVouchersDto;
+import com.servinetcomputers.api.module.platform.domain.dto.PlatformTransferDto;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -11,13 +11,13 @@ import java.util.Optional;
  * The transfer's repository.
  */
 public interface PlatformTransferRepository {
-    PlatformTransferResponse save(PlatformTransferRequest request);
+    PlatformTransferDto save(CreatePlatformTransferWithVouchersDto request);
 
-    PlatformTransferResponse save(PlatformTransferResponse response);
+    PlatformTransferDto save(PlatformTransferDto response);
 
-    Optional<PlatformTransferResponse> get(int id);
+    Optional<PlatformTransferDto> get(int id);
 
-    List<PlatformTransferResponse> getAllByCodeBetween(String code, LocalDateTime startDate, LocalDateTime endDate);
+    List<PlatformTransferDto> getAllByCodeBetween(String code, LocalDateTime startDate, LocalDateTime endDate);
 
     int getPlatformTransfersAmount(int platformId, LocalDateTime startDate, LocalDateTime endDate);
 

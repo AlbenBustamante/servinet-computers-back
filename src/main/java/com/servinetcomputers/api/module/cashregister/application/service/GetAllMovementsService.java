@@ -2,7 +2,7 @@ package com.servinetcomputers.api.module.cashregister.application.service;
 
 import com.servinetcomputers.api.core.exception.NotFoundException;
 import com.servinetcomputers.api.module.cashregister.application.usecase.GetAllMovementsUseCase;
-import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDetailResponse;
+import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDetailDto;
 import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterDetailRepository;
 import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +25,7 @@ public class GetAllMovementsService implements GetAllMovementsUseCase {
      */
     @Transactional(readOnly = true)
     @Override
-    public List<CashRegisterDetailResponse> call(Integer cashRegisterId) {
+    public List<CashRegisterDetailDto> call(Integer cashRegisterId) {
         if (!repository.existsById(cashRegisterId)) {
             throw new NotFoundException("No se encontró la caja con ID: #" + cashRegisterId);
         }

@@ -1,8 +1,8 @@
 package com.servinetcomputers.api.module.user.domain.repository;
 
 import com.servinetcomputers.api.core.util.enums.Role;
-import com.servinetcomputers.api.module.user.domain.dto.UserRequest;
-import com.servinetcomputers.api.module.user.domain.dto.UserResponse;
+import com.servinetcomputers.api.module.user.domain.dto.CreateUserDto;
+import com.servinetcomputers.api.module.user.domain.dto.UserDto;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,15 +11,15 @@ import java.util.Optional;
  * The user's repository.
  */
 public interface UserRepository {
-    UserResponse save(UserRequest request);
+    UserDto save(CreateUserDto request);
 
-    UserResponse save(UserResponse response);
+    UserDto save(UserDto response);
 
-    Optional<UserResponse> getLastByRole(Role role);
+    Optional<UserDto> getLastByRole(Role role);
 
-    Optional<UserResponse> getByCode(String code);
+    Optional<UserDto> getByCode(String code);
 
-    List<UserResponse> getAll();
+    List<UserDto> getAll();
 
     /**
      * Get an existing and available user by the user ID.
@@ -27,5 +27,5 @@ public interface UserRepository {
      * @param userId the ID to search.
      * @return the user found.
      */
-    Optional<UserResponse> get(int userId);
+    Optional<UserDto> get(int userId);
 }

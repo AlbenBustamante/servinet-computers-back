@@ -2,7 +2,7 @@ package com.servinetcomputers.api.module.cashregister.application.usecase.detail
 
 import com.servinetcomputers.api.core.page.PageResponse;
 import com.servinetcomputers.api.core.usecase.UseCaseBiParam;
-import com.servinetcomputers.api.module.transaction.domain.dto.TransactionDetailResponse;
+import com.servinetcomputers.api.module.transaction.domain.dto.TransactionDetailDto;
 import org.springframework.data.domain.Pageable;
 
 /**
@@ -12,5 +12,5 @@ import org.springframework.data.domain.Pageable;
  * <p>Receives the {@link Pageable} data.</p>
  * <p>Returns a {@link PageResponse} with the pagination and results.</p>
  */
-public interface GetTransactionsUseCase extends UseCaseBiParam<PageResponse<TransactionDetailResponse>, Integer, Pageable> {
+public interface GetTransactionsUseCase extends UseCaseBiParam<PageResponse<TransactionDetailDto>, Integer, Pageable> {
 }

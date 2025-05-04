@@ -3,6 +3,7 @@ package com.servinetcomputers.api.core.exception;
 import com.servinetcomputers.api.core.datetime.DateTimeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
@@ -46,10 +47,26 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
             AlreadyExistsException.class,
             BadRequestException.class,
             NotFoundException.class,
-            AppException.class}
-    )
+            AppException.class
+    })
     public ProblemDetail handleAppException(AppException ex) {
         return createProblemDetail(ex);
+    }
+
+    @ExceptionHandler(RuntimeException.class)
+    public ProblemDetail handleRuntime(RuntimeException ex) {
+        final var problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
+        problemDetail.setProperty("timestamp", timestamp());
+
+        return problemDetail;
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ProblemDetail handle(Exception ex) {
+        final var problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
+        problemDetail.setProperty("timestamp", timestamp());
+
+        return problemDetail;
     }
 
     /**

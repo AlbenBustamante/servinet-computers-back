@@ -2,8 +2,8 @@ package com.servinetcomputers.api.module.tempcode.application.service;
 
 import com.servinetcomputers.api.core.exception.AppException;
 import com.servinetcomputers.api.module.tempcode.application.usecase.LoadTempCodeUseCase;
-import com.servinetcomputers.api.module.tempcode.domain.dto.TempCodeRequest;
-import com.servinetcomputers.api.module.tempcode.domain.dto.TempCodeResponse;
+import com.servinetcomputers.api.module.tempcode.domain.dto.CreateTempCodeDto;
+import com.servinetcomputers.api.module.tempcode.domain.dto.TempCodeDto;
 import com.servinetcomputers.api.module.tempcode.domain.repository.TempCodeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
@@ -24,12 +24,12 @@ public class LoadTempCodeService implements LoadTempCodeUseCase {
     @Secured(value = ADMIN_AUTHORITY)
     @Transactional(rollbackFor = AppException.class)
     @Override
-    public TempCodeResponse call() {
+    public TempCodeDto call() {
         final var lastCode = repository.getLast();
 
         if (lastCode.isEmpty() || lastCode.get().getUsedBy() != null) {
             final var code = generateCode();
-            final var request = new TempCodeRequest(code);
+            final var request = new CreateTempCodeDto(code);
             return repository.save(request);
         }
 

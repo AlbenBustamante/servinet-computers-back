@@ -4,14 +4,21 @@ import com.servinetcomputers.api.core.page.PageResponse;
 import com.servinetcomputers.api.module.expense.application.usecase.CreateExpenseUseCase;
 import com.servinetcomputers.api.module.expense.application.usecase.DeleteExpenseUseCase;
 import com.servinetcomputers.api.module.expense.application.usecase.UpdateExpenseUseCase;
-import com.servinetcomputers.api.module.expense.domain.dto.ExpenseRequest;
-import com.servinetcomputers.api.module.expense.domain.dto.ExpenseResponse;
+import com.servinetcomputers.api.module.expense.domain.dto.CreateExpenseDto;
+import com.servinetcomputers.api.module.expense.domain.dto.ExpenseDto;
 import com.servinetcomputers.api.module.expense.domain.dto.UpdateExpenseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RequestMapping(path = "/expenses")
@@ -22,8 +29,8 @@ public class ExpenseController {
     private final DeleteExpenseUseCase deleteExpenseUseCase;
 
     @PostMapping
-    public ResponseEntity<PageResponse<ExpenseResponse>> register(
-            @RequestBody ExpenseRequest request,
+    public ResponseEntity<PageResponse<ExpenseDto>> register(
+            @RequestBody CreateExpenseDto request,
             @RequestParam(value = "pageNumber", defaultValue = "0") int pageNumber,
             @RequestParam(value = "pageSize", defaultValue = "5") int pageSize,
             @RequestParam(value = "direction", defaultValue = "DESC") Sort.Direction direction,
@@ -34,7 +41,7 @@ public class ExpenseController {
     }
 
     @PatchMapping(path = "/{id}")
-    public ResponseEntity<ExpenseResponse> update(@PathVariable("id") int expenseId, @RequestBody UpdateExpenseDto dto) {
+    public ResponseEntity<ExpenseDto> update(@PathVariable("id") int expenseId, @RequestBody UpdateExpenseDto dto) {
         return ResponseEntity.ok(updateExpenseUseCase.call(expenseId, dto));
     }
 

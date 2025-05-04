@@ -1,16 +1,45 @@
 package com.servinetcomputers.api.module.cashregister.controller;
 
 import com.servinetcomputers.api.core.page.PageResponse;
-import com.servinetcomputers.api.module.cashregister.application.usecase.detail.*;
-import com.servinetcomputers.api.module.cashregister.domain.dto.*;
+import com.servinetcomputers.api.module.cashregister.application.usecase.detail.CashRegisterDetailAlreadyExistsUseCase;
+import com.servinetcomputers.api.module.cashregister.application.usecase.detail.CloseUseCase;
+import com.servinetcomputers.api.module.cashregister.application.usecase.detail.CreateCashRegisterDetailUseCase;
+import com.servinetcomputers.api.module.cashregister.application.usecase.detail.DeleteCashRegisterDetailUseCase;
+import com.servinetcomputers.api.module.cashregister.application.usecase.detail.EndBreakUseCase;
+import com.servinetcomputers.api.module.cashregister.application.usecase.detail.GetAdmCashRegisterDetailsUseCase;
+import com.servinetcomputers.api.module.cashregister.application.usecase.detail.GetCashRegisterDetailByIdUseCase;
+import com.servinetcomputers.api.module.cashregister.application.usecase.detail.GetCashRegisterDetailReportsByIdUseCase;
+import com.servinetcomputers.api.module.cashregister.application.usecase.detail.GetCashTransfersByIdUseCase;
+import com.servinetcomputers.api.module.cashregister.application.usecase.detail.GetDetailedReportsByIdUseCase;
+import com.servinetcomputers.api.module.cashregister.application.usecase.detail.GetExpensesUseCase;
+import com.servinetcomputers.api.module.cashregister.application.usecase.detail.GetTransactionsUseCase;
+import com.servinetcomputers.api.module.cashregister.application.usecase.detail.StartBreakUseCase;
+import com.servinetcomputers.api.module.cashregister.application.usecase.detail.UpdateCashRegisterDetailBaseUseCase;
+import com.servinetcomputers.api.module.cashregister.domain.dto.AdmCashRegistersDto;
+import com.servinetcomputers.api.module.cashregister.domain.dto.AlreadyExistsCashRegisterDetailDto;
+import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDetailDto;
+import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDetailReportsDto;
+import com.servinetcomputers.api.module.cashregister.domain.dto.CloseCashRegisterDetailDto;
+import com.servinetcomputers.api.module.cashregister.domain.dto.CreateCashRegisterDetailDto;
+import com.servinetcomputers.api.module.cashregister.domain.dto.DetailedCashRegisterReportsDto;
+import com.servinetcomputers.api.module.cashregister.domain.dto.MyCashRegistersReports;
+import com.servinetcomputers.api.module.cashregister.domain.dto.UpdateCashRegisterDetailBaseDto;
 import com.servinetcomputers.api.module.cashtransfer.domain.dto.CashTransferDto;
-import com.servinetcomputers.api.module.expense.domain.dto.ExpenseResponse;
-import com.servinetcomputers.api.module.transaction.domain.dto.TransactionDetailResponse;
+import com.servinetcomputers.api.module.expense.domain.dto.ExpenseDto;
+import com.servinetcomputers.api.module.transaction.domain.dto.TransactionDetailDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RequestMapping(path = "/cash-register-details")
@@ -47,7 +76,7 @@ public class CashRegisterDetailController {
     }
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<CashRegisterDetailResponse> getById(@PathVariable("id") int cashRegisterDetailId) {
+    public ResponseEntity<CashRegisterDetailDto> getById(@PathVariable("id") int cashRegisterDetailId) {
         return ResponseEntity.ok(getByIdUseCase.call(cashRegisterDetailId));
     }
 
@@ -62,7 +91,7 @@ public class CashRegisterDetailController {
     }
 
     @GetMapping(path = "/{id}/transactions")
-    public ResponseEntity<PageResponse<TransactionDetailResponse>> getTransactions(
+    public ResponseEntity<PageResponse<TransactionDetailDto>> getTransactions(
             @PathVariable("id") int cashRegisterDetailId,
             @RequestParam(value = "pageNumber", defaultValue = "0") int pageNumber,
             @RequestParam(value = "pageSize", defaultValue = "5") int pageSize,
@@ -74,7 +103,7 @@ public class CashRegisterDetailController {
     }
 
     @GetMapping(path = "/{id}/expenses")
-    public ResponseEntity<PageResponse<ExpenseResponse>> getExpenses(
+    public ResponseEntity<PageResponse<ExpenseDto>> getExpenses(
             @PathVariable("id") int cashRegisterDetailId,
             @RequestParam(value = "pageNumber", defaultValue = "0") int pageNumber,
             @RequestParam(value = "pageSize", defaultValue = "5") int pageSize,
@@ -98,12 +127,12 @@ public class CashRegisterDetailController {
     }
 
     @PutMapping(path = "/{id}/start-break")
-    public ResponseEntity<CashRegisterDetailResponse> startBreak(@PathVariable("id") int cashRegisterDetailId) {
+    public ResponseEntity<CashRegisterDetailDto> startBreak(@PathVariable("id") int cashRegisterDetailId) {
         return ResponseEntity.ok(startBreakUseCase.call(cashRegisterDetailId));
     }
 
     @PutMapping(path = "/{id}/end-break")
-    public ResponseEntity<CashRegisterDetailResponse> endBreak(@PathVariable("id") int cashRegisterDetailId) {
+    public ResponseEntity<CashRegisterDetailDto> endBreak(@PathVariable("id") int cashRegisterDetailId) {
         return ResponseEntity.ok(endBreakUseCase.call(cashRegisterDetailId));
     }
 
@@ -113,7 +142,7 @@ public class CashRegisterDetailController {
     }
 
     @PutMapping(path = "/{id}/update-base")
-    public ResponseEntity<CashRegisterDetailResponse> updateBase(@PathVariable("id") int id, @RequestBody UpdateCashRegisterDetailBaseDto dto) {
+    public ResponseEntity<CashRegisterDetailDto> updateBase(@PathVariable("id") int id, @RequestBody UpdateCashRegisterDetailBaseDto dto) {
         return ResponseEntity.ok(updateCashRegisterDetailBaseUseCase.call(id, dto));
     }
 

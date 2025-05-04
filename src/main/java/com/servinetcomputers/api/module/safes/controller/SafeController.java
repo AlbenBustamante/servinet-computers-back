@@ -4,12 +4,18 @@ import com.servinetcomputers.api.module.safes.application.usecase.CreateSafeUseC
 import com.servinetcomputers.api.module.safes.application.usecase.GetAllSafeDetailsByIdUseCase;
 import com.servinetcomputers.api.module.safes.application.usecase.GetAllSafesUseCase;
 import com.servinetcomputers.api.module.safes.application.usecase.detail.DeleteSafeUseCase;
-import com.servinetcomputers.api.module.safes.domain.dto.SafeDetailResponse;
-import com.servinetcomputers.api.module.safes.domain.dto.SafeRequest;
-import com.servinetcomputers.api.module.safes.domain.dto.SafeResponse;
+import com.servinetcomputers.api.module.safes.domain.dto.CreateSafeDto;
+import com.servinetcomputers.api.module.safes.domain.dto.SafeDetailDto;
+import com.servinetcomputers.api.module.safes.domain.dto.SafeDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -23,17 +29,17 @@ public class SafeController {
     private final DeleteSafeUseCase deleteSafeUseCase;
 
     @PostMapping
-    public ResponseEntity<SafeResponse> register(@RequestBody SafeRequest request) {
+    public ResponseEntity<SafeDto> register(@RequestBody CreateSafeDto request) {
         return ResponseEntity.ok(createSafeUseCase.call(request));
     }
 
     @GetMapping
-    public ResponseEntity<List<SafeResponse>> getAll() {
+    public ResponseEntity<List<SafeDto>> getAll() {
         return ResponseEntity.ok(getAllSafesUseCase.call());
     }
 
     @GetMapping(path = "/{id}/details")
-    public ResponseEntity<List<SafeDetailResponse>> getDetails(@PathVariable("id") int safeId) {
+    public ResponseEntity<List<SafeDetailDto>> getDetails(@PathVariable("id") int safeId) {
         return ResponseEntity.ok(getDetailsUseCase.call(safeId));
     }
 
