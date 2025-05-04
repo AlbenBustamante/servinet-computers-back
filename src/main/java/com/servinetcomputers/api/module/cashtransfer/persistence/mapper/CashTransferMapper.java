@@ -1,5 +1,6 @@
 package com.servinetcomputers.api.module.cashtransfer.persistence.mapper;
 
+import com.servinetcomputers.api.module.base.BaseMapper;
 import com.servinetcomputers.api.module.cashtransfer.domain.dto.CashTransferDto;
 import com.servinetcomputers.api.module.cashtransfer.domain.dto.CreateCashTransferDto;
 import com.servinetcomputers.api.module.cashtransfer.persistence.entity.CashTransfer;
@@ -8,7 +9,7 @@ import org.mapstruct.Mapping;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = BaseMapper.class)
 public interface CashTransferMapper {
     @Mapping(target = "received", ignore = true)
     @Mapping(target = "sender", ignore = true)

@@ -4,10 +4,19 @@ import com.servinetcomputers.api.core.audit.AuditAuditable;
 import com.servinetcomputers.api.core.audit.Auditable;
 import com.servinetcomputers.api.core.converter.CashBoxTypeConverter;
 import com.servinetcomputers.api.core.util.enums.CashBoxType;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import static com.servinetcomputers.api.core.util.constants.SafeConstants.BASE_LENGTH;
 
 @Entity
 @Table(name = "cash_transfers")
@@ -22,6 +31,9 @@ public class CashTransfer extends Auditable {
 
     @Column(nullable = false)
     private Integer value;
+
+    @Column(length = BASE_LENGTH)
+    private String safeBase;
 
     @Column(nullable = false)
     private Integer senderId;
