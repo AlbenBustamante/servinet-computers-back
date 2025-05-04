@@ -2,6 +2,7 @@ package com.servinetcomputers.api.core.exception;
 
 import com.servinetcomputers.api.core.datetime.DateTimeService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -23,11 +24,14 @@ import java.util.Objects;
  */
 @RequiredArgsConstructor
 @RestControllerAdvice
+@Slf4j
 public class AppExceptionHandler extends ResponseEntityExceptionHandler {
     private final DateTimeService dateTimeService;
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+        log.error("{}: {}", ex.getBody().getTitle(), ex.getBody().getDetail());
+
         final Map<String, Object> body = new LinkedHashMap<>();
 
         body.put("timestamp", timestamp());
@@ -50,11 +54,13 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
             AppException.class
     })
     public ProblemDetail handleAppException(AppException ex) {
+        log.error(ex.getMessage());
         return createProblemDetail(ex);
     }
 
     @ExceptionHandler(RuntimeException.class)
     public ProblemDetail handleRuntime(RuntimeException ex) {
+        log.error(ex.getMessage());
         final var problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
         problemDetail.setProperty("timestamp", timestamp());
 
@@ -63,6 +69,7 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ProblemDetail handle(Exception ex) {
+        log.error(ex.getMessage());
         final var problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
         problemDetail.setProperty("timestamp", timestamp());
 
