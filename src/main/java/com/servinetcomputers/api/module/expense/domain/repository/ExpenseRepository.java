@@ -10,9 +10,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ExpenseRepository {
-    ExpenseDto save(CreateExpenseDto request);
+    ExpenseDto save(CreateExpenseDto dto);
 
-    ExpenseDto save(ExpenseDto response);
+    ExpenseDto save(ExpenseDto dto);
 
     Optional<ExpenseDto> get(int expenseId);
 

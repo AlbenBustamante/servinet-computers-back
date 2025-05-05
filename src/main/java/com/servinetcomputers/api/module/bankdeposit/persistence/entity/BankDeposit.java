@@ -4,8 +4,19 @@ import com.servinetcomputers.api.core.audit.AuditAuditable;
 import com.servinetcomputers.api.core.audit.Auditable;
 import com.servinetcomputers.api.core.converter.BankDepositStatusConverter;
 import com.servinetcomputers.api.core.util.enums.BankDepositStatus;
+import com.servinetcomputers.api.module.cashregister.persistence.entity.CashRegisterDetail;
 import com.servinetcomputers.api.module.expense.persistence.entity.Expense;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -29,6 +40,10 @@ public class BankDeposit extends Auditable {
     @Convert(converter = BankDepositStatusConverter.class)
     @Column(nullable = false, columnDefinition = "CHAR(1)")
     private BankDepositStatus status;
+
+    @ManyToOne
+    @JoinColumn(name = "cash_register_detail_id", nullable = false)
+    private CashRegisterDetail cashRegisterDetail;
 
     @OneToOne
     @JoinColumn(name = "expense_id")

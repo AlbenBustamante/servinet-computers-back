@@ -23,16 +23,16 @@ public class ExpenseRepositoryImpl implements ExpenseRepository {
     private final PaginationMapper paginationMapper;
 
     @Override
-    public ExpenseDto save(CreateExpenseDto request) {
-        final var entity = mapper.toEntity(request);
+    public ExpenseDto save(CreateExpenseDto dto) {
+        final var entity = mapper.toEntity(dto);
         final var newExpense = repository.save(entity);
 
         return mapper.toDto(newExpense);
     }
 
     @Override
-    public ExpenseDto save(ExpenseDto response) {
-        final var entity = mapper.toEntity(response);
+    public ExpenseDto save(ExpenseDto dto) {
+        final var entity = mapper.toEntity(dto);
         final var newExpense = repository.save(entity);
 
         return mapper.toDto(newExpense);
