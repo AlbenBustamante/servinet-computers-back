@@ -12,9 +12,9 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ExpenseDto extends AuditableDto<Integer> {
-    private int cashRegisterDetailId, value;
+    private Integer cashRegisterDetailId, value;
     private String description;
-    private Boolean discount;
+    private Boolean discount, administrative;
     private CashRegisterDetailDto cashRegisterDetail;
 
     public ExpenseDto copy() {
@@ -23,6 +23,7 @@ public class ExpenseDto extends AuditableDto<Integer> {
                 value,
                 description,
                 discount,
+                administrative,
                 cashRegisterDetail
         );
 

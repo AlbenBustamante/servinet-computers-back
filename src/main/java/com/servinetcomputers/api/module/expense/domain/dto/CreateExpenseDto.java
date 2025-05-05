@@ -12,6 +12,6 @@ public class CreateExpenseDto {
     private final int cashRegisterDetailId;
     private final String description;
     private final int value;
-    private final boolean discount;
+    private final boolean discount, administrative;
     private CashRegisterDetailDto cashRegisterDetail;
 }
