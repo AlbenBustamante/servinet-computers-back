@@ -10,13 +10,17 @@ import org.mapstruct.Mapping;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = {CashRegisterDetailMapper.class, ExpenseMapper.class})
+@Mapper(componentModel = "spring", uses = {CashRegisterDetailMapper.class, ExpenseMapper.class, DepositorMapper.class, BankDepositPaymentMapper.class})
 public interface BankDepositMapper {
+    @Mapping(target = "depositors", source = "cashRegisterDetails")
+    @Mapping(target = "openedBy", expression = "java(entity.getCashRegisterDetail().getFullName())")
     BankDepositDto toDto(BankDeposit entity);
 
     List<BankDepositDto> toDto(List<BankDeposit> entities);
 
     @Mapping(target = "cashRegisterDetail", source = "cashRegisterDetailDto")
+    @Mapping(target = "payments", ignore = true)
+    @Mapping(target = "cashRegisterDetails", ignore = true)
     @Mapping(target = "expense", source = "expenseDto")
     @Mapping(target = "modifiedDate", ignore = true)
     @Mapping(target = "modifiedBy", ignore = true)

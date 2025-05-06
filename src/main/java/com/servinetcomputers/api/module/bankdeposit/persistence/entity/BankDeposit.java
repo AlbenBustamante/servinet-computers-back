@@ -15,11 +15,14 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import java.util.List;
 
 import static com.servinetcomputers.api.core.util.constants.BankDepositConstants.COLLECTOR_LENGTH;
 
@@ -48,4 +51,10 @@ public class BankDeposit extends Auditable {
     @OneToOne
     @JoinColumn(name = "expense_id")
     private Expense expense;
+
+    @OneToMany(mappedBy = "bankDeposit")
+    private List<BankDepositCashRegisterDetail> cashRegisterDetails;
+
+    @OneToMany(mappedBy = "bankDeposit")
+    private List<BankDepositPayment> payments;
 }
