@@ -26,6 +26,19 @@ public class GetBankDepositsBetweenService implements GetBankDepositsBetweenUseC
             endDate = dateTimeService.now();
         }
 
-        return repository.getAllBetween(startDate, endDate);
+        final var bankDeposits = repository.getAllBetween(startDate, endDate);
+
+        for (final var bankDeposit : bankDeposits) {
+            final var depositors = bankDeposit.getDepositors();
+            var totalCollected = 0;
+
+            for (final var depositor : depositors) {
+                totalCollected += depositor.getValue();
+            }
+
+            bankDeposit.setTotalCollected(totalCollected);
+        }
+
+        return bankDeposits;
     }
 }

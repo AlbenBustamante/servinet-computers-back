@@ -12,6 +12,7 @@ import java.util.List;
 @Setter
 public class BankDepositDto extends AuditableDto<Integer> {
     private String collector, openedBy;
+    private Integer totalCollected;
     private BankDepositStatus status;
     private ExpenseDto expense;
     private List<DepositorDto> depositors;

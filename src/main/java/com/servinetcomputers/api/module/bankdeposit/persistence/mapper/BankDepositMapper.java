@@ -12,6 +12,7 @@ import java.util.List;
 
 @Mapper(componentModel = "spring", uses = {CashRegisterDetailMapper.class, ExpenseMapper.class, DepositorMapper.class, BankDepositPaymentMapper.class})
 public interface BankDepositMapper {
+    @Mapping(target = "totalCollected", ignore = true)
     @Mapping(target = "depositors", source = "cashRegisterDetails")
     @Mapping(target = "openedBy", expression = "java(entity.getCashRegisterDetail().getFullName())")
     BankDepositDto toDto(BankDeposit entity);
