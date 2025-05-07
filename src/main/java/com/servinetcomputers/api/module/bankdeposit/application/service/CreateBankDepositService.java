@@ -30,13 +30,17 @@ public class CreateBankDepositService implements CreateBankDepositUseCase {
 
         if (dto.getExpenseNote() != null && dto.getExpenseValue() != null) {
             final var createExpenseDto = new CreateExpenseDto(dto.getCashRegisterDetailId(), dto.getExpenseNote(), dto.getExpenseValue(), false, true);
-            final var newExpense = expenseRepository.save(createExpenseDto);
+            createExpenseDto.setCashRegisterDetail(cashRegisterDetail);
 
+            final var newExpense = expenseRepository.save(createExpenseDto);
             dto.setExpenseDto(newExpense);
         }
 
         dto.setStatus(BankDepositStatus.OPEN);
 
-        return repository.save(dto);
+        final var newBankDeposit = repository.save(dto);
+        newBankDeposit.setTotalCollected(0);
+
+        return newBankDeposit;
     }
 }
