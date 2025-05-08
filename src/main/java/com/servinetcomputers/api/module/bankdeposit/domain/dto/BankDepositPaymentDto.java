@@ -8,6 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class BankDepositPaymentDto extends AuditableDto<Integer> {
-    private Integer bankDepositId, value;
+    private Integer value;
     private PlatformDto platform;
+    private BankDepositDto bankDeposit;
 }

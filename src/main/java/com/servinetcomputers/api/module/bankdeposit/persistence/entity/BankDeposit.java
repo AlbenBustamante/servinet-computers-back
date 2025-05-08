@@ -6,23 +6,13 @@ import com.servinetcomputers.api.core.converter.BankDepositStatusConverter;
 import com.servinetcomputers.api.core.util.enums.BankDepositStatus;
 import com.servinetcomputers.api.module.cashregister.persistence.entity.CashRegisterDetail;
 import com.servinetcomputers.api.module.expense.persistence.entity.Expense;
-import jakarta.persistence.Column;
-import jakarta.persistence.Convert;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import static com.servinetcomputers.api.core.util.constants.BankDepositConstants.COLLECTOR_LENGTH;
 
@@ -53,8 +43,8 @@ public class BankDeposit extends Auditable {
     private Expense expense;
 
     @OneToMany(mappedBy = "bankDeposit")
-    private List<BankDepositCashRegisterDetail> cashRegisterDetails;
+    private Set<BankDepositCashRegisterDetail> cashRegisterDetails = new HashSet<>();
 
     @OneToMany(mappedBy = "bankDeposit")
-    private List<BankDepositPayment> payments;
+    private Set<BankDepositPayment> payments = new HashSet<>();
 }

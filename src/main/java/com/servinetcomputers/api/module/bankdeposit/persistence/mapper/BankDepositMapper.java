@@ -30,4 +30,8 @@ public interface BankDepositMapper {
     @Mapping(target = "createdDate", ignore = true)
     @Mapping(target = "createdBy", ignore = true)
     BankDeposit toEntity(CreateBankDepositDto dto);
+
+    @Mapping(target = "cashRegisterDetails", ignore = true)
+    @Mapping(target = "cashRegisterDetail", ignore = true)
+    BankDeposit toEntity(BankDepositDto dto);
 }
