@@ -15,12 +15,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class CreateBankDepositService implements CreateBankDepositUseCase {
+    private static final String EXPENSE_PREFIX = "BANCO";
     private final BankDepositRepository repository;
     private final CashRegisterDetailRepository cashRegisterDetailRepository;
     private final ExpenseRepository expenseRepository;
 
-    @Transactional(rollbackFor = Exception.class)
     @Override
     public BankDepositDto call(CreateBankDepositDto dto) {
         final var cashRegisterDetail = cashRegisterDetailRepository.get(dto.getCashRegisterDetailId())
@@ -29,7 +30,8 @@ public class CreateBankDepositService implements CreateBankDepositUseCase {
         dto.setCashRegisterDetailDto(cashRegisterDetail);
 
         if (dto.getExpenseNote() != null && dto.getExpenseValue() != null) {
-            final var createExpenseDto = new CreateExpenseDto(dto.getCashRegisterDetailId(), dto.getExpenseNote(), dto.getExpenseValue(), false, true);
+            final var expenseNote = String.format("%s: %s", EXPENSE_PREFIX, dto.getExpenseNote());
+            final var createExpenseDto = new CreateExpenseDto(dto.getCashRegisterDetailId(), expenseNote, dto.getExpenseValue(), false, true);
             createExpenseDto.setCashRegisterDetail(cashRegisterDetail);
 
             final var newExpense = expenseRepository.save(createExpenseDto);

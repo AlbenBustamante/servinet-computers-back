@@ -10,6 +10,7 @@ public record CashRegisterDetailReportsDto(
         int finalBase,
         int deposits,
         int withdrawals,
+        int bankDeposits,
         int expenses,
         int discounts,
         int transfersSent,
@@ -19,7 +20,7 @@ public record CashRegisterDetailReportsDto(
         int discrepancy
 ) {
     public static CashRegisterDetailReportsDto empty(CashRegisterDetailDto cashRegisterDetail) {
-        return new CashRegisterDetailReportsDto(cashRegisterDetail, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+        return new CashRegisterDetailReportsDto(cashRegisterDetail, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
     }
 
     public CashRegisterDetailReportsDto sum(CashRegisterDetailReportsDto reports) {
@@ -30,6 +31,7 @@ public record CashRegisterDetailReportsDto(
                 finalBase + reports.finalBase,
                 deposits + reports.deposits,
                 withdrawals + reports.withdrawals,
+                bankDeposits + reports.bankDeposits,
                 expenses + reports.expenses,
                 discounts + reports.discounts,
                 transfersSent + reports.transfersSent,

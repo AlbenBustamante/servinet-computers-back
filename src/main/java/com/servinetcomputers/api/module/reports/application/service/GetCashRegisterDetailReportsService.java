@@ -2,6 +2,7 @@ package com.servinetcomputers.api.module.reports.application.service;
 
 import com.servinetcomputers.api.core.util.enums.CashBoxType;
 import com.servinetcomputers.api.core.util.enums.TransactionDetailType;
+import com.servinetcomputers.api.module.bankdeposit.domain.adapter.BankDepositCashRegisterDetailPersistenceAdapter;
 import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDetailDto;
 import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDetailReportsDto;
 import com.servinetcomputers.api.module.cashtransfer.domain.repository.CashTransferRepository;
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Service
 public class GetCashRegisterDetailReportsService implements GetCashRegisterDetailReportsUseCase {
+    private final BankDepositCashRegisterDetailPersistenceAdapter bankDepositCashRegisterDetailPersistenceAdapter;
     private final TransactionDetailRepository transactionDetailRepository;
     private final ExpenseRepository expenseRepository;
     private final CashTransferRepository cashTransferRepository;
@@ -32,8 +34,10 @@ public class GetCashRegisterDetailReportsService implements GetCashRegisterDetai
         var deposits = transactionDetailRepository.sumValuesByCashRegisterDetailIdAndType(cashRegisterDetailId, TransactionDetailType.DEPOSIT);
         var withdrawals = transactionDetailRepository.sumValuesByCashRegisterDetailIdAndType(cashRegisterDetailId, TransactionDetailType.WITHDRAWAL);
 
-        var expenses = expenseRepository.sumValuesByCashRegisterDetailIdAndDiscount(cashRegisterDetailId, false);
-        var discounts = expenseRepository.sumValuesByCashRegisterDetailIdAndDiscount(cashRegisterDetailId, true);
+        final var bankDeposits = bankDepositCashRegisterDetailPersistenceAdapter.sumValuesByCashRegisterDetailId(cashRegisterDetailId);
+
+        final var expenses = expenseRepository.sumValuesByCashRegisterDetailIdAndDiscount(cashRegisterDetailId, false);
+        final var discounts = expenseRepository.sumValuesByCashRegisterDetailIdAndDiscount(cashRegisterDetailId, true);
 
         final var transfersSent = cashTransferRepository.sumAllBySenderIdAndType(cashRegisterDetailId, CashBoxType.CASH_REGISTER);
         final var transfersReceived = cashTransferRepository.sumAllByReceiverIdAndType(cashRegisterDetailId, CashBoxType.CASH_REGISTER);
@@ -41,7 +45,7 @@ public class GetCashRegisterDetailReportsService implements GetCashRegisterDetai
         final var earnings = transactionDetailRepository.sumCommissionByCashRegisterDetailId(cashRegisterDetailId);
 
         deposits += transfersReceived + earnings;
-        withdrawals += expenses + discounts + transfersSent;
+        withdrawals += bankDeposits + expenses + discounts + transfersSent;
 
         final var balance = initialBase + deposits - withdrawals - expenses - discounts;
         final var discrepancy = finalBase - balance;
@@ -55,6 +59,7 @@ public class GetCashRegisterDetailReportsService implements GetCashRegisterDetai
                 .finalBase(finalBase)
                 .deposits(deposits)
                 .withdrawals(withdrawals)
+                .bankDeposits(bankDeposits)
                 .expenses(expenses)
                 .discounts(discounts)
                 .transfersSent(transfersSent)
