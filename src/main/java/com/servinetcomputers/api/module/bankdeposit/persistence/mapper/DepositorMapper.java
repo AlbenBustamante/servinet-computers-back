@@ -19,6 +19,8 @@ public interface DepositorMapper {
     List<DepositorDto> toDto(List<BankDepositCashRegisterDetail> entities);
 
     @Mapping(target = "id", source = "pk")
+    @Mapping(target = "cashRegisterDetail", ignore = true)
+    @Mapping(target = "bankDeposit", ignore = true)
     @Mapping(target = "modifiedDate", ignore = true)
     @Mapping(target = "modifiedBy", ignore = true)
     @Mapping(target = "enabled", ignore = true)

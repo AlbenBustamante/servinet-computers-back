@@ -1,9 +1,11 @@
 package com.servinetcomputers.api.module.bankdeposit.controller;
 
 import com.servinetcomputers.api.module.bankdeposit.application.usecase.CreateBankDepositUseCase;
+import com.servinetcomputers.api.module.bankdeposit.application.usecase.CreateDepositorUseCase;
 import com.servinetcomputers.api.module.bankdeposit.application.usecase.GetBankDepositsBetweenUseCase;
 import com.servinetcomputers.api.module.bankdeposit.domain.dto.BankDepositDto;
 import com.servinetcomputers.api.module.bankdeposit.domain.dto.CreateBankDepositDto;
+import com.servinetcomputers.api.module.bankdeposit.domain.dto.CreateDepositorDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,11 +23,17 @@ import java.util.List;
 @RestController
 public class BankDepositController {
     private final CreateBankDepositUseCase createBankDepositUseCase;
+    private final CreateDepositorUseCase createDepositorUseCase;
     private final GetBankDepositsBetweenUseCase getBankDepositsBetweenUseCase;
 
     @PostMapping
     public ResponseEntity<BankDepositDto> create(@RequestBody CreateBankDepositDto createBankDepositDto) {
         return ResponseEntity.ok(createBankDepositUseCase.call(createBankDepositDto));
+    }
+
+    @PostMapping(path = "/enroll-depositor")
+    public ResponseEntity<BankDepositDto> enrollDepositor(@RequestBody CreateDepositorDto createDepositorDto) {
+        return ResponseEntity.ok(createDepositorUseCase.call(createDepositorDto));
     }
 
     @GetMapping

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Repository
@@ -23,6 +24,12 @@ public class BankDepositRepositoryImpl implements BankDepositRepository {
         final var bankDeposit = repository.save(entity);
 
         return mapper.toDto(bankDeposit);
+    }
+
+    @Override
+    public Optional<BankDepositDto> get(Integer bankDepositId) {
+        final var entity = repository.findByIdAndEnabledTrue(bankDepositId);
+        return entity.map(mapper::toDto);
     }
 
     @Override
