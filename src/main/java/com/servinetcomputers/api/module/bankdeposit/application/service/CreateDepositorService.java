@@ -4,7 +4,6 @@ import com.servinetcomputers.api.module.bankdeposit.application.usecase.CreateDe
 import com.servinetcomputers.api.module.bankdeposit.domain.adapter.BankDepositPersistenceAdapter;
 import com.servinetcomputers.api.module.bankdeposit.domain.dto.BankDepositDto;
 import com.servinetcomputers.api.module.bankdeposit.domain.dto.CreateDepositorDto;
-import com.servinetcomputers.api.module.bankdeposit.domain.repository.BankDepositRepository;
 import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterDetailPersistenceAdapter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(rollbackFor = Exception.class)
 public class CreateDepositorService implements CreateDepositorUseCase {
     private final CashRegisterDetailPersistenceAdapter cashRegisterDetailPersistenceAdapter;
-    private final BankDepositRepository bankDepositRepository;
     private final BankDepositPersistenceAdapter adapter;
 
     @Override
@@ -36,8 +34,6 @@ public class CreateDepositorService implements CreateDepositorUseCase {
         }
 
         bankDepositDto.setTotalCollected(totalCollected);
-
-        System.out.println(bankDepositDto);
 
         return bankDepositDto;
     }
