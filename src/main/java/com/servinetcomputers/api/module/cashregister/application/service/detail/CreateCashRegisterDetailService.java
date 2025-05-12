@@ -8,7 +8,7 @@ import com.servinetcomputers.api.core.util.enums.CashRegisterStatus;
 import com.servinetcomputers.api.module.cashregister.application.usecase.detail.CreateCashRegisterDetailUseCase;
 import com.servinetcomputers.api.module.cashregister.domain.dto.CreateCashRegisterDetailDto;
 import com.servinetcomputers.api.module.cashregister.domain.dto.MyCashRegistersReports;
-import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterDetailRepository;
+import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterDetailPersistenceAdapter;
 import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterRepository;
 import com.servinetcomputers.api.module.user.application.usecase.GetUserCashRegisterReportsUseCase;
 import com.servinetcomputers.api.module.user.domain.repository.UserRepository;
@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Service
 public class CreateCashRegisterDetailService implements CreateCashRegisterDetailUseCase {
-    private final CashRegisterDetailRepository repository;
+    private final CashRegisterDetailPersistenceAdapter repository;
     private final CashRegisterRepository cashRegisterRepository;
     private final UserRepository userRepository;
     private final DateTimeService dateTimeService;

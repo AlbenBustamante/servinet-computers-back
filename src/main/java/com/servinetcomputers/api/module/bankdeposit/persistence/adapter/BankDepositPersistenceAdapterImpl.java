@@ -1,6 +1,7 @@
 package com.servinetcomputers.api.module.bankdeposit.persistence.adapter;
 
 import com.servinetcomputers.api.core.exception.NotFoundException;
+import com.servinetcomputers.api.core.util.enums.BankDepositStatus;
 import com.servinetcomputers.api.module.bankdeposit.domain.adapter.BankDepositPersistenceAdapter;
 import com.servinetcomputers.api.module.bankdeposit.domain.dto.BankDepositDto;
 import com.servinetcomputers.api.module.bankdeposit.domain.dto.CreateDepositorDto;
@@ -37,5 +38,14 @@ public class BankDepositPersistenceAdapterImpl implements BankDepositPersistence
         final var updatedBankDeposit = jpaBankDepositRepository.save(bankDeposit);
 
         return bankDepositMapper.toDto(updatedBankDeposit);
+    }
+
+    @Override
+    public BankDepositDto setStatusToInProgress(Integer bankDepositDto) {
+        var bankDeposit = jpaBankDepositRepository.findByIdAndEnabledTrue(bankDepositDto)
+                .orElseThrow(() -> new NotFoundException("No se encontró el depósito bancario: " + bankDepositDto));
+
+        bankDeposit.setStatus(BankDepositStatus.IN_PROGRESS);
+        return bankDepositMapper.toDto(bankDeposit);
     }
 }

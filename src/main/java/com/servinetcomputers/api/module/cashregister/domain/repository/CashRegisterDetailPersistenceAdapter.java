@@ -10,10 +10,12 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-public interface CashRegisterDetailRepository {
+public interface CashRegisterDetailPersistenceAdapter {
     void save(CreateCashRegisterDetailDto request);
 
     CashRegisterDetailDto save(CashRegisterDetailDto response);
+
+    Integer getCurrentAmount();
 
     /**
      * Verify if a user already has a cash register detail that its status is not the specified.

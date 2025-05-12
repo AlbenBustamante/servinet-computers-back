@@ -8,7 +8,7 @@ import com.servinetcomputers.api.core.util.enums.CashRegisterStatus;
 import com.servinetcomputers.api.module.cashregister.application.usecase.detail.CloseUseCase;
 import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDetailReportsDto;
 import com.servinetcomputers.api.module.cashregister.domain.dto.CloseCashRegisterDetailDto;
-import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterDetailRepository;
+import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterDetailPersistenceAdapter;
 import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterRepository;
 import com.servinetcomputers.api.module.reports.application.usecase.GetCashRegisterDetailReportsUseCase;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Service
 public class CloseService implements CloseUseCase {
-    private final CashRegisterDetailRepository repository;
+    private final CashRegisterDetailPersistenceAdapter repository;
     private final CashRegisterRepository cashRegisterRepository;
     private final DateTimeService dateTimeService;
     private final GetCashRegisterDetailReportsUseCase getCashRegisterDetailReportsUseCase;

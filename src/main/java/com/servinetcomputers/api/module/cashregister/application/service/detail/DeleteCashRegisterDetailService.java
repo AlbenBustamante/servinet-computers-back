@@ -4,7 +4,7 @@ import com.servinetcomputers.api.core.exception.AppException;
 import com.servinetcomputers.api.core.exception.NotFoundException;
 import com.servinetcomputers.api.core.util.enums.CashRegisterDetailStatus;
 import com.servinetcomputers.api.module.cashregister.application.usecase.detail.DeleteCashRegisterDetailUseCase;
-import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterDetailRepository;
+import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterDetailPersistenceAdapter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Service
 public class DeleteCashRegisterDetailService implements DeleteCashRegisterDetailUseCase {
-    private final CashRegisterDetailRepository repository;
+    private final CashRegisterDetailPersistenceAdapter repository;
 
     @Transactional(rollbackFor = AppException.class)
     @Override

@@ -3,7 +3,7 @@ package com.servinetcomputers.api.module.cashregister.application.service;
 import com.servinetcomputers.api.core.exception.NotFoundException;
 import com.servinetcomputers.api.module.cashregister.application.usecase.GetAllMovementsUseCase;
 import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDetailDto;
-import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterDetailRepository;
+import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterDetailPersistenceAdapter;
 import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,7 +15,7 @@ import java.util.List;
 @Service
 public class GetAllMovementsService implements GetAllMovementsUseCase {
     private final CashRegisterRepository repository;
-    private final CashRegisterDetailRepository cashRegisterDetailRepository;
+    private final CashRegisterDetailPersistenceAdapter cashRegisterDetailPersistenceAdapter;
 
     /**
      * Get all details of a cash register by its ID.
@@ -30,6 +30,6 @@ public class GetAllMovementsService implements GetAllMovementsUseCase {
             throw new NotFoundException("No se encontró la caja con ID: #" + cashRegisterId);
         }
 
-        return cashRegisterDetailRepository.getAllByCashRegisterId(cashRegisterId);
+        return cashRegisterDetailPersistenceAdapter.getAllByCashRegisterId(cashRegisterId);
     }
 }

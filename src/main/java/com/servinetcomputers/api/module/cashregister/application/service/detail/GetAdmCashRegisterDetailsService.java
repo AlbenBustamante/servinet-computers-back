@@ -4,7 +4,7 @@ import com.servinetcomputers.api.core.datetime.DateTimeService;
 import com.servinetcomputers.api.core.util.enums.CashRegisterDetailStatus;
 import com.servinetcomputers.api.module.cashregister.application.usecase.detail.GetAdmCashRegisterDetailsUseCase;
 import com.servinetcomputers.api.module.cashregister.domain.dto.AdmCashRegistersDto;
-import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterDetailRepository;
+import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterDetailPersistenceAdapter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
@@ -18,7 +18,7 @@ import static com.servinetcomputers.api.core.util.constants.SecurityConstants.AD
 @RequiredArgsConstructor
 @Service
 public class GetAdmCashRegisterDetailsService implements GetAdmCashRegisterDetailsUseCase {
-    private final CashRegisterDetailRepository repository;
+    private final CashRegisterDetailPersistenceAdapter repository;
     private final DateTimeService dateTimeService;
 
     /**

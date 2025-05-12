@@ -4,7 +4,7 @@ import com.servinetcomputers.api.core.util.enums.CashRegisterDetailStatus;
 import com.servinetcomputers.api.core.util.enums.CashRegisterStatus;
 import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDetailDto;
 import com.servinetcomputers.api.module.cashregister.domain.dto.CreateCashRegisterDetailDto;
-import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterDetailRepository;
+import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterDetailPersistenceAdapter;
 import com.servinetcomputers.api.module.cashregister.persistence.JpaCashRegisterDetailRepository;
 import com.servinetcomputers.api.module.cashregister.persistence.mapper.CashRegisterDetailMapper;
 import com.servinetcomputers.api.module.user.domain.dto.UserFullNameDto;
@@ -17,7 +17,7 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @Repository
-public class CashRegisterDetailRepositoryImpl implements CashRegisterDetailRepository {
+public class CashRegisterDetailPersistenceAdapterImpl implements CashRegisterDetailPersistenceAdapter {
     private final JpaCashRegisterDetailRepository repository;
     private final CashRegisterDetailMapper mapper;
 
@@ -33,6 +33,12 @@ public class CashRegisterDetailRepositoryImpl implements CashRegisterDetailRepos
         final var newDetail = repository.save(entity);
 
         return mapper.toDto(newDetail);
+    }
+
+    @Override
+    public Integer getCurrentAmount() {
+        final var currentAmount = repository.countByStatusNotAndEnabledTrue(CashRegisterDetailStatus.CLOSED);
+        return currentAmount != null ? currentAmount : 0;
     }
 
     @Override

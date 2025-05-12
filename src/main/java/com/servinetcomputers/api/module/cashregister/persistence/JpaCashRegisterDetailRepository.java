@@ -17,6 +17,8 @@ import java.util.Optional;
 public interface JpaCashRegisterDetailRepository extends JpaRepository<CashRegisterDetail, Integer> {
     Optional<CashRegisterDetail> findByIdAndEnabledTrue(int id);
 
+    Integer countByStatusNotAndEnabledTrue(CashRegisterDetailStatus status);
+
     boolean existsByUserIdAndCreatedDateBetweenAndEnabledTrueAndCashRegisterStatusNot(int userId, LocalDateTime firstDate, LocalDateTime lastDate, CashRegisterStatus status);
 
     List<CashRegisterDetail> findAllByUserIdAndCreatedDateBetweenAndEnabledTrueAndCashRegisterStatusNot(int userId, LocalDateTime firstDate, LocalDateTime lastDate, CashRegisterStatus status);

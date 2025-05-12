@@ -2,7 +2,7 @@ package com.servinetcomputers.api.module.cashtransfer.application.service;
 
 import com.servinetcomputers.api.core.exception.NotFoundException;
 import com.servinetcomputers.api.core.util.enums.CashBoxType;
-import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterDetailRepository;
+import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterDetailPersistenceAdapter;
 import com.servinetcomputers.api.module.cashtransfer.application.usecase.GetCashTransferDetailsUseCase;
 import com.servinetcomputers.api.module.cashtransfer.domain.dto.CashTransferDto;
 import com.servinetcomputers.api.module.safes.domain.repository.SafeDetailRepository;
@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Component
 public class GetCashTransferDetailsService implements GetCashTransferDetailsUseCase {
-    private final CashRegisterDetailRepository cashRegisterDetailRepository;
+    private final CashRegisterDetailPersistenceAdapter cashRegisterDetailPersistenceAdapter;
     private final SafeDetailRepository safeDetailRepository;
 
     @Transactional(readOnly = true)
@@ -28,7 +28,7 @@ public class GetCashTransferDetailsService implements GetCashTransferDetailsUseC
 
     private String getNames(CashBoxType type, int id) {
         if (type == CashBoxType.CASH_REGISTER) {
-            return cashRegisterDetailRepository.getUserFullNameById(id)
+            return cashRegisterDetailPersistenceAdapter.getUserFullNameById(id)
                     .orElseThrow(() -> new NotFoundException("No se encontró el usuario suministrado: #" + id))
                     .fullName();
         }

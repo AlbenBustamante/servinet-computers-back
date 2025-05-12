@@ -5,6 +5,7 @@ import com.servinetcomputers.api.module.bankdeposit.domain.adapter.BankDepositPe
 import com.servinetcomputers.api.module.bankdeposit.domain.dto.BankDepositDto;
 import com.servinetcomputers.api.module.bankdeposit.domain.dto.CreateDepositorDto;
 import com.servinetcomputers.api.module.bankdeposit.domain.repository.BankDepositRepository;
+import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterDetailPersistenceAdapter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,12 +14,21 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional(rollbackFor = Exception.class)
 public class CreateDepositorService implements CreateDepositorUseCase {
+    private final CashRegisterDetailPersistenceAdapter cashRegisterDetailPersistenceAdapter;
     private final BankDepositRepository bankDepositRepository;
     private final BankDepositPersistenceAdapter adapter;
 
     @Override
     public BankDepositDto call(CreateDepositorDto dto) {
-        final var bankDepositDto = adapter.enrollDepositor(dto);
+        var bankDepositDto = adapter.enrollDepositor(dto);
+
+        final var currentAmount = cashRegisterDetailPersistenceAdapter.getCurrentAmount();
+        final var currentDepositors = bankDepositDto.getDepositors().size();
+
+        if (currentDepositors == currentAmount) {
+            bankDepositDto = adapter.setStatusToInProgress(dto.getPk().bankDepositId());
+        }
+
         var totalCollected = 0;
 
         for (final var depositor : bankDepositDto.getDepositors()) {

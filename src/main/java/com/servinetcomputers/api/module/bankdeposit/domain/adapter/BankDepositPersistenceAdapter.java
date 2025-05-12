@@ -5,4 +5,6 @@ import com.servinetcomputers.api.module.bankdeposit.domain.dto.CreateDepositorDt
 
 public interface BankDepositPersistenceAdapter {
     BankDepositDto enrollDepositor(CreateDepositorDto createDepositorDto);
+
+    BankDepositDto setStatusToInProgress(Integer bankDepositId);
 }
