@@ -36,7 +36,7 @@ public class CreateBankDepositPaymentService implements CreateBankDepositPayment
         }
 
         if (totalPayments > totalCollected) {
-            final var message = "Estás superando la cantidad recolectada: %c";
+            final var message = "Estás superando la cantidad recolectada: %d";
             throw new BadRequestException(String.format(message, totalCollected));
         }
 
