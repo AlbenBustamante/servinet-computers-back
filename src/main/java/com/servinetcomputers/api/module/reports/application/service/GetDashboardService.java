@@ -1,6 +1,7 @@
 package com.servinetcomputers.api.module.reports.application.service;
 
 import com.servinetcomputers.api.core.datetime.DateTimeService;
+import com.servinetcomputers.api.module.bankdeposit.domain.adapter.BankDepositPaymentPersistenceAdapter;
 import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDetailDto;
 import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterDetailPersistenceAdapter;
 import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterRepository;
@@ -29,6 +30,7 @@ import static com.servinetcomputers.api.core.util.constants.SecurityConstants.AD
 @RequiredArgsConstructor
 @Service
 public class GetDashboardService implements GetDashboardUseCase {
+    private final BankDepositPaymentPersistenceAdapter bankDepositPaymentPersistenceAdapter;
     private final CashRegisterDetailPersistenceAdapter cashRegisterDetailPersistenceAdapter;
     private final CashRegisterRepository cashRegisterRepository;
     private final ExpenseRepository expenseRepository;
@@ -103,7 +105,9 @@ public class GetDashboardService implements GetDashboardUseCase {
                     : platform.getInitialBalance();
 
             platformBalancesTotal += balance;
-            platformsStats.add(getPlatformStats(platform, startDate, endDate));
+
+            final var stats = getPlatformStats(platform, startDate, endDate);
+            platformsStats.add(stats);
         }
 
         return platformBalancesTotal;
@@ -117,10 +121,21 @@ public class GetDashboardService implements GetDashboardUseCase {
         final var finalBalance = balance.getFinalBalance();
         final var transfersAmount = platformTransferRepository.getPlatformTransfersAmount(platformId, startDate, endDate);
         final var transfersTotal = platformTransferRepository.getPlatformTransfersTotal(platformId, startDate, endDate);
+        final var bankDepositsAmount = bankDepositPaymentPersistenceAdapter.getAmountByPlatformIdBetween(platformId, startDate, endDate);
+        final var bankDepositsTotal = bankDepositPaymentPersistenceAdapter.getTotalByPlatformIdBetween(platformId, startDate, endDate);
+        final var total = initialBalance + transfersTotal + bankDepositsTotal - finalBalance;
 
-        final var total = initialBalance + transfersTotal - finalBalance;
-
-        return new PlatformStatsDto(platformId, platformName, initialBalance, finalBalance, transfersAmount, transfersTotal, total);
+        return PlatformStatsDto.builder()
+                .platformId(platformId)
+                .platformName(platformName)
+                .initialBalance(initialBalance)
+                .finalBalance(finalBalance)
+                .transfersAmount(transfersAmount)
+                .transfersTotal(transfersTotal)
+                .bankDepositsAmount(bankDepositsAmount)
+                .bankDepositsTotal(bankDepositsTotal)
+                .total(total)
+                .build();
     }
 
     private int calculateCashRegistersTotal(List<CashRegisterDetailDto> cashRegisterDetails) {

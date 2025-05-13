@@ -11,6 +11,8 @@ import com.servinetcomputers.api.module.platform.persistence.JpaPlatformReposito
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+
 @RequiredArgsConstructor
 @Component
 public class BankDepositPaymentPersistenceAdapterImpl implements BankDepositPaymentPersistenceAdapter {
@@ -34,5 +36,17 @@ public class BankDepositPaymentPersistenceAdapterImpl implements BankDepositPaym
         final var newPayment = repository.save(entity);
 
         return mapper.toDto(newPayment);
+    }
+
+    @Override
+    public Integer getAmountByPlatformIdBetween(Integer platformId, LocalDateTime startDate, LocalDateTime endDate) {
+        final var amount = repository.countByPlatformIdAndEnabledTrueAndCreatedDateBetween(platformId, startDate, endDate);
+        return amount != null ? amount : 0;
+    }
+
+    @Override
+    public Integer getTotalByPlatformIdBetween(Integer platformId, LocalDateTime startDate, LocalDateTime endDate) {
+        final var total = repository.sumAllByPlatformIdAndEnabledTrueAndCreatedDateBetween(platformId, startDate, endDate);
+        return total != null ? total : 0;
     }
 }
