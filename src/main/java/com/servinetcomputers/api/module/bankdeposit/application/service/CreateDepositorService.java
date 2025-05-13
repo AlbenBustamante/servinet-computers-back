@@ -1,5 +1,6 @@
 package com.servinetcomputers.api.module.bankdeposit.application.service;
 
+import com.servinetcomputers.api.core.util.enums.BankDepositStatus;
 import com.servinetcomputers.api.module.bankdeposit.application.usecase.CreateDepositorUseCase;
 import com.servinetcomputers.api.module.bankdeposit.domain.adapter.BankDepositPersistenceAdapter;
 import com.servinetcomputers.api.module.bankdeposit.domain.dto.BankDepositDto;
@@ -24,7 +25,7 @@ public class CreateDepositorService implements CreateDepositorUseCase {
         final var currentDepositors = bankDepositDto.getDepositors().size();
 
         if (currentDepositors == currentAmount) {
-            bankDepositDto = adapter.setStatusToInProgress(dto.getPk().bankDepositId());
+            bankDepositDto = adapter.setStatus(dto.getPk().bankDepositId(), BankDepositStatus.IN_PROGRESS);
         }
 
         var totalCollected = 0;

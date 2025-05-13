@@ -41,11 +41,19 @@ public class BankDepositPersistenceAdapterImpl implements BankDepositPersistence
     }
 
     @Override
-    public BankDepositDto setStatusToInProgress(Integer bankDepositDto) {
+    public BankDepositDto setStatus(Integer bankDepositDto, BankDepositStatus status) {
         var bankDeposit = jpaBankDepositRepository.findByIdAndEnabledTrue(bankDepositDto)
                 .orElseThrow(() -> new NotFoundException("No se encontró el depósito bancario: " + bankDepositDto));
 
-        bankDeposit.setStatus(BankDepositStatus.IN_PROGRESS);
+        bankDeposit.setStatus(status);
         return bankDepositMapper.toDto(bankDeposit);
+    }
+
+    @Override
+    public BankDepositDto get(Integer bankDepositId) {
+        final var entity = jpaBankDepositRepository.findByIdAndEnabledTrue(bankDepositId)
+                .orElseThrow(() -> new NotFoundException("No se encontró el depósito bancario: " + bankDepositId));
+
+        return bankDepositMapper.toDto(entity);
     }
 }

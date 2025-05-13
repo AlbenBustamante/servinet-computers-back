@@ -1,7 +1,7 @@
 package com.servinetcomputers.api.module.bankdeposit.controller;
 
 import com.servinetcomputers.api.module.bankdeposit.application.usecase.CreateBankDepositPaymentUseCase;
-import com.servinetcomputers.api.module.bankdeposit.domain.dto.BankDepositPaymentDto;
+import com.servinetcomputers.api.module.bankdeposit.domain.dto.BankDepositDto;
 import com.servinetcomputers.api.module.bankdeposit.domain.dto.CreateBankDepositPaymentDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +17,7 @@ public class BankDepositPaymentController {
     private final CreateBankDepositPaymentUseCase createBankDepositPaymentUseCase;
 
     @PostMapping
-    public ResponseEntity<BankDepositPaymentDto> create(@RequestBody CreateBankDepositPaymentDto dto) {
+    public ResponseEntity<BankDepositDto> create(@RequestBody CreateBankDepositPaymentDto dto) {
         return ResponseEntity.ok(createBankDepositPaymentUseCase.call(dto));
     }
 }
