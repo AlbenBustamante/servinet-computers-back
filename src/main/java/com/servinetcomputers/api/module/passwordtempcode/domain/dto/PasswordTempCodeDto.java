@@ -7,6 +7,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class PasswordTempCodeDto extends AuditableDto<Integer> {
-    private String code;
+    private String code, userCode;
     private Integer usedById;
 }

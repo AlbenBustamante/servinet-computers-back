@@ -23,7 +23,7 @@ public class SendCodeToChangePasswordService implements SendCodeToChangePassword
 
         final var subject = "Solicitud Cambio de Clave";
         final var body = "El código que debes ingresar es: %s";
-        final var code = createPasswordTempCodeUseCase.call();
+        final var code = createPasswordTempCodeUseCase.call(dto.userCode());
 
         emailSenderService.sendEmail(email, subject, String.format(body, code.getCode()));
     }

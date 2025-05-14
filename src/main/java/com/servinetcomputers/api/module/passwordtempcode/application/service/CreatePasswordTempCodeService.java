@@ -14,14 +14,14 @@ public class CreatePasswordTempCodeService implements CreatePasswordTempCodeUseC
     private final PasswordTempCodePersistenceAdapter adapter;
 
     @Override
-    public PasswordTempCodeDto call() {
+    public PasswordTempCodeDto call(String userCode) {
         var code = randomCode();
 
         while (adapter.isUsed(code)) {
             code = randomCode();
         }
 
-        return adapter.save(new CreatePasswordTempCodeDto(code));
+        return adapter.save(new CreatePasswordTempCodeDto(code, userCode));
     }
 
     private String randomCode() {
