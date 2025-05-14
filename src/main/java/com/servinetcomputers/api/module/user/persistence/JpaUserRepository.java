@@ -10,6 +10,8 @@ import java.util.Optional;
  * The {@link User} repository.
  */
 public interface JpaUserRepository extends JpaRepository<User, Integer> {
+    boolean existsByEmailAndEnabledTrue(String email);
+
     /**
      * Find an existing enabled user by the code.
      *

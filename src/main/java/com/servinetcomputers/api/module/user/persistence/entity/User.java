@@ -32,6 +32,9 @@ public class User extends Auditable {
     @Column(nullable = false, length = LAST_NAME_LENGTH)
     private String lastName;
 
+    @Column(nullable = false)
+    private String email;
+
     @Column(nullable = false, length = CODE_LENGTH, unique = true)
     private String code;
 

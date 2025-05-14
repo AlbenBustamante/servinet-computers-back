@@ -38,6 +38,11 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
+    public boolean existsByEmail(String email) {
+        return jpaUserRepository.existsByEmailAndEnabledTrue(email);
+    }
+
+    @Override
     public Optional<UserDto> getLastByRole(Role role) {
         final var user = jpaUserRepository.findFirstByRoleOrderByCreatedDateDesc(role);
         return user.map(userMapper::toDto);
