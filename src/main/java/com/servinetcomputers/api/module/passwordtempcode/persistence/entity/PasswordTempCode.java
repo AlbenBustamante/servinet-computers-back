@@ -19,7 +19,7 @@ public class PasswordTempCode extends Auditable {
     @Column(name = "password_temp_code_id")
     private Integer id;
 
-    @Column(nullable = false, length = 5)
+    @Column(nullable = false, length = 8, unique = true)
     private String code;
 
     @ManyToOne

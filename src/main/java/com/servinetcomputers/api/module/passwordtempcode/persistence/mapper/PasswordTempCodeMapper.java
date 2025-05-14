@@ -1,12 +1,16 @@
 package com.servinetcomputers.api.module.passwordtempcode.persistence.mapper;
 
 import com.servinetcomputers.api.module.passwordtempcode.domain.dto.CreatePasswordTempCodeDto;
+import com.servinetcomputers.api.module.passwordtempcode.domain.dto.PasswordTempCodeDto;
 import com.servinetcomputers.api.module.passwordtempcode.persistence.entity.PasswordTempCode;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface PasswordTempCodeMapper {
+    @Mapping(target = "usedById", source = "usedBy.id")
+    PasswordTempCodeDto toDto(PasswordTempCode entity);
+
     @Mapping(target = "usedBy", ignore = true)
     @Mapping(target = "modifiedDate", ignore = true)
     @Mapping(target = "modifiedBy", ignore = true)
