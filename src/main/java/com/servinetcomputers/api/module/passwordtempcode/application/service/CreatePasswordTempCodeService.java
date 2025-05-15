@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Service;
 
+import static com.servinetcomputers.api.core.util.constants.PasswordTempCodeConstants.CODE_LENGTH;
+
 @RequiredArgsConstructor
 @Service
 public class CreatePasswordTempCodeService implements CreatePasswordTempCodeUseCase {
@@ -17,7 +19,7 @@ public class CreatePasswordTempCodeService implements CreatePasswordTempCodeUseC
     public PasswordTempCodeDto call(String userCode) {
         var code = randomCode();
 
-        while (adapter.isUsed(code)) {
+        while (adapter.existsByCode(code)) {
             code = randomCode();
         }
 
@@ -25,7 +27,6 @@ public class CreatePasswordTempCodeService implements CreatePasswordTempCodeUseC
     }
 
     private String randomCode() {
-        final var length = 5;
-        return RandomStringUtils.randomAlphanumeric(length);
+        return RandomStringUtils.randomAlphanumeric(CODE_LENGTH);
     }
 }

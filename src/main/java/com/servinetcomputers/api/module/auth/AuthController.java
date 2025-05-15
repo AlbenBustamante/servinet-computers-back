@@ -1,11 +1,9 @@
 package com.servinetcomputers.api.module.auth;
 
-import com.servinetcomputers.api.module.auth.application.usecase.CreateUserUseCase;
-import com.servinetcomputers.api.module.auth.application.usecase.LoginUseCase;
-import com.servinetcomputers.api.module.auth.application.usecase.LogoutUseCase;
-import com.servinetcomputers.api.module.auth.application.usecase.SendCodeToChangePasswordUseCase;
+import com.servinetcomputers.api.module.auth.application.usecase.*;
 import com.servinetcomputers.api.module.auth.dto.AuthRequest;
 import com.servinetcomputers.api.module.auth.dto.AuthResponse;
+import com.servinetcomputers.api.module.auth.dto.ChangePasswordDto;
 import com.servinetcomputers.api.module.auth.dto.RequestChangePasswordDto;
 import com.servinetcomputers.api.module.user.domain.dto.CreateUserDto;
 import com.servinetcomputers.api.module.user.domain.dto.UserDto;
@@ -26,6 +24,7 @@ public class AuthController {
     private final LoginUseCase loginUseCase;
     private final LogoutUseCase logoutUseCase;
     private final SendCodeToChangePasswordUseCase sendCodeToChangePasswordUseCase;
+    private final ChangePasswordUseCase changePasswordUseCase;
 
     @PostMapping(path = "/register")
     public ResponseEntity<UserDto> register(@RequestBody CreateUserDto request) {
@@ -35,6 +34,12 @@ public class AuthController {
     @PostMapping(path = "/request-change-password")
     public ResponseEntity<Void> requestChangePassword(@RequestBody RequestChangePasswordDto dto) {
         sendCodeToChangePasswordUseCase.call(dto);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping(path = "/change-password")
+    public ResponseEntity<Void> changePassword(@RequestBody ChangePasswordDto dto) {
+        changePasswordUseCase.call(dto);
         return ResponseEntity.ok().build();
     }
 

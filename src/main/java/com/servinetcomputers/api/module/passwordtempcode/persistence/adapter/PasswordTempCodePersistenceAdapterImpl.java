@@ -1,17 +1,22 @@
 package com.servinetcomputers.api.module.passwordtempcode.persistence.adapter;
 
+import com.servinetcomputers.api.core.exception.NotFoundException;
 import com.servinetcomputers.api.module.passwordtempcode.domain.adapter.PasswordTempCodePersistenceAdapter;
 import com.servinetcomputers.api.module.passwordtempcode.domain.dto.CreatePasswordTempCodeDto;
 import com.servinetcomputers.api.module.passwordtempcode.domain.dto.PasswordTempCodeDto;
 import com.servinetcomputers.api.module.passwordtempcode.persistence.JpaPasswordTempCodeRepository;
 import com.servinetcomputers.api.module.passwordtempcode.persistence.mapper.PasswordTempCodeMapper;
+import com.servinetcomputers.api.module.user.persistence.JpaUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @Component
 public class PasswordTempCodePersistenceAdapterImpl implements PasswordTempCodePersistenceAdapter {
     private final JpaPasswordTempCodeRepository repository;
+    private final JpaUserRepository userRepository;
     private final PasswordTempCodeMapper mapper;
 
     @Override
@@ -23,7 +28,24 @@ public class PasswordTempCodePersistenceAdapterImpl implements PasswordTempCodeP
     }
 
     @Override
-    public boolean isUsed(String code) {
-        return repository.existsByCodeAndEnabledTrueAndUsedByIsNull(code);
+    public boolean existsByCode(String code) {
+        return repository.existsByCode(code);
+    }
+
+    @Override
+    public List<PasswordTempCodeDto> getAllByUserCode(String userCode) {
+        final var tempCodes = repository.findAllByUserCode(userCode);
+        return mapper.toDto(tempCodes);
+    }
+
+    @Override
+    public void setUsedBy(Integer passwordTempCodeId, String userCode) {
+        final var passwordTempCode = repository.findById(passwordTempCodeId)
+                .orElseThrow(() -> new NotFoundException("No se encontró el código: " + passwordTempCodeId));
+
+        final var user = userRepository.findByCodeAndEnabledTrue(userCode)
+                .orElseThrow(() -> new NotFoundException("No se encontró al usuario: " + userCode));
+
+        passwordTempCode.setUsedBy(user);
     }
 }

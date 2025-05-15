@@ -13,6 +13,8 @@ import java.util.Optional;
 public interface JpaUserRepository extends JpaRepository<User, Integer> {
     boolean existsByEmailAndEnabledTrue(String email);
 
+    boolean existsByCodeAndEnabledTrue(String code);
+
     @Query("SELECT u.email FROM User u " +
             "WHERE u.code = :code " +
             "AND u.enabled = true")

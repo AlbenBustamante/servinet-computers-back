@@ -8,9 +8,11 @@ import com.servinetcomputers.api.module.passwordtempcode.application.usecase.Cre
 import com.servinetcomputers.api.module.user.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class SendCodeToChangePasswordService implements SendCodeToChangePasswordUseCase {
     private final UserRepository userRepository;
     private final EmailSenderService emailSenderService;
