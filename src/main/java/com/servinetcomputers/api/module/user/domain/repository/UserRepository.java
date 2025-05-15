@@ -15,6 +15,10 @@ public interface UserRepository {
 
     UserDto save(UserDto response);
 
+    boolean existsByEmail(String email);
+
+    Optional<String> getEmailByCode(String code);
+
     Optional<UserDto> getLastByRole(Role role);
 
     Optional<UserDto> getByCode(String code);

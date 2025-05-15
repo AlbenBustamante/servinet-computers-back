@@ -11,7 +11,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class UserDto extends AuditableDto<Integer> {
-    private String name, lastName;
-    private String code;
+    private String name, lastName, email, code;
     private Role role;
 }

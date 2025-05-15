@@ -10,10 +10,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CreateUserDto {
-    private String password, code, name, lastName, repeatPassword;
+    private String password, code, name, lastName, email;
     private Role role;
-
-    public boolean passwordsMatch() {
-        return password.equals(repeatPassword);
-    }
 }
