@@ -78,7 +78,7 @@ public class LoadPortalPlatformsService implements LoadPortalPlatformsUseCase {
         final var newBalance = lastBalance.isPresent() ? lastBalance.get().getFinalBalance() : 0;
         final var platform = repository.get(platformId).orElseThrow(() -> new NotFoundException("No se encontró la plataforma: " + platformId));
 
-        final var request = new CreatePlatformBalanceDto(newBalance, newBalance, platform);
+        final var request = new CreatePlatformBalanceDto(newBalance, 0, platform);
         return balanceRepository.save(request);
     }
 }
