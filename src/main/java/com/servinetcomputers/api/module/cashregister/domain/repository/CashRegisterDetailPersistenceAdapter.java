@@ -38,7 +38,7 @@ public interface CashRegisterDetailPersistenceAdapter {
 
     List<CashRegisterDetailDto> getAllByCashRegisterId(int cashRegisterId);
 
-    List<CashRegisterDetailDto> getAllWhereUserIdIsNotAndStatusAndBetween(int userId, CashRegisterDetailStatus status, LocalDateTime startDate, LocalDateTime endDate);
+    List<CashRegisterDetailDto> getAllWhereUserIdIsNotAndStatusNotAndBetween(int userId, CashRegisterDetailStatus status, LocalDateTime startDate, LocalDateTime endDate);
 
     List<CashRegisterDetailDto> getLatestWhereCashRegisterIdIsIn(List<Integer> cashRegisterIds);
 

@@ -77,8 +77,8 @@ public class CashRegisterDetailPersistenceAdapterImpl implements CashRegisterDet
     }
 
     @Override
-    public List<CashRegisterDetailDto> getAllWhereUserIdIsNotAndStatusAndBetween(int userId, CashRegisterDetailStatus status, LocalDateTime startDate, LocalDateTime endDate) {
-        final var details = repository.findAllByUserIdNotAndEnabledTrueAndStatusAndCreatedDateBetween(userId, status, startDate, endDate);
+    public List<CashRegisterDetailDto> getAllWhereUserIdIsNotAndStatusNotAndBetween(int userId, CashRegisterDetailStatus status, LocalDateTime startDate, LocalDateTime endDate) {
+        final var details = repository.findAllByUserIdNotAndEnabledTrueAndStatusNotAndCreatedDateBetween(userId, status, startDate, endDate);
         return mapper.toDto(details);
     }
 

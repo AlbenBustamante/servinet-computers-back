@@ -29,7 +29,7 @@ public class GetAvailableTransfersService implements GetAvailableTransfersUseCas
         final var startDate = dateTimeService.getMinByDate(today);
         final var endDate = dateTimeService.now();
 
-        final var cashRegisters = cashRegisterDetailPersistenceAdapter.getAllWhereUserIdIsNotAndStatusAndBetween(userId, CashRegisterDetailStatus.WORKING, startDate, endDate);
+        final var cashRegisters = cashRegisterDetailPersistenceAdapter.getAllWhereUserIdIsNotAndStatusNotAndBetween(userId, CashRegisterDetailStatus.CLOSED, startDate, endDate);
         final var safes = loadSafeDetailsOfDayUseCase.call();
 
         return new AvailableTransfersDto(cashRegisters, safes);
