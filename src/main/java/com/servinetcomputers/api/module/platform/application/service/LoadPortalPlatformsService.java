@@ -68,10 +68,10 @@ public class LoadPortalPlatformsService implements LoadPortalPlatformsUseCase {
     }
 
     private PlatformBalanceDto getPlatformBalance(int platformId, LocalDateTime startDate, LocalDateTime endDate) {
-        final var balance = balanceRepository.getByPlatformIdBetween(platformId, startDate, endDate);
+        final var balances = balanceRepository.getAllByPlatformIdBetween(platformId, startDate, endDate);
 
-        if (balance.isPresent()) {
-            return balance.get();
+        if (!balances.isEmpty()) {
+            return balances.get(0);
         }
 
         final var lastBalance = balanceRepository.getLastByPlatformId(platformId);

@@ -17,6 +17,8 @@ public interface PlatformTransferRepository {
 
     Optional<PlatformTransferDto> get(int id);
 
+    List<PlatformTransferDto> getAllByPlatformIdBetween(Integer platformId, LocalDateTime startDate, LocalDateTime endDate);
+
     List<PlatformTransferDto> getAllByCodeBetween(String code, LocalDateTime startDate, LocalDateTime endDate);
 
     int getPlatformTransfersAmount(int platformId, LocalDateTime startDate, LocalDateTime endDate);

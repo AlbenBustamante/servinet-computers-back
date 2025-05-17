@@ -15,7 +15,7 @@ public interface PlatformBalanceRepository {
 
     PlatformBalanceDto save(PlatformBalanceDto response);
 
-    Optional<PlatformBalanceDto> getByPlatformIdBetween(int platformId, LocalDateTime startDate, LocalDateTime endDate);
+    List<PlatformBalanceDto> getAllByPlatformIdBetween(int platformId, LocalDateTime startDate, LocalDateTime endDate);
 
     Optional<PlatformBalanceDto> get(int balanceId);
 
