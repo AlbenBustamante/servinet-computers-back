@@ -28,6 +28,12 @@ public class PlatformBalanceRepositoryImpl implements PlatformBalanceRepository 
     }
 
     @Override
+    public List<PlatformBalanceDto> getAllByPlatformIdBetweenOrderByCreatedDateDesc(int platformId, LocalDateTime startDate, LocalDateTime endDate) {
+        final var platformBalances = repository.findAllByPlatformIdAndEnabledTrueAndCreatedDateBetweenOrderByCreatedDateDesc(platformId, startDate, endDate);
+        return mapper.toDto(platformBalances);
+    }
+
+    @Override
     public Optional<PlatformBalanceDto> get(int balanceId) {
         final var balance = repository.findByIdAndEnabledTrue(balanceId);
         return balance.map(mapper::toDto);

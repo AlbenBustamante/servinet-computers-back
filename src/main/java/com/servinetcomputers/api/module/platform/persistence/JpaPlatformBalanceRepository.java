@@ -15,6 +15,8 @@ public interface JpaPlatformBalanceRepository extends JpaRepository<PlatformBala
 
     List<PlatformBalance> findAllByPlatformIdAndEnabledTrueAndCreatedDateBetween(int platformId, LocalDateTime startDate, LocalDateTime endDate);
 
+    List<PlatformBalance> findAllByPlatformIdAndEnabledTrueAndCreatedDateBetweenOrderByCreatedDateDesc(int platformId, LocalDateTime startDate, LocalDateTime endDate);
+
     Optional<PlatformBalance> findFirstByPlatformIdAndEnabledTrueOrderByCreatedDateDesc(int platformId);
 
     List<PlatformBalance> findAllByEnabledTrueAndCreatedDateBetween(LocalDateTime startDate, LocalDateTime endDate);

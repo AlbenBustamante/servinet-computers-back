@@ -44,8 +44,8 @@ public class PlatformTransferRepositoryImpl implements PlatformTransferRepositor
     }
 
     @Override
-    public List<PlatformTransferDto> getAllByPlatformIdBetween(Integer platformId, LocalDateTime startDate, LocalDateTime endDate) {
-        final var transfers = repository.findAllByPlatformIdAndEnabledTrueAndCreatedDateBetween(platformId, startDate, endDate);
+    public List<PlatformTransferDto> getAllByPlatformIdBetweenOrderByCreatedDateDesc(Integer platformId, LocalDateTime startDate, LocalDateTime endDate) {
+        final var transfers = repository.findAllByPlatformIdAndEnabledTrueAndCreatedDateBetweenOrderByCreatedDateDesc(platformId, startDate, endDate);
         return mapper.toDto(transfers);
     }
 

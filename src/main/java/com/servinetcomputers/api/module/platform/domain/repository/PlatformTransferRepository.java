@@ -17,7 +17,7 @@ public interface PlatformTransferRepository {
 
     Optional<PlatformTransferDto> get(int id);
 
-    List<PlatformTransferDto> getAllByPlatformIdBetween(Integer platformId, LocalDateTime startDate, LocalDateTime endDate);
+    List<PlatformTransferDto> getAllByPlatformIdBetweenOrderByCreatedDateDesc(Integer platformId, LocalDateTime startDate, LocalDateTime endDate);
 
     List<PlatformTransferDto> getAllByCodeBetween(String code, LocalDateTime startDate, LocalDateTime endDate);
 

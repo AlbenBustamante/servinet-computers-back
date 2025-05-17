@@ -26,7 +26,7 @@ public interface JpaPlatformTransferRepository extends JpaRepository<PlatformTra
 
     int countByPlatformIdAndEnabledTrueAndCreatedDateBetween(int platformId, LocalDateTime startDate, LocalDateTime endDate);
 
-    List<PlatformTransfer> findAllByPlatformIdAndEnabledTrueAndCreatedDateBetween(Integer platformId, LocalDateTime startDate, LocalDateTime endDate);
+    List<PlatformTransfer> findAllByPlatformIdAndEnabledTrueAndCreatedDateBetweenOrderByCreatedDateDesc(Integer platformId, LocalDateTime startDate, LocalDateTime endDate);
 
     List<PlatformTransfer> findAllByCreatedByAndEnabledTrueAndCreatedDateBetween(String createdBy, LocalDateTime startDate, LocalDateTime endDate);
 
