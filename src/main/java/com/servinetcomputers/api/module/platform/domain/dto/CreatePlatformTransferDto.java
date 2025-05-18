@@ -1,4 +1,6 @@
 package com.servinetcomputers.api.module.platform.domain.dto;
 
-public record CreatePlatformTransferDto(int platformId, int value) {
+import java.time.LocalDateTime;
+
+public record CreatePlatformTransferDto(int platformId, int value, LocalDateTime date) {
 }

@@ -45,24 +45,24 @@ public class PlatformTransferRepositoryImpl implements PlatformTransferRepositor
 
     @Override
     public List<PlatformTransferDto> getAllByPlatformIdBetweenOrderByCreatedDateDesc(Integer platformId, LocalDateTime startDate, LocalDateTime endDate) {
-        final var transfers = repository.findAllByPlatformIdAndEnabledTrueAndCreatedDateBetweenOrderByCreatedDateDesc(platformId, startDate, endDate);
+        final var transfers = repository.findAllByPlatformIdAndEnabledTrueAndDateBetweenOrderByDateDesc(platformId, startDate, endDate);
         return mapper.toDto(transfers);
     }
 
     @Override
     public List<PlatformTransferDto> getAllByCodeBetween(String code, LocalDateTime startDate, LocalDateTime endDate) {
-        final var transfers = repository.findAllByCreatedByAndEnabledTrueAndCreatedDateBetween(code, startDate, endDate);
+        final var transfers = repository.findAllByCreatedByAndEnabledTrueAndDateBetween(code, startDate, endDate);
         return mapper.toDto(transfers);
     }
 
     @Override
-    public int getPlatformTransfersAmount(int platformId, LocalDateTime startDate, LocalDateTime endDate) {
-        return repository.countByPlatformIdAndEnabledTrueAndCreatedDateBetween(platformId, startDate, endDate);
+    public int getPlatformTransfersAmountBetween(int platformId, LocalDateTime startDate, LocalDateTime endDate) {
+        return repository.countByPlatformIdAndEnabledTrueAndDateBetween(platformId, startDate, endDate);
     }
 
     @Override
-    public int getPlatformTransfersTotal(int platformId, LocalDateTime startDate, LocalDateTime endDate) {
-        final var total = repository.calculateTotalByPlatformIdAndCreatedDateBetween(platformId, startDate, endDate);
+    public int getPlatformTransfersTotalBetween(int platformId, LocalDateTime startDate, LocalDateTime endDate) {
+        final var total = repository.calculateTotalByPlatformIdAndDateBetween(platformId, startDate, endDate);
         return total != null ? total : 0;
     }
 }
