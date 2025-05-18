@@ -1,30 +1,13 @@
 package com.servinetcomputers.api.module.platform.controller;
 
-import com.servinetcomputers.api.module.platform.application.usecase.CreatePlatformUseCase;
-import com.servinetcomputers.api.module.platform.application.usecase.DeletePlatformUseCase;
-import com.servinetcomputers.api.module.platform.application.usecase.GetAdminPlatformDetailsUseCase;
-import com.servinetcomputers.api.module.platform.application.usecase.GetAllPlatformsUseCase;
-import com.servinetcomputers.api.module.platform.application.usecase.LoadPortalPlatformsUseCase;
-import com.servinetcomputers.api.module.platform.application.usecase.UpdatePlatformUseCase;
-import com.servinetcomputers.api.module.platform.domain.dto.AdminPlatformDto;
-import com.servinetcomputers.api.module.platform.domain.dto.CreatePlatformDto;
-import com.servinetcomputers.api.module.platform.domain.dto.PlatformDto;
-import com.servinetcomputers.api.module.platform.domain.dto.PortalPlatformDto;
-import com.servinetcomputers.api.module.platform.domain.dto.UpdatePlatformDto;
+import com.servinetcomputers.api.module.platform.application.usecase.*;
+import com.servinetcomputers.api.module.platform.domain.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.time.YearMonth;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -57,8 +40,8 @@ public class PlatformController {
     }
 
     @GetMapping(path = "/{id}/details")
-    public ResponseEntity<AdminPlatformDto> getDetails(@PathVariable("id") int id, @RequestParam YearMonth month) {
-        return ResponseEntity.ok(getAdminPlatformDetailsUseCase.call(id, month));
+    public ResponseEntity<AdminPlatformDto> getDetails(@PathVariable("id") int id, @RequestParam LocalDate date) {
+        return ResponseEntity.ok(getAdminPlatformDetailsUseCase.call(id, date));
     }
 
     @PatchMapping(path = "/{id}")
