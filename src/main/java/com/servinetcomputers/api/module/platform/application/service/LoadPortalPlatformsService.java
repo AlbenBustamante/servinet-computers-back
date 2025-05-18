@@ -68,17 +68,17 @@ public class LoadPortalPlatformsService implements LoadPortalPlatformsUseCase {
     }
 
     private PlatformBalanceDto getPlatformBalance(int platformId, LocalDateTime startDate, LocalDateTime endDate) {
-        final var balance = balanceRepository.getByPlatformIdBetween(platformId, startDate, endDate);
+        final var balances = balanceRepository.getAllByPlatformIdBetween(platformId, startDate, endDate);
 
-        if (balance.isPresent()) {
-            return balance.get();
+        if (!balances.isEmpty()) {
+            return balances.get(0);
         }
 
         final var lastBalance = balanceRepository.getLastByPlatformId(platformId);
         final var newBalance = lastBalance.isPresent() ? lastBalance.get().getFinalBalance() : 0;
         final var platform = repository.get(platformId).orElseThrow(() -> new NotFoundException("No se encontró la plataforma: " + platformId));
 
-        final var request = new CreatePlatformBalanceDto(newBalance, newBalance, platform);
+        final var request = new CreatePlatformBalanceDto(newBalance, 0, platform);
         return balanceRepository.save(request);
     }
 }

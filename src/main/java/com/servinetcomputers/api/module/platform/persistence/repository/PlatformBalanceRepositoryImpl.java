@@ -22,9 +22,15 @@ public class PlatformBalanceRepositoryImpl implements PlatformBalanceRepository 
     private final PlatformBalanceMapper mapper;
 
     @Override
-    public Optional<PlatformBalanceDto> getByPlatformIdBetween(int platformId, LocalDateTime startDate, LocalDateTime endDate) {
-        final var platformBalance = repository.findByPlatformIdAndEnabledTrueAndCreatedDateBetween(platformId, startDate, endDate);
-        return platformBalance.map(mapper::toDto);
+    public List<PlatformBalanceDto> getAllByPlatformIdBetween(int platformId, LocalDateTime startDate, LocalDateTime endDate) {
+        final var platformBalances = repository.findAllByPlatformIdAndEnabledTrueAndCreatedDateBetween(platformId, startDate, endDate);
+        return mapper.toDto(platformBalances);
+    }
+
+    @Override
+    public List<PlatformBalanceDto> getAllByPlatformIdBetweenOrderByCreatedDateDesc(int platformId, LocalDateTime startDate, LocalDateTime endDate) {
+        final var platformBalances = repository.findAllByPlatformIdAndEnabledTrueAndCreatedDateBetweenOrderByCreatedDateDesc(platformId, startDate, endDate);
+        return mapper.toDto(platformBalances);
     }
 
     @Override

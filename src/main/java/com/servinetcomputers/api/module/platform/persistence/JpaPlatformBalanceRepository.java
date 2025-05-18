@@ -13,7 +13,9 @@ import java.util.Optional;
 public interface JpaPlatformBalanceRepository extends JpaRepository<PlatformBalance, Integer> {
     Optional<PlatformBalance> findByIdAndEnabledTrue(int id);
 
-    Optional<PlatformBalance> findByPlatformIdAndEnabledTrueAndCreatedDateBetween(int platformId, LocalDateTime startDate, LocalDateTime endDate);
+    List<PlatformBalance> findAllByPlatformIdAndEnabledTrueAndCreatedDateBetween(int platformId, LocalDateTime startDate, LocalDateTime endDate);
+
+    List<PlatformBalance> findAllByPlatformIdAndEnabledTrueAndCreatedDateBetweenOrderByCreatedDateDesc(int platformId, LocalDateTime startDate, LocalDateTime endDate);
 
     Optional<PlatformBalance> findFirstByPlatformIdAndEnabledTrueOrderByCreatedDateDesc(int platformId);
 
