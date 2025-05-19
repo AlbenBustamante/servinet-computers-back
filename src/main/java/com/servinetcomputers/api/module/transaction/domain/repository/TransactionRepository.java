@@ -11,7 +11,7 @@ public interface TransactionRepository {
 
     TransactionDto save(TransactionDto response);
 
-    List<TransactionDto> getAll();
+    List<TransactionDto> getAllOrderByUsesDesc();
 
     Optional<TransactionDto> getByDescription(String description);
 }

@@ -34,8 +34,8 @@ public class TransactionRepositoryImpl implements TransactionRepository {
     }
 
     @Override
-    public List<TransactionDto> getAll() {
-        return mapper.toDto(repository.findAllByEnabledTrueOrderByUsesAsc());
+    public List<TransactionDto> getAllOrderByUsesDesc() {
+        return mapper.toDto(repository.findAllByEnabledTrueOrderByUsesDesc());
     }
 
     @Override
