@@ -48,8 +48,8 @@ public class LoadPortalPlatformsService implements LoadPortalPlatformsUseCase {
 
         platforms.forEach(platform -> {
             final var balance = getPlatformBalance(platform.getId(), startDate, endDate);
-            final var transfersAmount = transferRepository.getPlatformTransfersAmountBetween(platform.getId(), startDate, endDate);
-            final var transfersTotal = transferRepository.getPlatformTransfersTotalBetween(platform.getId(), startDate, endDate);
+            final var transfersAmount = transferRepository.getPlatformTransfersAmountBetween(platform.getId(), today, today);
+            final var transfersTotal = transferRepository.getPlatformTransfersTotalBetween(platform.getId(), today, today);
 
             final var report = new PortalPlatformDto(
                     platform.getId(),

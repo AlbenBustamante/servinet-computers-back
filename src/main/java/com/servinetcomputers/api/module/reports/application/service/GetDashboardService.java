@@ -56,7 +56,7 @@ public class GetDashboardService implements GetDashboardUseCase {
         //final var platformBalancesTotal = platformBalanceRepository.calculateFinalBalanceBetween(startDate, endDate);
         final var platformBalances = platformBalanceRepository.getAllBetween(startDate, endDate);
         final List<PlatformStatsDto> platformsStats = new ArrayList<>(platformBalances.size());
-        final var platformBalancesTotal = calculatePlatformBalancesTotal(platformBalances, platformsStats, startDate, endDate);
+        final var platformBalancesTotal = calculatePlatformBalancesTotal(platformBalances, platformsStats, newDate, startDate, endDate);
 
         final List<CashRegisterDetailDto> cashRegisterDetails;
 
@@ -92,7 +92,7 @@ public class GetDashboardService implements GetDashboardUseCase {
                 .build();
     }
 
-    private int calculatePlatformBalancesTotal(List<PlatformBalanceDto> platformBalances, List<PlatformStatsDto> platformsStats, LocalDateTime startDate, LocalDateTime endDate) {
+    private int calculatePlatformBalancesTotal(List<PlatformBalanceDto> platformBalances, List<PlatformStatsDto> platformsStats, LocalDate date, LocalDateTime startDate, LocalDateTime endDate) {
         if (platformBalances.isEmpty()) {
             return 0;
         }
@@ -106,21 +106,21 @@ public class GetDashboardService implements GetDashboardUseCase {
 
             platformBalancesTotal += balance;
 
-            final var stats = getPlatformStats(platform, startDate, endDate);
+            final var stats = getPlatformStats(platform, date, startDate, endDate);
             platformsStats.add(stats);
         }
 
         return platformBalancesTotal;
     }
 
-    private PlatformStatsDto getPlatformStats(PlatformBalanceDto balance, LocalDateTime startDate, LocalDateTime endDate) {
+    private PlatformStatsDto getPlatformStats(PlatformBalanceDto balance, LocalDate date, LocalDateTime startDate, LocalDateTime endDate) {
         final var platform = balance.getPlatform();
         final var platformId = platform.getId();
         final var platformName = platform.getName();
         final var initialBalance = balance.getInitialBalance();
         final var finalBalance = balance.getFinalBalance();
-        final var transfersAmount = platformTransferRepository.getPlatformTransfersAmountBetween(platformId, startDate, endDate);
-        final var transfersTotal = platformTransferRepository.getPlatformTransfersTotalBetween(platformId, startDate, endDate);
+        final var transfersAmount = platformTransferRepository.getPlatformTransfersAmountBetween(platformId, date, date);
+        final var transfersTotal = platformTransferRepository.getPlatformTransfersTotalBetween(platformId, date, date);
         final var bankDepositsAmount = bankDepositPaymentPersistenceAdapter.getAmountByPlatformIdBetween(platformId, startDate, endDate);
         final var bankDepositsTotal = bankDepositPaymentPersistenceAdapter.getTotalByPlatformIdBetween(platformId, startDate, endDate);
         final var total = initialBalance + transfersTotal + bankDepositsTotal - finalBalance;

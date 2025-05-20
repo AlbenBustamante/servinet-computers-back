@@ -22,7 +22,7 @@ public interface PlatformTransferRepository {
 
     List<PlatformTransferDto> getAllByCodeBetween(String code, LocalDateTime startDate, LocalDateTime endDate);
 
-    int getPlatformTransfersAmountBetween(int platformId, LocalDateTime startDate, LocalDateTime endDate);
+    int getPlatformTransfersAmountBetween(int platformId, LocalDate startDate, LocalDate endDate);
 
-    int getPlatformTransfersTotalBetween(int platformId, LocalDateTime startDate, LocalDateTime endDate);
+    int getPlatformTransfersTotalBetween(int platformId, LocalDate startDate, LocalDate endDate);
 }
