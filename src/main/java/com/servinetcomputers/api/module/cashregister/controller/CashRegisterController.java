@@ -1,26 +1,14 @@
 package com.servinetcomputers.api.module.cashregister.controller;
 
 import com.servinetcomputers.api.module.base.BaseDto;
-import com.servinetcomputers.api.module.cashregister.application.usecase.CreateCashRegisterUseCase;
-import com.servinetcomputers.api.module.cashregister.application.usecase.DeleteCashRegisterUseCase;
-import com.servinetcomputers.api.module.cashregister.application.usecase.GetAllCashRegistersUseCase;
-import com.servinetcomputers.api.module.cashregister.application.usecase.GetAllMovementsUseCase;
-import com.servinetcomputers.api.module.cashregister.application.usecase.GetLastBaseUseCase;
-import com.servinetcomputers.api.module.cashregister.application.usecase.UpdateCashRegisterUseCase;
+import com.servinetcomputers.api.module.cashregister.application.usecase.*;
 import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDetailDto;
 import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDto;
 import com.servinetcomputers.api.module.cashregister.domain.dto.CreateCashRegisterDto;
 import com.servinetcomputers.api.module.cashregister.domain.dto.UpdateCashRegisterDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -31,6 +19,7 @@ public class CashRegisterController {
     private final CreateCashRegisterUseCase createCashRegisterUseCase;
     private final GetAllCashRegistersUseCase getAllCashRegistersUseCase;
     private final GetLastBaseUseCase getLastBaseUseCase;
+    private final GetLastDetailByIdUseCase getLastDetailByIdUseCase;
     private final GetAllMovementsUseCase getAllMovementsUseCase;
     private final UpdateCashRegisterUseCase updateCashRegisterUseCase;
     private final DeleteCashRegisterUseCase deleteCashRegisterUseCase;
@@ -48,6 +37,11 @@ public class CashRegisterController {
     @GetMapping(path = "/{id}/lastBase")
     public ResponseEntity<BaseDto> getLastBase(@PathVariable("id") int cashRegisterId) {
         return ResponseEntity.ok(getLastBaseUseCase.call(cashRegisterId));
+    }
+
+    @GetMapping(path = "/{id}/lastDetail")
+    public ResponseEntity<CashRegisterDetailDto> getLastDetail(@PathVariable("id") int cashRegisterId) {
+        return ResponseEntity.ok(getLastDetailByIdUseCase.call(cashRegisterId));
     }
 
     @GetMapping(path = "/{id}/movements")

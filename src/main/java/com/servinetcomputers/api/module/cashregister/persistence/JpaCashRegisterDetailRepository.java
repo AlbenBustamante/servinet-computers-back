@@ -21,6 +21,12 @@ public interface JpaCashRegisterDetailRepository extends JpaRepository<CashRegis
 
     boolean existsByUserIdAndCreatedDateBetweenAndEnabledTrueAndCashRegisterStatusNot(int userId, LocalDateTime firstDate, LocalDateTime lastDate, CashRegisterStatus status);
 
+    @Query("SELECT crd FROM CashRegisterDetail crd " +
+            "WHERE crd.cashRegister.id = :cashRegisterId " +
+            "AND crd.enabled = true " +
+            "ORDER BY crd.createdDate DESC")
+    Optional<CashRegisterDetail> findLatestByCashRegisterIdAndEnabledTrue(Integer cashRegisterId);
+
     List<CashRegisterDetail> findAllByUserIdAndCreatedDateBetweenAndEnabledTrueAndCashRegisterStatusNot(int userId, LocalDateTime firstDate, LocalDateTime lastDate, CashRegisterStatus status);
 
     List<CashRegisterDetail> findAllByUserIdAndCreatedDateBetweenAndEnabledTrue(int userId, LocalDateTime firstDate, LocalDateTime lastDate);

@@ -1,5 +1,6 @@
 package com.servinetcomputers.api.module.cashregister.persistence.repository;
 
+import com.servinetcomputers.api.core.exception.NotFoundException;
 import com.servinetcomputers.api.core.util.enums.CashRegisterDetailStatus;
 import com.servinetcomputers.api.core.util.enums.CashRegisterStatus;
 import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDetailDto;
@@ -39,6 +40,14 @@ public class CashRegisterDetailPersistenceAdapterImpl implements CashRegisterDet
     public Integer getCurrentAmount() {
         final var currentAmount = repository.countByStatusNotAndEnabledTrue(CashRegisterDetailStatus.CLOSED);
         return currentAmount != null ? currentAmount : 0;
+    }
+
+    @Override
+    public CashRegisterDetailDto getLatestByCashRegisterId(Integer cashRegisterId) {
+        final var detail = repository.findLatestByCashRegisterIdAndEnabledTrue(cashRegisterId)
+                .orElseThrow(() -> new NotFoundException("No se encontró el movimiento de caja solicitado: " + cashRegisterId));
+
+        return mapper.toDto(detail);
     }
 
     @Override
