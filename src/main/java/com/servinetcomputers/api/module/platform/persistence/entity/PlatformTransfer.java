@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.time.LocalDate;
+
 /**
  * The platform transfer's model entity.
  */
@@ -26,6 +28,8 @@ public class PlatformTransfer extends Auditable {
 
     @Column(name = "voucher_urls", columnDefinition = "text[]")
     private String[] voucherUrls;
+
+    private LocalDate date;
 
     @ManyToOne
     @JoinColumn(name = "platform_id", nullable = false)

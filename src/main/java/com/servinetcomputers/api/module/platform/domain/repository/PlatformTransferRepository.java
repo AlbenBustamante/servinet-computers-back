@@ -3,6 +3,7 @@ package com.servinetcomputers.api.module.platform.domain.repository;
 import com.servinetcomputers.api.module.platform.domain.dto.CreatePlatformTransferWithVouchersDto;
 import com.servinetcomputers.api.module.platform.domain.dto.PlatformTransferDto;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -17,11 +18,11 @@ public interface PlatformTransferRepository {
 
     Optional<PlatformTransferDto> get(int id);
 
-    List<PlatformTransferDto> getAllByPlatformIdBetweenOrderByCreatedDateDesc(Integer platformId, LocalDateTime startDate, LocalDateTime endDate);
+    List<PlatformTransferDto> getAllByPlatformIdBetweenOrderByDateDesc(Integer platformId, LocalDate startDate, LocalDate endDate);
 
     List<PlatformTransferDto> getAllByCodeBetween(String code, LocalDateTime startDate, LocalDateTime endDate);
 
-    int getPlatformTransfersAmount(int platformId, LocalDateTime startDate, LocalDateTime endDate);
+    int getPlatformTransfersAmountBetween(int platformId, LocalDateTime startDate, LocalDateTime endDate);
 
-    int getPlatformTransfersTotal(int platformId, LocalDateTime startDate, LocalDateTime endDate);
+    int getPlatformTransfersTotalBetween(int platformId, LocalDateTime startDate, LocalDateTime endDate);
 }

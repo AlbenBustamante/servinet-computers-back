@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface JpaTransactionRepository extends JpaRepository<Transaction, Integer> {
-    List<Transaction> findAllByEnabledTrueOrderByUsesAsc();
+    List<Transaction> findAllByEnabledTrueOrderByUsesDesc();
 
     Optional<Transaction> findByDescriptionAndEnabledTrue(String description);
 }

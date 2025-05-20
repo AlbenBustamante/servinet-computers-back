@@ -51,12 +51,6 @@ public class PlatformBalanceRepositoryImpl implements PlatformBalanceRepository 
         return mapper.toDto(balances);
     }
 
-    /*@Override
-    public Integer calculateFinalBalanceBetween(LocalDateTime startDate, LocalDateTime endDate) {
-        final var total = repository.calculateTotalByFinalBalanceAndCreatedDateBetween(startDate, endDate);
-        return total != null ? total : 0;
-    }*/
-
     @Override
     public PlatformBalanceDto save(CreatePlatformBalanceDto request) {
         final var entity = mapper.toEntity(request);

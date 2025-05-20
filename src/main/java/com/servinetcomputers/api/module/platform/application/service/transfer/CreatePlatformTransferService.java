@@ -1,5 +1,6 @@
 package com.servinetcomputers.api.module.platform.application.service.transfer;
 
+import com.servinetcomputers.api.core.datetime.DateTimeService;
 import com.servinetcomputers.api.core.exception.AppException;
 import com.servinetcomputers.api.core.exception.NotFoundException;
 import com.servinetcomputers.api.core.storage.StorageService;
@@ -19,6 +20,7 @@ public class CreatePlatformTransferService implements CreatePlatformTransferUseC
     private final PlatformTransferRepository repository;
     private final PlatformRepository platformRepository;
     private final StorageService storageService;
+    private final DateTimeService dateTimeService;
 
     /**
      * Create and persist a new transfer.
@@ -40,6 +42,11 @@ public class CreatePlatformTransferService implements CreatePlatformTransferUseC
 
             final var voucherUrls = storageService.uploadFiles(folder, vouchers);
             request.setVoucherUrls(voucherUrls);
+        }
+
+        if (request.getDate() == null) {
+            final var now = dateTimeService.dateNow();
+            request.setDate(now);
         }
 
         return repository.save(request);

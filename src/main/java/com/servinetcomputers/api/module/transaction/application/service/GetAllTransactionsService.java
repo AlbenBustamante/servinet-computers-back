@@ -17,6 +17,6 @@ public class GetAllTransactionsService implements GetAllTransactionsUseCase {
     @Transactional(readOnly = true)
     @Override
     public List<TransactionDto> call() {
-        return repository.getAll();
+        return repository.getAllOrderByUsesDesc();
     }
 }

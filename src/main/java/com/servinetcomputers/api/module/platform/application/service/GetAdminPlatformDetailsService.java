@@ -11,7 +11,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.YearMonth;
+import java.time.LocalDate;
 
 import static com.servinetcomputers.api.core.util.constants.SecurityConstants.ADMIN_AUTHORITY;
 
@@ -25,15 +25,15 @@ public class GetAdminPlatformDetailsService implements GetAdminPlatformDetailsUs
 
     @Secured(value = ADMIN_AUTHORITY)
     @Override
-    public AdminPlatformDto call(Integer platformId, YearMonth month) {
+    public AdminPlatformDto call(Integer platformId, LocalDate date) {
         final var platform = repository.get(platformId)
                 .orElseThrow(() -> new NotFoundException("No se encontró la plataforma solicitada: " + platformId));
 
-        final var startDate = month.atDay(1).atStartOfDay();
-        final var endDate = month.plusMonths(1).atDay(1).atStartOfDay();
+        final var startDate = date.atStartOfDay();
+        final var endDate = date.plusDays(1).atStartOfDay();
 
         final var balances = balanceRepository.getAllByPlatformIdBetweenOrderByCreatedDateDesc(platformId, startDate, endDate);
-        final var transfers = transferRepository.getAllByPlatformIdBetweenOrderByCreatedDateDesc(platformId, startDate, endDate);
+        final var transfers = transferRepository.getAllByPlatformIdBetweenOrderByDateDesc(platformId, date, date);
 
         return new AdminPlatformDto(platform, balances, transfers);
     }

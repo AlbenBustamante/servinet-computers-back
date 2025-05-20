@@ -119,8 +119,8 @@ public class GetDashboardService implements GetDashboardUseCase {
         final var platformName = platform.getName();
         final var initialBalance = balance.getInitialBalance();
         final var finalBalance = balance.getFinalBalance();
-        final var transfersAmount = platformTransferRepository.getPlatformTransfersAmount(platformId, startDate, endDate);
-        final var transfersTotal = platformTransferRepository.getPlatformTransfersTotal(platformId, startDate, endDate);
+        final var transfersAmount = platformTransferRepository.getPlatformTransfersAmountBetween(platformId, startDate, endDate);
+        final var transfersTotal = platformTransferRepository.getPlatformTransfersTotalBetween(platformId, startDate, endDate);
         final var bankDepositsAmount = bankDepositPaymentPersistenceAdapter.getAmountByPlatformIdBetween(platformId, startDate, endDate);
         final var bankDepositsTotal = bankDepositPaymentPersistenceAdapter.getTotalByPlatformIdBetween(platformId, startDate, endDate);
         final var total = initialBalance + transfersTotal + bankDepositsTotal - finalBalance;
