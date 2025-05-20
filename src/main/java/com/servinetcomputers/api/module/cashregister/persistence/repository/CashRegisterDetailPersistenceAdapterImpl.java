@@ -1,6 +1,5 @@
 package com.servinetcomputers.api.module.cashregister.persistence.repository;
 
-import com.servinetcomputers.api.core.exception.NotFoundException;
 import com.servinetcomputers.api.core.util.enums.CashRegisterDetailStatus;
 import com.servinetcomputers.api.core.util.enums.CashRegisterStatus;
 import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDetailDto;
@@ -10,6 +9,7 @@ import com.servinetcomputers.api.module.cashregister.persistence.JpaCashRegister
 import com.servinetcomputers.api.module.cashregister.persistence.mapper.CashRegisterDetailMapper;
 import com.servinetcomputers.api.module.user.domain.dto.UserFullNameDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
@@ -44,10 +44,8 @@ public class CashRegisterDetailPersistenceAdapterImpl implements CashRegisterDet
 
     @Override
     public CashRegisterDetailDto getLatestByCashRegisterId(Integer cashRegisterId) {
-        final var detail = repository.findLatestByCashRegisterIdAndEnabledTrue(cashRegisterId)
-                .orElseThrow(() -> new NotFoundException("No se encontró el movimiento de caja solicitado: " + cashRegisterId));
-
-        return mapper.toDto(detail);
+        final var detail = repository.findLatestByCashRegisterIdAndEnabledTrue(cashRegisterId, PageRequest.of(0, 1));
+        return mapper.toDto(detail.getContent().get(0));
     }
 
     @Override

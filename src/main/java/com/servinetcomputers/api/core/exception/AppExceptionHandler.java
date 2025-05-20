@@ -3,11 +3,7 @@ package com.servinetcomputers.api.core.exception;
 import com.servinetcomputers.api.core.datetime.DateTimeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
-import org.springframework.http.ProblemDetail;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -30,7 +26,7 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
-        log.error("{}: {}", ex.getBody().getTitle(), ex.getBody().getDetail());
+        log.error("{}: {}, Request Details: {}", ex.getBody().getTitle(), ex.getBody().getDetail(), request.getDescription(false), ex);
 
         final Map<String, Object> body = new LinkedHashMap<>();
 
@@ -53,14 +49,16 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
             NotFoundException.class,
             AppException.class
     })
-    public ProblemDetail handleAppException(AppException ex) {
-        log.error("Http Status Code: {} - ERROR: {}", ex.getStatus().name(), ex.getMessage());
+    public ProblemDetail handleAppException(AppException ex, WebRequest request) {
+        log.error("Http Status Code: {} - ERROR: {}, Request Details: {}", ex.getStatus().name(), ex.getMessage(), request.getDescription(false), ex);
+
         return createProblemDetail(ex);
     }
 
     @ExceptionHandler(RuntimeException.class)
-    public ProblemDetail handleRuntime(RuntimeException ex) {
-        log.error(ex.getMessage());
+    public ProblemDetail handleRuntime(RuntimeException ex, WebRequest request) {
+        log.error("ERROR: {}, Request Details: {}", ex.getMessage(), request.getDescription(false), ex);
+
         final var problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
         problemDetail.setProperty("timestamp", timestamp());
 
@@ -68,8 +66,9 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    public ProblemDetail handle(Exception ex) {
-        log.error(ex.getMessage());
+    public ProblemDetail handle(Exception ex, WebRequest request) {
+        log.error("ERROR: {}, Request Details: {}", ex.getMessage(), request.getDescription(false), ex);
+
         final var problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
         problemDetail.setProperty("timestamp", timestamp());
 

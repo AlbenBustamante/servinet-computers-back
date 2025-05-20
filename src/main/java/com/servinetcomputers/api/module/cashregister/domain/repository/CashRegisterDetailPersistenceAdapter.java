@@ -1,6 +1,5 @@
 package com.servinetcomputers.api.module.cashregister.domain.repository;
 
-import com.servinetcomputers.api.core.exception.NotFoundException;
 import com.servinetcomputers.api.core.util.enums.CashRegisterDetailStatus;
 import com.servinetcomputers.api.core.util.enums.CashRegisterStatus;
 import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDetailDto;
@@ -23,7 +22,6 @@ public interface CashRegisterDetailPersistenceAdapter {
      *
      * @param cashRegisterId el {@code ID} de la caja registradora.
      * @return el movimiento de caja encontrado.
-     * @throws NotFoundException en caso de que no encuentre ningún movimiento.
      */
     CashRegisterDetailDto getLatestByCashRegisterId(Integer cashRegisterId);
 

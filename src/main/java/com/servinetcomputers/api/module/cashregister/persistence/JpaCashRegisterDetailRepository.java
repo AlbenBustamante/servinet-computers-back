@@ -25,7 +25,7 @@ public interface JpaCashRegisterDetailRepository extends JpaRepository<CashRegis
             "WHERE crd.cashRegister.id = :cashRegisterId " +
             "AND crd.enabled = true " +
             "ORDER BY crd.createdDate DESC")
-    Optional<CashRegisterDetail> findLatestByCashRegisterIdAndEnabledTrue(Integer cashRegisterId);
+    Page<CashRegisterDetail> findLatestByCashRegisterIdAndEnabledTrue(Integer cashRegisterId, Pageable pageable);
 
     List<CashRegisterDetail> findAllByUserIdAndCreatedDateBetweenAndEnabledTrueAndCashRegisterStatusNot(int userId, LocalDateTime firstDate, LocalDateTime lastDate, CashRegisterStatus status);
 
