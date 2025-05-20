@@ -3,7 +3,6 @@ package com.servinetcomputers.api.module.platform.persistence;
 import com.servinetcomputers.api.module.platform.persistence.entity.PlatformTransfer;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -20,12 +19,9 @@ public interface JpaPlatformTransferRepository extends JpaRepository<PlatformTra
             "WHERE pt.platform.id = :platformId " +
             "AND pt.platform.enabled = true " +
             "AND pt.date BETWEEN :startDate AND :endDate")
-    Integer calculateTotalByPlatformIdAndDateBetween(
-            @Param("platformId") int platformId,
-            @Param("startDate") LocalDateTime startDate,
-            @Param("endDate") LocalDateTime endDate);
+    Integer calculateTotalByPlatformIdAndDateBetween(int platformId, LocalDate startDate, LocalDate endDate);
 
-    int countByPlatformIdAndEnabledTrueAndDateBetween(int platformId, LocalDateTime startDate, LocalDateTime endDate);
+    int countByPlatformIdAndEnabledTrueAndDateBetween(int platformId, LocalDate startDate, LocalDate endDate);
 
     List<PlatformTransfer> findAllByPlatformIdAndEnabledTrueAndDateBetweenOrderByDateDesc(Integer platformId, LocalDate startDate, LocalDate endDate);
 

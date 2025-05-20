@@ -57,12 +57,12 @@ public class PlatformTransferRepositoryImpl implements PlatformTransferRepositor
     }
 
     @Override
-    public int getPlatformTransfersAmountBetween(int platformId, LocalDateTime startDate, LocalDateTime endDate) {
+    public int getPlatformTransfersAmountBetween(int platformId, LocalDate startDate, LocalDate endDate) {
         return repository.countByPlatformIdAndEnabledTrueAndDateBetween(platformId, startDate, endDate);
     }
 
     @Override
-    public int getPlatformTransfersTotalBetween(int platformId, LocalDateTime startDate, LocalDateTime endDate) {
+    public int getPlatformTransfersTotalBetween(int platformId, LocalDate startDate, LocalDate endDate) {
         final var total = repository.calculateTotalByPlatformIdAndDateBetween(platformId, startDate, endDate);
         return total != null ? total : 0;
     }
