@@ -33,7 +33,7 @@ public class GetAdminPlatformDetailsService implements GetAdminPlatformDetailsUs
         final var endDate = date.plusDays(1).atStartOfDay();
 
         final var balances = balanceRepository.getAllByPlatformIdBetweenOrderByCreatedDateDesc(platformId, startDate, endDate);
-        final var transfers = transferRepository.getAllByPlatformIdBetweenOrderByCreatedDateDesc(platformId, startDate, endDate);
+        final var transfers = transferRepository.getAllByPlatformIdBetweenOrderByDateDesc(platformId, date, date);
 
         return new AdminPlatformDto(platform, balances, transfers);
     }

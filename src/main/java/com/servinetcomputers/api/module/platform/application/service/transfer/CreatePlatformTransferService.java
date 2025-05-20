@@ -45,7 +45,7 @@ public class CreatePlatformTransferService implements CreatePlatformTransferUseC
         }
 
         if (request.getDate() == null) {
-            final var now = dateTimeService.now();
+            final var now = dateTimeService.dateNow();
             request.setDate(now);
         }
 
