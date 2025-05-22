@@ -21,7 +21,7 @@ public class GetDetailedTransactionsService implements GetDetailedTransactionsUs
     private final UserLoggedService userLoggedService;
 
     /**
-     * Get the cashier/supervisor reports of the day.
+     * Get the reports of the day by the current user logged in.
      *
      * @return a {@link ReportsResponse} with the results.
      */
@@ -34,7 +34,7 @@ public class GetDetailedTransactionsService implements GetDetailedTransactionsUs
         final var code = userLoggedService.code();
 
         final var transactions = transactionDetailRepository.getAllByCodeBetween(code, startDate, endDate);
-        final var transfers = platformTransferRepository.getAllByCodeBetween(code, startDate, endDate);
+        final var transfers = platformTransferRepository.getAllByCodeBetween(code, today, today);
         final var expenses = expenseRepository.getAllByDiscountAndCodeCodeBetween(false, code, startDate, endDate);
         final var discounts = expenseRepository.getAllByDiscountAndCodeCodeBetween(true, code, startDate, endDate);
 
