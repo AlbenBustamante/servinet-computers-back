@@ -24,23 +24,23 @@ public class UpdatePlatformTransferService implements UpdatePlatformTransferUseC
     /**
      * Update an existing and available transfer.
      *
-     * @param transferId                the ID to be searched.
-     * @param updatePlatformTransferDto the data to be updated.
+     * @param transferId the ID to be searched.
+     * @param dto        the data to be updated.
      * @return an {@link Optional} of the transfer updated.
      */
     @Transactional(rollbackFor = AppException.class)
     @Override
-    public PlatformTransferDto call(Integer transferId, UpdatePlatformTransferDto updatePlatformTransferDto) {
+    public PlatformTransferDto call(Integer transferId, UpdatePlatformTransferDto dto) {
         final var transfer = getPlatformTransferUseCase.call(transferId);
 
-        if (updatePlatformTransferDto.platformId() != null) {
-            final var platform = platformRepository.get(updatePlatformTransferDto.platformId())
-                    .orElseThrow(() -> new NotFoundException("Plataforma no encontrada: #" + updatePlatformTransferDto.platformId()));
+        if (dto.platformId() != null) {
+            final var platform = platformRepository.get(dto.platformId())
+                    .orElseThrow(() -> new NotFoundException("Plataforma no encontrada: #" + dto.platformId()));
 
             transfer.setPlatform(platform);
         }
 
-        transfer.setValue(updatePlatformTransferDto.value() != null ? updatePlatformTransferDto.value() : transfer.getValue());
+        transfer.setValue(dto.value() != null ? dto.value() : transfer.getValue());
 
         return repository.save(transfer);
     }
