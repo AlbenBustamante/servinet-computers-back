@@ -59,7 +59,7 @@ public class CashRegisterDetailPersistenceAdapterImpl implements CashRegisterDet
 
     @Override
     public List<CashRegisterDetailDto> getAllByUserIdBetween(int userId, LocalDateTime startDate, LocalDateTime endDate) {
-        final var details = repository.findAllByUserIdAndCreatedDateBetweenAndEnabledTrue(userId, startDate, endDate);
+        final var details = repository.findAllByUserIdAndCreatedDateBetweenAndEnabledTrueOrderByCreatedDate(userId, startDate, endDate);
         return mapper.toDto(details);
     }
 

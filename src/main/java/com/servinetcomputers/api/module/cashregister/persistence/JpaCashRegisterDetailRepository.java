@@ -29,7 +29,7 @@ public interface JpaCashRegisterDetailRepository extends JpaRepository<CashRegis
 
     List<CashRegisterDetail> findAllByUserIdAndCreatedDateBetweenAndEnabledTrueAndCashRegisterStatusNot(int userId, LocalDateTime firstDate, LocalDateTime lastDate, CashRegisterStatus status);
 
-    List<CashRegisterDetail> findAllByUserIdAndCreatedDateBetweenAndEnabledTrue(int userId, LocalDateTime firstDate, LocalDateTime lastDate);
+    List<CashRegisterDetail> findAllByUserIdAndCreatedDateBetweenAndEnabledTrueOrderByCreatedDate(int userId, LocalDateTime firstDate, LocalDateTime lastDate);
 
     List<CashRegisterDetail> findAllByEnabledTrueAndCreatedDateBetween(LocalDateTime startDate, LocalDateTime endDate);
 
