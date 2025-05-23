@@ -5,7 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,5 +24,5 @@ public interface JpaPlatformTransferRepository extends JpaRepository<PlatformTra
 
     List<PlatformTransfer> findAllByPlatformIdAndEnabledTrueAndDateBetweenOrderByDateDesc(Integer platformId, LocalDate startDate, LocalDate endDate);
 
-    List<PlatformTransfer> findAllByCreatedByAndEnabledTrueAndDateBetween(String createdBy, LocalDateTime startDate, LocalDateTime endDate);
+    List<PlatformTransfer> findAllByCreatedByAndEnabledTrueAndDateBetween(String createdBy, LocalDate startDate, LocalDate endDate);
 }

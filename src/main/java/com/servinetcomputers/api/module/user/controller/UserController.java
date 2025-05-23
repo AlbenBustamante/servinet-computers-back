@@ -1,25 +1,17 @@
 package com.servinetcomputers.api.module.user.controller;
 
+import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDetailDto;
 import com.servinetcomputers.api.module.cashregister.domain.dto.MyCashRegistersReports;
 import com.servinetcomputers.api.module.reports.application.usecase.GetDetailedTransactionsUseCase;
 import com.servinetcomputers.api.module.reports.dto.ReportsResponse;
-import com.servinetcomputers.api.module.user.application.usecase.DeleteUserUseCase;
-import com.servinetcomputers.api.module.user.application.usecase.GetAllUsersUseCase;
-import com.servinetcomputers.api.module.user.application.usecase.GetUserCashRegisterReportsUseCase;
-import com.servinetcomputers.api.module.user.application.usecase.GetUserUseCase;
-import com.servinetcomputers.api.module.user.application.usecase.UpdateUserUseCase;
+import com.servinetcomputers.api.module.user.application.usecase.*;
 import com.servinetcomputers.api.module.user.domain.dto.UpdateUserDto;
 import com.servinetcomputers.api.module.user.domain.dto.UserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.time.YearMonth;
 import java.util.List;
 
 /**
@@ -35,6 +27,7 @@ public class UserController {
     private final DeleteUserUseCase deleteUserUseCase;
     private final GetUserCashRegisterReportsUseCase getReportsUseCase;
     private final GetDetailedTransactionsUseCase getDetailedTransactionsUseCase;
+    private final GetJourneysUseCase getJourneysUseCase;
 
     @GetMapping
     public ResponseEntity<List<UserDto>> getAll() {
@@ -51,6 +44,11 @@ public class UserController {
         return ResponseEntity.ok(getReportsUseCase.call(userId));
     }
 
+    @GetMapping(path = "/{id}/journeys")
+    public ResponseEntity<List<CashRegisterDetailDto>> getJourneys(@PathVariable("id") int userId, @RequestParam("month") YearMonth month) {
+        return ResponseEntity.ok(getJourneysUseCase.call(userId, month));
+    }
+
     @GetMapping(path = "/reports")
     public ResponseEntity<ReportsResponse> getReports() {
         return ResponseEntity.ok(getDetailedTransactionsUseCase.call());
@@ -62,7 +60,7 @@ public class UserController {
     }
 
     @DeleteMapping(path = "/{id}")
-    public ResponseEntity<Boolean> delete(@PathVariable("id") int userId) {
+    public ResponseEntity<Void> delete(@PathVariable("id") int userId) {
         deleteUserUseCase.call(userId);
         return ResponseEntity.ok().build();
     }

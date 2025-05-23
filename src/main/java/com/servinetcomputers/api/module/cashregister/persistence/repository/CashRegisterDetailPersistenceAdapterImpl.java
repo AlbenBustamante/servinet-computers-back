@@ -1,5 +1,6 @@
 package com.servinetcomputers.api.module.cashregister.persistence.repository;
 
+import com.servinetcomputers.api.core.exception.NotFoundException;
 import com.servinetcomputers.api.core.util.enums.CashRegisterDetailStatus;
 import com.servinetcomputers.api.core.util.enums.CashRegisterStatus;
 import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDetailDto;
@@ -9,6 +10,7 @@ import com.servinetcomputers.api.module.cashregister.persistence.JpaCashRegister
 import com.servinetcomputers.api.module.cashregister.persistence.mapper.CashRegisterDetailMapper;
 import com.servinetcomputers.api.module.user.domain.dto.UserFullNameDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
@@ -42,13 +44,22 @@ public class CashRegisterDetailPersistenceAdapterImpl implements CashRegisterDet
     }
 
     @Override
+    public CashRegisterDetailDto getLatestByCashRegisterId(Integer cashRegisterId) {
+        final var detail = repository.findLatestByCashRegisterIdAndEnabledTrue(cashRegisterId, PageRequest.of(0, 1));
+        if (detail.getContent().isEmpty()) {
+            throw new NotFoundException("No se encontró movimientos de caja: " + cashRegisterId);
+        }
+        return mapper.toDto(detail.getContent().get(0));
+    }
+
+    @Override
     public boolean existsByUserIdAndStatusNot(int userId, LocalDateTime startDate, LocalDateTime endDate, CashRegisterStatus status) {
         return repository.existsByUserIdAndCreatedDateBetweenAndEnabledTrueAndCashRegisterStatusNot(userId, startDate, endDate, status);
     }
 
     @Override
     public List<CashRegisterDetailDto> getAllByUserIdBetween(int userId, LocalDateTime startDate, LocalDateTime endDate) {
-        final var details = repository.findAllByUserIdAndCreatedDateBetweenAndEnabledTrue(userId, startDate, endDate);
+        final var details = repository.findAllByUserIdAndCreatedDateBetweenAndEnabledTrueOrderByCreatedDate(userId, startDate, endDate);
         return mapper.toDto(details);
     }
 

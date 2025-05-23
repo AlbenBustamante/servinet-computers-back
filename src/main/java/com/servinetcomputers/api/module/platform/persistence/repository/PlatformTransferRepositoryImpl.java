@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -51,7 +50,7 @@ public class PlatformTransferRepositoryImpl implements PlatformTransferRepositor
     }
 
     @Override
-    public List<PlatformTransferDto> getAllByCodeBetween(String code, LocalDateTime startDate, LocalDateTime endDate) {
+    public List<PlatformTransferDto> getAllByCodeBetween(String code, LocalDate startDate, LocalDate endDate) {
         final var transfers = repository.findAllByCreatedByAndEnabledTrueAndDateBetween(code, startDate, endDate);
         return mapper.toDto(transfers);
     }
