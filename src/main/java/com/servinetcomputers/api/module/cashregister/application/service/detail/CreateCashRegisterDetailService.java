@@ -4,6 +4,7 @@ import com.servinetcomputers.api.core.datetime.DateTimeService;
 import com.servinetcomputers.api.core.exception.AppException;
 import com.servinetcomputers.api.core.exception.BadRequestException;
 import com.servinetcomputers.api.core.exception.NotFoundException;
+import com.servinetcomputers.api.core.util.enums.CashRegisterDetailStatus;
 import com.servinetcomputers.api.core.util.enums.CashRegisterStatus;
 import com.servinetcomputers.api.module.cashregister.application.usecase.detail.CreateCashRegisterDetailUseCase;
 import com.servinetcomputers.api.module.cashregister.domain.dto.CreateCashRegisterDetailDto;
@@ -32,7 +33,7 @@ public class CreateCashRegisterDetailService implements CreateCashRegisterDetail
         final var startDate = dateTimeService.getMinByDate(today);
         final var endDate = dateTimeService.now();
 
-        if (repository.existsByUserIdAndStatusNot(param.getUserId(), startDate, endDate, CashRegisterStatus.AVAILABLE)) {
+        if (repository.existsByUserIdAndStatusNot(param.getUserId(), startDate, endDate, CashRegisterDetailStatus.CLOSED)) {
             throw new BadRequestException("Ya tienes una caja en funcionamiento");
         }
 

@@ -1,7 +1,6 @@
 package com.servinetcomputers.api.module.cashregister.domain.repository;
 
 import com.servinetcomputers.api.core.util.enums.CashRegisterDetailStatus;
-import com.servinetcomputers.api.core.util.enums.CashRegisterStatus;
 import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDetailDto;
 import com.servinetcomputers.api.module.cashregister.domain.dto.CreateCashRegisterDetailDto;
 import com.servinetcomputers.api.module.user.domain.dto.UserFullNameDto;
@@ -34,11 +33,11 @@ public interface CashRegisterDetailPersistenceAdapter {
      * @param status    the status.
      * @return true if already exists.
      */
-    boolean existsByUserIdAndStatusNot(int userId, LocalDateTime startDate, LocalDateTime endDate, CashRegisterStatus status);
+    boolean existsByUserIdAndStatusNot(int userId, LocalDateTime startDate, LocalDateTime endDate, CashRegisterDetailStatus status);
 
     List<CashRegisterDetailDto> getAllByUserIdBetween(int userId, LocalDateTime startDate, LocalDateTime endDate);
 
-    List<CashRegisterDetailDto> getAllByUserIdWhereStatusIsNotBetween(int userId, LocalDateTime startDate, LocalDateTime endDate, CashRegisterStatus status);
+    List<CashRegisterDetailDto> getAllByUserIdWhereStatusIsNotBetween(int userId, LocalDateTime startDate, LocalDateTime endDate, CashRegisterDetailStatus status);
 
     List<CashRegisterDetailDto> getAllBetween(LocalDateTime startDate, LocalDateTime endDate);
 
