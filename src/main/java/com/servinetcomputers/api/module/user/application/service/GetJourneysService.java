@@ -20,7 +20,8 @@ import java.util.List;
 @Service
 @Transactional(readOnly = true)
 public class GetJourneysService implements GetJourneysUseCase {
-    private static final String TOTAL_HOURS_FORMAT = "%02d horas y %02d minutos: %02d:%02d";
+    private static final String JOURNEY_HOURS_FORMAT = "%02d:%02d:%02d";
+    private static final String TOTAL_HOURS_FORMAT = "%02d horas, %02d minutos, %02d segundos: %02d:%02d:%02d";
     private final CashRegisterDetailPersistenceAdapter cashRegisterDetailPersistenceAdapter;
     private final ExpenseRepository expenseRepository;
 
@@ -32,7 +33,7 @@ public class GetJourneysService implements GetJourneysUseCase {
         final var cashRegisterDetails = cashRegisterDetailPersistenceAdapter.getAllByUserIdBetween(userId, startDate, endDate);
         final List<JourneyDto> journeys = new ArrayList<>(cashRegisterDetails.size());
         var totalOfDiscounts = 0;
-        var seconds = 0L;
+        var totalOfSeconds = 0L;
 
         for (final var detail : cashRegisterDetails) {
             final var discounts = expenseRepository.getAllByCashRegisterDetailIdAndDiscount(detail.getId(), true);
@@ -52,30 +53,33 @@ public class GetJourneysService implements GetJourneysUseCase {
             final var differenceBetweenWorkingTimes = Duration.between(initialWorking, finalWorking);
             final var differenceBetweenBreakTimes = Duration.between(initialBreak, finalBreak);
             final var totalDuration = differenceBetweenWorkingTimes.minus(differenceBetweenBreakTimes);
-            final var totalOfJourneyHours = String.format("%02d:%02d", totalDuration.toHours(), totalDuration.toMinutesPart());
+            final var totalOfJourneyHours = String.format(JOURNEY_HOURS_FORMAT, totalDuration.toHours(), totalDuration.toMinutesPart(), totalDuration.toSecondsPart());
 
             final var journey = new JourneyDto(detail, discounts, totalOfJourneyDiscounts, totalOfJourneyHours);
             journeys.add(journey);
 
-            seconds += totalDuration.toSeconds();
+            totalOfSeconds += totalDuration.toSeconds();
         }
 
         // https://www.inchcalculator.com/convert/second-to-hour/
-        final var formattedTotalOfHours = getFormattedTotalOfHours((double) seconds);
+        final var formattedTotalOfHours = getFormattedTotalOfHours((double) totalOfSeconds);
 
         return new JourneyDetailDto(formattedTotalOfHours, totalOfDiscounts, journeys);
     }
 
-    private static String getFormattedTotalOfHours(double seconds) {
-        final var hours = seconds / 3600;
+    private static String getFormattedTotalOfHours(double totalOfSeconds) {
+        final var hours = totalOfSeconds / 3600;
         final var wholeHours = String.valueOf(hours).split("\\.")[0];
         final var minutes = (hours - Integer.parseInt(wholeHours)) * 60;
         final var wholeMinutes = String.valueOf(minutes).split("\\.")[0];
+        final var seconds = (minutes - Integer.parseInt(wholeMinutes)) * 60;
+        final var wholeSeconds = String.valueOf(seconds).split("\\.")[0];
 
         final var hoursInt = Integer.parseInt(wholeHours);
         final var minutesInt = Integer.parseInt(wholeMinutes);
+        final var secondsInt = Integer.parseInt(wholeSeconds);
 
-        return String.format(TOTAL_HOURS_FORMAT, hoursInt, minutesInt, hoursInt, minutesInt);
+        return String.format(TOTAL_HOURS_FORMAT, hoursInt, minutesInt, secondsInt, hoursInt, minutesInt, secondsInt);
     }
 
     private LocalTime getTime(LocalDateTime dateTime) {
