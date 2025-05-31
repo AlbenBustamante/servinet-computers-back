@@ -9,7 +9,7 @@ import com.servinetcomputers.api.module.user.application.usecase.GetJourneysUseC
 import com.servinetcomputers.api.module.user.application.usecase.GetUserCashRegisterReportsUseCase;
 import com.servinetcomputers.api.module.user.application.usecase.GetUserUseCase;
 import com.servinetcomputers.api.module.user.application.usecase.UpdateUserUseCase;
-import com.servinetcomputers.api.module.user.domain.dto.JourneyDto;
+import com.servinetcomputers.api.module.user.domain.dto.JourneyDetailDto;
 import com.servinetcomputers.api.module.user.domain.dto.UpdateUserDto;
 import com.servinetcomputers.api.module.user.domain.dto.UserDto;
 import lombok.RequiredArgsConstructor;
@@ -57,7 +57,7 @@ public class UserController {
     }
 
     @GetMapping(path = "/{id}/journeys")
-    public ResponseEntity<List<JourneyDto>> getJourneys(@PathVariable("id") int userId, @RequestParam("month") YearMonth month) {
+    public ResponseEntity<JourneyDetailDto> getJourneys(@PathVariable("id") int userId, @RequestParam("month") YearMonth month) {
         return ResponseEntity.ok(getJourneysUseCase.call(userId, month));
     }
 

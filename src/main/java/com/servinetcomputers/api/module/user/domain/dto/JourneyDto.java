@@ -5,6 +5,12 @@ import com.servinetcomputers.api.module.expense.domain.dto.ExpenseDto;
 
 import java.util.List;
 
+/**
+ * @param cashRegisterDetail Detalles de la jornada trabajada.
+ * @param discounts          Listado de gastos a descontar de la jornada.
+ * @param totalOfDiscounts   Cantidad total a descontar.
+ * @param totalOfHours       Total de horas trabajadas durante la jornada.
+ */
 public record JourneyDto(
         CashRegisterDetailDto cashRegisterDetail,
         List<ExpenseDto> discounts,
