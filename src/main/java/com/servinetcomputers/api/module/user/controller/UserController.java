@@ -4,6 +4,7 @@ import com.servinetcomputers.api.module.cashregister.domain.dto.MyCashRegistersR
 import com.servinetcomputers.api.module.reports.application.usecase.GetDetailedTransactionsUseCase;
 import com.servinetcomputers.api.module.reports.dto.ReportsResponse;
 import com.servinetcomputers.api.module.user.application.usecase.DeleteUserUseCase;
+import com.servinetcomputers.api.module.user.application.usecase.ExportJourneysToExcelUseCase;
 import com.servinetcomputers.api.module.user.application.usecase.GetAllUsersUseCase;
 import com.servinetcomputers.api.module.user.application.usecase.GetJourneysUseCase;
 import com.servinetcomputers.api.module.user.application.usecase.GetUserCashRegisterReportsUseCase;
@@ -12,6 +13,7 @@ import com.servinetcomputers.api.module.user.application.usecase.UpdateUserUseCa
 import com.servinetcomputers.api.module.user.domain.dto.JourneyDetailDto;
 import com.servinetcomputers.api.module.user.domain.dto.UpdateUserDto;
 import com.servinetcomputers.api.module.user.domain.dto.UserDto;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
 import java.time.YearMonth;
 import java.util.List;
 
@@ -40,6 +43,7 @@ public class UserController {
     private final GetUserCashRegisterReportsUseCase getReportsUseCase;
     private final GetDetailedTransactionsUseCase getDetailedTransactionsUseCase;
     private final GetJourneysUseCase getJourneysUseCase;
+    private final ExportJourneysToExcelUseCase exportJourneysToExcelUseCase;
 
     @GetMapping
     public ResponseEntity<List<UserDto>> getAll() {
@@ -59,6 +63,17 @@ public class UserController {
     @GetMapping(path = "/{id}/journeys")
     public ResponseEntity<JourneyDetailDto> getJourneys(@PathVariable("id") int userId, @RequestParam("month") YearMonth month) {
         return ResponseEntity.ok(getJourneysUseCase.call(userId, month));
+    }
+
+    @GetMapping(path = "/{id}/journeys/excel")
+    public void exportJourneysToExcel(@PathVariable("id") int userId, @RequestParam("month") YearMonth month, HttpServletResponse response) throws IOException {
+        response.setContentType("application/octet-stream");
+
+        final var headerKey = "Content-Disposition";
+        final var headerValue = "attachment; filename=jornadas.xlsx";
+
+        response.setHeader(headerKey, headerValue);
+        exportJourneysToExcelUseCase.export(userId, month, response);
     }
 
     @GetMapping(path = "/reports")
