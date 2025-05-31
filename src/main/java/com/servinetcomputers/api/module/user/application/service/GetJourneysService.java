@@ -20,6 +20,7 @@ import java.util.List;
 @Service
 @Transactional(readOnly = true)
 public class GetJourneysService implements GetJourneysUseCase {
+    private static final String TOTAL_HOURS_FORMAT = "%02d horas y %02d minutos: %02d:%02d";
     private final CashRegisterDetailPersistenceAdapter cashRegisterDetailPersistenceAdapter;
     private final ExpenseRepository expenseRepository;
 
@@ -60,14 +61,21 @@ public class GetJourneysService implements GetJourneysUseCase {
         }
 
         // https://www.inchcalculator.com/convert/second-to-hour/
-        final var hours = (double) seconds / 3600;
+        final var formattedTotalOfHours = getFormattedTotalOfHours((double) seconds);
+
+        return new JourneyDetailDto(formattedTotalOfHours, totalOfDiscounts, journeys);
+    }
+
+    private static String getFormattedTotalOfHours(double seconds) {
+        final var hours = seconds / 3600;
         final var wholeHours = String.valueOf(hours).split("\\.")[0];
         final var minutes = (hours - Integer.parseInt(wholeHours)) * 60;
         final var wholeMinutes = String.valueOf(minutes).split("\\.")[0];
 
-        final var formattedTotalOfHours = String.format("%02d:%02d", Integer.parseInt(wholeHours), Integer.parseInt(wholeMinutes));
+        final var hoursInt = Integer.parseInt(wholeHours);
+        final var minutesInt = Integer.parseInt(wholeMinutes);
 
-        return new JourneyDetailDto(formattedTotalOfHours, totalOfDiscounts, journeys);
+        return String.format(TOTAL_HOURS_FORMAT, hoursInt, minutesInt, hoursInt, minutesInt);
     }
 
     private LocalTime getTime(LocalDateTime dateTime) {
