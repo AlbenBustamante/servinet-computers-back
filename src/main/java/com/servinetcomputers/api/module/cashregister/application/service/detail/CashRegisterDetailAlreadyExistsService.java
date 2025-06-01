@@ -3,7 +3,7 @@ package com.servinetcomputers.api.module.cashregister.application.service.detail
 import com.servinetcomputers.api.core.datetime.DateTimeService;
 import com.servinetcomputers.api.core.exception.AppException;
 import com.servinetcomputers.api.core.security.service.UserLoggedService;
-import com.servinetcomputers.api.core.util.enums.CashRegisterStatus;
+import com.servinetcomputers.api.core.util.enums.CashRegisterDetailStatus;
 import com.servinetcomputers.api.module.cashregister.application.usecase.detail.CashRegisterDetailAlreadyExistsUseCase;
 import com.servinetcomputers.api.module.cashregister.domain.dto.AlreadyExistsCashRegisterDetailDto;
 import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDto;
@@ -38,7 +38,7 @@ public class CashRegisterDetailAlreadyExistsService implements CashRegisterDetai
         final var startDate = dateTimeService.getMinByDate(today);
         final var endDate = dateTimeService.now();
 
-        final var details = repository.getAllByUserIdWhereStatusIsNotBetween(userId, startDate, endDate, CashRegisterStatus.AVAILABLE);
+        final var details = repository.getAllByUserIdWhereStatusIsNotBetween(userId, startDate, endDate, CashRegisterDetailStatus.CLOSED);
         final var alreadyExists = !details.isEmpty();
 
         final var myCashRegisters = alreadyExists ? getUserCashRegisterReportsUseCase.call(userId) : null;

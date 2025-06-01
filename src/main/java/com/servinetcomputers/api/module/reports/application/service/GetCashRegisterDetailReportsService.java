@@ -47,7 +47,7 @@ public class GetCashRegisterDetailReportsService implements GetCashRegisterDetai
         deposits += transfersReceived + earnings;
         withdrawals += bankDeposits + expenses + discounts + transfersSent;
 
-        final var balance = initialBase + deposits - withdrawals - expenses - discounts;
+        final var balance = initialBase + deposits - withdrawals;
         final var discrepancy = finalBase - balance;
 
         final var transactionsAmount = transactionDetailRepository.countByCashRegisterDetailId(cashRegisterDetailId);
