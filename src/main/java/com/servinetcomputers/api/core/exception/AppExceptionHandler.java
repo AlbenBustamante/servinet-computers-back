@@ -46,7 +46,7 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(value = AppException.class)
     public ResponseEntity<ErrorResponse> handleAppException(AppException ex, WebRequest request) {
         final var errorResponse = buildErrorResponse(ex, request);
-        log.error("EXCEPTION: {}\nPATH: {}\nSTATUS CODE: {} - {}", errorResponse.message(), errorResponse.path(), errorResponse.error(), errorResponse.statusCode());
+        log.error("\n - EXCEPTION: {}\n - PATH: {}\n - STATUS CODE: {} - {}", errorResponse.message(), errorResponse.path(), errorResponse.error(), errorResponse.statusCode());
 
         return ResponseEntity.status(ex.getStatus()).body(errorResponse);
     }
@@ -54,7 +54,7 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handle(Exception ex, WebRequest request) {
         final var errorResponse = buildErrorResponse(ex, request);
-        log.error("UNEXPECTED EXCEPTION: {}\nPATH: {}\nSTATUS CODE: {} - {}", errorResponse.message(), errorResponse.path(), errorResponse.error(), errorResponse.statusCode(), ex);
+        log.error("\n - UNEXPECTED EXCEPTION: {}\n - PATH: {}\n - STATUS CODE: {} - {}", errorResponse.message(), errorResponse.path(), errorResponse.error(), errorResponse.statusCode(), ex);
 
         return ResponseEntity.internalServerError().body(errorResponse);
     }
