@@ -4,12 +4,13 @@ import com.servinetcomputers.api.module.base.BaseMapper;
 import com.servinetcomputers.api.module.safes.domain.dto.CreateSafeBaseDto;
 import com.servinetcomputers.api.module.safes.domain.dto.SafeBaseDto;
 import com.servinetcomputers.api.module.safes.persistence.entity.SafeBase;
+import com.servinetcomputers.api.module.safes.persistence.entity.SafeDetail;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = {BaseMapper.class, SafeDetailMapper.class})
+@Mapper(componentModel = "spring", uses = {BaseMapper.class})
 public interface SafeBaseMapper {
     @Mapping(target = "safeDetailId", source = "safeDetail.id")
     @Mapping(target = "detailBase", source = "base")
@@ -26,4 +27,20 @@ public interface SafeBaseMapper {
     @Mapping(target = "createdDate", ignore = true)
     @Mapping(target = "createdBy", ignore = true)
     SafeBase toEntity(CreateSafeBaseDto dto);
+
+    @Mapping(target = "safeDetail", expression = "java(fromId(dto.getSafeDetailId()))")
+    SafeBase toEntity(SafeBaseDto dto);
+
+    @Mapping(target = "safe", ignore = true)
+    @Mapping(target = "modifiedDate", ignore = true)
+    @Mapping(target = "modifiedBy", ignore = true)
+    @Mapping(target = "initialBase", ignore = true)
+    @Mapping(target = "finalBase", ignore = true)
+    @Mapping(target = "enabled", ignore = true)
+    @Mapping(target = "createdDate", ignore = true)
+    @Mapping(target = "createdBy", ignore = true)
+    @Mapping(target = "calculatedBase", ignore = true)
+    @Mapping(target = "bases", ignore = true)
+    @Mapping(target = "id", expression = "java(safeDetailId)")
+    SafeDetail fromId(Integer safeDetailId);
 }

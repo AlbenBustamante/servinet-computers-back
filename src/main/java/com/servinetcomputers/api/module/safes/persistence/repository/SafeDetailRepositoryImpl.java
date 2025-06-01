@@ -1,5 +1,6 @@
 package com.servinetcomputers.api.module.safes.persistence.repository;
 
+import com.servinetcomputers.api.module.safes.application.port.out.LoadDetailsBySafeIdAndBetweenPort;
 import com.servinetcomputers.api.module.safes.domain.dto.CreateSafeDetailDto;
 import com.servinetcomputers.api.module.safes.domain.dto.SafeDetailDto;
 import com.servinetcomputers.api.module.safes.domain.repository.SafeDetailRepository;
@@ -14,7 +15,7 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @Repository
-public class SafeDetailRepositoryImpl implements SafeDetailRepository {
+public class SafeDetailRepositoryImpl implements SafeDetailRepository, LoadDetailsBySafeIdAndBetweenPort {
     private final JpaSafeDetailRepository repository;
     private final SafeDetailMapper mapper;
 
@@ -55,5 +56,11 @@ public class SafeDetailRepositoryImpl implements SafeDetailRepository {
     @Override
     public Optional<Integer> getNumeralById(int id) {
         return repository.findNumeralById(id);
+    }
+
+    @Override
+    public List<SafeDetailDto> load(Integer safeId, LocalDateTime startDate, LocalDateTime endDate) {
+        final var details = repository.findAllBySafeIdAndEnabledTrueAndCreatedDateBetween(safeId, startDate, endDate);
+        return mapper.toDto(details);
     }
 }
