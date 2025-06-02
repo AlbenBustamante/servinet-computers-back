@@ -13,13 +13,10 @@ import com.servinetcomputers.api.module.safes.domain.repository.SafeRepository;
 import com.servinetcomputers.api.module.safes.exception.SafeDetailBySafeIdNotFoundException;
 import com.servinetcomputers.api.module.safes.exception.SafeNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-
-import static com.servinetcomputers.api.core.util.constants.SecurityConstants.ADMIN_AUTHORITY;
 
 @RequiredArgsConstructor
 @Service
@@ -32,7 +29,6 @@ public class GetSafeMovementsByIdService implements GetSafeMovementsByIdUseCase 
     private final DateTimeService dateTimeService;
 
     @Override
-    @Secured(value = ADMIN_AUTHORITY)
     public SafeDetailDto call(Integer safeId, LocalDate date) {
         final var safe = safeRepository.get(safeId)
                 .orElseThrow(() -> new SafeNotFoundException(safeId));
