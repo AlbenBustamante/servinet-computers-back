@@ -1,5 +1,6 @@
 package com.servinetcomputers.api.module.safes.application.service.detail;
 
+import com.servinetcomputers.api.core.exception.AlreadyExistsException;
 import com.servinetcomputers.api.core.exception.AppException;
 import com.servinetcomputers.api.core.exception.NotFoundException;
 import com.servinetcomputers.api.module.base.BaseDto;
@@ -32,6 +33,10 @@ public class UpdateSafeDetailBaseService implements UpdateSafeDetailBaseUseCase 
     public SafeDetailDto call(Integer safeDetailId, BaseDto baseDto) {
         final var safeDetail = repository.get(safeDetailId)
                 .orElseThrow(() -> new NotFoundException("Caja del día no encontrada: #" + safeDetailId));
+
+        if (baseDto.equals(safeDetail.getDetailFinalBase())) {
+            throw new AlreadyExistsException("La base ingresada ya está siendo utilizada");
+        }
 
         if (safeDetail.getDetailInitialBase().equals(BaseDto.zero())) {
             safeDetail.setDetailInitialBase(baseDto);

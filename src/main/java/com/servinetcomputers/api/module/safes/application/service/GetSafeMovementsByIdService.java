@@ -1,5 +1,6 @@
 package com.servinetcomputers.api.module.safes.application.service;
 
+import com.servinetcomputers.api.core.datetime.DateTimeService;
 import com.servinetcomputers.api.module.base.BaseDto;
 import com.servinetcomputers.api.module.safes.application.port.out.LoadDetailsBySafeIdAndBetweenPort;
 import com.servinetcomputers.api.module.safes.application.usecase.GetSafeMovementsByIdUseCase;
@@ -9,6 +10,7 @@ import com.servinetcomputers.api.module.safes.domain.dto.SafeDetailDto;
 import com.servinetcomputers.api.module.safes.domain.repository.SafeBaseRepository;
 import com.servinetcomputers.api.module.safes.domain.repository.SafeDetailRepository;
 import com.servinetcomputers.api.module.safes.domain.repository.SafeRepository;
+import com.servinetcomputers.api.module.safes.exception.SafeDetailBySafeIdNotFoundException;
 import com.servinetcomputers.api.module.safes.exception.SafeNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
@@ -27,6 +29,7 @@ public class GetSafeMovementsByIdService implements GetSafeMovementsByIdUseCase 
     private final SafeDetailRepository safeDetailRepository;
     private final SafeBaseRepository safeBaseRepository;
     private final SafeRepository safeRepository;
+    private final DateTimeService dateTimeService;
 
     @Override
     @Secured(value = ADMIN_AUTHORITY)
@@ -40,6 +43,12 @@ public class GetSafeMovementsByIdService implements GetSafeMovementsByIdUseCase 
 
         if (!details.isEmpty()) {
             return details.get(0);
+        }
+
+        final var today = dateTimeService.dateNow();
+
+        if (date != today) {
+            throw new SafeDetailBySafeIdNotFoundException(safeId);
         }
 
         final var lastBase = safeBaseRepository.getLastBySafeId(safeId);
