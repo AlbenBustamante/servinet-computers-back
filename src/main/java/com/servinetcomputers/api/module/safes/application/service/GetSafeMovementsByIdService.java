@@ -47,7 +47,7 @@ public class GetSafeMovementsByIdService implements GetSafeMovementsByIdUseCase 
 
         final var today = dateTimeService.dateNow();
 
-        if (date != today) {
+        if (!date.isEqual(today)) {
             throw new SafeDetailBySafeIdNotFoundException(safeId);
         }
 
