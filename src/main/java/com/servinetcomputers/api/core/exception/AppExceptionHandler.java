@@ -3,7 +3,10 @@ package com.servinetcomputers.api.core.exception;
 import com.servinetcomputers.api.core.datetime.DateTimeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.*;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -40,54 +43,32 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.badRequest().body(body);
     }
 
-    @ExceptionHandler(value = {
-            AuthenticationException.class,
-            RequiredTempCodeException.class,
-            InvalidTempCodeException.class,
-            AlreadyExistsException.class,
-            BadRequestException.class,
-            NotFoundException.class,
-            AppException.class
-    })
-    public ProblemDetail handleAppException(AppException ex, WebRequest request) {
-        log.error("Http Status Code: {} - ERROR: {}, Request Details: {}", ex.getStatus().name(), ex.getMessage(), request.getDescription(false), ex);
+    @ExceptionHandler(value = AppException.class)
+    public ResponseEntity<ErrorResponse> handleAppException(AppException ex, WebRequest request) {
+        final var errorResponse = buildErrorResponse(ex, request);
+        log.error("\n - EXCEPTION: {}\n - PATH: {}\n - STATUS CODE: {} - {}", errorResponse.message(), errorResponse.path(), errorResponse.error(), errorResponse.statusCode());
 
-        return createProblemDetail(ex);
-    }
-
-    @ExceptionHandler(RuntimeException.class)
-    public ProblemDetail handleRuntime(RuntimeException ex, WebRequest request) {
-        log.error("ERROR: {}, Request Details: {}", ex.getMessage(), request.getDescription(false), ex);
-
-        final var problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
-        problemDetail.setProperty("timestamp", timestamp());
-
-        return problemDetail;
+        return ResponseEntity.status(ex.getStatus()).body(errorResponse);
     }
 
     @ExceptionHandler(Exception.class)
-    public ProblemDetail handle(Exception ex, WebRequest request) {
-        log.error("ERROR: {}, Request Details: {}", ex.getMessage(), request.getDescription(false), ex);
+    public ResponseEntity<ErrorResponse> handle(Exception ex, WebRequest request) {
+        final var errorResponse = buildErrorResponse(ex, request);
+        log.error("\n - UNEXPECTED EXCEPTION: {}\n - PATH: {}\n - STATUS CODE: {} - {}", errorResponse.message(), errorResponse.path(), errorResponse.error(), errorResponse.statusCode(), ex);
 
-        final var problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
-        problemDetail.setProperty("timestamp", timestamp());
-
-        return problemDetail;
+        return ResponseEntity.internalServerError().body(errorResponse);
     }
 
-    /**
-     * Creates a generic {@link ProblemDetail} for the father exception.
-     *
-     * @param ex the {@link AppException}.
-     * @return the generic {@link ProblemDetail} generated.
-     */
-    private ProblemDetail createProblemDetail(AppException ex) {
-        final var problemDetail = ProblemDetail.forStatusAndDetail(ex.getStatus(), ex.getLocalizedMessage());
+    private ErrorResponse buildErrorResponse(Exception ex, WebRequest request) {
+        final var internalError = HttpStatus.INTERNAL_SERVER_ERROR;
 
-        problemDetail.setProperty("timestamp", timestamp());
-        problemDetail.setProperty("ok", false);
+        final var message = ex.getMessage();
+        final var path = request.getDescription(false).replace("uri=", "");
+        final var error = ex instanceof AppException ? ((AppException) ex).getStatus().getReasonPhrase() : internalError.getReasonPhrase();
+        final var statusCode = ex instanceof AppException ? ((AppException) ex).getStatus().value() : internalError.value();
+        final var timestamp = timestamp();
 
-        return problemDetail;
+        return new ErrorResponse(message, path, error, statusCode, timestamp);
     }
 
     /**

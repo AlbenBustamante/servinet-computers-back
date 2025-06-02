@@ -9,7 +9,7 @@ import org.mapstruct.Mapping;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = {SafeMapper.class, BaseMapper.class})
+@Mapper(componentModel = "spring", uses = {SafeMapper.class, BaseMapper.class, SafeBaseMapper.class})
 public interface SafeDetailMapper {
     @Mapping(target = "safeId", source = "safe.id")
     @Mapping(target = "detailInitialBase", source = "initialBase")
@@ -20,6 +20,7 @@ public interface SafeDetailMapper {
 
     List<SafeDetailDto> toDto(List<SafeDetail> entities);
 
+    @Mapping(target = "bases", ignore = true)
     @Mapping(target = "modifiedDate", ignore = true)
     @Mapping(target = "modifiedBy", ignore = true)
     @Mapping(target = "id", ignore = true)

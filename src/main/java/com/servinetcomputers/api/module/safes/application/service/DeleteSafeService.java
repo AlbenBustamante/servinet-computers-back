@@ -2,7 +2,7 @@ package com.servinetcomputers.api.module.safes.application.service;
 
 import com.servinetcomputers.api.core.exception.AppException;
 import com.servinetcomputers.api.core.exception.NotFoundException;
-import com.servinetcomputers.api.module.safes.application.usecase.detail.DeleteSafeUseCase;
+import com.servinetcomputers.api.module.safes.application.usecase.DeleteSafeUseCase;
 import com.servinetcomputers.api.module.safes.domain.repository.SafeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
