@@ -1,4 +1,4 @@
-package com.servinetcomputers.api.module.safes.application.usecase.detail;
+package com.servinetcomputers.api.module.safes.application.usecase;
 
 import com.servinetcomputers.api.core.usecase.UseCaseWithoutReturn;
 

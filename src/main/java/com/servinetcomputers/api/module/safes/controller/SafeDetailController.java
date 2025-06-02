@@ -1,11 +1,9 @@
 package com.servinetcomputers.api.module.safes.controller;
 
 import com.servinetcomputers.api.module.base.BaseDto;
-import com.servinetcomputers.api.module.safes.application.usecase.detail.GetSafeDetailMovementsByIdUseCase;
 import com.servinetcomputers.api.module.safes.application.usecase.detail.LoadSafeDetailsOfDayUseCase;
 import com.servinetcomputers.api.module.safes.application.usecase.detail.UpdateSafeDetailBaseUseCase;
 import com.servinetcomputers.api.module.safes.domain.dto.SafeDetailDto;
-import com.servinetcomputers.api.module.safes.domain.dto.SafeMovementDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,16 +21,10 @@ import java.util.List;
 public class SafeDetailController {
     private final UpdateSafeDetailBaseUseCase updateSafeDetailBaseUseCase;
     private final LoadSafeDetailsOfDayUseCase loadSafeDetailsOfDayUseCase;
-    private final GetSafeDetailMovementsByIdUseCase getMovementsUseCase;
 
     @GetMapping(path = "/load")
     public ResponseEntity<List<SafeDetailDto>> load() {
         return ResponseEntity.ok(loadSafeDetailsOfDayUseCase.call());
-    }
-
-    @GetMapping(path = "/{id}/movements")
-    public ResponseEntity<SafeMovementDto> getMovements(@PathVariable("id") int safeDetailId) {
-        return ResponseEntity.ok(getMovementsUseCase.call(safeDetailId));
     }
 
     @PutMapping(path = "/{id}/base")

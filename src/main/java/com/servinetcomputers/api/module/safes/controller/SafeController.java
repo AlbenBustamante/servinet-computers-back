@@ -1,10 +1,10 @@
 package com.servinetcomputers.api.module.safes.controller;
 
 import com.servinetcomputers.api.module.safes.application.usecase.CreateSafeUseCase;
+import com.servinetcomputers.api.module.safes.application.usecase.DeleteSafeUseCase;
 import com.servinetcomputers.api.module.safes.application.usecase.GetAllSafeDetailsByIdUseCase;
 import com.servinetcomputers.api.module.safes.application.usecase.GetAllSafesUseCase;
 import com.servinetcomputers.api.module.safes.application.usecase.GetSafeMovementsByIdUseCase;
-import com.servinetcomputers.api.module.safes.application.usecase.detail.DeleteSafeUseCase;
 import com.servinetcomputers.api.module.safes.domain.dto.CreateSafeDto;
 import com.servinetcomputers.api.module.safes.domain.dto.SafeDetailDto;
 import com.servinetcomputers.api.module.safes.domain.dto.SafeDto;
