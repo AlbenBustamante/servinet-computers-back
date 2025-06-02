@@ -3,7 +3,6 @@ package com.servinetcomputers.api.module.safes.application.service.detail;
 import com.servinetcomputers.api.core.exception.AppException;
 import com.servinetcomputers.api.core.exception.NotFoundException;
 import com.servinetcomputers.api.module.base.BaseDto;
-import com.servinetcomputers.api.module.base.BaseMapper;
 import com.servinetcomputers.api.module.safes.application.usecase.detail.UpdateSafeDetailBaseUseCase;
 import com.servinetcomputers.api.module.safes.domain.dto.CreateSafeBaseDto;
 import com.servinetcomputers.api.module.safes.domain.dto.SafeDetailDto;
@@ -14,14 +13,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.servinetcomputers.api.core.util.constants.SafeConstants.DEFAULT_BASE;
-
 @RequiredArgsConstructor
 @Service
 public class UpdateSafeDetailBaseService implements UpdateSafeDetailBaseUseCase {
     private final SafeDetailRepository repository;
     private final SafeBaseRepository safeBaseRepository;
-    private final BaseMapper baseMapper;
 
     /**
      * If the initial base is by default, then update the initial and final base.
@@ -37,9 +33,7 @@ public class UpdateSafeDetailBaseService implements UpdateSafeDetailBaseUseCase 
         final var safeDetail = repository.get(safeDetailId)
                 .orElseThrow(() -> new NotFoundException("Caja del día no encontrada: #" + safeDetailId));
 
-        final var initialBaseStr = baseMapper.toStr(safeDetail.getDetailInitialBase());
-
-        if (initialBaseStr.equals(DEFAULT_BASE)) {
+        if (safeDetail.getDetailInitialBase().equals(BaseDto.zero())) {
             safeDetail.setDetailInitialBase(baseDto);
         }
 
@@ -47,7 +41,8 @@ public class UpdateSafeDetailBaseService implements UpdateSafeDetailBaseUseCase 
 
         final var newSafeDetailDto = repository.save(safeDetail);
         final var createSafeBaseDto = new CreateSafeBaseDto(safeDetailId, baseDto, newSafeDetailDto);
-        safeBaseRepository.save(createSafeBaseDto);
+        final var newSafeBase = safeBaseRepository.save(createSafeBaseDto);
+        newSafeDetailDto.getBases().add(newSafeBase);
 
         return newSafeDetailDto;
     }

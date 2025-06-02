@@ -1,12 +1,14 @@
 package com.servinetcomputers.api.module.base;
 
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
 @AllArgsConstructor
+@EqualsAndHashCode
 public class BaseDto {
     private int hundredThousand;
     private int fiftyThousand;
