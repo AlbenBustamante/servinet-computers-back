@@ -1,7 +1,7 @@
 package com.servinetcomputers.api.module.bankdeposit.persistence.entity;
 
-import com.servinetcomputers.api.core.audit.AuditAuditable;
-import com.servinetcomputers.api.core.audit.Auditable;
+import com.servinetcomputers.api.core.audit.infra.AuditableEntity;
+import com.servinetcomputers.api.core.audit.listener.AuditAuditable;
 import com.servinetcomputers.api.core.converter.BankDepositStatusConverter;
 import com.servinetcomputers.api.core.util.enums.BankDepositStatus;
 import com.servinetcomputers.api.module.cashregister.persistence.entity.CashRegisterDetail;
@@ -33,7 +33,7 @@ import static com.servinetcomputers.api.core.util.constants.BankDepositConstants
 @EntityListeners(value = {AuditAuditable.class, AuditingEntityListener.class})
 @Getter
 @Setter
-public class BankDeposit extends Auditable {
+public class BankDeposit extends AuditableEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "bank_deposit_id")

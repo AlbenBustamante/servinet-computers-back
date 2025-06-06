@@ -1,11 +1,11 @@
 package com.servinetcomputers.api.module.cashregister.persistence.entity;
 
-import com.servinetcomputers.api.core.audit.AuditAuditable;
-import com.servinetcomputers.api.core.audit.AuditCashRegisterDetail;
-import com.servinetcomputers.api.core.audit.Auditable;
+import com.servinetcomputers.api.core.audit.infra.AuditableEntity;
+import com.servinetcomputers.api.core.audit.listener.AuditAuditable;
+import com.servinetcomputers.api.core.audit.listener.AuditCashRegisterDetail;
 import com.servinetcomputers.api.core.converter.CashRegisterDetailStatusConverter;
 import com.servinetcomputers.api.core.util.enums.CashRegisterDetailStatus;
-import com.servinetcomputers.api.module.user.persistence.entity.User;
+import com.servinetcomputers.api.module.user.infrastructure.out.persistence.UserEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
@@ -30,7 +30,7 @@ import static com.servinetcomputers.api.core.util.constants.CashRegisterDetailCo
 @EntityListeners(value = {AuditCashRegisterDetail.class, AuditAuditable.class, AuditingEntityListener.class})
 @Getter
 @Setter
-public class CashRegisterDetail extends Auditable {
+public class CashRegisterDetail extends AuditableEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cash_register_detail_id")
@@ -58,7 +58,7 @@ public class CashRegisterDetail extends Auditable {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    private UserEntity user;
 
     public String getFullName() {
         return user.getName() + " " + user.getLastName();

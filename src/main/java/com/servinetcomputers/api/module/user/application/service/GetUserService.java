@@ -2,8 +2,8 @@ package com.servinetcomputers.api.module.user.application.service;
 
 import com.servinetcomputers.api.core.exception.NotFoundException;
 import com.servinetcomputers.api.module.user.application.usecase.GetUserUseCase;
-import com.servinetcomputers.api.module.user.domain.dto.UserDto;
 import com.servinetcomputers.api.module.user.domain.repository.UserRepository;
+import com.servinetcomputers.api.module.user.infrastructure.in.rest.dto.UserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

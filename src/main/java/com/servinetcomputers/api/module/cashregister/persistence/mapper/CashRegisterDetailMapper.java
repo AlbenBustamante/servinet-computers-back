@@ -5,7 +5,7 @@ import com.servinetcomputers.api.module.base.BaseMapper;
 import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDetailDto;
 import com.servinetcomputers.api.module.cashregister.domain.dto.CreateCashRegisterDetailDto;
 import com.servinetcomputers.api.module.cashregister.persistence.entity.CashRegisterDetail;
-import com.servinetcomputers.api.module.user.persistence.mapper.UserMapper;
+import com.servinetcomputers.api.module.user.infrastructure.out.persistence.UserPersistenceMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.time.LocalTime;
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = {CashRegisterMapper.class, UserMapper.class, BaseMapper.class}, imports = LocalTime.class)
+@Mapper(componentModel = "spring", uses = {CashRegisterMapper.class, UserPersistenceMapper.class, BaseMapper.class}, imports = LocalTime.class)
 public abstract class CashRegisterDetailMapper {
     @Autowired
     protected DateTimeService dateTimeService;

@@ -3,11 +3,10 @@ package com.servinetcomputers.api.module.tempcode.persistence.mapper;
 import com.servinetcomputers.api.module.tempcode.domain.dto.CreateTempCodeDto;
 import com.servinetcomputers.api.module.tempcode.domain.dto.TempCodeDto;
 import com.servinetcomputers.api.module.tempcode.persistence.entity.TempCode;
-import com.servinetcomputers.api.module.user.persistence.mapper.UserMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring", uses = UserMapper.class)
+@Mapper(componentModel = "spring", uses = UserPersistenceMapper.class)
 public interface TempCodeMapper {
     TempCodeDto toDto(TempCode entity);
 

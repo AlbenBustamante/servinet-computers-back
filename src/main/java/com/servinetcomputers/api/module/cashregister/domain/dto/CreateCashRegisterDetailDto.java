@@ -1,7 +1,7 @@
 package com.servinetcomputers.api.module.cashregister.domain.dto;
 
 import com.servinetcomputers.api.module.base.BaseDto;
-import com.servinetcomputers.api.module.user.domain.dto.UserDto;
+import com.servinetcomputers.api.module.user.infrastructure.in.rest.dto.UserDto;
 import lombok.Getter;
 import lombok.Setter;
 

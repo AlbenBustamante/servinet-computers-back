@@ -1,7 +1,7 @@
 package com.servinetcomputers.api.module.cashtransfer.persistence.entity;
 
-import com.servinetcomputers.api.core.audit.AuditAuditable;
-import com.servinetcomputers.api.core.audit.Auditable;
+import com.servinetcomputers.api.core.audit.infra.AuditableEntity;
+import com.servinetcomputers.api.core.audit.listener.AuditAuditable;
 import com.servinetcomputers.api.core.converter.CashBoxTypeConverter;
 import com.servinetcomputers.api.core.util.enums.CashBoxType;
 import jakarta.persistence.Column;
@@ -21,7 +21,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @EntityListeners(value = {AuditAuditable.class, AuditingEntityListener.class})
 @Getter
 @Setter
-public class CashTransfer extends Auditable {
+public class CashTransfer extends AuditableEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cash_transfer_id")

@@ -1,7 +1,7 @@
 package com.servinetcomputers.api.module.user.application.usecase;
 
 import com.servinetcomputers.api.core.usecase.UseCaseBiParam;
-import com.servinetcomputers.api.module.user.domain.dto.JourneyDetailDto;
+import com.servinetcomputers.api.module.user.infrastructure.in.rest.dto.JourneyDetailDto;
 
 import java.time.YearMonth;
 

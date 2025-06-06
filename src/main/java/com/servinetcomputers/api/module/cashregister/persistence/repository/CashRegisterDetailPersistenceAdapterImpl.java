@@ -7,7 +7,7 @@ import com.servinetcomputers.api.module.cashregister.domain.dto.CreateCashRegist
 import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterDetailPersistenceAdapter;
 import com.servinetcomputers.api.module.cashregister.persistence.JpaCashRegisterDetailRepository;
 import com.servinetcomputers.api.module.cashregister.persistence.mapper.CashRegisterDetailMapper;
-import com.servinetcomputers.api.module.user.domain.dto.UserFullNameDto;
+import com.servinetcomputers.api.module.user.infrastructure.in.rest.dto.UserFullNameDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;

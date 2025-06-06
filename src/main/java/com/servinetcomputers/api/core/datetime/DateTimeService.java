@@ -7,8 +7,6 @@ import java.time.LocalTime;
 public interface DateTimeService {
     LocalDate dateNow();
 
-    LocalTime timeNow();
-
     LocalTime timeOf(LocalDateTime date);
 
     LocalDateTime now();
@@ -20,4 +18,6 @@ public interface DateTimeService {
     LocalDateTime setCurrentDayToTime(LocalTime time);
 
     LocalDateTime currentOf(LocalTime time);
+
+    String formattedNow();
 }

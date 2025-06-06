@@ -3,7 +3,7 @@ package com.servinetcomputers.api.module.cashregister.domain.repository;
 import com.servinetcomputers.api.core.util.enums.CashRegisterDetailStatus;
 import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDetailDto;
 import com.servinetcomputers.api.module.cashregister.domain.dto.CreateCashRegisterDetailDto;
-import com.servinetcomputers.api.module.user.domain.dto.UserFullNameDto;
+import com.servinetcomputers.api.module.user.infrastructure.in.rest.dto.UserFullNameDto;
 
 import java.time.LocalDateTime;
 import java.util.List;

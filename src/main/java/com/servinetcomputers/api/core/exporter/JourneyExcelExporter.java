@@ -1,6 +1,6 @@
 package com.servinetcomputers.api.core.exporter;
 
-import com.servinetcomputers.api.module.user.domain.dto.JourneyDetailDto;
+import com.servinetcomputers.api.module.user.infrastructure.in.rest.dto.JourneyDetailDto;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Row;

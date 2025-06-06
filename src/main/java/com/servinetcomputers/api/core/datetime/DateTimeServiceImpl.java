@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 
 @RequiredArgsConstructor
 @Component
@@ -16,11 +17,6 @@ public class DateTimeServiceImpl implements DateTimeService {
     @Override
     public LocalDate dateNow() {
         return LocalDate.now(zoneId);
-    }
-
-    @Override
-    public LocalTime timeNow() {
-        return LocalTime.now(zoneId);
     }
 
     @Override
@@ -54,5 +50,10 @@ public class DateTimeServiceImpl implements DateTimeService {
     @Override
     public LocalDateTime currentOf(LocalTime time) {
         return LocalDateTime.of(dateNow(), time);
+    }
+
+    @Override
+    public String formattedNow() {
+        return DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss").format(now());
     }
 }

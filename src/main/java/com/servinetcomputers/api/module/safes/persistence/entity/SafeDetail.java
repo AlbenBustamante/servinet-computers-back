@@ -1,8 +1,8 @@
 package com.servinetcomputers.api.module.safes.persistence.entity;
 
-import com.servinetcomputers.api.core.audit.AuditAuditable;
-import com.servinetcomputers.api.core.audit.AuditSafeDetail;
-import com.servinetcomputers.api.core.audit.Auditable;
+import com.servinetcomputers.api.core.audit.infra.AuditableEntity;
+import com.servinetcomputers.api.core.audit.listener.AuditAuditable;
+import com.servinetcomputers.api.core.audit.listener.AuditSafeDetail;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -28,7 +28,7 @@ import static com.servinetcomputers.api.core.util.constants.SafeConstants.BASE_L
 @EntityListeners(value = {AuditSafeDetail.class, AuditAuditable.class, AuditingEntityListener.class})
 @Getter
 @Setter
-public class SafeDetail extends Auditable {
+public class SafeDetail extends AuditableEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "safe_detail_id")

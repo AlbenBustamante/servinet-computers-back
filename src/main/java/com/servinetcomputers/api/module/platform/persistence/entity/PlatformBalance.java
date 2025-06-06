@@ -1,7 +1,7 @@
 package com.servinetcomputers.api.module.platform.persistence.entity;
 
-import com.servinetcomputers.api.core.audit.AuditAuditable;
-import com.servinetcomputers.api.core.audit.Auditable;
+import com.servinetcomputers.api.core.audit.infra.AuditableEntity;
+import com.servinetcomputers.api.core.audit.listener.AuditAuditable;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -23,7 +23,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @EntityListeners(value = {AuditAuditable.class, AuditingEntityListener.class})
 @Getter
 @Setter
-public class PlatformBalance extends Auditable {
+public class PlatformBalance extends AuditableEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "platform_balance_id")
