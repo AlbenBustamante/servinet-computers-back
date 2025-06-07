@@ -1,6 +1,6 @@
 package com.servinetcomputers.api.module.transaction.domain.dto;
 
-import com.servinetcomputers.api.core.audit.AuditableDto;
+import com.servinetcomputers.api.core.audit.infra.AuditableDto;
 import com.servinetcomputers.api.core.util.enums.TransactionType;
 import lombok.Getter;
 import lombok.Setter;

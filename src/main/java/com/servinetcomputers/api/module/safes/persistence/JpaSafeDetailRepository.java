@@ -15,6 +15,8 @@ public interface JpaSafeDetailRepository extends JpaRepository<SafeDetail, Integ
 
     List<SafeDetail> findAllByEnabledTrueAndCreatedDateBetween(LocalDateTime startDate, LocalDateTime endDate);
 
+    List<SafeDetail> findAllBySafeIdAndEnabledTrueAndCreatedDateBetween(Integer safeId, LocalDateTime startDate, LocalDateTime endDate);
+
     @Query("SELECT sd.safe.numeral FROM SafeDetail sd " +
             "WHERE sd.id = :id " +
             "AND sd.enabled = true")

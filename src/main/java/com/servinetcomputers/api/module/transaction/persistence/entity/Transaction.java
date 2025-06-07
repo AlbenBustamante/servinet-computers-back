@@ -1,11 +1,18 @@
 package com.servinetcomputers.api.module.transaction.persistence.entity;
 
-import com.servinetcomputers.api.core.audit.AuditAuditable;
-import com.servinetcomputers.api.core.audit.AuditTransaction;
-import com.servinetcomputers.api.core.audit.Auditable;
+import com.servinetcomputers.api.core.audit.infra.AuditableEntity;
+import com.servinetcomputers.api.core.audit.listener.AuditAuditable;
+import com.servinetcomputers.api.core.audit.listener.AuditTransaction;
 import com.servinetcomputers.api.core.converter.TransactionTypeConverter;
 import com.servinetcomputers.api.core.util.enums.TransactionType;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -17,7 +24,7 @@ import static com.servinetcomputers.api.core.util.constants.TransactionConstants
 @EntityListeners(value = {AuditTransaction.class, AuditAuditable.class, AuditingEntityListener.class})
 @Getter
 @Setter
-public class Transaction extends Auditable {
+public class Transaction extends AuditableEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "transaction_id")

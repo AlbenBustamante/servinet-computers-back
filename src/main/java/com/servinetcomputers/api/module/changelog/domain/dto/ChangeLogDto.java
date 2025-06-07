@@ -1,6 +1,6 @@
 package com.servinetcomputers.api.module.changelog.domain.dto;
 
-import com.servinetcomputers.api.core.audit.AuditableDto;
+import com.servinetcomputers.api.core.audit.infra.AuditableDto;
 import com.servinetcomputers.api.core.util.enums.CashRegisterDetailStatus;
 import com.servinetcomputers.api.core.util.enums.ChangeLogAction;
 import com.servinetcomputers.api.core.util.enums.ChangeLogType;

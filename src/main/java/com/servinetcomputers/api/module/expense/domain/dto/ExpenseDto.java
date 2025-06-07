@@ -1,6 +1,6 @@
 package com.servinetcomputers.api.module.expense.domain.dto;
 
-import com.servinetcomputers.api.core.audit.AuditableDto;
+import com.servinetcomputers.api.core.audit.infra.AuditableDto;
 import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDetailDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

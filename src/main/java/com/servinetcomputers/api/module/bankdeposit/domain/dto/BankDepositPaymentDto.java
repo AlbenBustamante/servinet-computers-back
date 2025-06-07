@@ -1,6 +1,6 @@
 package com.servinetcomputers.api.module.bankdeposit.domain.dto;
 
-import com.servinetcomputers.api.core.audit.AuditableDto;
+import com.servinetcomputers.api.core.audit.infra.AuditableDto;
 import com.servinetcomputers.api.module.platform.domain.dto.PlatformDto;
 import lombok.Getter;
 import lombok.Setter;

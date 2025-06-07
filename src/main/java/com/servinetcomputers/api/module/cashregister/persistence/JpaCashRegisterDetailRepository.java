@@ -1,9 +1,8 @@
 package com.servinetcomputers.api.module.cashregister.persistence;
 
 import com.servinetcomputers.api.core.util.enums.CashRegisterDetailStatus;
-import com.servinetcomputers.api.core.util.enums.CashRegisterStatus;
 import com.servinetcomputers.api.module.cashregister.persistence.entity.CashRegisterDetail;
-import com.servinetcomputers.api.module.user.domain.dto.UserFullNameDto;
+import com.servinetcomputers.api.module.user.infrastructure.in.rest.dto.UserFullNameDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -19,7 +18,7 @@ public interface JpaCashRegisterDetailRepository extends JpaRepository<CashRegis
 
     Integer countByStatusNotAndEnabledTrue(CashRegisterDetailStatus status);
 
-    boolean existsByUserIdAndCreatedDateBetweenAndEnabledTrueAndCashRegisterStatusNot(int userId, LocalDateTime firstDate, LocalDateTime lastDate, CashRegisterStatus status);
+    boolean existsByUserIdAndCreatedDateBetweenAndEnabledTrueAndStatusNot(int userId, LocalDateTime firstDate, LocalDateTime lastDate, CashRegisterDetailStatus status);
 
     @Query("SELECT crd FROM CashRegisterDetail crd " +
             "WHERE crd.cashRegister.id = :cashRegisterId " +
@@ -27,7 +26,7 @@ public interface JpaCashRegisterDetailRepository extends JpaRepository<CashRegis
             "ORDER BY crd.createdDate DESC")
     Page<CashRegisterDetail> findLatestByCashRegisterIdAndEnabledTrue(Integer cashRegisterId, Pageable pageable);
 
-    List<CashRegisterDetail> findAllByUserIdAndCreatedDateBetweenAndEnabledTrueAndCashRegisterStatusNot(int userId, LocalDateTime firstDate, LocalDateTime lastDate, CashRegisterStatus status);
+    List<CashRegisterDetail> findAllByUserIdAndCreatedDateBetweenAndEnabledTrueAndStatusNot(int userId, LocalDateTime firstDate, LocalDateTime lastDate, CashRegisterDetailStatus status);
 
     List<CashRegisterDetail> findAllByUserIdAndCreatedDateBetweenAndEnabledTrueOrderByCreatedDate(int userId, LocalDateTime firstDate, LocalDateTime lastDate);
 

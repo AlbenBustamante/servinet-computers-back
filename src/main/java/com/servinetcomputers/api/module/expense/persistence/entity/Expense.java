@@ -1,7 +1,7 @@
 package com.servinetcomputers.api.module.expense.persistence.entity;
 
-import com.servinetcomputers.api.core.audit.AuditAuditable;
-import com.servinetcomputers.api.core.audit.Auditable;
+import com.servinetcomputers.api.core.audit.infra.AuditableEntity;
+import com.servinetcomputers.api.core.audit.listener.AuditAuditable;
 import com.servinetcomputers.api.module.cashregister.persistence.entity.CashRegisterDetail;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
@@ -25,7 +25,7 @@ import static com.servinetcomputers.api.core.util.constants.ExpenseConstants.DES
 @EntityListeners(value = {AuditAuditable.class, AuditingEntityListener.class})
 @Getter
 @Setter
-public class Expense extends Auditable {
+public class Expense extends AuditableEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "expense_id")

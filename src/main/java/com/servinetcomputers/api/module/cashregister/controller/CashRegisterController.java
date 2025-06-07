@@ -19,7 +19,6 @@ public class CashRegisterController {
     private final CreateCashRegisterUseCase createCashRegisterUseCase;
     private final GetAllCashRegistersUseCase getAllCashRegistersUseCase;
     private final GetLastBaseUseCase getLastBaseUseCase;
-    private final GetLastDetailByIdUseCase getLastDetailByIdUseCase;
     private final GetAllMovementsUseCase getAllMovementsUseCase;
     private final UpdateCashRegisterUseCase updateCashRegisterUseCase;
     private final DeleteCashRegisterUseCase deleteCashRegisterUseCase;
@@ -37,11 +36,6 @@ public class CashRegisterController {
     @GetMapping(path = "/{id}/lastBase")
     public ResponseEntity<BaseDto> getLastBase(@PathVariable("id") int cashRegisterId) {
         return ResponseEntity.ok(getLastBaseUseCase.call(cashRegisterId));
-    }
-
-    @GetMapping(path = "/{id}/lastDetail")
-    public ResponseEntity<CashRegisterDetailDto> getLastDetail(@PathVariable("id") int cashRegisterId) {
-        return ResponseEntity.ok(getLastDetailByIdUseCase.call(cashRegisterId));
     }
 
     @GetMapping(path = "/{id}/movements")

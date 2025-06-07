@@ -2,13 +2,12 @@ package com.servinetcomputers.api.module.cashregister.persistence.repository;
 
 import com.servinetcomputers.api.core.exception.NotFoundException;
 import com.servinetcomputers.api.core.util.enums.CashRegisterDetailStatus;
-import com.servinetcomputers.api.core.util.enums.CashRegisterStatus;
 import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDetailDto;
 import com.servinetcomputers.api.module.cashregister.domain.dto.CreateCashRegisterDetailDto;
 import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterDetailPersistenceAdapter;
 import com.servinetcomputers.api.module.cashregister.persistence.JpaCashRegisterDetailRepository;
 import com.servinetcomputers.api.module.cashregister.persistence.mapper.CashRegisterDetailMapper;
-import com.servinetcomputers.api.module.user.domain.dto.UserFullNameDto;
+import com.servinetcomputers.api.module.user.infrastructure.in.rest.dto.UserFullNameDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
@@ -53,8 +52,8 @@ public class CashRegisterDetailPersistenceAdapterImpl implements CashRegisterDet
     }
 
     @Override
-    public boolean existsByUserIdAndStatusNot(int userId, LocalDateTime startDate, LocalDateTime endDate, CashRegisterStatus status) {
-        return repository.existsByUserIdAndCreatedDateBetweenAndEnabledTrueAndCashRegisterStatusNot(userId, startDate, endDate, status);
+    public boolean existsByUserIdAndStatusNot(int userId, LocalDateTime startDate, LocalDateTime endDate, CashRegisterDetailStatus status) {
+        return repository.existsByUserIdAndCreatedDateBetweenAndEnabledTrueAndStatusNot(userId, startDate, endDate, status);
     }
 
     @Override
@@ -64,8 +63,8 @@ public class CashRegisterDetailPersistenceAdapterImpl implements CashRegisterDet
     }
 
     @Override
-    public List<CashRegisterDetailDto> getAllByUserIdWhereStatusIsNotBetween(int userId, LocalDateTime startDate, LocalDateTime endDate, CashRegisterStatus status) {
-        final var details = repository.findAllByUserIdAndCreatedDateBetweenAndEnabledTrueAndCashRegisterStatusNot(userId, startDate, endDate, status);
+    public List<CashRegisterDetailDto> getAllByUserIdWhereStatusIsNotBetween(int userId, LocalDateTime startDate, LocalDateTime endDate, CashRegisterDetailStatus status) {
+        final var details = repository.findAllByUserIdAndCreatedDateBetweenAndEnabledTrueAndStatusNot(userId, startDate, endDate, status);
         return mapper.toDto(details);
     }
 

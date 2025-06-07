@@ -1,12 +1,25 @@
 package com.servinetcomputers.api.module.safes.persistence.entity;
 
-import com.servinetcomputers.api.core.audit.AuditAuditable;
-import com.servinetcomputers.api.core.audit.AuditSafeDetail;
-import com.servinetcomputers.api.core.audit.Auditable;
-import jakarta.persistence.*;
+import com.servinetcomputers.api.core.audit.infra.AuditableEntity;
+import com.servinetcomputers.api.core.audit.listener.AuditAuditable;
+import com.servinetcomputers.api.core.audit.listener.AuditSafeDetail;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import java.util.HashSet;
+import java.util.Set;
 
 import static com.servinetcomputers.api.core.util.constants.SafeConstants.BASE_LENGTH;
 
@@ -15,7 +28,7 @@ import static com.servinetcomputers.api.core.util.constants.SafeConstants.BASE_L
 @EntityListeners(value = {AuditSafeDetail.class, AuditAuditable.class, AuditingEntityListener.class})
 @Getter
 @Setter
-public class SafeDetail extends Auditable {
+public class SafeDetail extends AuditableEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "safe_detail_id")
@@ -33,4 +46,7 @@ public class SafeDetail extends Auditable {
     @ManyToOne
     @JoinColumn(name = "safe_id", nullable = false)
     private Safe safe;
+
+    @OneToMany(mappedBy = "safeDetail", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private Set<SafeBase> bases = new HashSet<>();
 }

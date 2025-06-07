@@ -1,8 +1,8 @@
 package com.servinetcomputers.api.module.user.application.service;
 
 import com.servinetcomputers.api.module.user.application.usecase.GetAllUsersUseCase;
-import com.servinetcomputers.api.module.user.domain.dto.UserDto;
 import com.servinetcomputers.api.module.user.domain.repository.UserRepository;
+import com.servinetcomputers.api.module.user.infrastructure.in.rest.dto.UserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;

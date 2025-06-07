@@ -6,7 +6,7 @@ import com.servinetcomputers.api.module.passwordtempcode.domain.dto.CreatePasswo
 import com.servinetcomputers.api.module.passwordtempcode.domain.dto.PasswordTempCodeDto;
 import com.servinetcomputers.api.module.passwordtempcode.persistence.JpaPasswordTempCodeRepository;
 import com.servinetcomputers.api.module.passwordtempcode.persistence.mapper.PasswordTempCodeMapper;
-import com.servinetcomputers.api.module.user.persistence.JpaUserRepository;
+import com.servinetcomputers.api.module.user.infrastructure.out.persistence.UserJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -16,7 +16,7 @@ import java.util.List;
 @Component
 public class PasswordTempCodePersistenceAdapterImpl implements PasswordTempCodePersistenceAdapter {
     private final JpaPasswordTempCodeRepository repository;
-    private final JpaUserRepository userRepository;
+    private final UserJpaRepository userRepository;
     private final PasswordTempCodeMapper mapper;
 
     @Override
