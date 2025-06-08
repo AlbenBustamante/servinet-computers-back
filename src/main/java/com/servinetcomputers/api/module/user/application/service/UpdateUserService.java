@@ -1,29 +1,26 @@
 package com.servinetcomputers.api.module.user.application.service;
 
-import com.servinetcomputers.api.core.exception.AppException;
-import com.servinetcomputers.api.module.user.application.usecase.GetUserUseCase;
-import com.servinetcomputers.api.module.user.application.usecase.UpdateUserUseCase;
-import com.servinetcomputers.api.module.user.domain.repository.UserRepository;
-import com.servinetcomputers.api.module.user.infrastructure.in.rest.dto.UpdateUserDto;
-import com.servinetcomputers.api.module.user.infrastructure.in.rest.dto.UserDto;
+import com.servinetcomputers.api.core.common.UseCase;
+import com.servinetcomputers.api.module.user.application.port.in.UpdateUserUseCase;
+import com.servinetcomputers.api.module.user.application.port.in.command.UpdateUserCommand;
+import com.servinetcomputers.api.module.user.application.port.out.UserReadPort;
+import com.servinetcomputers.api.module.user.application.port.out.UserWritePort;
+import com.servinetcomputers.api.module.user.domain.User;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@UseCase
 @RequiredArgsConstructor
-@Service
+@Transactional(rollbackFor = Exception.class)
 public class UpdateUserService implements UpdateUserUseCase {
-    private final UserRepository repository;
-    private final GetUserUseCase getUserUseCase;
+    private final UserWritePort writePort;
+    private final UserReadPort readPort;
 
-    @Transactional(rollbackFor = AppException.class)
     @Override
-    public UserDto call(Integer id, UpdateUserDto dto) {
-        final var user = getUserUseCase.call(id);
+    public User update(Integer id, UpdateUserCommand dto) {
+        final var user = readPort.get(id)
+                .copyWith(dto.name(), dto.lastName());
 
-        user.setName(dto.name() == null ? user.getName() : dto.name());
-        user.setLastName(dto.lastName() == null ? user.getLastName() : dto.lastName());
-
-        return repository.save(user);
+        return writePort.save(user);
     }
 }

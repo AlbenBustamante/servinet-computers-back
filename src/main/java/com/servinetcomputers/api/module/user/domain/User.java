@@ -37,4 +37,42 @@ public record User(
                 null
         );
     }
+
+    /**
+     * Copia las propiedades de un usuario y las sobreescribe si no recibe datos nulos.
+     *
+     * @param name     Primer nombre.
+     * @param lastName Apellido.
+     * @return Nuevo {@link User}.
+     */
+    public User copyWith(String name, String lastName) {
+        return new User(
+                id,
+                name != null ? name : this.name,
+                lastName != null ? lastName : this.lastName,
+                email,
+                password,
+                code,
+                role,
+                audit
+        );
+    }
+
+    /**
+     * Ajusta las propiedades como un usuario eliminado.
+     *
+     * @return el nuevo {@link User}.
+     */
+    public User delete() {
+        return new User(
+                id,
+                "ELIMINADO: " + name,
+                lastName,
+                email,
+                password,
+                code,
+                role,
+                audit.delete()
+        );
+    }
 }

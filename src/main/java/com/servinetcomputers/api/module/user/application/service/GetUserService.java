@@ -1,22 +1,20 @@
 package com.servinetcomputers.api.module.user.application.service;
 
-import com.servinetcomputers.api.core.exception.NotFoundException;
-import com.servinetcomputers.api.module.user.application.usecase.GetUserUseCase;
-import com.servinetcomputers.api.module.user.domain.repository.UserRepository;
-import com.servinetcomputers.api.module.user.infrastructure.in.rest.dto.UserDto;
+import com.servinetcomputers.api.core.common.UseCase;
+import com.servinetcomputers.api.module.user.application.port.in.GetUserUseCase;
+import com.servinetcomputers.api.module.user.application.port.out.UserReadPort;
+import com.servinetcomputers.api.module.user.domain.User;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@UseCase
 @RequiredArgsConstructor
-@Service
+@Transactional(readOnly = true)
 public class GetUserService implements GetUserUseCase {
-    private final UserRepository repository;
+    private final UserReadPort readPort;
 
-    @Transactional(readOnly = true)
     @Override
-    public UserDto call(Integer param) {
-        return repository.get(param)
-                .orElseThrow(() -> new NotFoundException("Usuario no encontrado: " + param));
+    public User getById(Integer userId) {
+        return readPort.get(userId);
     }
 }

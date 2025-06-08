@@ -1,32 +1,26 @@
 package com.servinetcomputers.api.module.user.application.service;
 
-import com.servinetcomputers.api.core.exception.AppException;
-import com.servinetcomputers.api.module.user.application.usecase.DeleteUserUseCase;
-import com.servinetcomputers.api.module.user.application.usecase.GetUserUseCase;
-import com.servinetcomputers.api.module.user.domain.repository.UserRepository;
+import com.servinetcomputers.api.core.common.UseCase;
+import com.servinetcomputers.api.module.user.application.port.in.DeleteUserUseCase;
+import com.servinetcomputers.api.module.user.application.port.out.UserReadPort;
+import com.servinetcomputers.api.module.user.application.port.out.UserWritePort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import static com.servinetcomputers.api.core.util.constants.SecurityConstants.ADMIN_AUTHORITY;
 
+@UseCase
 @RequiredArgsConstructor
-@Service
+@Transactional(rollbackFor = Exception.class)
 public class DeleteUserService implements DeleteUserUseCase {
-    private final UserRepository repository;
-    private final GetUserUseCase getUserUseCase;
+    private final UserWritePort writePort;
+    private final UserReadPort readPort;
 
-    @Transactional(rollbackFor = AppException.class)
-    @Secured(value = ADMIN_AUTHORITY)
     @Override
-    public void call(Integer userId) {
-        final var user = getUserUseCase.call(userId);
-
-        user.setName("ELIMINADO: " + user.getName());
-        user.setLastName(user.getLastName() + " #" + user.getId());
-        user.setEnabled(false);
-
-        repository.save(user);
+    @Secured(value = ADMIN_AUTHORITY)
+    public void delete(Integer userId) {
+        final var user = readPort.get(userId).delete();
+        writePort.save(user);
     }
 }
