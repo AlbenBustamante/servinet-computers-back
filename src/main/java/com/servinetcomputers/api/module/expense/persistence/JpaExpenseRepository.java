@@ -1,6 +1,6 @@
 package com.servinetcomputers.api.module.expense.persistence;
 
-import com.servinetcomputers.api.module.expense.persistence.entity.Expense;
+import com.servinetcomputers.api.module.expense.persistence.entity.ExpenseEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,8 +10,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-public interface JpaExpenseRepository extends JpaRepository<Expense, Integer> {
-    Optional<Expense> findByIdAndEnabledTrue(int id);
+public interface JpaExpenseRepository extends JpaRepository<ExpenseEntity, Integer> {
+    Optional<ExpenseEntity> findByIdAndEnabledTrue(int id);
 
     @Query("SELECT SUM(e.value) FROM Expense e WHERE " +
             "e.enabled = true AND " +
@@ -24,11 +24,11 @@ public interface JpaExpenseRepository extends JpaRepository<Expense, Integer> {
             "AND e.createdDate BETWEEN :startDate AND :endDate")
     Integer sumAllValuesByEnabledTrueAndCreatedDateBetween(LocalDateTime startDate, LocalDateTime endDate);
 
-    Page<Expense> findAllByCashRegisterDetailIdAndEnabledTrue(int cashRegisterDetailId, Pageable pageable);
+    Page<ExpenseEntity> findAllByCashRegisterDetailIdAndEnabledTrue(int cashRegisterDetailId, Pageable pageable);
 
-    List<Expense> findAllByCashRegisterDetailIdAndDiscountAndEnabledTrue(int cashRegisterDetailId, boolean discount);
+    List<ExpenseEntity> findAllByCashRegisterDetailIdAndDiscountAndEnabledTrue(int cashRegisterDetailId, boolean discount);
 
-    List<Expense> findAllByCreatedByAndEnabledTrueAndCreatedDateBetweenAndDiscount(String createdBy, LocalDateTime startDate, LocalDateTime endDate, boolean discount);
+    List<ExpenseEntity> findAllByCreatedByAndEnabledTrueAndCreatedDateBetweenAndDiscount(String createdBy, LocalDateTime startDate, LocalDateTime endDate, boolean discount);
 
-    List<Expense> findAllByCashRegisterDetailIdAndEnabledTrue(int cashRegisterDetailId);
+    List<ExpenseEntity> findAllByCashRegisterDetailIdAndEnabledTrue(int cashRegisterDetailId);
 }

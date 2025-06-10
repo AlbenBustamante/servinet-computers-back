@@ -1,7 +1,7 @@
 package com.servinetcomputers.api.module.cashregister.persistence;
 
 import com.servinetcomputers.api.core.util.enums.CashRegisterDetailStatus;
-import com.servinetcomputers.api.module.cashregister.persistence.entity.CashRegisterDetail;
+import com.servinetcomputers.api.module.cashregister.persistence.entity.CashRegisterDetailEntity;
 import com.servinetcomputers.api.module.user.infrastructure.in.rest.dto.UserFullNameDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,8 +13,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-public interface JpaCashRegisterDetailRepository extends JpaRepository<CashRegisterDetail, Integer> {
-    Optional<CashRegisterDetail> findByIdAndEnabledTrue(int id);
+public interface JpaCashRegisterDetailRepository extends JpaRepository<CashRegisterDetailEntity, Integer> {
+    Optional<CashRegisterDetailEntity> findByIdAndEnabledTrue(int id);
 
     Integer countByStatusNotAndEnabledTrue(CashRegisterDetailStatus status);
 
@@ -24,31 +24,31 @@ public interface JpaCashRegisterDetailRepository extends JpaRepository<CashRegis
             "WHERE crd.cashRegister.id = :cashRegisterId " +
             "AND crd.enabled = true " +
             "ORDER BY crd.createdDate DESC")
-    Page<CashRegisterDetail> findLatestByCashRegisterIdAndEnabledTrue(Integer cashRegisterId, Pageable pageable);
+    Page<CashRegisterDetailEntity> findLatestByCashRegisterIdAndEnabledTrue(Integer cashRegisterId, Pageable pageable);
 
-    List<CashRegisterDetail> findAllByUserIdAndCreatedDateBetweenAndEnabledTrueAndStatusNot(int userId, LocalDateTime firstDate, LocalDateTime lastDate, CashRegisterDetailStatus status);
+    List<CashRegisterDetailEntity> findAllByUserIdAndCreatedDateBetweenAndEnabledTrueAndStatusNot(int userId, LocalDateTime firstDate, LocalDateTime lastDate, CashRegisterDetailStatus status);
 
-    List<CashRegisterDetail> findAllByUserIdAndCreatedDateBetweenAndEnabledTrueOrderByCreatedDate(int userId, LocalDateTime firstDate, LocalDateTime lastDate);
+    List<CashRegisterDetailEntity> findAllByUserIdAndCreatedDateBetweenAndEnabledTrueOrderByCreatedDate(int userId, LocalDateTime firstDate, LocalDateTime lastDate);
 
-    List<CashRegisterDetail> findAllByEnabledTrueAndCreatedDateBetween(LocalDateTime startDate, LocalDateTime endDate);
+    List<CashRegisterDetailEntity> findAllByEnabledTrueAndCreatedDateBetween(LocalDateTime startDate, LocalDateTime endDate);
 
-    List<CashRegisterDetail> findAllByStatusNotAndEnabledTrueAndCreatedDateBefore(CashRegisterDetailStatus status, LocalDateTime createdDate);
+    List<CashRegisterDetailEntity> findAllByStatusNotAndEnabledTrueAndCreatedDateBefore(CashRegisterDetailStatus status, LocalDateTime createdDate);
 
-    List<CashRegisterDetail> findAllByCashRegisterIdAndEnabledTrue(int cashRegisterId);
+    List<CashRegisterDetailEntity> findAllByCashRegisterIdAndEnabledTrue(int cashRegisterId);
 
-    List<CashRegisterDetail> findAllByUserIdNotAndEnabledTrueAndStatusNotAndCreatedDateBetween(int userId, CashRegisterDetailStatus status, LocalDateTime startDate, LocalDateTime endDate);
+    List<CashRegisterDetailEntity> findAllByUserIdNotAndEnabledTrueAndStatusNotAndCreatedDateBetween(int userId, CashRegisterDetailStatus status, LocalDateTime startDate, LocalDateTime endDate);
 
     @Query("SELECT crd FROM CashRegisterDetail crd " +
             "WHERE crd.cashRegister.id IN :cashRegisterIds " +
             "AND crd.enabled = true " +
             "AND crd.createdDate = (SELECT MAX(crd1.createdDate) FROM CashRegisterDetail crd1 WHERE crd1.cashRegister.id = crd.cashRegister.id)")
-    List<CashRegisterDetail> findLatestByCashRegisterIdInAndEnabledTrue(List<Integer> cashRegisterIds);
+    List<CashRegisterDetailEntity> findLatestByCashRegisterIdInAndEnabledTrue(List<Integer> cashRegisterIds);
 
     @Query("SELECT crd FROM CashRegisterDetail crd " +
             "WHERE crd.cashRegister.id NOT IN :cashRegisterIds " +
             "AND crd.enabled = true " +
             "AND crd.createdDate = (SELECT MAX(crd1.createdDate) FROM CashRegisterDetail crd1 WHERE crd1.cashRegister.id = crd.cashRegister.id)")
-    List<CashRegisterDetail> findLatestByCashRegisterIdNotInAndEnabledTrue(List<Integer> cashRegisterIds);
+    List<CashRegisterDetailEntity> findLatestByCashRegisterIdNotInAndEnabledTrue(List<Integer> cashRegisterIds);
 
     @Query("SELECT crd.finalBase FROM CashRegisterDetail crd " +
             "WHERE crd.cashRegister.id = :cashRegisterId AND " +

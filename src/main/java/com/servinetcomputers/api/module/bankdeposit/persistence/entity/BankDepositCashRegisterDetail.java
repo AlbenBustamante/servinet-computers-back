@@ -2,7 +2,7 @@ package com.servinetcomputers.api.module.bankdeposit.persistence.entity;
 
 import com.servinetcomputers.api.core.audit.infra.AuditableEntity;
 import com.servinetcomputers.api.core.audit.listener.AuditAuditable;
-import com.servinetcomputers.api.module.cashregister.persistence.entity.CashRegisterDetail;
+import com.servinetcomputers.api.module.cashregister.persistence.entity.CashRegisterDetailEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
@@ -35,5 +35,5 @@ public class BankDepositCashRegisterDetail extends AuditableEntity {
     @MapsId("cashRegisterDetailId")
     @ManyToOne
     @JoinColumn(name = "cash_register_detail_id")
-    private CashRegisterDetail cashRegisterDetail;
+    private CashRegisterDetailEntity cashRegisterDetail;
 }

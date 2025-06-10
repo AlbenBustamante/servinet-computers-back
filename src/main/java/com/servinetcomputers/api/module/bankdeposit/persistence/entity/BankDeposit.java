@@ -4,8 +4,8 @@ import com.servinetcomputers.api.core.audit.infra.AuditableEntity;
 import com.servinetcomputers.api.core.audit.listener.AuditAuditable;
 import com.servinetcomputers.api.core.converter.BankDepositStatusConverter;
 import com.servinetcomputers.api.core.util.enums.BankDepositStatus;
-import com.servinetcomputers.api.module.cashregister.persistence.entity.CashRegisterDetail;
-import com.servinetcomputers.api.module.expense.persistence.entity.Expense;
+import com.servinetcomputers.api.module.cashregister.persistence.entity.CashRegisterDetailEntity;
+import com.servinetcomputers.api.module.expense.persistence.entity.ExpenseEntity;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
@@ -48,11 +48,11 @@ public class BankDeposit extends AuditableEntity {
 
     @ManyToOne
     @JoinColumn(name = "cash_register_detail_id", nullable = false)
-    private CashRegisterDetail cashRegisterDetail;
+    private CashRegisterDetailEntity cashRegisterDetail;
 
     @OneToOne
     @JoinColumn(name = "expense_id")
-    private Expense expense;
+    private ExpenseEntity expense;
 
     @OneToMany(mappedBy = "bankDeposit", cascade = CascadeType.ALL)
     private Set<BankDepositCashRegisterDetail> cashRegisterDetails = new HashSet<>();
