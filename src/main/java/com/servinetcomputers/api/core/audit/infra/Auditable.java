@@ -18,4 +18,18 @@ public record Auditable(
         LocalDateTime modifiedDate,
         Boolean enabled
 ) {
+    /**
+     * Ajusta la propiedad {@code enabled} para sea filtrado como eliminado.
+     *
+     * @return el nuevo {@link Auditable}.
+     */
+    public Auditable delete() {
+        return new Auditable(
+                createdBy,
+                createdDate,
+                modifiedBy,
+                modifiedDate,
+                false
+        );
+    }
 }

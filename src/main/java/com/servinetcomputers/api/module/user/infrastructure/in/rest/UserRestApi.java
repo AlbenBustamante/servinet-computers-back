@@ -3,15 +3,12 @@ package com.servinetcomputers.api.module.user.infrastructure.in.rest;
 import com.servinetcomputers.api.module.cashregister.domain.dto.MyCashRegistersReports;
 import com.servinetcomputers.api.module.reports.application.usecase.GetDetailedTransactionsUseCase;
 import com.servinetcomputers.api.module.reports.dto.ReportsResponse;
-import com.servinetcomputers.api.module.user.application.usecase.DeleteUserUseCase;
+import com.servinetcomputers.api.module.user.application.port.in.command.UpdateUserCommand;
 import com.servinetcomputers.api.module.user.application.usecase.ExportJourneysToExcelUseCase;
-import com.servinetcomputers.api.module.user.application.usecase.GetAllUsersUseCase;
 import com.servinetcomputers.api.module.user.application.usecase.GetJourneysUseCase;
 import com.servinetcomputers.api.module.user.application.usecase.GetUserCashRegisterReportsUseCase;
-import com.servinetcomputers.api.module.user.application.usecase.GetUserUseCase;
-import com.servinetcomputers.api.module.user.application.usecase.UpdateUserUseCase;
+import com.servinetcomputers.api.module.user.infrastructure.in.UserRestAdapter;
 import com.servinetcomputers.api.module.user.infrastructure.in.rest.dto.JourneyDetailDto;
-import com.servinetcomputers.api.module.user.infrastructure.in.rest.dto.UpdateUserDto;
 import com.servinetcomputers.api.module.user.infrastructure.in.rest.dto.UserDto;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -30,16 +27,13 @@ import java.time.YearMonth;
 import java.util.List;
 
 /**
- * The user's routes/endpoints.
+ * REST API para usuarios.
  */
 @RequiredArgsConstructor
 @RequestMapping(path = "/users")
 @RestController
-public class UserController {
-    private final GetAllUsersUseCase getAllUsersUseCase;
-    private final GetUserUseCase getUserUseCase;
-    private final UpdateUserUseCase updateUserUseCase;
-    private final DeleteUserUseCase deleteUserUseCase;
+public class UserRestApi {
+    private final UserRestAdapter adapter;
     private final GetUserCashRegisterReportsUseCase getReportsUseCase;
     private final GetDetailedTransactionsUseCase getDetailedTransactionsUseCase;
     private final GetJourneysUseCase getJourneysUseCase;
@@ -47,12 +41,12 @@ public class UserController {
 
     @GetMapping
     public ResponseEntity<List<UserDto>> getAll() {
-        return ResponseEntity.ok(getAllUsersUseCase.call());
+        return ResponseEntity.ok(adapter.getAll());
     }
 
     @GetMapping(path = "/{id}")
     public ResponseEntity<UserDto> get(@PathVariable("id") int userId) {
-        return ResponseEntity.ok(getUserUseCase.call(userId));
+        return ResponseEntity.ok(adapter.getById(userId));
     }
 
     @GetMapping(path = "/{id}/reports/cash-register-details")
@@ -82,13 +76,13 @@ public class UserController {
     }
 
     @PatchMapping(path = "/{id}")
-    public ResponseEntity<UserDto> update(@PathVariable("id") int id, @RequestBody UpdateUserDto updateUserDto) {
-        return ResponseEntity.ok(updateUserUseCase.call(id, updateUserDto));
+    public ResponseEntity<UserDto> update(@PathVariable("id") int id, @RequestBody UpdateUserCommand command) {
+        return ResponseEntity.ok(adapter.update(id, command));
     }
 
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<Void> delete(@PathVariable("id") int userId) {
-        deleteUserUseCase.call(userId);
+        adapter.delete(userId);
         return ResponseEntity.ok().build();
     }
 }

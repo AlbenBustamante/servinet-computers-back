@@ -4,7 +4,7 @@ import com.servinetcomputers.api.core.datetime.DateTimeService;
 import com.servinetcomputers.api.module.base.BaseMapper;
 import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDetailDto;
 import com.servinetcomputers.api.module.cashregister.domain.dto.CreateCashRegisterDetailDto;
-import com.servinetcomputers.api.module.cashregister.persistence.entity.CashRegisterDetail;
+import com.servinetcomputers.api.module.cashregister.persistence.entity.CashRegisterDetailEntity;
 import com.servinetcomputers.api.module.user.infrastructure.out.persistence.UserPersistenceMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -27,9 +27,9 @@ public abstract class CashRegisterDetailMapper {
     @Mapping(target = "detailInitialBase", source = "initialBase")
     @Mapping(target = "initialBase", expression = "java(cashRegisterDetailDto.getDetailInitialBase() != null ? cashRegisterDetailDto.getDetailInitialBase().calculate() : null)")
     @Mapping(target = "finalBase", expression = "java(cashRegisterDetailDto.getDetailFinalBase() != null ? cashRegisterDetailDto.getDetailFinalBase().calculate() : null)")
-    public abstract CashRegisterDetailDto toDto(CashRegisterDetail entity);
+    public abstract CashRegisterDetailDto toDto(CashRegisterDetailEntity entity);
 
-    public abstract List<CashRegisterDetailDto> toDto(List<CashRegisterDetail> entities);
+    public abstract List<CashRegisterDetailDto> toDto(List<CashRegisterDetailEntity> entities);
 
     @Mapping(target = "status", ignore = true)
     @Mapping(target = "workingHours", expression = "java(new LocalTime[]{dto.getInitialWorking(), null, null, null})")
@@ -39,10 +39,10 @@ public abstract class CashRegisterDetailMapper {
     @Mapping(target = "enabled", ignore = true)
     @Mapping(target = "createdDate", ignore = true)
     @Mapping(target = "createdBy", ignore = true)
-    public abstract CashRegisterDetail toEntity(CreateCashRegisterDetailDto dto);
+    public abstract CashRegisterDetailEntity toEntity(CreateCashRegisterDetailDto dto);
 
     @Mapping(target = "workingHours", expression = "java(new LocalTime[]{dateTimeService.timeOf(dto.getInitialWorking()), dateTimeService.timeOf(dto.getInitialBreak()), dateTimeService.timeOf(dto.getFinalBreak()), dateTimeService.timeOf(dto.getFinalWorking())})")
     @Mapping(target = "initialBase", source = "detailInitialBase")
     @Mapping(target = "finalBase", source = "detailFinalBase")
-    public abstract CashRegisterDetail toEntity(CashRegisterDetailDto dto);
+    public abstract CashRegisterDetailEntity toEntity(CashRegisterDetailDto dto);
 }

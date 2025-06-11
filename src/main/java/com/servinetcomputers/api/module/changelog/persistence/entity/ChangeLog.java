@@ -8,7 +8,7 @@ import com.servinetcomputers.api.core.converter.ChangeLogTypeConverter;
 import com.servinetcomputers.api.core.util.enums.CashRegisterDetailStatus;
 import com.servinetcomputers.api.core.util.enums.ChangeLogAction;
 import com.servinetcomputers.api.core.util.enums.ChangeLogType;
-import com.servinetcomputers.api.module.cashregister.persistence.entity.CashRegisterDetail;
+import com.servinetcomputers.api.module.cashregister.persistence.entity.CashRegisterDetailEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
@@ -54,5 +54,5 @@ public class ChangeLog extends AuditableEntity {
 
     @ManyToOne
     @JoinColumn(name = "cash_register_detail_id", nullable = false)
-    private CashRegisterDetail cashRegisterDetail;
+    private CashRegisterDetailEntity cashRegisterDetail;
 }

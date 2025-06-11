@@ -1,12 +1,12 @@
 package com.servinetcomputers.api.core.audit.listener;
 
 import com.servinetcomputers.api.core.util.enums.CashRegisterDetailStatus;
-import com.servinetcomputers.api.module.cashregister.persistence.entity.CashRegisterDetail;
+import com.servinetcomputers.api.module.cashregister.persistence.entity.CashRegisterDetailEntity;
 import jakarta.persistence.PrePersist;
 
 public class AuditCashRegisterDetail {
     @PrePersist
-    public void prePersist(CashRegisterDetail cashRegisterDetail) {
+    public void prePersist(CashRegisterDetailEntity cashRegisterDetail) {
         if (cashRegisterDetail.getStatus() == null) {
             cashRegisterDetail.setStatus(CashRegisterDetailStatus.WORKING);
         }

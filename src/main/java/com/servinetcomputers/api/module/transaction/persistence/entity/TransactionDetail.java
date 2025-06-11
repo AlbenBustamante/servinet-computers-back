@@ -5,7 +5,7 @@ import com.servinetcomputers.api.core.audit.listener.AuditAuditable;
 import com.servinetcomputers.api.core.audit.listener.AuditTransactionDetail;
 import com.servinetcomputers.api.core.converter.TransactionDetailTypeConverter;
 import com.servinetcomputers.api.core.util.enums.TransactionDetailType;
-import com.servinetcomputers.api.module.cashregister.persistence.entity.CashRegisterDetail;
+import com.servinetcomputers.api.module.cashregister.persistence.entity.CashRegisterDetailEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
@@ -52,5 +52,5 @@ public class TransactionDetail extends AuditableEntity {
 
     @ManyToOne
     @JoinColumn(name = "cash_register_detail_id", nullable = false)
-    private CashRegisterDetail cashRegisterDetail;
+    private CashRegisterDetailEntity cashRegisterDetail;
 }

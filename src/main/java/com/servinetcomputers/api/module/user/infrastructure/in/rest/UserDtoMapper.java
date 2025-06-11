@@ -8,12 +8,16 @@ import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.ReportingPolicy;
 
+import java.util.List;
+
 /**
  * Mapeador de dominio a DTO para modelos de usuario.
  */
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public abstract class UserDtoMapper extends AuditableDtoMapper {
     public abstract UserDto toDto(User domain);
+
+    public abstract List<UserDto> toDto(List<User> entities);
 
     @AfterMapping
     protected void mapAuditFields(@MappingTarget UserDto dto, User domain) {
