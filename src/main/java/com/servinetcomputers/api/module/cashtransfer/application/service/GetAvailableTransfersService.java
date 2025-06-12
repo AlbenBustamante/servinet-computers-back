@@ -4,7 +4,7 @@ import com.servinetcomputers.api.core.datetime.DateTimeService;
 import com.servinetcomputers.api.core.exception.AppException;
 import com.servinetcomputers.api.core.security.service.UserLoggedService;
 import com.servinetcomputers.api.core.util.enums.CashRegisterDetailStatus;
-import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterDetailPersistenceAdapter;
+import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterDetailPersistenceAdapter1;
 import com.servinetcomputers.api.module.cashtransfer.application.usecase.GetAvailableTransfersUseCase;
 import com.servinetcomputers.api.module.cashtransfer.domain.dto.AvailableTransfersDto;
 import com.servinetcomputers.api.module.safes.application.usecase.detail.LoadSafeDetailsOfDayUseCase;
@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class GetAvailableTransfersService implements GetAvailableTransfersUseCase {
     private final UserLoggedService userLoggedService;
     private final DateTimeService dateTimeService;
-    private final CashRegisterDetailPersistenceAdapter cashRegisterDetailPersistenceAdapter;
+    private final CashRegisterDetailPersistenceAdapter1 cashRegisterDetailPersistenceAdapter;
     private final LoadSafeDetailsOfDayUseCase loadSafeDetailsOfDayUseCase;
 
     @Transactional(rollbackFor = AppException.class)

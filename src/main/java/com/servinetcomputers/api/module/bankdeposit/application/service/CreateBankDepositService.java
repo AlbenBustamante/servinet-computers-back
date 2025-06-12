@@ -6,7 +6,7 @@ import com.servinetcomputers.api.module.bankdeposit.application.usecase.CreateBa
 import com.servinetcomputers.api.module.bankdeposit.domain.dto.BankDepositDto;
 import com.servinetcomputers.api.module.bankdeposit.domain.dto.CreateBankDepositDto;
 import com.servinetcomputers.api.module.bankdeposit.domain.repository.BankDepositRepository;
-import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterDetailPersistenceAdapter;
+import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterDetailPersistenceAdapter1;
 import com.servinetcomputers.api.module.expense.domain.dto.CreateExpenseDto;
 import com.servinetcomputers.api.module.expense.domain.repository.ExpenseRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class CreateBankDepositService implements CreateBankDepositUseCase {
     private static final String EXPENSE_PREFIX = "BANCO";
     private final BankDepositRepository repository;
-    private final CashRegisterDetailPersistenceAdapter cashRegisterDetailPersistenceAdapter;
+    private final CashRegisterDetailPersistenceAdapter1 cashRegisterDetailPersistenceAdapter;
     private final ExpenseRepository expenseRepository;
 
     @Override

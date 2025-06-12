@@ -1,7 +1,7 @@
 package com.servinetcomputers.api.module.safes.application.usecase.detail;
 
 import com.servinetcomputers.api.core.usecase.UseCaseBiParam;
-import com.servinetcomputers.api.module.base.BaseDto;
+import com.servinetcomputers.api.module.base.Base;
 import com.servinetcomputers.api.module.safes.domain.dto.SafeDetailDto;
 import com.servinetcomputers.api.module.safes.persistence.entity.SafeBase;
 
@@ -10,5 +10,5 @@ import com.servinetcomputers.api.module.safes.persistence.entity.SafeBase;
  * <p>If not, then update only the final base.</p>
  * <p>Also, create a new {@link SafeBase} record.</p>
  */
-public interface UpdateSafeDetailBaseUseCase extends UseCaseBiParam<SafeDetailDto, Integer, BaseDto> {
+public interface UpdateSafeDetailBaseUseCase extends UseCaseBiParam<SafeDetailDto, Integer, Base> {
 }

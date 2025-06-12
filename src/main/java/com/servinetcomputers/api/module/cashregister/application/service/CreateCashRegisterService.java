@@ -1,31 +1,34 @@
 package com.servinetcomputers.api.module.cashregister.application.service;
 
-import com.servinetcomputers.api.core.exception.AppException;
-import com.servinetcomputers.api.core.exception.BadRequestException;
-import com.servinetcomputers.api.module.cashregister.application.usecase.CreateCashRegisterUseCase;
-import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDto;
-import com.servinetcomputers.api.module.cashregister.domain.dto.CreateCashRegisterDto;
-import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterRepository;
+import com.servinetcomputers.api.core.common.UseCase;
+import com.servinetcomputers.api.module.cashregister.application.port.in.CreateCashRegisterUseCase;
+import com.servinetcomputers.api.module.cashregister.application.port.in.command.CreateCashRegisterCommand;
+import com.servinetcomputers.api.module.cashregister.application.port.out.CashRegisterReadPort;
+import com.servinetcomputers.api.module.cashregister.application.port.out.CashRegisterWritePort;
+import com.servinetcomputers.api.module.cashregister.domain.CashRegister;
+import com.servinetcomputers.api.module.cashregister.exception.CashRegisterAlreadyExistsByNumeralException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import static com.servinetcomputers.api.core.util.constants.SecurityConstants.ADMIN_AUTHORITY;
 
+@UseCase
 @RequiredArgsConstructor
-@Service
+@Transactional(rollbackFor = Exception.class)
 public class CreateCashRegisterService implements CreateCashRegisterUseCase {
-    private final CashRegisterRepository repository;
+    private final CashRegisterReadPort readPort;
+    private final CashRegisterWritePort writePort;
 
-    @Transactional(rollbackFor = AppException.class)
-    @Secured(value = ADMIN_AUTHORITY)
     @Override
-    public CashRegisterDto call(CreateCashRegisterDto request) {
-        if (repository.existsByNumeral(request.numeral())) {
-            throw new BadRequestException("El numeral " + request.numeral() + " ya está siendo usado");
+    @Secured(value = ADMIN_AUTHORITY)
+    public CashRegister create(CreateCashRegisterCommand command) {
+        if (readPort.existsByNumeral(command.numeral())) {
+            throw new CashRegisterAlreadyExistsByNumeralException(command.numeral());
         }
 
-        return repository.save(request);
+        final var cashRegister = CashRegister.create(command.numeral(), command.description(), command.status());
+
+        return writePort.save(cashRegister);
     }
 }

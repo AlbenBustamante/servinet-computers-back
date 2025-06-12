@@ -1,30 +1,28 @@
 package com.servinetcomputers.api.module.cashregister.application.service;
 
-import com.servinetcomputers.api.module.base.BaseDto;
+import com.servinetcomputers.api.core.common.UseCase;
+import com.servinetcomputers.api.module.base.Base;
 import com.servinetcomputers.api.module.base.BaseMapper;
-import com.servinetcomputers.api.module.cashregister.application.usecase.GetLastBaseUseCase;
-import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterRepository;
+import com.servinetcomputers.api.module.cashregister.application.port.in.GetLastBaseUseCase;
+import com.servinetcomputers.api.module.cashregister.application.port.out.CashRegisterDetailReadPort;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@UseCase
 @RequiredArgsConstructor
-@Service
+@Transactional(readOnly = true)
 public class GetLastBaseService implements GetLastBaseUseCase {
-    private final CashRegisterRepository repository;
+    private final CashRegisterDetailReadPort readPort;
     private final BaseMapper baseMapper;
 
-    @Transactional(readOnly = true)
     @Override
-    public BaseDto call(Integer param) {
-        final var cashRegisterDetailPage = repository.getLastFinalBase(param);
+    public Base getLastBase(Integer id) {
+        final var base = readPort.getLastFinalBase(id);
 
-        if (cashRegisterDetailPage.isEmpty()) {
-            return BaseDto.zero();
+        if (base == null || base.isEmpty()) {
+            return Base.zero();
         }
 
-        final var finalBase = cashRegisterDetailPage.getContent().get(0);
-
-        return baseMapper.toDto(finalBase);
+        return baseMapper.toBase(base);
     }
 }

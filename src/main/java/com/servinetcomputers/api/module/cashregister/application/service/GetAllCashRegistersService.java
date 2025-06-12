@@ -1,22 +1,22 @@
 package com.servinetcomputers.api.module.cashregister.application.service;
 
-import com.servinetcomputers.api.module.cashregister.application.usecase.GetAllCashRegistersUseCase;
-import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDto;
-import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterRepository;
+import com.servinetcomputers.api.core.common.UseCase;
+import com.servinetcomputers.api.module.cashregister.application.port.in.GetAllCashRegistersUseCase;
+import com.servinetcomputers.api.module.cashregister.application.port.out.CashRegisterReadPort;
+import com.servinetcomputers.api.module.cashregister.domain.CashRegister;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@UseCase
 @RequiredArgsConstructor
-@Service
+@Transactional(readOnly = true)
 public class GetAllCashRegistersService implements GetAllCashRegistersUseCase {
-    private final CashRegisterRepository repository;
+    private final CashRegisterReadPort readPort;
 
-    @Transactional(readOnly = true)
     @Override
-    public List<CashRegisterDto> call() {
-        return repository.getAll();
+    public List<CashRegister> getAll() {
+        return readPort.getAll();
     }
 }

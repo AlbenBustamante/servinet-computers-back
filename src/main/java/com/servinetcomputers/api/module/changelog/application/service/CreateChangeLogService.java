@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.servinetcomputers.api.core.exception.AppException;
 import com.servinetcomputers.api.core.exception.NotFoundException;
-import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterDetailPersistenceAdapter;
+import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterDetailPersistenceAdapter1;
 import com.servinetcomputers.api.module.changelog.application.usecase.CreateChangeLogUseCase;
 import com.servinetcomputers.api.module.changelog.domain.dto.ChangeLogDto;
 import com.servinetcomputers.api.module.changelog.domain.dto.CreateChangeLogDto;
@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class CreateChangeLogService implements CreateChangeLogUseCase {
     private final ChangeLogRepository repository;
-    private final CashRegisterDetailPersistenceAdapter cashRegisterDetailPersistenceAdapter;
+    private final CashRegisterDetailPersistenceAdapter1 cashRegisterDetailPersistenceAdapter;
 
     @Transactional(rollbackFor = {JsonMappingException.class, AppException.class})
     @Override

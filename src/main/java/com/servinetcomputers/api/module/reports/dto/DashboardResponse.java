@@ -1,6 +1,6 @@
 package com.servinetcomputers.api.module.reports.dto;
 
-import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDetailDto;
+import com.servinetcomputers.api.module.cashregister.infrastructure.in.rest.dto.CashRegisterDetailDto;
 import com.servinetcomputers.api.module.platform.domain.dto.PlatformStatsDto;
 import com.servinetcomputers.api.module.safes.domain.dto.SafeDetailDto;
 import lombok.Builder;

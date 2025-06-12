@@ -1,6 +1,6 @@
 package com.servinetcomputers.api.module.safes.controller;
 
-import com.servinetcomputers.api.module.base.BaseDto;
+import com.servinetcomputers.api.module.base.Base;
 import com.servinetcomputers.api.module.safes.application.port.in.CreateAdminTransferUseCase;
 import com.servinetcomputers.api.module.safes.application.port.in.command.CreateAdminTransferCommand;
 import com.servinetcomputers.api.module.safes.application.usecase.detail.LoadSafeDetailsOfDayUseCase;
@@ -8,12 +8,7 @@ import com.servinetcomputers.api.module.safes.application.usecase.detail.UpdateS
 import com.servinetcomputers.api.module.safes.domain.dto.SafeDetailDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -31,8 +26,8 @@ public class SafeDetailController {
     }
 
     @PutMapping(path = "/{id}/base")
-    public ResponseEntity<SafeDetailDto> updateBase(@PathVariable("id") int safeDetailId, @RequestBody BaseDto baseDto) {
-        return ResponseEntity.ok(updateSafeDetailBaseUseCase.call(safeDetailId, baseDto));
+    public ResponseEntity<SafeDetailDto> updateBase(@PathVariable("id") int safeDetailId, @RequestBody Base base) {
+        return ResponseEntity.ok(updateSafeDetailBaseUseCase.call(safeDetailId, base));
     }
 
     @PutMapping(path = "/{id}/transfer")

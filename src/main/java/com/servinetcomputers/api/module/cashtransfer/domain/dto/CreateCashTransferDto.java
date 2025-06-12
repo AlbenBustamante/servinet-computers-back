@@ -1,7 +1,7 @@
 package com.servinetcomputers.api.module.cashtransfer.domain.dto;
 
 import com.servinetcomputers.api.core.util.enums.CashBoxType;
-import com.servinetcomputers.api.module.base.BaseDto;
+import com.servinetcomputers.api.module.base.Base;
 
 public record CreateCashTransferDto(
         int value,
@@ -10,7 +10,7 @@ public record CreateCashTransferDto(
         CashBoxType senderType,
         CashBoxType receiverType,
         Integer safeDetailId,
-        BaseDto safeBase,
+        Base safeBase,
         Integer safeDenomination,
         Integer safeAmount,
         Integer currentCashRegisterDetailId

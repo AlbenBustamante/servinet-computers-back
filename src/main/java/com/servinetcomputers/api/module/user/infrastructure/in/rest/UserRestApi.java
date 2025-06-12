@@ -1,6 +1,6 @@
 package com.servinetcomputers.api.module.user.infrastructure.in.rest;
 
-import com.servinetcomputers.api.module.cashregister.domain.dto.MyCashRegistersReports;
+import com.servinetcomputers.api.module.cashregister.infrastructure.in.rest.dto.MyCashRegistersReports;
 import com.servinetcomputers.api.module.reports.application.usecase.GetDetailedTransactionsUseCase;
 import com.servinetcomputers.api.module.reports.dto.ReportsResponse;
 import com.servinetcomputers.api.module.user.application.port.in.command.UpdateUserCommand;
@@ -13,14 +13,7 @@ import com.servinetcomputers.api.module.user.infrastructure.in.rest.dto.UserDto;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.time.YearMonth;

@@ -1,6 +1,6 @@
 package com.servinetcomputers.api.module.expense.persistence.mapper;
 
-import com.servinetcomputers.api.module.cashregister.persistence.mapper.CashRegisterDetailMapper;
+import com.servinetcomputers.api.module.cashregister.infrastructure.out.persistence.mapper.CashRegisterDetailMapper;
 import com.servinetcomputers.api.module.expense.domain.dto.CreateExpenseDto;
 import com.servinetcomputers.api.module.expense.domain.dto.ExpenseDto;
 import com.servinetcomputers.api.module.expense.persistence.entity.ExpenseEntity;

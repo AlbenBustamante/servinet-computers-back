@@ -2,9 +2,9 @@ package com.servinetcomputers.api.module.reports.application.service;
 
 import com.servinetcomputers.api.core.datetime.DateTimeService;
 import com.servinetcomputers.api.module.bankdeposit.domain.adapter.BankDepositPaymentPersistenceAdapter;
-import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDetailDto;
-import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterDetailPersistenceAdapter;
+import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterDetailPersistenceAdapter1;
 import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterRepository;
+import com.servinetcomputers.api.module.cashregister.infrastructure.in.rest.dto.CashRegisterDetailDto;
 import com.servinetcomputers.api.module.expense.domain.repository.ExpenseRepository;
 import com.servinetcomputers.api.module.platform.domain.dto.PlatformBalanceDto;
 import com.servinetcomputers.api.module.platform.domain.dto.PlatformStatsDto;
@@ -31,7 +31,7 @@ import static com.servinetcomputers.api.core.util.constants.SecurityConstants.AD
 @Service
 public class GetDashboardService implements GetDashboardUseCase {
     private final BankDepositPaymentPersistenceAdapter bankDepositPaymentPersistenceAdapter;
-    private final CashRegisterDetailPersistenceAdapter cashRegisterDetailPersistenceAdapter;
+    private final CashRegisterDetailPersistenceAdapter1 cashRegisterDetailPersistenceAdapter;
     private final CashRegisterRepository cashRegisterRepository;
     private final ExpenseRepository expenseRepository;
     private final PlatformBalanceRepository platformBalanceRepository;

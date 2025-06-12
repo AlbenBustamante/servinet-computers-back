@@ -6,10 +6,10 @@ import com.servinetcomputers.api.core.exception.NotFoundException;
 import com.servinetcomputers.api.core.util.enums.CashRegisterDetailStatus;
 import com.servinetcomputers.api.core.util.enums.CashRegisterStatus;
 import com.servinetcomputers.api.module.cashregister.application.usecase.detail.CloseUseCase;
-import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDetailReportsDto;
-import com.servinetcomputers.api.module.cashregister.domain.dto.CloseCashRegisterDetailDto;
-import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterDetailPersistenceAdapter;
+import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterDetailPersistenceAdapter1;
 import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterRepository;
+import com.servinetcomputers.api.module.cashregister.infrastructure.in.rest.dto.CashRegisterDetailReportsDto;
+import com.servinetcomputers.api.module.cashregister.infrastructure.in.rest.dto.CloseCashRegisterDetailDto;
 import com.servinetcomputers.api.module.reports.application.usecase.GetCashRegisterDetailReportsUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Service
 public class CloseService implements CloseUseCase {
-    private final CashRegisterDetailPersistenceAdapter repository;
+    private final CashRegisterDetailPersistenceAdapter1 repository;
     private final CashRegisterRepository cashRegisterRepository;
     private final DateTimeService dateTimeService;
     private final GetCashRegisterDetailReportsUseCase getCashRegisterDetailReportsUseCase;

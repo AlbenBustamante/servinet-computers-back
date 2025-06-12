@@ -2,7 +2,7 @@ package com.servinetcomputers.api.module.cashtransfer.application.service;
 
 import com.servinetcomputers.api.core.exception.NotFoundException;
 import com.servinetcomputers.api.core.util.enums.CashBoxType;
-import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterDetailPersistenceAdapter;
+import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterDetailPersistenceAdapter1;
 import com.servinetcomputers.api.module.cashtransfer.application.usecase.GetCashTransferDetailsUseCase;
 import com.servinetcomputers.api.module.cashtransfer.domain.dto.CashTransferDto;
 import com.servinetcomputers.api.module.safes.domain.repository.SafeDetailRepository;
@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Component
 public class GetCashTransferDetailsService implements GetCashTransferDetailsUseCase {
-    private final CashRegisterDetailPersistenceAdapter cashRegisterDetailPersistenceAdapter;
+    private final CashRegisterDetailPersistenceAdapter1 cashRegisterDetailPersistenceAdapter;
     private final SafeDetailRepository safeDetailRepository;
 
     @Transactional(readOnly = true)

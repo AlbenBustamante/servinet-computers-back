@@ -1,8 +1,8 @@
 package com.servinetcomputers.api.module.cashregister.application.usecase.detail;
 
 import com.servinetcomputers.api.core.usecase.UseCaseBiParam;
-import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDetailDto;
-import com.servinetcomputers.api.module.cashregister.domain.dto.UpdateCashRegisterDetailBaseDto;
+import com.servinetcomputers.api.module.cashregister.infrastructure.in.rest.dto.CashRegisterDetailDto;
+import com.servinetcomputers.api.module.cashregister.infrastructure.in.rest.dto.UpdateCashRegisterDetailBaseDto;
 
 /**
  * Update the initial or final base of a Cash Register Detail by its ID.

@@ -8,7 +8,7 @@ import com.servinetcomputers.api.module.bankdeposit.domain.dto.CreateDepositorDt
 import com.servinetcomputers.api.module.bankdeposit.persistence.JpaBankDepositRepository;
 import com.servinetcomputers.api.module.bankdeposit.persistence.mapper.BankDepositMapper;
 import com.servinetcomputers.api.module.bankdeposit.persistence.mapper.DepositorMapper;
-import com.servinetcomputers.api.module.cashregister.persistence.JpaCashRegisterDetailRepository;
+import com.servinetcomputers.api.module.cashregister.infrastructure.out.persistence.CashRegisterDetailJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class BankDepositPersistenceAdapterImpl implements BankDepositPersistenceAdapter {
     private final JpaBankDepositRepository jpaBankDepositRepository;
-    private final JpaCashRegisterDetailRepository jpaCashRegisterDetailRepository;
+    private final CashRegisterDetailJpaRepository cashRegisterDetailJpaRepository;
     private final BankDepositMapper bankDepositMapper;
     private final DepositorMapper depositorMapper;
 
@@ -27,7 +27,7 @@ public class BankDepositPersistenceAdapterImpl implements BankDepositPersistence
         final var bankDeposit = jpaBankDepositRepository.findByIdAndEnabledTrue(id.bankDepositId())
                 .orElseThrow(() -> new NotFoundException("No se encontró el depósito : " + id.bankDepositId()));
 
-        final var cashRegisterDetail = jpaCashRegisterDetailRepository.findByIdAndEnabledTrue(id.cashRegisterDetailId())
+        final var cashRegisterDetail = cashRegisterDetailJpaRepository.findByIdAndEnabledTrue(id.cashRegisterDetailId())
                 .orElseThrow(() -> new NotFoundException("No se encontró la jornada: " + id.cashRegisterDetailId()));
 
         final var depositor = depositorMapper.toEntity(createDepositorDto);

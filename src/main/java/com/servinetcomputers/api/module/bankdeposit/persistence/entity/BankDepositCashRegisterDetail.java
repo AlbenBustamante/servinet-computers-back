@@ -2,15 +2,8 @@ package com.servinetcomputers.api.module.bankdeposit.persistence.entity;
 
 import com.servinetcomputers.api.core.audit.infra.AuditableEntity;
 import com.servinetcomputers.api.core.audit.listener.AuditAuditable;
-import com.servinetcomputers.api.module.cashregister.persistence.entity.CashRegisterDetailEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.EmbeddedId;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.MapsId;
-import jakarta.persistence.Table;
+import com.servinetcomputers.api.module.cashregister.infrastructure.out.persistence.entity.CashRegisterDetailEntity;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;

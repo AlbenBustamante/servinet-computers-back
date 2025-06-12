@@ -1,6 +1,6 @@
 package com.servinetcomputers.api.module.user.application.service;
 
-import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterDetailPersistenceAdapter;
+import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterDetailPersistenceAdapter1;
 import com.servinetcomputers.api.module.expense.domain.repository.ExpenseRepository;
 import com.servinetcomputers.api.module.user.application.usecase.GetJourneysUseCase;
 import com.servinetcomputers.api.module.user.infrastructure.in.rest.dto.JourneyDetailDto;
@@ -22,7 +22,7 @@ import java.util.List;
 public class GetJourneysService implements GetJourneysUseCase {
     private static final String JOURNEY_HOURS_FORMAT = "%02d:%02d:%02d";
     private static final String TOTAL_HOURS_FORMAT = "%02d horas, %02d minutos, %02d segundos: %02d:%02d:%02d";
-    private final CashRegisterDetailPersistenceAdapter cashRegisterDetailPersistenceAdapter;
+    private final CashRegisterDetailPersistenceAdapter1 cashRegisterDetailPersistenceAdapter;
     private final ExpenseRepository expenseRepository;
 
     @Override

@@ -1,9 +1,9 @@
 package com.servinetcomputers.api.module.user.application.service;
 
 import com.servinetcomputers.api.core.datetime.DateTimeService;
-import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDetailReportsDto;
-import com.servinetcomputers.api.module.cashregister.domain.dto.MyCashRegistersReports;
-import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterDetailPersistenceAdapter;
+import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterDetailPersistenceAdapter1;
+import com.servinetcomputers.api.module.cashregister.infrastructure.in.rest.dto.CashRegisterDetailReportsDto;
+import com.servinetcomputers.api.module.cashregister.infrastructure.in.rest.dto.MyCashRegistersReports;
 import com.servinetcomputers.api.module.reports.application.usecase.GetCashRegisterDetailReportsUseCase;
 import com.servinetcomputers.api.module.user.application.usecase.GetUserCashRegisterReportsUseCase;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Service
 public class GetUserCashRegisterReportsService implements GetUserCashRegisterReportsUseCase {
-    private final CashRegisterDetailPersistenceAdapter repository;
+    private final CashRegisterDetailPersistenceAdapter1 repository;
     private final DateTimeService dateTimeService;
     private final GetCashRegisterDetailReportsUseCase getCashRegisterDetailReportsUseCase;
 

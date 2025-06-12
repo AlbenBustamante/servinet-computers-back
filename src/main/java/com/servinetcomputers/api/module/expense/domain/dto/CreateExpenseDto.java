@@ -1,6 +1,6 @@
 package com.servinetcomputers.api.module.expense.domain.dto;
 
-import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDetailDto;
+import com.servinetcomputers.api.module.cashregister.infrastructure.in.rest.dto.CashRegisterDetailDto;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;

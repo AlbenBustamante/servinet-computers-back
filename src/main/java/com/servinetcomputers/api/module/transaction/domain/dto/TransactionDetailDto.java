@@ -2,7 +2,7 @@ package com.servinetcomputers.api.module.transaction.domain.dto;
 
 import com.servinetcomputers.api.core.audit.infra.AuditableDto;
 import com.servinetcomputers.api.core.util.enums.TransactionDetailType;
-import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDetailDto;
+import com.servinetcomputers.api.module.cashregister.infrastructure.in.rest.dto.CashRegisterDetailDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

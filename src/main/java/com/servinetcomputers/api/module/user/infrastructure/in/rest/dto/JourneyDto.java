@@ -1,6 +1,6 @@
 package com.servinetcomputers.api.module.user.infrastructure.in.rest.dto;
 
-import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDetailDto;
+import com.servinetcomputers.api.module.cashregister.infrastructure.in.rest.dto.CashRegisterDetailDto;
 import com.servinetcomputers.api.module.expense.domain.dto.ExpenseDto;
 
 import java.util.List;

@@ -1,7 +1,7 @@
 package com.servinetcomputers.api.module.bankdeposit.domain.dto;
 
 import com.servinetcomputers.api.core.util.enums.BankDepositStatus;
-import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDetailDto;
+import com.servinetcomputers.api.module.cashregister.infrastructure.in.rest.dto.CashRegisterDetailDto;
 import com.servinetcomputers.api.module.expense.domain.dto.ExpenseDto;
 import lombok.Getter;
 import lombok.Setter;

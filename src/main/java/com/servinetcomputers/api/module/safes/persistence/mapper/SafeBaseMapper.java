@@ -18,7 +18,7 @@ public interface SafeBaseMapper {
 
     List<SafeBaseDto> toDto(List<SafeBase> entities);
 
-    @Mapping(target = "base", expression = "java(baseMapper.toStr(dto.getBaseDto()))")
+    @Mapping(target = "base", expression = "java(baseMapper.toStr(dto.getBase()))")
     @Mapping(target = "modifiedDate", ignore = true)
     @Mapping(target = "modifiedBy", ignore = true)
     @Mapping(target = "id", ignore = true)

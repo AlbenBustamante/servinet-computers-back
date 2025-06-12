@@ -5,10 +5,10 @@ import com.servinetcomputers.api.core.exception.AppException;
 import com.servinetcomputers.api.core.security.service.UserLoggedService;
 import com.servinetcomputers.api.core.util.enums.CashRegisterDetailStatus;
 import com.servinetcomputers.api.module.cashregister.application.usecase.detail.CashRegisterDetailAlreadyExistsUseCase;
-import com.servinetcomputers.api.module.cashregister.domain.dto.AlreadyExistsCashRegisterDetailDto;
-import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDto;
-import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterDetailPersistenceAdapter;
+import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterDetailPersistenceAdapter1;
 import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterRepository;
+import com.servinetcomputers.api.module.cashregister.infrastructure.in.rest.dto.AlreadyExistsCashRegisterDetailDto;
+import com.servinetcomputers.api.module.cashregister.infrastructure.in.rest.dto.CashRegisterDto;
 import com.servinetcomputers.api.module.user.application.usecase.GetUserCashRegisterReportsUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
@@ -23,7 +23,7 @@ import static com.servinetcomputers.api.core.util.constants.SecurityConstants.SU
 @RequiredArgsConstructor
 @Service
 public class CashRegisterDetailAlreadyExistsService implements CashRegisterDetailAlreadyExistsUseCase {
-    private final CashRegisterDetailPersistenceAdapter repository;
+    private final CashRegisterDetailPersistenceAdapter1 repository;
     private final CashRegisterRepository cashRegisterRepository;
     private final UserLoggedService userLoggedService;
     private final DateTimeService dateTimeService;

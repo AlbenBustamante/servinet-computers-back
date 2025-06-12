@@ -19,4 +19,36 @@ public record CashRegister(
         CashRegisterStatus status,
         Auditable audit
 ) {
+    /**
+     * Crea un nuevo {@link CashRegister} con la data proporcionada.
+     *
+     * @param numeral     numeral.
+     * @param description descripción.
+     * @param status      estado - puede ser nulo.
+     * @return nuevo {@link CashRegister}.
+     */
+    public static CashRegister create(Integer numeral, String description, CashRegisterStatus status) {
+        return new CashRegister(
+                null,
+                numeral,
+                description,
+                status != null ? status : CashRegisterStatus.AVAILABLE,
+                null
+        );
+    }
+
+    /**
+     * Actualiza las propiedades para su posterior eliminación.
+     *
+     * @return {@link CashRegister} actualizado.
+     */
+    public CashRegister delete() {
+        return new CashRegister(
+                id,
+                numeral,
+                "ELIMINADO: ".concat(description),
+                CashRegisterStatus.DISABLED,
+                audit.delete()
+        );
+    }
 }

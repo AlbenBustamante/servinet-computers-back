@@ -1,6 +1,6 @@
 package com.servinetcomputers.api.module.safes.domain.dto;
 
-import com.servinetcomputers.api.module.base.BaseDto;
+import com.servinetcomputers.api.module.base.Base;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,6 +12,6 @@ import lombok.Setter;
 @Getter
 public class CreateSafeBaseDto {
     private int safeDetailId;
-    private BaseDto baseDto;
+    private Base base;
     private SafeDetailDto safeDetail;
 }

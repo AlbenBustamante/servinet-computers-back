@@ -2,7 +2,7 @@ package com.servinetcomputers.api.module.changelog.persistence.mapper;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.servinetcomputers.api.module.cashregister.persistence.mapper.CashRegisterDetailMapper;
+import com.servinetcomputers.api.module.cashregister.infrastructure.out.persistence.mapper.CashRegisterDetailMapper;
 import com.servinetcomputers.api.module.changelog.domain.dto.ChangeLogDto;
 import com.servinetcomputers.api.module.changelog.domain.dto.CreateChangeLogDto;
 import com.servinetcomputers.api.module.changelog.persistence.entity.ChangeLog;

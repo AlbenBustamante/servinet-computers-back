@@ -6,11 +6,11 @@ import org.springframework.stereotype.Component;
 public class BaseMapper {
     private static final String separator = ";";
 
-    public BaseDto toDto(String base) {
+    public Base toBase(String base) {
         final var values = base.split(separator);
 
         try {
-            return new BaseDto(
+            return new Base(
                     Integer.parseInt(values[0]),
                     Integer.parseInt(values[1]),
                     Integer.parseInt(values[2]),
@@ -28,7 +28,7 @@ public class BaseMapper {
         }
     }
 
-    public String toStr(BaseDto base) {
+    public String toStr(Base base) {
         if (base == null) {
             return "";
         }

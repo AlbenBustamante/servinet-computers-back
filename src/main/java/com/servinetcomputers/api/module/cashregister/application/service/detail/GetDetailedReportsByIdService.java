@@ -3,9 +3,9 @@ package com.servinetcomputers.api.module.cashregister.application.service.detail
 import com.servinetcomputers.api.core.exception.NotFoundException;
 import com.servinetcomputers.api.core.util.enums.CashBoxType;
 import com.servinetcomputers.api.module.cashregister.application.usecase.detail.GetDetailedReportsByIdUseCase;
-import com.servinetcomputers.api.module.cashregister.domain.dto.DetailedCashRegisterReportsDto;
-import com.servinetcomputers.api.module.cashregister.domain.dto.DetailedCashRegisterTransactionsDto;
-import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterDetailPersistenceAdapter;
+import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterDetailPersistenceAdapter1;
+import com.servinetcomputers.api.module.cashregister.infrastructure.in.rest.dto.DetailedCashRegisterReportsDto;
+import com.servinetcomputers.api.module.cashregister.infrastructure.in.rest.dto.DetailedCashRegisterTransactionsDto;
 import com.servinetcomputers.api.module.cashtransfer.domain.repository.CashTransferRepository;
 import com.servinetcomputers.api.module.changelog.domain.repository.ChangeLogRepository;
 import com.servinetcomputers.api.module.expense.domain.repository.ExpenseRepository;
@@ -21,7 +21,7 @@ import static com.servinetcomputers.api.core.util.constants.SecurityConstants.AD
 @RequiredArgsConstructor
 @Service
 public class GetDetailedReportsByIdService implements GetDetailedReportsByIdUseCase {
-    private final CashRegisterDetailPersistenceAdapter repository;
+    private final CashRegisterDetailPersistenceAdapter1 repository;
     private final TransactionDetailRepository transactionDetailRepository;
     private final ExpenseRepository expenseRepository;
     private final CashTransferRepository cashTransferRepository;

@@ -1,7 +1,7 @@
 package com.servinetcomputers.api.module.safes.domain.dto;
 
 import com.servinetcomputers.api.core.audit.infra.AuditableDto;
-import com.servinetcomputers.api.module.base.BaseDto;
+import com.servinetcomputers.api.module.base.Base;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,5 +9,5 @@ import lombok.Setter;
 @Getter
 public class SafeBaseDto extends AuditableDto<Integer> {
     private int safeDetailId, base;
-    private BaseDto detailBase;
+    private Base detailBase;
 }

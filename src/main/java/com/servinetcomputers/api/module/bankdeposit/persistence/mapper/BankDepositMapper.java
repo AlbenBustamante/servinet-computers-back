@@ -3,7 +3,7 @@ package com.servinetcomputers.api.module.bankdeposit.persistence.mapper;
 import com.servinetcomputers.api.module.bankdeposit.domain.dto.BankDepositDto;
 import com.servinetcomputers.api.module.bankdeposit.domain.dto.CreateBankDepositDto;
 import com.servinetcomputers.api.module.bankdeposit.persistence.entity.BankDeposit;
-import com.servinetcomputers.api.module.cashregister.persistence.mapper.CashRegisterDetailMapper;
+import com.servinetcomputers.api.module.cashregister.infrastructure.out.persistence.mapper.CashRegisterDetailMapper;
 import com.servinetcomputers.api.module.expense.persistence.mapper.ExpenseMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

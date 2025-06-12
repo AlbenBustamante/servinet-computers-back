@@ -1,6 +1,6 @@
 package com.servinetcomputers.api.module.transaction.persistence.mapper;
 
-import com.servinetcomputers.api.module.cashregister.persistence.mapper.CashRegisterDetailMapper;
+import com.servinetcomputers.api.module.cashregister.infrastructure.out.persistence.mapper.CashRegisterDetailMapper;
 import com.servinetcomputers.api.module.transaction.domain.dto.CreateTransactionDetailDto;
 import com.servinetcomputers.api.module.transaction.domain.dto.TransactionDetailDto;
 import com.servinetcomputers.api.module.transaction.persistence.entity.TransactionDetail;

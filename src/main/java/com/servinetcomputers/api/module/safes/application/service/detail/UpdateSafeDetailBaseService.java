@@ -3,7 +3,7 @@ package com.servinetcomputers.api.module.safes.application.service.detail;
 import com.servinetcomputers.api.core.exception.AlreadyExistsException;
 import com.servinetcomputers.api.core.exception.AppException;
 import com.servinetcomputers.api.core.exception.NotFoundException;
-import com.servinetcomputers.api.module.base.BaseDto;
+import com.servinetcomputers.api.module.base.Base;
 import com.servinetcomputers.api.module.safes.application.usecase.detail.UpdateSafeDetailBaseUseCase;
 import com.servinetcomputers.api.module.safes.domain.dto.CreateSafeBaseDto;
 import com.servinetcomputers.api.module.safes.domain.dto.SafeDetailDto;
@@ -25,27 +25,27 @@ public class UpdateSafeDetailBaseService implements UpdateSafeDetailBaseUseCase 
      * <p>If not, then update only the final base.</p>
      * <p>Also, create a new {@link SafeBase} record.</p>
      *
-     * @param baseDto a {@link BaseDto} model dto.
+     * @param base a {@link Base} model dto.
      * @return a {@link SafeDetailDto} model dto.
      */
     @Transactional(rollbackFor = AppException.class)
     @Override
-    public SafeDetailDto call(Integer safeDetailId, BaseDto baseDto) {
+    public SafeDetailDto call(Integer safeDetailId, Base base) {
         final var safeDetail = repository.get(safeDetailId)
                 .orElseThrow(() -> new NotFoundException("Caja del día no encontrada: #" + safeDetailId));
 
-        if (baseDto.equals(safeDetail.getDetailFinalBase())) {
+        if (base.equals(safeDetail.getDetailFinalBase())) {
             throw new AlreadyExistsException("La base ingresada ya está siendo utilizada");
         }
 
-        if (safeDetail.getDetailInitialBase().equals(BaseDto.zero())) {
-            safeDetail.setDetailInitialBase(baseDto);
+        if (safeDetail.getDetailInitialBase().equals(Base.zero())) {
+            safeDetail.setDetailInitialBase(base);
         }
 
-        safeDetail.setDetailFinalBase(baseDto);
+        safeDetail.setDetailFinalBase(base);
 
         final var newSafeDetailDto = repository.save(safeDetail);
-        final var createSafeBaseDto = new CreateSafeBaseDto(safeDetailId, baseDto, newSafeDetailDto);
+        final var createSafeBaseDto = new CreateSafeBaseDto(safeDetailId, base, newSafeDetailDto);
         final var newSafeBase = safeBaseRepository.save(createSafeBaseDto);
         newSafeDetailDto.getBases().add(newSafeBase);
 

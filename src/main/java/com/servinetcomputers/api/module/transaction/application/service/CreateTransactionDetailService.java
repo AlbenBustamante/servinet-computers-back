@@ -3,7 +3,7 @@ package com.servinetcomputers.api.module.transaction.application.service;
 import com.servinetcomputers.api.core.exception.AppException;
 import com.servinetcomputers.api.core.exception.NotFoundException;
 import com.servinetcomputers.api.core.page.PageResponse;
-import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterDetailPersistenceAdapter;
+import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterDetailPersistenceAdapter1;
 import com.servinetcomputers.api.module.transaction.application.usecase.CreateTransactionDetailUseCase;
 import com.servinetcomputers.api.module.transaction.domain.dto.CreateTransactionDetailDto;
 import com.servinetcomputers.api.module.transaction.domain.dto.CreateTransactionDto;
@@ -21,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class CreateTransactionDetailService implements CreateTransactionDetailUseCase {
     private final TransactionDetailRepository repository;
     private final TransactionRepository transactionRepository;
-    private final CashRegisterDetailPersistenceAdapter cashRegisterDetailPersistenceAdapter;
+    private final CashRegisterDetailPersistenceAdapter1 cashRegisterDetailPersistenceAdapter;
 
     @Transactional(rollbackFor = AppException.class)
     @Override

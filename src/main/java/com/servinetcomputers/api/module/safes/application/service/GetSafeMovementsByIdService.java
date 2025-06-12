@@ -1,7 +1,7 @@
 package com.servinetcomputers.api.module.safes.application.service;
 
 import com.servinetcomputers.api.core.datetime.DateTimeService;
-import com.servinetcomputers.api.module.base.BaseDto;
+import com.servinetcomputers.api.module.base.Base;
 import com.servinetcomputers.api.module.safes.application.port.out.LoadDetailsBySafeIdAndBetweenPort;
 import com.servinetcomputers.api.module.safes.application.usecase.GetSafeMovementsByIdUseCase;
 import com.servinetcomputers.api.module.safes.domain.dto.CreateSafeBaseDto;
@@ -48,7 +48,7 @@ public class GetSafeMovementsByIdService implements GetSafeMovementsByIdUseCase 
         }
 
         final var lastBase = safeBaseRepository.getLastBySafeId(safeId);
-        final var newBase = lastBase.isPresent() ? lastBase.get().getDetailBase() : BaseDto.zero();
+        final var newBase = lastBase.isPresent() ? lastBase.get().getDetailBase() : Base.zero();
 
         final var createDetailDto = new CreateSafeDetailDto(safeId, newBase, newBase, safe);
         final var newDetail = safeDetailRepository.save(createDetailDto);
