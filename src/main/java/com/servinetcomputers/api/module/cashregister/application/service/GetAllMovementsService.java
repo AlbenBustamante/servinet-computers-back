@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -25,11 +26,14 @@ public class GetAllMovementsService implements GetAllMovementsUseCase {
      */
     @Transactional(readOnly = true)
     @Override
-    public List<CashRegisterDetailDto> call(Integer cashRegisterId) {
+    public List<CashRegisterDetailDto> call(Integer cashRegisterId, LocalDate date) {
         if (!repository.existsById(cashRegisterId)) {
             throw new NotFoundException("No se encontró la caja con ID: #" + cashRegisterId);
         }
 
-        return cashRegisterDetailPersistenceAdapter.getAllByCashRegisterId(cashRegisterId);
+        final var startDate = date.atStartOfDay();
+        final var endDate = date.plusDays(1).atStartOfDay();
+
+        return cashRegisterDetailPersistenceAdapter.getAllByCashRegisterIdBetween(cashRegisterId, startDate, endDate);
     }
 }

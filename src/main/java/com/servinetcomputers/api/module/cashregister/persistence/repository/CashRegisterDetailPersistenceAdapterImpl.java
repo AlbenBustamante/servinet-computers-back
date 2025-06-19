@@ -1,6 +1,5 @@
 package com.servinetcomputers.api.module.cashregister.persistence.repository;
 
-import com.servinetcomputers.api.core.exception.NotFoundException;
 import com.servinetcomputers.api.core.util.enums.CashRegisterDetailStatus;
 import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDetailDto;
 import com.servinetcomputers.api.module.cashregister.domain.dto.CreateCashRegisterDetailDto;
@@ -9,7 +8,6 @@ import com.servinetcomputers.api.module.cashregister.persistence.JpaCashRegister
 import com.servinetcomputers.api.module.cashregister.persistence.mapper.CashRegisterDetailMapper;
 import com.servinetcomputers.api.module.user.domain.dto.UserFullNameDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
@@ -40,15 +38,6 @@ public class CashRegisterDetailPersistenceAdapterImpl implements CashRegisterDet
     public Integer getCurrentAmount() {
         final var currentAmount = repository.countByStatusNotAndEnabledTrue(CashRegisterDetailStatus.CLOSED);
         return currentAmount != null ? currentAmount : 0;
-    }
-
-    @Override
-    public CashRegisterDetailDto getLatestByCashRegisterId(Integer cashRegisterId) {
-        final var detail = repository.findLatestByCashRegisterIdAndEnabledTrue(cashRegisterId, PageRequest.of(0, 1));
-        if (detail.getContent().isEmpty()) {
-            throw new NotFoundException("No se encontró movimientos de caja: " + cashRegisterId);
-        }
-        return mapper.toDto(detail.getContent().get(0));
     }
 
     @Override
@@ -83,6 +72,12 @@ public class CashRegisterDetailPersistenceAdapterImpl implements CashRegisterDet
     @Override
     public List<CashRegisterDetailDto> getAllByCashRegisterId(int cashRegisterId) {
         final var details = repository.findAllByCashRegisterIdAndEnabledTrue(cashRegisterId);
+        return mapper.toDto(details);
+    }
+
+    @Override
+    public List<CashRegisterDetailDto> getAllByCashRegisterIdBetween(int cashRegisterId, LocalDateTime startDate, LocalDateTime endDate) {
+        final var details = repository.findAllByCashRegisterIdAndEnabledTrueAndCreatedDateBetween(cashRegisterId, startDate, endDate);
         return mapper.toDto(details);
     }
 

@@ -17,14 +17,6 @@ public interface CashRegisterDetailPersistenceAdapter {
     Integer getCurrentAmount();
 
     /**
-     * Obtiene el último movimiento de caja registrado según el ID de la caja registradora.
-     *
-     * @param cashRegisterId el {@code ID} de la caja registradora.
-     * @return el movimiento de caja encontrado.
-     */
-    CashRegisterDetailDto getLatestByCashRegisterId(Integer cashRegisterId);
-
-    /**
      * Verify if a user already has a cash register detail that its status is not the specified.
      *
      * @param userId    the user id.
@@ -44,6 +36,8 @@ public interface CashRegisterDetailPersistenceAdapter {
     List<CashRegisterDetailDto> getAllByStatusNotAndBefore(CashRegisterDetailStatus status, LocalDateTime createdDate);
 
     List<CashRegisterDetailDto> getAllByCashRegisterId(int cashRegisterId);
+
+    List<CashRegisterDetailDto> getAllByCashRegisterIdBetween(int cashRegisterId, LocalDateTime startDate, LocalDateTime endDate);
 
     List<CashRegisterDetailDto> getAllWhereUserIdIsNotAndStatusNotAndBetween(int userId, CashRegisterDetailStatus status, LocalDateTime startDate, LocalDateTime endDate);
 

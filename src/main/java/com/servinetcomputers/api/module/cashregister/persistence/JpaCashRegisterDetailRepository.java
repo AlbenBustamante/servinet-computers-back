@@ -20,12 +20,6 @@ public interface JpaCashRegisterDetailRepository extends JpaRepository<CashRegis
 
     boolean existsByUserIdAndCreatedDateBetweenAndEnabledTrueAndStatusNot(int userId, LocalDateTime firstDate, LocalDateTime lastDate, CashRegisterDetailStatus status);
 
-    @Query("SELECT crd FROM CashRegisterDetail crd " +
-            "WHERE crd.cashRegister.id = :cashRegisterId " +
-            "AND crd.enabled = true " +
-            "ORDER BY crd.createdDate DESC")
-    Page<CashRegisterDetail> findLatestByCashRegisterIdAndEnabledTrue(Integer cashRegisterId, Pageable pageable);
-
     List<CashRegisterDetail> findAllByUserIdAndCreatedDateBetweenAndEnabledTrueAndStatusNot(int userId, LocalDateTime firstDate, LocalDateTime lastDate, CashRegisterDetailStatus status);
 
     List<CashRegisterDetail> findAllByUserIdAndCreatedDateBetweenAndEnabledTrueOrderByCreatedDate(int userId, LocalDateTime firstDate, LocalDateTime lastDate);
@@ -35,6 +29,8 @@ public interface JpaCashRegisterDetailRepository extends JpaRepository<CashRegis
     List<CashRegisterDetail> findAllByStatusNotAndEnabledTrueAndCreatedDateBefore(CashRegisterDetailStatus status, LocalDateTime createdDate);
 
     List<CashRegisterDetail> findAllByCashRegisterIdAndEnabledTrue(int cashRegisterId);
+
+    List<CashRegisterDetail> findAllByCashRegisterIdAndEnabledTrueAndCreatedDateBetween(int cashRegisterId, LocalDateTime startDate, LocalDateTime endDate);
 
     List<CashRegisterDetail> findAllByUserIdNotAndEnabledTrueAndStatusNotAndCreatedDateBetween(int userId, CashRegisterDetailStatus status, LocalDateTime startDate, LocalDateTime endDate);
 
