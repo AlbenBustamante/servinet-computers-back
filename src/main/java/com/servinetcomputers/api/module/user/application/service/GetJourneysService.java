@@ -1,6 +1,6 @@
 package com.servinetcomputers.api.module.user.application.service;
 
-import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterDetailPersistenceAdapter;
+import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterDetailRepository;
 import com.servinetcomputers.api.module.expense.domain.repository.ExpenseRepository;
 import com.servinetcomputers.api.module.transaction.domain.repository.TransactionDetailRepository;
 import com.servinetcomputers.api.module.user.application.usecase.GetJourneysUseCase;
@@ -23,7 +23,7 @@ import java.util.List;
 public class GetJourneysService implements GetJourneysUseCase {
     private static final String JOURNEY_HOURS_FORMAT = "%02d:%02d:%02d";
     private static final String TOTAL_HOURS_FORMAT = "%02d:%02d:%02d";
-    private final CashRegisterDetailPersistenceAdapter cashRegisterDetailPersistenceAdapter;
+    private final CashRegisterDetailRepository cashRegisterDetailRepository;
     private final TransactionDetailRepository transactionDetailRepository;
     private final ExpenseRepository expenseRepository;
 
@@ -32,7 +32,7 @@ public class GetJourneysService implements GetJourneysUseCase {
         final var startDate = month.atDay(1).atStartOfDay();
         final var endDate = month.plusMonths(1).atDay(1).atStartOfDay();
 
-        final var cashRegisterDetails = cashRegisterDetailPersistenceAdapter.getAllByUserIdBetween(userId, startDate, endDate);
+        final var cashRegisterDetails = cashRegisterDetailRepository.getAllByUserIdBetween(userId, startDate, endDate);
         final List<JourneyDto> journeys = new ArrayList<>(cashRegisterDetails.size());
         var totalOfDiscounts = 0;
         var totalOfSeconds = 0L;

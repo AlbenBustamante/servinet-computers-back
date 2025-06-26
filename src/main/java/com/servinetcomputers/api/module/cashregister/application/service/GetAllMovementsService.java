@@ -3,7 +3,7 @@ package com.servinetcomputers.api.module.cashregister.application.service;
 import com.servinetcomputers.api.core.exception.NotFoundException;
 import com.servinetcomputers.api.module.cashregister.application.usecase.GetAllMovementsUseCase;
 import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDetailDto;
-import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterDetailPersistenceAdapter;
+import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterDetailRepository;
 import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,7 +16,7 @@ import java.util.List;
 @Service
 public class GetAllMovementsService implements GetAllMovementsUseCase {
     private final CashRegisterRepository repository;
-    private final CashRegisterDetailPersistenceAdapter cashRegisterDetailPersistenceAdapter;
+    private final CashRegisterDetailRepository cashRegisterDetailRepository;
 
     /**
      * Get all details of a cash register by its ID.
@@ -34,6 +34,6 @@ public class GetAllMovementsService implements GetAllMovementsUseCase {
         final var startDate = date.atStartOfDay();
         final var endDate = date.plusDays(1).atStartOfDay();
 
-        return cashRegisterDetailPersistenceAdapter.getAllByCashRegisterIdBetween(cashRegisterId, startDate, endDate);
+        return cashRegisterDetailRepository.getAllByCashRegisterIdBetween(cashRegisterId, startDate, endDate);
     }
 }

@@ -6,7 +6,6 @@ import com.servinetcomputers.api.module.cashregister.application.usecase.detail.
 import com.servinetcomputers.api.module.cashregister.application.usecase.detail.CreateCashRegisterDetailUseCase;
 import com.servinetcomputers.api.module.cashregister.application.usecase.detail.DeleteCashRegisterDetailUseCase;
 import com.servinetcomputers.api.module.cashregister.application.usecase.detail.EndBreakUseCase;
-import com.servinetcomputers.api.module.cashregister.application.usecase.detail.GetAdmCashRegisterDetailsUseCase;
 import com.servinetcomputers.api.module.cashregister.application.usecase.detail.GetCashRegisterDetailByIdUseCase;
 import com.servinetcomputers.api.module.cashregister.application.usecase.detail.GetCashRegisterDetailReportsAndMovementsUseCase;
 import com.servinetcomputers.api.module.cashregister.application.usecase.detail.GetCashRegisterDetailReportsByIdUseCase;
@@ -15,7 +14,6 @@ import com.servinetcomputers.api.module.cashregister.application.usecase.detail.
 import com.servinetcomputers.api.module.cashregister.application.usecase.detail.GetTransactionsUseCase;
 import com.servinetcomputers.api.module.cashregister.application.usecase.detail.StartBreakUseCase;
 import com.servinetcomputers.api.module.cashregister.application.usecase.detail.UpdateCashRegisterDetailBaseUseCase;
-import com.servinetcomputers.api.module.cashregister.domain.dto.AdmCashRegistersDto;
 import com.servinetcomputers.api.module.cashregister.domain.dto.AlreadyExistsCashRegisterDetailDto;
 import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDetailDto;
 import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDetailMovementsDto;
@@ -47,7 +45,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class CashRegisterDetailController {
     private final CreateCashRegisterDetailUseCase createCashRegisterDetailUseCase;
     private final CashRegisterDetailAlreadyExistsUseCase alreadyExistsUseCase;
-    private final GetAdmCashRegisterDetailsUseCase getAdmCashRegisterDetailsUseCase;
     private final GetCashRegisterDetailByIdUseCase getByIdUseCase;
     private final GetCashRegisterDetailReportsByIdUseCase getReportsUseCase;
     private final GetCashTransfersByIdUseCase getCashTransfersUseCase;
@@ -68,11 +65,6 @@ public class CashRegisterDetailController {
     @GetMapping(path = "/already-exists")
     public ResponseEntity<AlreadyExistsCashRegisterDetailDto> alreadyExists() {
         return ResponseEntity.ok(alreadyExistsUseCase.call());
-    }
-
-    @GetMapping(path = "/adm")
-    public ResponseEntity<AdmCashRegistersDto> getAdmCashRegisterDetails() {
-        return ResponseEntity.ok(getAdmCashRegisterDetailsUseCase.call());
     }
 
     @GetMapping(path = "/{id}")

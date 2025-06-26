@@ -3,7 +3,7 @@ package com.servinetcomputers.api.module.reports.application.service;
 import com.servinetcomputers.api.core.datetime.DateTimeService;
 import com.servinetcomputers.api.module.bankdeposit.domain.adapter.BankDepositPaymentPersistenceAdapter;
 import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDetailDto;
-import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterDetailPersistenceAdapter;
+import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterDetailRepository;
 import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterRepository;
 import com.servinetcomputers.api.module.expense.domain.repository.ExpenseRepository;
 import com.servinetcomputers.api.module.platform.domain.dto.PlatformBalanceDto;
@@ -31,7 +31,7 @@ import static com.servinetcomputers.api.core.util.constants.SecurityConstants.AD
 @Service
 public class GetDashboardService implements GetDashboardUseCase {
     private final BankDepositPaymentPersistenceAdapter bankDepositPaymentPersistenceAdapter;
-    private final CashRegisterDetailPersistenceAdapter cashRegisterDetailPersistenceAdapter;
+    private final CashRegisterDetailRepository cashRegisterDetailRepository;
     private final CashRegisterRepository cashRegisterRepository;
     private final ExpenseRepository expenseRepository;
     private final PlatformBalanceRepository platformBalanceRepository;
@@ -62,9 +62,9 @@ public class GetDashboardService implements GetDashboardUseCase {
 
         if (date == null) {
             final var cashRegisterIds = cashRegisterRepository.getAllIds();
-            cashRegisterDetails = cashRegisterDetailPersistenceAdapter.getLatestWhereCashRegisterIdIsIn(cashRegisterIds);
+            cashRegisterDetails = cashRegisterDetailRepository.getLatestWhereCashRegisterIdIsIn(cashRegisterIds);
         } else {
-            cashRegisterDetails = cashRegisterDetailPersistenceAdapter.getAllBetween(startDate, endDate);
+            cashRegisterDetails = cashRegisterDetailRepository.getAllBetween(startDate, endDate);
         }
 
         final var cashRegistersTotal = calculateCashRegistersTotal(cashRegisterDetails);

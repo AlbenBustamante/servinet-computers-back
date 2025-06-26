@@ -8,7 +8,7 @@ import com.servinetcomputers.api.core.util.enums.CashBoxType;
 import com.servinetcomputers.api.core.util.enums.ChangeLogAction;
 import com.servinetcomputers.api.core.util.enums.ChangeLogType;
 import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDetailDto;
-import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterDetailPersistenceAdapter;
+import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterDetailRepository;
 import com.servinetcomputers.api.module.cashtransfer.application.usecase.DeleteCashTransferUseCase;
 import com.servinetcomputers.api.module.cashtransfer.domain.repository.CashTransferRepository;
 import com.servinetcomputers.api.module.changelog.application.usecase.CreateChangeLogUseCase;
@@ -25,7 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class DeleteCashTransferService implements DeleteCashTransferUseCase {
     private final CashTransferRepository repository;
-    private final CashRegisterDetailPersistenceAdapter cashRegisterDetailPersistenceAdapter;
+    private final CashRegisterDetailRepository cashRegisterDetailRepository;
     private final SafeDetailRepository safeDetailRepository;
     private final SafeBaseRepository safeBaseRepository;
     private final TempCodeRepository tempCodeRepository;
@@ -71,7 +71,7 @@ public class DeleteCashTransferService implements DeleteCashTransferUseCase {
             safeBaseRepository.save(safeBase);
         }
 
-        final var cashRegisterDetail = cashRegisterDetailPersistenceAdapter.get(cashRegisterDetailId)
+        final var cashRegisterDetail = cashRegisterDetailRepository.get(cashRegisterDetailId)
                 .orElseThrow(() -> new NotFoundException("No se encontró la jornada: " + cashRegisterDetailId));
 
         final var newData = repository.getDeleted(cashTransferId)
