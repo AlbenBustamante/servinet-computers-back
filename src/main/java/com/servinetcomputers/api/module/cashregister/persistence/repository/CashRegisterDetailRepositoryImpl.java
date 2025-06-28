@@ -1,15 +1,13 @@
 package com.servinetcomputers.api.module.cashregister.persistence.repository;
 
-import com.servinetcomputers.api.core.exception.NotFoundException;
 import com.servinetcomputers.api.core.util.enums.CashRegisterDetailStatus;
 import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDetailDto;
 import com.servinetcomputers.api.module.cashregister.domain.dto.CreateCashRegisterDetailDto;
-import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterDetailPersistenceAdapter;
+import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterDetailRepository;
 import com.servinetcomputers.api.module.cashregister.persistence.JpaCashRegisterDetailRepository;
 import com.servinetcomputers.api.module.cashregister.persistence.mapper.CashRegisterDetailMapper;
 import com.servinetcomputers.api.module.user.domain.dto.UserFullNameDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
@@ -18,7 +16,7 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @Repository
-public class CashRegisterDetailPersistenceAdapterImpl implements CashRegisterDetailPersistenceAdapter {
+public class CashRegisterDetailRepositoryImpl implements CashRegisterDetailRepository {
     private final JpaCashRegisterDetailRepository repository;
     private final CashRegisterDetailMapper mapper;
 
@@ -40,15 +38,6 @@ public class CashRegisterDetailPersistenceAdapterImpl implements CashRegisterDet
     public Integer getCurrentAmount() {
         final var currentAmount = repository.countByStatusNotAndEnabledTrue(CashRegisterDetailStatus.CLOSED);
         return currentAmount != null ? currentAmount : 0;
-    }
-
-    @Override
-    public CashRegisterDetailDto getLatestByCashRegisterId(Integer cashRegisterId) {
-        final var detail = repository.findLatestByCashRegisterIdAndEnabledTrue(cashRegisterId, PageRequest.of(0, 1));
-        if (detail.getContent().isEmpty()) {
-            throw new NotFoundException("No se encontró movimientos de caja: " + cashRegisterId);
-        }
-        return mapper.toDto(detail.getContent().get(0));
     }
 
     @Override
@@ -75,14 +64,8 @@ public class CashRegisterDetailPersistenceAdapterImpl implements CashRegisterDet
     }
 
     @Override
-    public List<CashRegisterDetailDto> getAllByStatusNotAndBefore(CashRegisterDetailStatus status, LocalDateTime createdDate) {
-        final var details = repository.findAllByStatusNotAndEnabledTrueAndCreatedDateBefore(status, createdDate);
-        return mapper.toDto(details);
-    }
-
-    @Override
-    public List<CashRegisterDetailDto> getAllByCashRegisterId(int cashRegisterId) {
-        final var details = repository.findAllByCashRegisterIdAndEnabledTrue(cashRegisterId);
+    public List<CashRegisterDetailDto> getAllByCashRegisterIdBetween(int cashRegisterId, LocalDateTime startDate, LocalDateTime endDate) {
+        final var details = repository.findAllByCashRegisterIdAndEnabledTrueAndCreatedDateBetween(cashRegisterId, startDate, endDate);
         return mapper.toDto(details);
     }
 
@@ -98,11 +81,11 @@ public class CashRegisterDetailPersistenceAdapterImpl implements CashRegisterDet
         return mapper.toDto(details);
     }
 
-    @Override
-    public List<CashRegisterDetailDto> getLatestWhereCashRegisterIdIsNotIn(List<Integer> cashRegisterIds) {
-        final var details = repository.findLatestByCashRegisterIdNotInAndEnabledTrue(cashRegisterIds);
-        return mapper.toDto(details);
-    }
+    /*@Override
+    public Optional<CashRegisterDetailStatus> getLatestStatusByCashRegisterId(Integer cashRegisterId) {
+        final var page = repository.findLatestStatusByCashRegisterId(cashRegisterId, PageRequest.of(0, 1));
+        return Optional.of(page.getContent().get(0));
+    }*/
 
     @Override
     public Optional<CashRegisterDetailDto> get(int cashRegisterDetailId) {

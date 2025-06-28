@@ -9,20 +9,12 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-public interface CashRegisterDetailPersistenceAdapter {
+public interface CashRegisterDetailRepository {
     void save(CreateCashRegisterDetailDto request);
 
     CashRegisterDetailDto save(CashRegisterDetailDto response);
 
     Integer getCurrentAmount();
-
-    /**
-     * Obtiene el último movimiento de caja registrado según el ID de la caja registradora.
-     *
-     * @param cashRegisterId el {@code ID} de la caja registradora.
-     * @return el movimiento de caja encontrado.
-     */
-    CashRegisterDetailDto getLatestByCashRegisterId(Integer cashRegisterId);
 
     /**
      * Verify if a user already has a cash register detail that its status is not the specified.
@@ -41,15 +33,19 @@ public interface CashRegisterDetailPersistenceAdapter {
 
     List<CashRegisterDetailDto> getAllBetween(LocalDateTime startDate, LocalDateTime endDate);
 
-    List<CashRegisterDetailDto> getAllByStatusNotAndBefore(CashRegisterDetailStatus status, LocalDateTime createdDate);
-
-    List<CashRegisterDetailDto> getAllByCashRegisterId(int cashRegisterId);
+    List<CashRegisterDetailDto> getAllByCashRegisterIdBetween(int cashRegisterId, LocalDateTime startDate, LocalDateTime endDate);
 
     List<CashRegisterDetailDto> getAllWhereUserIdIsNotAndStatusNotAndBetween(int userId, CashRegisterDetailStatus status, LocalDateTime startDate, LocalDateTime endDate);
 
     List<CashRegisterDetailDto> getLatestWhereCashRegisterIdIsIn(List<Integer> cashRegisterIds);
 
-    List<CashRegisterDetailDto> getLatestWhereCashRegisterIdIsNotIn(List<Integer> cashRegisterIds);
+    /*
+     * Obtiene el estado del movimiento de caja registradora más reciente según el ID de una caja registradora.
+     *
+     * @param cashRegisterId {@code ID} de caja registradora.
+     * @return {@link Optional} de {@link CashRegisterDetailStatus}
+     */
+    //Optional<CashRegisterDetailStatus> getLatestStatusByCashRegisterId(Integer cashRegisterId);
 
     Optional<CashRegisterDetailDto> get(int cashRegisterDetailId);
 

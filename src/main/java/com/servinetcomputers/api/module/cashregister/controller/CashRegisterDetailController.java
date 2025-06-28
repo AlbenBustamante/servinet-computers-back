@@ -6,22 +6,20 @@ import com.servinetcomputers.api.module.cashregister.application.usecase.detail.
 import com.servinetcomputers.api.module.cashregister.application.usecase.detail.CreateCashRegisterDetailUseCase;
 import com.servinetcomputers.api.module.cashregister.application.usecase.detail.DeleteCashRegisterDetailUseCase;
 import com.servinetcomputers.api.module.cashregister.application.usecase.detail.EndBreakUseCase;
-import com.servinetcomputers.api.module.cashregister.application.usecase.detail.GetAdmCashRegisterDetailsUseCase;
 import com.servinetcomputers.api.module.cashregister.application.usecase.detail.GetCashRegisterDetailByIdUseCase;
+import com.servinetcomputers.api.module.cashregister.application.usecase.detail.GetCashRegisterDetailReportsAndMovementsUseCase;
 import com.servinetcomputers.api.module.cashregister.application.usecase.detail.GetCashRegisterDetailReportsByIdUseCase;
 import com.servinetcomputers.api.module.cashregister.application.usecase.detail.GetCashTransfersByIdUseCase;
-import com.servinetcomputers.api.module.cashregister.application.usecase.detail.GetDetailedReportsByIdUseCase;
 import com.servinetcomputers.api.module.cashregister.application.usecase.detail.GetExpensesUseCase;
 import com.servinetcomputers.api.module.cashregister.application.usecase.detail.GetTransactionsUseCase;
 import com.servinetcomputers.api.module.cashregister.application.usecase.detail.StartBreakUseCase;
 import com.servinetcomputers.api.module.cashregister.application.usecase.detail.UpdateCashRegisterDetailBaseUseCase;
-import com.servinetcomputers.api.module.cashregister.domain.dto.AdmCashRegistersDto;
 import com.servinetcomputers.api.module.cashregister.domain.dto.AlreadyExistsCashRegisterDetailDto;
 import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDetailDto;
+import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDetailMovementsDto;
 import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDetailReportsDto;
 import com.servinetcomputers.api.module.cashregister.domain.dto.CloseCashRegisterDetailDto;
 import com.servinetcomputers.api.module.cashregister.domain.dto.CreateCashRegisterDetailDto;
-import com.servinetcomputers.api.module.cashregister.domain.dto.DetailedCashRegisterReportsDto;
 import com.servinetcomputers.api.module.cashregister.domain.dto.MyCashRegistersReports;
 import com.servinetcomputers.api.module.cashregister.domain.dto.UpdateCashRegisterDetailBaseDto;
 import com.servinetcomputers.api.module.cashtransfer.domain.dto.CashTransferDto;
@@ -47,11 +45,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class CashRegisterDetailController {
     private final CreateCashRegisterDetailUseCase createCashRegisterDetailUseCase;
     private final CashRegisterDetailAlreadyExistsUseCase alreadyExistsUseCase;
-    private final GetAdmCashRegisterDetailsUseCase getAdmCashRegisterDetailsUseCase;
     private final GetCashRegisterDetailByIdUseCase getByIdUseCase;
     private final GetCashRegisterDetailReportsByIdUseCase getReportsUseCase;
     private final GetCashTransfersByIdUseCase getCashTransfersUseCase;
-    private final GetDetailedReportsByIdUseCase getDetailedReportsByIdUseCase;
+    private final GetCashRegisterDetailReportsAndMovementsUseCase getDetailedReportsUseCase;
     private final StartBreakUseCase startBreakUseCase;
     private final EndBreakUseCase endBreakUseCase;
     private final CloseUseCase closeUseCase;
@@ -70,19 +67,14 @@ public class CashRegisterDetailController {
         return ResponseEntity.ok(alreadyExistsUseCase.call());
     }
 
-    @GetMapping(path = "/adm")
-    public ResponseEntity<AdmCashRegistersDto> getAdmCashRegisterDetails() {
-        return ResponseEntity.ok(getAdmCashRegisterDetailsUseCase.call());
-    }
-
     @GetMapping(path = "/{id}")
     public ResponseEntity<CashRegisterDetailDto> getById(@PathVariable("id") int cashRegisterDetailId) {
         return ResponseEntity.ok(getByIdUseCase.call(cashRegisterDetailId));
     }
 
-    @GetMapping(path = "/{id}/detailed-reports")
-    public ResponseEntity<DetailedCashRegisterReportsDto> getDetailedReports(@PathVariable("id") int cashRegisterDetailId) {
-        return ResponseEntity.ok(getDetailedReportsByIdUseCase.call(cashRegisterDetailId));
+    @GetMapping(path = "/{id}/reports-and-movements")
+    public ResponseEntity<CashRegisterDetailMovementsDto> getReportsAndMovements(@PathVariable("id") int cashRegisterDetailId) {
+        return ResponseEntity.ok(getDetailedReportsUseCase.call(cashRegisterDetailId));
     }
 
     @GetMapping(path = "/{id}/reports")

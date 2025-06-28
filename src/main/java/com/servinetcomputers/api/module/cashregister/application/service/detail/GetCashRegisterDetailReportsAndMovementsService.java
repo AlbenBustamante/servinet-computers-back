@@ -2,14 +2,13 @@ package com.servinetcomputers.api.module.cashregister.application.service.detail
 
 import com.servinetcomputers.api.core.exception.NotFoundException;
 import com.servinetcomputers.api.core.util.enums.CashBoxType;
-import com.servinetcomputers.api.module.cashregister.application.usecase.detail.GetDetailedReportsByIdUseCase;
-import com.servinetcomputers.api.module.cashregister.domain.dto.DetailedCashRegisterReportsDto;
+import com.servinetcomputers.api.module.cashregister.application.usecase.detail.GetCashRegisterDetailReportsAndMovementsUseCase;
+import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDetailMovementsDto;
 import com.servinetcomputers.api.module.cashregister.domain.dto.DetailedCashRegisterTransactionsDto;
-import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterDetailPersistenceAdapter;
+import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterDetailRepository;
 import com.servinetcomputers.api.module.cashtransfer.domain.repository.CashTransferRepository;
 import com.servinetcomputers.api.module.changelog.domain.repository.ChangeLogRepository;
 import com.servinetcomputers.api.module.expense.domain.repository.ExpenseRepository;
-import com.servinetcomputers.api.module.reports.application.usecase.GetCashRegisterDetailReportsUseCase;
 import com.servinetcomputers.api.module.transaction.domain.repository.TransactionDetailRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
@@ -20,13 +19,13 @@ import static com.servinetcomputers.api.core.util.constants.SecurityConstants.AD
 
 @RequiredArgsConstructor
 @Service
-public class GetDetailedReportsByIdService implements GetDetailedReportsByIdUseCase {
-    private final CashRegisterDetailPersistenceAdapter repository;
+public class GetCashRegisterDetailReportsAndMovementsService implements GetCashRegisterDetailReportsAndMovementsUseCase {
+    private final CashRegisterDetailRepository repository;
     private final TransactionDetailRepository transactionDetailRepository;
     private final ExpenseRepository expenseRepository;
     private final CashTransferRepository cashTransferRepository;
     private final ChangeLogRepository changeLogRepository;
-    private final GetCashRegisterDetailReportsUseCase getCashRegisterDetailReportsUseCase;
+    private final com.servinetcomputers.api.module.reports.application.usecase.GetCashRegisterDetailReportsUseCase getCashRegisterDetailReportsUseCase;
 
     /**
      * Get all detailed movements made by a cash register detail by its ID.
@@ -37,7 +36,7 @@ public class GetDetailedReportsByIdService implements GetDetailedReportsByIdUseC
     @Secured(value = ADMIN_AUTHORITY)
     @Transactional(readOnly = true)
     @Override
-    public DetailedCashRegisterReportsDto call(Integer cashRegisterDetailId) {
+    public CashRegisterDetailMovementsDto call(Integer cashRegisterDetailId) {
         final var cashRegisterDetail = repository.get(cashRegisterDetailId)
                 .orElseThrow(() -> new NotFoundException("No se encontró los movimientos con ID: #" + cashRegisterDetailId));
 
@@ -51,6 +50,6 @@ public class GetDetailedReportsByIdService implements GetDetailedReportsByIdUseC
 
         final var changeLogs = changeLogRepository.getAllByCashRegisterDetailId(cashRegisterDetailId);
 
-        return new DetailedCashRegisterReportsDto(reports, detailedTransactions, changeLogs);
+        return new CashRegisterDetailMovementsDto(reports, detailedTransactions, changeLogs);
     }
 }

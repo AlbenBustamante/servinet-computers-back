@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.servinetcomputers.api.core.exception.AppException;
 import com.servinetcomputers.api.core.exception.NotFoundException;
-import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterDetailPersistenceAdapter;
+import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterDetailRepository;
 import com.servinetcomputers.api.module.changelog.application.usecase.CreateChangeLogUseCase;
 import com.servinetcomputers.api.module.changelog.domain.dto.ChangeLogDto;
 import com.servinetcomputers.api.module.changelog.domain.dto.CreateChangeLogDto;
@@ -18,13 +18,13 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class CreateChangeLogService implements CreateChangeLogUseCase {
     private final ChangeLogRepository repository;
-    private final CashRegisterDetailPersistenceAdapter cashRegisterDetailPersistenceAdapter;
+    private final CashRegisterDetailRepository cashRegisterDetailRepository;
 
     @Transactional(rollbackFor = {JsonMappingException.class, AppException.class})
     @Override
     public ChangeLogDto call(CreateChangeLogDto dto) {
         try {
-            final var cashRegisterDetail = cashRegisterDetailPersistenceAdapter.get(dto.getCashRegisterDetailId())
+            final var cashRegisterDetail = cashRegisterDetailRepository.get(dto.getCashRegisterDetailId())
                     .orElseThrow(() -> new NotFoundException("No se encontró la jornada: " + dto.getCashRegisterDetailId()));
 
             dto.setCashRegisterDetail(cashRegisterDetail);

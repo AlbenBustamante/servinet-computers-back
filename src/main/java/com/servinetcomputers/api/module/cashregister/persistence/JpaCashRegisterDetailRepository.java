@@ -20,21 +20,13 @@ public interface JpaCashRegisterDetailRepository extends JpaRepository<CashRegis
 
     boolean existsByUserIdAndCreatedDateBetweenAndEnabledTrueAndStatusNot(int userId, LocalDateTime firstDate, LocalDateTime lastDate, CashRegisterDetailStatus status);
 
-    @Query("SELECT crd FROM CashRegisterDetail crd " +
-            "WHERE crd.cashRegister.id = :cashRegisterId " +
-            "AND crd.enabled = true " +
-            "ORDER BY crd.createdDate DESC")
-    Page<CashRegisterDetail> findLatestByCashRegisterIdAndEnabledTrue(Integer cashRegisterId, Pageable pageable);
-
     List<CashRegisterDetail> findAllByUserIdAndCreatedDateBetweenAndEnabledTrueAndStatusNot(int userId, LocalDateTime firstDate, LocalDateTime lastDate, CashRegisterDetailStatus status);
 
     List<CashRegisterDetail> findAllByUserIdAndCreatedDateBetweenAndEnabledTrueOrderByCreatedDate(int userId, LocalDateTime firstDate, LocalDateTime lastDate);
 
     List<CashRegisterDetail> findAllByEnabledTrueAndCreatedDateBetween(LocalDateTime startDate, LocalDateTime endDate);
 
-    List<CashRegisterDetail> findAllByStatusNotAndEnabledTrueAndCreatedDateBefore(CashRegisterDetailStatus status, LocalDateTime createdDate);
-
-    List<CashRegisterDetail> findAllByCashRegisterIdAndEnabledTrue(int cashRegisterId);
+    List<CashRegisterDetail> findAllByCashRegisterIdAndEnabledTrueAndCreatedDateBetween(int cashRegisterId, LocalDateTime startDate, LocalDateTime endDate);
 
     List<CashRegisterDetail> findAllByUserIdNotAndEnabledTrueAndStatusNotAndCreatedDateBetween(int userId, CashRegisterDetailStatus status, LocalDateTime startDate, LocalDateTime endDate);
 
@@ -43,12 +35,6 @@ public interface JpaCashRegisterDetailRepository extends JpaRepository<CashRegis
             "AND crd.enabled = true " +
             "AND crd.createdDate = (SELECT MAX(crd1.createdDate) FROM CashRegisterDetail crd1 WHERE crd1.cashRegister.id = crd.cashRegister.id)")
     List<CashRegisterDetail> findLatestByCashRegisterIdInAndEnabledTrue(List<Integer> cashRegisterIds);
-
-    @Query("SELECT crd FROM CashRegisterDetail crd " +
-            "WHERE crd.cashRegister.id NOT IN :cashRegisterIds " +
-            "AND crd.enabled = true " +
-            "AND crd.createdDate = (SELECT MAX(crd1.createdDate) FROM CashRegisterDetail crd1 WHERE crd1.cashRegister.id = crd.cashRegister.id)")
-    List<CashRegisterDetail> findLatestByCashRegisterIdNotInAndEnabledTrue(List<Integer> cashRegisterIds);
 
     @Query("SELECT crd.finalBase FROM CashRegisterDetail crd " +
             "WHERE crd.cashRegister.id = :cashRegisterId AND " +
@@ -60,4 +46,17 @@ public interface JpaCashRegisterDetailRepository extends JpaRepository<CashRegis
             "WHERE crd.id = :id AND " +
             "crd.enabled = true")
     Optional<UserFullNameDto> findUserFullNameById(int id);
+
+    /*
+     * Encuentra el estado más reciente según el ID de una caja registradora.
+     *
+     * @param cashRegisterId {@code ID} de caja registradora.
+     * @param pageable       {@link Pageable} para limitar la cantidad de registros.
+     * @return {@link Page} de {@link CashRegisterDetailStatus}.
+     */
+    /*@Query("SELECT crd.status FROM CashRegisterDetail crd " +
+            "WHERE crd.cashRegister.id = :cashRegisterId " +
+            "AND crd.enabled = true " +
+            "ORDER BY crd.createdDate DESC")
+    Page<CashRegisterDetailStatus> findLatestStatusByCashRegisterId(Integer cashRegisterId, Pageable pageable);*/
 }

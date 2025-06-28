@@ -34,6 +34,7 @@ public class JourneyExcelExporter {
         createCell(row, 4, "Hora Salida", style, sheet);
         createCell(row, 5, "Por descontar", style, sheet);
         createCell(row, 6, "Horas trabajadas", style, sheet);
+        createCell(row, 7, "Transacciones", style, sheet);
     }
 
     private void writeBody(JourneyDetailDto detail, XSSFWorkbook workbook, XSSFSheet sheet) {
@@ -43,6 +44,7 @@ public class JourneyExcelExporter {
         final var dateStyle = createStyle(workbook, font, "dd/MM/yyyy");
         final var timeStyle = createStyle(workbook, font, "HH:mm:ss");
         final var currencyStyle = createStyle(workbook, font, "$#,##0");
+        final var transactionStyle = createStyle(workbook, font, "");
 
         var rowCount = 1;
 
@@ -63,7 +65,8 @@ public class JourneyExcelExporter {
             createCell(row, columnCount++, finalBreak, timeStyle, sheet);
             createCell(row, columnCount++, finalWorking, timeStyle, sheet);
             createCell(row, columnCount++, journey.totalOfDiscounts(), currencyStyle, sheet);
-            createCell(row, columnCount, parse(journey.totalOfHours()), timeStyle, sheet);
+            createCell(row, columnCount++, parse(journey.totalOfHours()), timeStyle, sheet);
+            createCell(row, columnCount, journey.totalOfTransactions(), transactionStyle, sheet);
         }
 
         final var totalRow = sheet.createRow(++rowCount);
@@ -77,8 +80,9 @@ public class JourneyExcelExporter {
         createCell(totalRow, 0, "TOTAL", boldStyle, sheet);
         createCell(totalRow, 5, detail.totalOfDiscounts(), currencyStyle, sheet);
         createCell(totalRow, 6, detail.totalOfHours(), boldStyle, sheet);
+        createCell(totalRow, 7, detail.totalOfTransactions(), boldStyle, sheet);
 
-        final var columns = 7;
+        final var columns = 8;
 
         for (var i = 0; i < columns; i++) {
             sheet.autoSizeColumn(i);
