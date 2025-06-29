@@ -1,15 +1,14 @@
 package com.servinetcomputers.api.module.reports.application.service;
 
 import com.servinetcomputers.api.core.datetime.DateTimeService;
-import com.servinetcomputers.api.module.bankdeposit.domain.adapter.BankDepositPaymentPersistenceAdapter;
 import com.servinetcomputers.api.module.cashregister.domain.dto.CashRegisterDetailDto;
 import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterDetailRepository;
 import com.servinetcomputers.api.module.cashregister.domain.repository.CashRegisterRepository;
 import com.servinetcomputers.api.module.expense.domain.repository.ExpenseRepository;
+import com.servinetcomputers.api.module.platform.application.usecase.GetPlatformStatsByBalanceUseCase;
 import com.servinetcomputers.api.module.platform.domain.dto.PlatformBalanceDto;
 import com.servinetcomputers.api.module.platform.domain.dto.PlatformStatsDto;
 import com.servinetcomputers.api.module.platform.domain.repository.PlatformBalanceRepository;
-import com.servinetcomputers.api.module.platform.domain.repository.PlatformTransferRepository;
 import com.servinetcomputers.api.module.reports.application.usecase.GetDashboardUseCase;
 import com.servinetcomputers.api.module.reports.dto.DashboardResponse;
 import com.servinetcomputers.api.module.safes.domain.dto.SafeDetailDto;
@@ -30,15 +29,14 @@ import static com.servinetcomputers.api.core.util.constants.SecurityConstants.AD
 @RequiredArgsConstructor
 @Service
 public class GetDashboardService implements GetDashboardUseCase {
-    private final BankDepositPaymentPersistenceAdapter bankDepositPaymentPersistenceAdapter;
     private final CashRegisterDetailRepository cashRegisterDetailRepository;
     private final CashRegisterRepository cashRegisterRepository;
     private final ExpenseRepository expenseRepository;
     private final PlatformBalanceRepository platformBalanceRepository;
-    private final PlatformTransferRepository platformTransferRepository;
     private final SafeDetailRepository safeDetailRepository;
     private final TransactionDetailRepository transactionDetailRepository;
     private final DateTimeService dateTimeService;
+    private final GetPlatformStatsByBalanceUseCase getPlatformStatsByBalanceUseCase;
 
     /**
      * Get the admin reports of the day.
@@ -106,36 +104,11 @@ public class GetDashboardService implements GetDashboardUseCase {
 
             platformBalancesTotal += balance;
 
-            final var stats = getPlatformStats(platform, date, startDate, endDate);
+            final var stats = getPlatformStatsByBalanceUseCase.call(platform, date);
             platformsStats.add(stats);
         }
 
         return platformBalancesTotal;
-    }
-
-    private PlatformStatsDto getPlatformStats(PlatformBalanceDto balance, LocalDate date, LocalDateTime startDate, LocalDateTime endDate) {
-        final var platform = balance.getPlatform();
-        final var platformId = platform.getId();
-        final var platformName = platform.getName();
-        final var initialBalance = balance.getInitialBalance();
-        final var finalBalance = balance.getFinalBalance();
-        final var transfersAmount = platformTransferRepository.getPlatformTransfersAmountBetween(platformId, date, date);
-        final var transfersTotal = platformTransferRepository.getPlatformTransfersTotalBetween(platformId, date, date);
-        final var bankDepositsAmount = bankDepositPaymentPersistenceAdapter.getAmountByPlatformIdBetween(platformId, startDate, endDate);
-        final var bankDepositsTotal = bankDepositPaymentPersistenceAdapter.getTotalByPlatformIdBetween(platformId, startDate, endDate);
-        final var total = initialBalance + transfersTotal + bankDepositsTotal - finalBalance;
-
-        return PlatformStatsDto.builder()
-                .platformId(platformId)
-                .platformName(platformName)
-                .initialBalance(initialBalance)
-                .finalBalance(finalBalance)
-                .transfersAmount(transfersAmount)
-                .transfersTotal(transfersTotal)
-                .bankDepositsAmount(bankDepositsAmount)
-                .bankDepositsTotal(bankDepositsTotal)
-                .total(total)
-                .build();
     }
 
     private int calculateCashRegistersTotal(List<CashRegisterDetailDto> cashRegisterDetails) {
