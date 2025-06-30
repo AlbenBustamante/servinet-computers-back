@@ -6,6 +6,7 @@ import lombok.Builder;
 public record PlatformStatsDto(
         int platformId,
         String platformName,
+        int balanceId,
         int initialBalance,
         int finalBalance,
         int transfersAmount,
