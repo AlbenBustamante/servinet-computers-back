@@ -55,7 +55,8 @@ public class GetJourneysService implements GetJourneysUseCase {
 
             final var differenceBetweenWorkingTimes = Duration.between(initialWorking, finalWorking);
             final var differenceBetweenBreakTimes = Duration.between(initialBreak, finalBreak);
-            final var totalDuration = differenceBetweenWorkingTimes.minus(differenceBetweenBreakTimes);
+            final var tempTotalDuration = differenceBetweenWorkingTimes.minus(differenceBetweenBreakTimes);
+            final var totalDuration = tempTotalDuration.toHours() < 0 ? Duration.ZERO : tempTotalDuration;
             final var totalOfJourneyHours = String.format(JOURNEY_HOURS_FORMAT, totalDuration.toHours(), totalDuration.toMinutesPart(), totalDuration.toSecondsPart());
 
             final var totalOfJourneyTransactions = transactionDetailRepository.countByCashRegisterDetailId(detail.getId());
@@ -85,7 +86,7 @@ public class GetJourneysService implements GetJourneysUseCase {
         final var minutesInt = Integer.parseInt(wholeMinutes);
         final var secondsInt = Integer.parseInt(wholeSeconds);
 
-        return String.format(TOTAL_HOURS_FORMAT, hoursInt, minutesInt, secondsInt, hoursInt, minutesInt, secondsInt);
+        return String.format(TOTAL_HOURS_FORMAT, hoursInt, minutesInt, secondsInt);
     }
 
     private LocalTime getTime(LocalDateTime dateTime) {
